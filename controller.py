@@ -122,53 +122,50 @@ class Controller(Node):
     def timer_callback(self):
         '''
         로직1. 수신 데이터 출력
-        터틀봇 상태 : 현재 선솏도, 현재 각속도, 배터리 상태, 충전 상태 출력
+        터틀봇 상태 : 현재 선속도, 현재 각속도, 배터리 상태, 충전 상태 출력
         환경 정보 : 날짜, 시간, 온도, 날씨 출력
         가전 제품 : 가전상태 출력        
         '''
+        if self.is_turtlebot_status:
+            print('=' * 50)
+            print('터틀봇 상태')
+            print(f'선속도: {self.turtlebot_status_msg.twist.linear.x:.2f}')
+            print(f'각속도: {self.turtlebot_status_msg.twist.angular.z:.2f}')
+            print(f'배터리: {self.turtlebot_status_msg.battery_percentage:.2f}%')
+            print(f'충전상태: {"충전중" if self.turtlebot_status_msg.is_charging else "미충전"}')
+
+        if self.is_envir_status:
+            print('=' * 50)
+            print('환경 정보')
+            print(f'날짜: {self.envir_status_msg.month}월 {self.envir_status_msg.day}일')
+            print(f'시간: {self.envir_status_msg.hour:02d}:{self.envir_status_msg.minute:02d}')
+            print(f'온도: {self.envir_status_msg.temperature:.1f}℃')
+            print(f'날씨: {self.envir_status_msg.weather}')
+
+        if self.is_app_status:
+            print('=' * 50)
+            print('가전제품 상태')
+            for i, status in enumerate(self.app_status_msg.data):
+                status_str = "ON" if status == 1 else "OFF" if status == 2 else "UNKNOWN"
+                print(f'가전제품 {i}: {status_str}')
+
         print('\nSelect Menu [0: status, 1: app_on, 2:app_off, 3:turtlebot_stop, 4:cw_rot, 5:ccw_rot]')
         menu = input(">>")
         
         if menu == '0':
-            if self.is_turtlebot_status:
-                print('=' * 50)
-                print('터틀봇 상태')
-                print(f'선속도: {self.turtlebot_status_msg.twist.linear.x:.2f}')
-                print(f'각속도: {self.turtlebot_status_msg.twist.angular.z:.2f}')
-                print(f'배터리: {self.turtlebot_status_msg.battery_percentage:.2f}%')
-                print(f'충전상태: {"충전중" if self.turtlebot_status_msg.is_charging else "미충전"}')
-
-            if self.is_envir_status:
-                print('=' * 50)
-                print('환경 정보')
-                print(f'날짜: {self.envir_status_msg.month}월 {self.envir_status_msg.day}일')
-                print(f'시간: {self.envir_status_msg.hour:02d}:{self.envir_status_msg.minute:02d}')
-                print(f'온도: {self.envir_status_msg.temperature:.1f}℃')
-                print(f'날씨: {self.envir_status_msg.weather}')
-
-            if self.is_app_status:
-                print('=' * 50)
-                print('가전제품 상태')
-                for i, status in enumerate(self.app_status_msg.data):
-                    status_str = "ON" if status == 1 else "OFF" if status == 2 else "UNKNOWN"
-                    print(f'가전제품 {i}: {status_str}')
-        
+            pass  # 상태는 이미 위에서 출력됨
         elif menu == '1':
             print("가전제품 번호를 입력하세요 (0-16)")
             app_num = int(input(">>"))
             self.app_on_select(app_num)
-        
         elif menu == '2':
             print("가전제품 번호를 입력하세요 (0-16)")
             app_num = int(input(">>"))
             self.app_off_select(app_num)
-        
         elif menu == '3':
             self.turtlebot_stop()
-        
         elif menu == '4':
             self.turtlebot_cw_rot()
-        
         elif menu == '5':
             self.turtlebot_cww_rot()
 
