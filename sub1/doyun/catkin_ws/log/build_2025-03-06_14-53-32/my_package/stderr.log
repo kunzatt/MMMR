@@ -1,0 +1,191 @@
+c:\python37\lib\site-packages\setuptools\dist.py:745: SetuptoolsDeprecationWarning: Invalid dash-separated options
+!!
+
+        ********************************************************************************
+        Usage of dash-separated 'script-dir' will not be supported in future
+        versions. Please use the underscore name 'script_dir' instead.
+
+        This deprecation is overdue, please update your project and remove deprecated
+        calls to avoid build errors in the future.
+
+        See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+        ********************************************************************************
+
+!!
+  opt = self.warn_dash_deprecation(opt, section)
+--- Logging error ---
+Traceback (most recent call last):
+  File "c:\python37\lib\logging\__init__.py", line 1028, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u01af' in position 39: illegal multibyte sequence
+Call stack:
+  File "setup.py", line 23, in <module>
+    'my_node = my_package.my_node:main'
+  File "c:\python37\lib\site-packages\setuptools\__init__.py", line 107, in setup
+    return distutils.core.setup(**attrs)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\core.py", line 185, in setup
+    return run_commands(dist)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\core.py", line 201, in run_commands
+    dist.run_commands()
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 969, in run_commands
+    self.run_command(cmd)
+  File "c:\python37\lib\site-packages\setuptools\dist.py", line 1234, in run_command
+    super().run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 988, in run_command
+    cmd_obj.run()
+  File "c:\python37\lib\site-packages\setuptools\command\install.py", line 74, in run
+    return orig.install.run(self)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\command\install.py", line 708, in run
+    self.run_command(cmd_name)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\cmd.py", line 318, in run_command
+    self.distribution.run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\dist.py", line 1234, in run_command
+    super().run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 988, in run_command
+    cmd_obj.run()
+  File "c:\python37\lib\site-packages\setuptools\command\install_egg_info.py", line 34, in run
+    dir_util.remove_tree(self.target, dry_run=self.dry_run)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dir_util.py", line 219, in remove_tree
+    log.info("removing '%s' (and everything under it)", directory)
+Message: "removing '%s' (and everything under it)"
+Arguments: ('C:\\Users\\SSAFY\\Desktop\\doyun\\\u01af\u022d\\S12P21A703\\sub1\\doyun\\catkin_ws\\install\\my_package\\Lib\\site-packages\\my_package-0.0.0-py3.7.egg-info',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "c:\python37\lib\logging\__init__.py", line 1028, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u01af' in position 83: illegal multibyte sequence
+Call stack:
+  File "setup.py", line 23, in <module>
+    'my_node = my_package.my_node:main'
+  File "c:\python37\lib\site-packages\setuptools\__init__.py", line 107, in setup
+    return distutils.core.setup(**attrs)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\core.py", line 185, in setup
+    return run_commands(dist)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\core.py", line 201, in run_commands
+    dist.run_commands()
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 969, in run_commands
+    self.run_command(cmd)
+  File "c:\python37\lib\site-packages\setuptools\dist.py", line 1234, in run_command
+    super().run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 988, in run_command
+    cmd_obj.run()
+  File "c:\python37\lib\site-packages\setuptools\command\install.py", line 74, in run
+    return orig.install.run(self)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\command\install.py", line 708, in run
+    self.run_command(cmd_name)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\cmd.py", line 318, in run_command
+    self.distribution.run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\dist.py", line 1234, in run_command
+    super().run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 988, in run_command
+    cmd_obj.run()
+  File "c:\python37\lib\site-packages\setuptools\command\install_egg_info.py", line 40, in run
+    self.copytree, (), "Copying %s to %s" % (self.source, self.target)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\cmd.py", line 339, in execute
+    util.execute(func, args, msg, dry_run=self.dry_run)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\util.py", line 335, in execute
+    log.info(msg)
+Message: 'Copying ..\\..\\build\\my_package\\my_package.egg-info to C:\\Users\\SSAFY\\Desktop\\doyun\\\u01af\u022d\\S12P21A703\\sub1\\doyun\\catkin_ws\\install\\my_package\\Lib\\site-packages\\my_package-0.0.0-py3.7.egg-info'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "c:\python37\lib\logging\__init__.py", line 1028, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u01af' in position 68: illegal multibyte sequence
+Call stack:
+  File "setup.py", line 23, in <module>
+    'my_node = my_package.my_node:main'
+  File "c:\python37\lib\site-packages\setuptools\__init__.py", line 107, in setup
+    return distutils.core.setup(**attrs)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\core.py", line 185, in setup
+    return run_commands(dist)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\core.py", line 201, in run_commands
+    dist.run_commands()
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 969, in run_commands
+    self.run_command(cmd)
+  File "c:\python37\lib\site-packages\setuptools\dist.py", line 1234, in run_command
+    super().run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 988, in run_command
+    cmd_obj.run()
+  File "c:\python37\lib\site-packages\setuptools\command\install.py", line 74, in run
+    return orig.install.run(self)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\command\install.py", line 708, in run
+    self.run_command(cmd_name)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\cmd.py", line 318, in run_command
+    self.distribution.run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\dist.py", line 1234, in run_command
+    super().run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 988, in run_command
+    cmd_obj.run()
+  File "c:\python37\lib\site-packages\setuptools\command\install_scripts.py", line 26, in run
+    self._install_ep_scripts()
+  File "c:\python37\lib\site-packages\setuptools\command\install_scripts.py", line 57, in _install_ep_scripts
+    self.write_script(*args)
+  File "c:\python37\lib\site-packages\setuptools\command\install_scripts.py", line 63, in write_script
+    log.info("Installing %s script to %s", script_name, self.install_dir)
+Message: 'Installing %s script to %s'
+Arguments: ('my_node-script.py', 'C:\\Users\\SSAFY\\Desktop\\doyun\\\u01af\u022d\\S12P21A703\\sub1\\doyun\\catkin_ws\\install\\my_package\\lib\\my_package')
+--- Logging error ---
+Traceback (most recent call last):
+  File "c:\python37\lib\logging\__init__.py", line 1028, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u01af' in position 62: illegal multibyte sequence
+Call stack:
+  File "setup.py", line 23, in <module>
+    'my_node = my_package.my_node:main'
+  File "c:\python37\lib\site-packages\setuptools\__init__.py", line 107, in setup
+    return distutils.core.setup(**attrs)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\core.py", line 185, in setup
+    return run_commands(dist)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\core.py", line 201, in run_commands
+    dist.run_commands()
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 969, in run_commands
+    self.run_command(cmd)
+  File "c:\python37\lib\site-packages\setuptools\dist.py", line 1234, in run_command
+    super().run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 988, in run_command
+    cmd_obj.run()
+  File "c:\python37\lib\site-packages\setuptools\command\install.py", line 74, in run
+    return orig.install.run(self)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\command\install.py", line 708, in run
+    self.run_command(cmd_name)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\cmd.py", line 318, in run_command
+    self.distribution.run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\dist.py", line 1234, in run_command
+    super().run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 988, in run_command
+    cmd_obj.run()
+  File "c:\python37\lib\site-packages\setuptools\command\install_scripts.py", line 26, in run
+    self._install_ep_scripts()
+  File "c:\python37\lib\site-packages\setuptools\command\install_scripts.py", line 57, in _install_ep_scripts
+    self.write_script(*args)
+  File "c:\python37\lib\site-packages\setuptools\command\install_scripts.py", line 63, in write_script
+    log.info("Installing %s script to %s", script_name, self.install_dir)
+Message: 'Installing %s script to %s'
+Arguments: ('my_node.exe', 'C:\\Users\\SSAFY\\Desktop\\doyun\\\u01af\u022d\\S12P21A703\\sub1\\doyun\\catkin_ws\\install\\my_package\\lib\\my_package')
+Traceback (most recent call last):
+  File "setup.py", line 23, in <module>
+    'my_node = my_package.my_node:main'
+  File "c:\python37\lib\site-packages\setuptools\__init__.py", line 107, in setup
+    return distutils.core.setup(**attrs)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\core.py", line 185, in setup
+    return run_commands(dist)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\core.py", line 201, in run_commands
+    dist.run_commands()
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 969, in run_commands
+    self.run_command(cmd)
+  File "c:\python37\lib\site-packages\setuptools\dist.py", line 1234, in run_command
+    super().run_command(command)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\dist.py", line 988, in run_command
+    cmd_obj.run()
+  File "c:\python37\lib\site-packages\setuptools\command\install.py", line 74, in run
+    return orig.install.run(self)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\command\install.py", line 723, in run
+    "writing list of installed files to '%s'" % self.record,
+  File "c:\python37\lib\site-packages\setuptools\_distutils\cmd.py", line 339, in execute
+    util.execute(func, args, msg, dry_run=self.dry_run)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\util.py", line 337, in execute
+    func(*args)
+  File "c:\python37\lib\site-packages\setuptools\_distutils\file_util.py", line 246, in write_file
+    f.write(line + "\n")
+UnicodeEncodeError: 'cp949' codec can't encode character '\u01af' in position 29: illegal multibyte sequence
