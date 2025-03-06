@@ -21,8 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
             'my_node = my_package.my_node:main',
-            'publisher=sub1.publisher:main',
-            'subscriber=sub1.subscriber:main'
+            'publisher=my_package.publisher:main',
+            'subscriber=my_package.subscriber:main'
         ],
     },
 )
