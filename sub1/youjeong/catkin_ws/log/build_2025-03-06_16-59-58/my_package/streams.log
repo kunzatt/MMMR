@@ -1,0 +1,26 @@
+[1.516s] Invoking command in 'C:\Users\SSAFY\Desktop\catkin_ws\src\my_package': PYTHONPATH=C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages;%PYTHONPATH% c:\python37\python.exe -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ..\..\build\my_package build --build-base C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\build install --record C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\install.log --install-scripts $base/lib/my_package --single-version-externally-managed install_data
+[1.875s] running egg_info
+[1.891s] writing ..\..\build\my_package\my_package.egg-info\PKG-INFO
+[1.891s] writing dependency_links to ..\..\build\my_package\my_package.egg-info\dependency_links.txt
+[1.891s] writing entry points to ..\..\build\my_package\my_package.egg-info\entry_points.txt
+[1.891s] writing requirements to ..\..\build\my_package\my_package.egg-info\requires.txt
+[1.891s] writing top-level names to ..\..\build\my_package\my_package.egg-info\top_level.txt
+[1.907s] reading manifest file '..\..\build\my_package\my_package.egg-info\SOURCES.txt'
+[1.907s] writing manifest file '..\..\build\my_package\my_package.egg-info\SOURCES.txt'
+[1.907s] running build
+[1.907s] running build_py
+[1.907s] running install
+[1.907s] running install_lib
+[1.907s] running install_data
+[1.907s] running install_egg_info
+[1.907s] removing 'C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages\my_package-0.0.0-py3.7.egg-info' (and everything under it)
+[1.922s] Copying ..\..\build\my_package\my_package.egg-info to C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages\my_package-0.0.0-py3.7.egg-info
+[1.938s] running install_scripts
+[1.954s] Installing listener-script.py script to C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\lib\my_package
+[1.969s] Installing listener.exe script to C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\lib\my_package
+[1.969s] Installing my_node-script.py script to C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\lib\my_package
+[1.969s] Installing my_node.exe script to C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\lib\my_package
+[1.969s] Installing talker-script.py script to C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\lib\my_package
+[1.969s] Installing talker.exe script to C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\lib\my_package
+[1.969s] writing list of installed files to 'C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\install.log'
+[1.985s] Invoked command in 'C:\Users\SSAFY\Desktop\catkin_ws\src\my_package' returned '0': PYTHONPATH=C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages;%PYTHONPATH% c:\python37\python.exe -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ..\..\build\my_package build --build-base C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\build install --record C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\install.log --install-scripts $base/lib/my_package --single-version-externally-managed install_data

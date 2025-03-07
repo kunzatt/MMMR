@@ -1,0 +1,49 @@
+[0.000000] (-) TimerEvent: {}
+[0.000000] (my_package) JobQueued: {'identifier': 'my_package', 'dependencies': OrderedDict()}
+[0.000000] (my_package) JobStarted: {'identifier': 'my_package'}
+[0.109000] (-) TimerEvent: {}
+[0.219000] (-) TimerEvent: {}
+[0.328000] (-) TimerEvent: {}
+[0.437000] (-) TimerEvent: {}
+[0.547000] (-) TimerEvent: {}
+[0.656000] (-) TimerEvent: {}
+[0.765000] (-) TimerEvent: {}
+[0.875000] (-) TimerEvent: {}
+[0.984000] (-) TimerEvent: {}
+[1.094000] (-) TimerEvent: {}
+[1.203000] (-) TimerEvent: {}
+[1.312000] (-) TimerEvent: {}
+[1.422000] (-) TimerEvent: {}
+[1.531000] (-) TimerEvent: {}
+[1.562000] (my_package) Command: {'cmd': ['c:\\python37\\python.exe', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '..\\..\\build\\my_package', 'build', '--build-base', 'C:\\Users\\SSAFY\\Desktop\\catkin_ws\\build\\my_package\\build', 'install', '--record', 'C:\\Users\\SSAFY\\Desktop\\catkin_ws\\build\\my_package\\install.log', '--install-scripts', '$base/lib/my_package', '--single-version-externally-managed', 'install_data'], 'cwd': 'C:\\Users\\SSAFY\\Desktop\\catkin_ws\\src\\my_package', 'env': {'SESSIONNAME': 'Console', 'ProgramFiles(x86)': 'C:\\Program Files (x86)', 'USERNAME': 'SSAFY', 'ProgramW6432': 'C:\\Program Files', 'windir': 'C:\\WINDOWS', 'ChocolateyInstall': 'C:\\ProgramData\\chocolatey', 'PROCESSOR_IDENTIFIER': 'Intel64 Family 6 Model 186 Stepping 2, GenuineIntel', 'TMP': 'C:\\Users\\SSAFY\\AppData\\Local\\Temp', 'PROCESSOR_ARCHITECTURE': 'AMD64', 'OSPL_URI': 'file:///share/opensplice_cmake_module/config/ros_ospl.xml', 'Path': 'c:\\python37\\lib\\site-packages\\pywin32_system32;C:\\dev\\ros2-windows\\opt\\yaml_cpp_vendor\\bin;C:\\dev\\ros2-windows\\opt\\rviz_ogre_vendor\\bin;C:\\dev\\ros2-windows\\opt\\rviz_assimp_vendor\\bin;C:\\dev\\opensplice\\HDE\\x86_64.win64\\\\bin;C:\\dev\\opensplice\\HDE\\x86_64.win64\\\\lib;C:\\dev\\opensplice\\HDE\\x86_64.win64\\\\examples\\lib;C:\\dev\\ros2-windows\\opt\\libcurl_vendor\\bin;C:\\Program Files\\rti_connext_dds-5.3.1\\bin;C:\\Program Files\\rti_connext_dds-5.3.1\\lib\\x64Win64VS2017;C:\\dev\\ros2-windows\\Scripts;C:\\dev\\ros2-windows\\bin;C:\\Python37\\Scripts\\;C:\\Python37\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;C:\\Program Files\\Git\\cmd;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;C:\\ProgramData\\chocolatey\\bin;C:\\ProgramData\\chocolatey\\lib\\cunit\\lib;C:\\ProgramData\\chocolatey\\lib\\tinyxml2\\lib;C:\\ProgramData\\chocolatey\\lib\\log4cxx\\lib;C:\\ProgramData\\chocolatey\\lib\\bullet\\lib;C:\\Users\\SSAFY\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\SSAFY\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\OpenSSL-Win64\\bin;C:\\Program Files\\CMake\\bin;', 'NDDSHOME': 'C:\\Program Files\\rti_connext_dds-5.3.1', 'PATHEXT': '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.CPL', 'PROCESSOR_REVISION': 'ba02', 'ChocolateyLastPathUpdate': '133857123333509108', 'USERPROFILE': 'C:\\Users\\SSAFY', 'PKG_CONFIG_PATH': 'C:\\dev\\ros2-windows\\lib\\pkgconfig', 'LOGONSERVER': '\\\\DESKTOP-PHKCE21', 'TEMP': 'C:\\Users\\SSAFY\\AppData\\Local\\Temp', 'EFC_36244': '1', 'AMENT_PREFIX_PATH': 'C:\\dev\\ros2-windows', 'ROS_PYTHON_VERSION': '3', 'OSPL_TMPL_PATH': 'C:\\dev\\opensplice\\HDE\\x86_64.win64\\\\etc\\idlpp', 'ROS_DOMAIN_ID': '0', 'OSPL_HOME': 'C:\\dev\\opensplice\\HDE\\x86_64.win64\\', 'ROS_VERSION': '2', 'OneDrive': 'C:\\Users\\SSAFY\\OneDrive', 'USERDOMAIN_ROAMINGPROFILE': 'DESKTOP-PHKCE21', 'COLCON_PREFIX_PATH': 'C:\\dev\\ros2-windows\\', 'OSPL_ERRORFILE': '<stderr>', 'CommonProgramFiles': 'C:\\Program Files\\Common Files', 'ZES_ENABLE_SYSMAN': '1', 'OSPL_VERBOSITY': '2', 'ProgramData': 'C:\\ProgramData', 'HOMEPATH': '\\Users\\SSAFY', 'COLCON': '1', 'IGCCSVC_DB': 'AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAgP5QZRdXE02NHoUlEgqz6gQAAAACAAAAAAAQZgAAAAEAACAAAADxF7YJIxYa4WX0lDJjOFX5s4pRN996c2elDE4qhIrlrgAAAAAOgAAAAAIAACAAAAAXEQohQ88z/ajg9i+VFF6Yu+msRUVxlZLP9G5syu+2g2AAAABh4UdOHzNqHA6kpN1lxjdAHkq8T5mjj1H1geZa7DMeNgVhSNktwYvYV2Okb9lg1PkLvfr7tOOU1o9HBbM3I8bI0fAi+4QnhHUOwskZf/HqXP0CPzZw125ad4hm2Ib0kM5AAAAA2tLsp/d1cnxQT77z+wFbmVZH9XkTy81wjmxXnPkOqHFjKyFw7SzJIM3GFUwesMstPqry/5+chyjKvbU29gSLaw==', 'COMPUTERNAME': 'DESKTOP-PHKCE21', 'ALLUSERSPROFILE': 'C:\\ProgramData', 'CommonProgramW6432': 'C:\\Program Files\\Common Files', 'ROS_LOCALHOST_ONLY': '0', 'ROS_DISTRO': 'eloquent', 'CMAKE_PREFIX_PATH': 'C:\\dev\\ros2-windows', 'PYTHONPATH': 'C:\\Users\\SSAFY\\Desktop\\catkin_ws\\build\\my_package\\prefix_override;c:\\python37\\lib\\site-packages\\colcon_core\\task\\python\\colcon_distutils_commands;C:\\Users\\SSAFY\\Desktop\\catkin_ws\\install\\my_package\\Lib\\site-packages;C:\\dev\\ros2-windows\\Lib\\site-packages', 'hostVersion': '5.3.1', 'DriverData': 'C:\\Windows\\System32\\Drivers\\DriverData', 'architectureName': 'x64Win64VS2017', 'SystemRoot': 'C:\\WINDOWS', 'SystemDrive': 'C:', 'NUMBER_OF_PROCESSORS': '20', 'OS': 'Windows_NT', 'scriptDir': 'C:\\Program Files\\rti_connext_dds-5.3.1\\resource\\scripts\\', 'ProgramFiles': 'C:\\Program Files', 'ComSpec': 'C:\\WINDOWS\\system32\\cmd.exe', 'scriptName': 'rtisetenv_x64Win64VS2017', 'HOMEDRIVE': 'C:', 'OpenCV_DIR': 'C:\\opencv', 'OPENSSL_CONF': 'C:\\OpenSSL-Win64\\bin\\openssl.cfg', 'OSPL_INFOFILE': '<stdout>', 'PSModulePath': 'C:\\Users\\SSAFY\\Documents\\WindowsPowerShell\\Modules;C:\\Program Files\\WindowsPowerShell\\Modules;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules', 'installDir': 'C:\\Program Files\\rti_connext_dds-5.3.1\\resource\\scripts\\..\\..', 'PROMPT': '$P$G', 'APPDATA': 'C:\\Users\\SSAFY\\AppData\\Roaming', 'USERDOMAIN': 'DESKTOP-PHKCE21', 'PROCESSOR_LEVEL': '6', 'LOCALAPPDATA': 'C:\\Users\\SSAFY\\AppData\\Local', 'SPLICE_ORB': 'DDS_OpenFusion_1_6_1', 'CommonProgramFiles(x86)': 'C:\\Program Files (x86)\\Common Files', 'PUBLIC': 'C:\\Users\\Public'}, 'shell': False}
+[1.640000] (-) TimerEvent: {}
+[1.750000] (-) TimerEvent: {}
+[1.859000] (-) TimerEvent: {}
+[1.875000] (my_package) StdoutLine: {'line': b'running egg_info\r\n'}
+[1.906000] (my_package) StdoutLine: {'line': b'writing ..\\..\\build\\my_package\\my_package.egg-info\\PKG-INFO\r\n'}
+[1.906000] (my_package) StdoutLine: {'line': b'writing dependency_links to ..\\..\\build\\my_package\\my_package.egg-info\\dependency_links.txt\r\n'}
+[1.906000] (my_package) StdoutLine: {'line': b'writing entry points to ..\\..\\build\\my_package\\my_package.egg-info\\entry_points.txt\r\n'}
+[1.906000] (my_package) StdoutLine: {'line': b'writing requirements to ..\\..\\build\\my_package\\my_package.egg-info\\requires.txt\r\n'}
+[1.906000] (my_package) StdoutLine: {'line': b'writing top-level names to ..\\..\\build\\my_package\\my_package.egg-info\\top_level.txt\r\n'}
+[1.906000] (my_package) StdoutLine: {'line': b"reading manifest file '..\\..\\build\\my_package\\my_package.egg-info\\SOURCES.txt'\r\n"}
+[1.906000] (my_package) StdoutLine: {'line': b"writing manifest file '..\\..\\build\\my_package\\my_package.egg-info\\SOURCES.txt'\r\n"}
+[1.906000] (my_package) StdoutLine: {'line': b'running build\r\n'}
+[1.906000] (my_package) StdoutLine: {'line': b'running build_py\r\n'}
+[1.906000] (my_package) StdoutLine: {'line': b'running install\r\n'}
+[1.906000] (my_package) StdoutLine: {'line': b'running install_lib\r\n'}
+[1.922000] (my_package) StdoutLine: {'line': b'running install_data\r\n'}
+[1.922000] (my_package) StdoutLine: {'line': b'running install_egg_info\r\n'}
+[1.922000] (my_package) StdoutLine: {'line': b"removing 'C:\\Users\\SSAFY\\Desktop\\catkin_ws\\install\\my_package\\Lib\\site-packages\\my_package-0.0.0-py3.7.egg-info' (and everything under it)\r\n"}
+[1.922000] (my_package) StdoutLine: {'line': b'Copying ..\\..\\build\\my_package\\my_package.egg-info to C:\\Users\\SSAFY\\Desktop\\catkin_ws\\install\\my_package\\Lib\\site-packages\\my_package-0.0.0-py3.7.egg-info\r\n'}
+[1.937000] (my_package) StdoutLine: {'line': b'running install_scripts\r\n'}
+[1.953000] (my_package) StdoutLine: {'line': b'Installing listener-script.py script to C:\\Users\\SSAFY\\Desktop\\catkin_ws\\install\\my_package\\lib\\my_package\r\n'}
+[1.953000] (my_package) StdoutLine: {'line': b'Installing listener.exe script to C:\\Users\\SSAFY\\Desktop\\catkin_ws\\install\\my_package\\lib\\my_package\r\n'}
+[1.953000] (my_package) StdoutLine: {'line': b'Installing my_node-script.py script to C:\\Users\\SSAFY\\Desktop\\catkin_ws\\install\\my_package\\lib\\my_package\r\n'}
+[1.969000] (my_package) StdoutLine: {'line': b'Installing my_node.exe script to C:\\Users\\SSAFY\\Desktop\\catkin_ws\\install\\my_package\\lib\\my_package\r\n'}
+[1.969000] (-) TimerEvent: {}
+[1.969000] (my_package) StdoutLine: {'line': b'Installing talker-script.py script to C:\\Users\\SSAFY\\Desktop\\catkin_ws\\install\\my_package\\lib\\my_package\r\n'}
+[1.969000] (my_package) StdoutLine: {'line': b'Installing talker.exe script to C:\\Users\\SSAFY\\Desktop\\catkin_ws\\install\\my_package\\lib\\my_package\r\n'}
+[1.969000] (my_package) StdoutLine: {'line': b"writing list of installed files to 'C:\\Users\\SSAFY\\Desktop\\catkin_ws\\build\\my_package\\install.log'\r\n"}
+[1.984000] (my_package) CommandEnded: {'returncode': 0}
+[2.000000] (my_package) JobEnded: {'identifier': 'my_package', 'rc': 0}
+[2.000000] (-) EventReactorShutdown: {}

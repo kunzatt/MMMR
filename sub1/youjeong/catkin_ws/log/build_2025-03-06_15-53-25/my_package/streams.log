@@ -1,0 +1,38 @@
+[2.594s] Invoking command in 'C:\Users\SSAFY\Desktop\catkin_ws\src\my_package': PYTHONPATH=C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages;%PYTHONPATH% c:\python37\python.exe -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ..\..\build\my_package build --build-base C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\build install --record C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\install.log --install-scripts $base/lib/my_package --single-version-externally-managed install_data
+[2.937s] running egg_info
+[2.953s] creating ..\..\build\my_package\my_package.egg-info
+[2.953s] writing ..\..\build\my_package\my_package.egg-info\PKG-INFO
+[2.953s] writing dependency_links to ..\..\build\my_package\my_package.egg-info\dependency_links.txt
+[2.953s] writing entry points to ..\..\build\my_package\my_package.egg-info\entry_points.txt
+[2.953s] writing requirements to ..\..\build\my_package\my_package.egg-info\requires.txt
+[2.953s] writing top-level names to ..\..\build\my_package\my_package.egg-info\top_level.txt
+[2.953s] writing manifest file '..\..\build\my_package\my_package.egg-info\SOURCES.txt'
+[2.984s] reading manifest file '..\..\build\my_package\my_package.egg-info\SOURCES.txt'
+[2.984s] writing manifest file '..\..\build\my_package\my_package.egg-info\SOURCES.txt'
+[2.984s] running build
+[2.984s] running build_py
+[2.984s] creating C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\build
+[2.984s] creating C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\build\lib
+[2.984s] creating C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\build\lib\my_package
+[2.984s] copying my_package\my_node.py -> C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\build\lib\my_package
+[2.984s] copying my_package\__init__.py -> C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\build\lib\my_package
+[2.984s] running install
+[2.984s] running install_lib
+[2.984s] creating C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages\my_package
+[2.984s] copying C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\build\lib\my_package\my_node.py -> C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages\my_package
+[3.000s] copying C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\build\lib\my_package\__init__.py -> C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages\my_package
+[3.000s] byte-compiling C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages\my_package\my_node.py to my_node.cpython-37.pyc
+[3.000s] byte-compiling C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages\my_package\__init__.py to __init__.cpython-37.pyc
+[3.000s] running install_data
+[3.000s] creating C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\share\ament_index
+[3.000s] creating C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\share\ament_index\resource_index
+[3.000s] creating C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\share\ament_index\resource_index\packages
+[3.000s] copying resource\my_package -> C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\share\ament_index\resource_index\packages
+[3.000s] copying package.xml -> C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\share\my_package
+[3.015s] running install_egg_info
+[3.015s] Copying ..\..\build\my_package\my_package.egg-info to C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages\my_package-0.0.0-py3.7.egg-info
+[3.031s] running install_scripts
+[3.047s] Installing my_node-script.py script to C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\lib\my_package
+[3.047s] Installing my_node.exe script to C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\lib\my_package
+[3.047s] writing list of installed files to 'C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\install.log'
+[3.078s] Invoked command in 'C:\Users\SSAFY\Desktop\catkin_ws\src\my_package' returned '0': PYTHONPATH=C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages;%PYTHONPATH% c:\python37\python.exe -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ..\..\build\my_package build --build-base C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\build install --record C:\Users\SSAFY\Desktop\catkin_ws\build\my_package\install.log --install-scripts $base/lib/my_package --single-version-externally-managed install_data
