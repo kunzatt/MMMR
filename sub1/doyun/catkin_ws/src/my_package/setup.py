@@ -28,7 +28,8 @@ setup(
             'handcontrol=my_package.handcontrol:main',
             'odom=my_package.odom:main',
             'make_path=my_package.make_path:main',
-            'path_pub=my_package.path_pub:main'
+            'path_pub=my_package.path_pub:main',
+            'path_tracking=my_package.path_tracking:main'
         ],
     },
 )

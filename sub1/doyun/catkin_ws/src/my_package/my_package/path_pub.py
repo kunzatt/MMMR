@@ -112,7 +112,7 @@ class pathPub(Node):
                     current_waypoint=
             
             '''
-            min_dis=100000
+            min_dis=float('inf')
             for i,waypoint in enumerate(self.global_path_msg.poses) :
                 distance=sqrt((waypoint.pose.position.x-x)**2+(waypoint.pose.position.y-y)**2)
                 if distance < min_dis :
