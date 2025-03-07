@@ -1,0 +1,843 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "MinSizeRel/ssafy_msgs__rosidl_typesupport_c.dll"
+		},
+		{
+			"path" : "MinSizeRel/ssafy_msgs__rosidl_typesupport_c.lib"
+		},
+		{
+			"path" : "MinSizeRel/ssafy_msgs__rosidl_typesupport_c.pdb"
+		}
+	],
+	"backtrace" : 5,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"include",
+			"ament_execute_extensions",
+			"rosidl_generate_interfaces",
+			"install",
+			"target_link_libraries",
+			"ament_target_dependencies",
+			"target_compile_definitions",
+			"target_include_directories",
+			"set_target_properties"
+		],
+		"files" : 
+		[
+			"C:/dev/ros2-windows/share/rosidl_typesupport_c/cmake/rosidl_typesupport_c_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake",
+			"C:/dev/ros2-windows/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake",
+			"CMakeLists.txt",
+			"C:/dev/ros2-windows/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 3
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 24,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 286,
+				"parent" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 48,
+				"parent" : 2
+			},
+			{
+				"file" : 0,
+				"parent" : 3
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 88,
+				"parent" : 4
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 148,
+				"parent" : 4
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 110,
+				"parent" : 4
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 132,
+				"parent" : 4
+			},
+			{
+				"command" : 5,
+				"file" : 4,
+				"line" : 65,
+				"parent" : 8
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 137,
+				"parent" : 4
+			},
+			{
+				"command" : 5,
+				"file" : 4,
+				"line" : 65,
+				"parent" : 10
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 137,
+				"parent" : 4
+			},
+			{
+				"command" : 5,
+				"file" : 4,
+				"line" : 65,
+				"parent" : 12
+			},
+			{
+				"command" : 7,
+				"file" : 0,
+				"line" : 94,
+				"parent" : 4
+			},
+			{
+				"command" : 7,
+				"file" : 0,
+				"line" : 96,
+				"parent" : 4
+			},
+			{
+				"command" : 8,
+				"file" : 0,
+				"line" : 106,
+				"parent" : 4
+			},
+			{
+				"command" : 8,
+				"file" : 4,
+				"line" : 62,
+				"parent" : 8
+			},
+			{
+				"command" : 9,
+				"file" : 0,
+				"line" : 100,
+				"parent" : 4
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O1 /Ob1 /DNDEBUG -std:c++14"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 14,
+					"define" : "ROSIDL_GENERATOR_C_BUILDING_DLL_ssafy_msgs"
+				},
+				{
+					"backtrace" : 15,
+					"define" : "ROSIDL_TYPESUPPORT_C_BUILDING_DLL_ssafy_msgs"
+				},
+				{
+					"define" : "ssafy_msgs__rosidl_typesupport_c_EXPORTS"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 16,
+					"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/rosidl_typesupport_c"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "C:/dev/ros2-windows/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/rosidl_generator_c"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					18
+				],
+				"standard" : "14"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 7,
+			"id" : "ssafy_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df"
+		},
+		{
+			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "ssafy_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+	"install" : 
+	{
+		"destinations" : 
+		[
+			{
+				"backtrace" : 6,
+				"path" : "lib"
+			},
+			{
+				"backtrace" : 6,
+				"path" : "bin"
+			}
+		],
+		"prefix" : 
+		{
+			"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/install/ssafy_msgs"
+		}
+	},
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "/machine:x64 /INCREMENTAL:NO",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "MinSizeRel\\ssafy_msgs__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 9,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 9,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_fastrtps_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_fastrtps_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 9,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 9,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_fastrtps_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_fastrtps_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_fastrtps_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_fastrtps_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 9,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 9,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_fastrtps_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_fastrtps_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_fastrtps_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_fastrtps_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 9,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 9,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_fastrtps_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_fastrtps_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_fastrtps_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_fastrtps_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_fastrtps_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_fastrtps_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 9,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 9,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_fastrtps_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_fastrtps_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\builtin_interfaces__rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_fastrtps_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\std_msgs__rosidl_typesupport_fastrtps_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_generator_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_fastrtps_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_fastrtps_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_introspection_c.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "C:\\dev\\ros2-windows\\Lib\\geometry_msgs__rosidl_typesupport_introspection_cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "ssafy_msgs__rosidl_typesupport_c",
+	"nameOnDisk" : "ssafy_msgs__rosidl_typesupport_c.dll",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				7
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/rosidl_typesupport_c/ssafy_msgs/msg/num__type_support.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/rosidl_typesupport_c/ssafy_msgs/msg/enviroment_status__type_support.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/rosidl_typesupport_c/ssafy_msgs/msg/turtlebot_status__type_support.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/rosidl_typesupport_c/ssafy_msgs/msg/b_box__type_support.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/rosidl_typesupport_c/ssafy_msgs/msg/object_info__type_support.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/rosidl_typesupport_c/ssafy_msgs/msg/hand_control__type_support.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/rosidl_typesupport_c/ssafy_msgs/msg/custom_object_info__type_support.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/CMakeFiles/fdbf00dc0a653b8f60bed32e2b8d918b/num__type_support.cpp.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "SHARED_LIBRARY"
+}

@@ -1,0 +1,20 @@
+^C:\USERS\SSAFY\DESKTOP\CATKIN_WS\SRC\BUILD\SSAFY_MSGS\CMAKEFILES\EE9C76CE637B3E6A5002EF399D4EDD2F\NUM__ROSIDL_TYPESUPPORT_OPENSPLICE_C.H.RULE
+setlocal
+C:\Python37\python.exe C:/dev/ros2-windows/lib/rosidl_typesupport_opensplice_c/rosidl_typesupport_opensplice_c --generator-arguments-file C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/rosidl_typesupport_opensplice_c__arguments.json
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\SSAFY\DESKTOP\CATKIN_WS\SRC\SSAFY_MSGS\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs -BC:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs --check-stamp-file C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,384 @@
+{
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target",
+			"rosidl_generate_interfaces",
+			"add_dependencies",
+			"include",
+			"ament_execute_extensions"
+		],
+		"files" : 
+		[
+			"C:/dev/ros2-windows/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake",
+			"CMakeLists.txt",
+			"C:/dev/ros2-windows/share/rosidl_typesupport_c/cmake/rosidl_typesupport_c_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake",
+			"C:/dev/ros2-windows/share/rosidl_generator_c/cmake/rosidl_generator_c_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/rosidl_typesupport_cpp/cmake/rosidl_typesupport_cpp_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/rosidl_typesupport_opensplice_cpp/cmake/rosidl_typesupport_opensplice_cpp_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_c_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/rosidl_typesupport_connext_cpp/cmake/rosidl_typesupport_connext_cpp_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/rosidl_typesupport_fastrtps_cpp/cmake/rosidl_typesupport_fastrtps_cpp_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/rosidl_typesupport_opensplice_c/cmake/rosidl_typesupport_opensplice_c_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/rosidl_generator_cpp/cmake/rosidl_generator_cpp_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/rosidl_typesupport_introspection_c/cmake/rosidl_typesupport_introspection_c_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/rosidl_typesupport_fastrtps_c/cmake/rosidl_typesupport_fastrtps_c_generate_interfaces.cmake",
+			"C:/dev/ros2-windows/share/rosidl_typesupport_introspection_cpp/cmake/rosidl_typesupport_introspection_cpp_generate_interfaces.cmake"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 24,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 213,
+				"parent" : 1
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 286,
+				"parent" : 1
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 2,
+				"parent" : 4
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 142,
+				"parent" : 5
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 4,
+				"parent" : 7
+			},
+			{
+				"command" : 2,
+				"file" : 4,
+				"line" : 131,
+				"parent" : 8
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 5,
+				"parent" : 10
+			},
+			{
+				"command" : 2,
+				"file" : 5,
+				"line" : 129,
+				"parent" : 11
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 6,
+				"parent" : 13
+			},
+			{
+				"command" : 2,
+				"file" : 6,
+				"line" : 201,
+				"parent" : 14
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 7,
+				"parent" : 16
+			},
+			{
+				"command" : 2,
+				"file" : 7,
+				"line" : 205,
+				"parent" : 17
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 8,
+				"parent" : 19
+			},
+			{
+				"command" : 2,
+				"file" : 8,
+				"line" : 204,
+				"parent" : 20
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 9,
+				"parent" : 22
+			},
+			{
+				"command" : 2,
+				"file" : 9,
+				"line" : 157,
+				"parent" : 23
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 10,
+				"parent" : 25
+			},
+			{
+				"command" : 2,
+				"file" : 10,
+				"line" : 178,
+				"parent" : 26
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 11,
+				"parent" : 28
+			},
+			{
+				"command" : 2,
+				"file" : 11,
+				"line" : 91,
+				"parent" : 29
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 12,
+				"parent" : 31
+			},
+			{
+				"command" : 2,
+				"file" : 12,
+				"line" : 121,
+				"parent" : 32
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 13,
+				"parent" : 34
+			},
+			{
+				"command" : 2,
+				"file" : 13,
+				"line" : 155,
+				"parent" : 35
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 3
+			},
+			{
+				"file" : 14,
+				"parent" : 37
+			},
+			{
+				"command" : 2,
+				"file" : 14,
+				"line" : 109,
+				"parent" : 38
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 6,
+			"id" : "ssafy_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 9,
+			"id" : "ssafy_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 12,
+			"id" : "ssafy_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 15,
+			"id" : "ssafy_msgs__rosidl_typesupport_opensplice_cpp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 18,
+			"id" : "ssafy_msgs__rosidl_typesupport_connext_c::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 21,
+			"id" : "ssafy_msgs__rosidl_typesupport_connext_cpp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 24,
+			"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 27,
+			"id" : "ssafy_msgs__rosidl_typesupport_opensplice_c::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 30,
+			"id" : "ssafy_msgs__cpp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 33,
+			"id" : "ssafy_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 36,
+			"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 39,
+			"id" : "ssafy_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df"
+		},
+		{
+			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "ssafy_msgs::@6890427a1f51a3e7e1df",
+	"name" : "ssafy_msgs",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				8
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 2,
+			"path" : "msg/Num.msg",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "msg/EnviromentStatus.msg",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "msg/TurtlebotStatus.msg",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "msg/BBox.msg",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "msg/ObjectInfo.msg",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "msg/HandControl.msg",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "msg/CustomObjectInfo.msg",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"isGenerated" : true,
+			"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/CMakeFiles/ssafy_msgs",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "C:/Users/SSAFY/Desktop/catkin_ws/src/build/ssafy_msgs/CMakeFiles/256656ce8a4708cf5d6ea74820b4497e/ssafy_msgs.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

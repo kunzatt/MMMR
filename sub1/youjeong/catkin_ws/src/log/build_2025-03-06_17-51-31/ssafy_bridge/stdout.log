@@ -1,0 +1,62 @@
+running egg_info
+creating ..\build\ssafy_bridge\ssafy_bridge.egg-info
+writing ..\build\ssafy_bridge\ssafy_bridge.egg-info\PKG-INFO
+writing dependency_links to ..\build\ssafy_bridge\ssafy_bridge.egg-info\dependency_links.txt
+writing entry points to ..\build\ssafy_bridge\ssafy_bridge.egg-info\entry_points.txt
+writing requirements to ..\build\ssafy_bridge\ssafy_bridge.egg-info\requires.txt
+writing top-level names to ..\build\ssafy_bridge\ssafy_bridge.egg-info\top_level.txt
+writing manifest file '..\build\ssafy_bridge\ssafy_bridge.egg-info\SOURCES.txt'
+reading manifest file '..\build\ssafy_bridge\ssafy_bridge.egg-info\SOURCES.txt'
+writing manifest file '..\build\ssafy_bridge\ssafy_bridge.egg-info\SOURCES.txt'
+running build
+running build_py
+creating C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build
+creating C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib
+creating C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge
+copying ssafy_bridge\cam_viewer.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge
+copying ssafy_bridge\ssafy_udp_parser.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge
+copying ssafy_bridge\sub_to_udp.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge
+copying ssafy_bridge\udp_to_cam.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge
+copying ssafy_bridge\udp_to_laser.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge
+copying ssafy_bridge\udp_to_pub.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge
+copying ssafy_bridge\utils.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge
+copying ssafy_bridge\__init__.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge
+running install
+running install_lib
+creating C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge
+copying C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge\cam_viewer.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge
+copying C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge\ssafy_udp_parser.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge
+copying C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge\sub_to_udp.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge
+copying C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge\udp_to_cam.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge
+copying C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge\udp_to_laser.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge
+copying C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge\udp_to_pub.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge
+copying C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge\utils.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge
+copying C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\build\lib\ssafy_bridge\__init__.py -> C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge
+byte-compiling C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge\cam_viewer.py to cam_viewer.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge\ssafy_udp_parser.py to ssafy_udp_parser.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge\sub_to_udp.py to sub_to_udp.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge\udp_to_cam.py to udp_to_cam.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge\udp_to_laser.py to udp_to_laser.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge\udp_to_pub.py to udp_to_pub.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge\utils.py to utils.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge\__init__.py to __init__.cpython-37.pyc
+running install_data
+creating C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\share\ament_index
+creating C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\share\ament_index\resource_index
+creating C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\share\ament_index\resource_index\packages
+copying resource\ssafy_bridge -> C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\share\ament_index\resource_index\packages
+copying package.xml -> C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\share\ssafy_bridge
+running install_egg_info
+Copying ..\build\ssafy_bridge\ssafy_bridge.egg-info to C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\Lib\site-packages\ssafy_bridge-0.0.0-py3.7.egg-info
+running install_scripts
+Installing cam_viewer-script.py script to C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\lib\ssafy_bridge
+Installing cam_viewer.exe script to C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\lib\ssafy_bridge
+Installing sub_to_udp-script.py script to C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\lib\ssafy_bridge
+Installing sub_to_udp.exe script to C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\lib\ssafy_bridge
+Installing udp_to_cam-script.py script to C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\lib\ssafy_bridge
+Installing udp_to_cam.exe script to C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\lib\ssafy_bridge
+Installing udp_to_laser-script.py script to C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\lib\ssafy_bridge
+Installing udp_to_laser.exe script to C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\lib\ssafy_bridge
+Installing udp_to_pub-script.py script to C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\lib\ssafy_bridge
+Installing udp_to_pub.exe script to C:\Users\SSAFY\Desktop\catkin_ws\src\install\ssafy_bridge\lib\ssafy_bridge
+writing list of installed files to 'C:\Users\SSAFY\Desktop\catkin_ws\src\build\ssafy_bridge\install.log'

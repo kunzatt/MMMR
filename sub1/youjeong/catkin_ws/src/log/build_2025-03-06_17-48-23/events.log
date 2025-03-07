@@ -1,0 +1,26 @@
+[0.000000] (-) TimerEvent: {}
+[0.000000] (my_package) JobQueued: {'identifier': 'my_package', 'dependencies': OrderedDict()}
+[0.000000] (ssafy_bridge) JobQueued: {'identifier': 'ssafy_bridge', 'dependencies': OrderedDict()}
+[0.000000] (ssafy_msgs) JobQueued: {'identifier': 'ssafy_msgs', 'dependencies': OrderedDict()}
+[0.000000] (my_package) JobStarted: {'identifier': 'my_package'}
+[0.109000] (-) TimerEvent: {}
+[0.109000] (ssafy_bridge) JobStarted: {'identifier': 'ssafy_bridge'}
+[0.218000] (-) TimerEvent: {}
+[0.234000] (ssafy_msgs) JobStarted: {'identifier': 'ssafy_msgs'}
+[0.328000] (-) TimerEvent: {}
+[0.437000] (-) TimerEvent: {}
+[0.546000] (-) TimerEvent: {}
+[0.656000] (-) TimerEvent: {}
+[0.765000] (-) TimerEvent: {}
+[0.890000] (-) TimerEvent: {}
+[1.000000] (-) TimerEvent: {}
+[1.109000] (-) TimerEvent: {}
+[1.218000] (-) TimerEvent: {}
+[1.328000] (-) TimerEvent: {}
+[1.437000] (-) TimerEvent: {}
+[1.468000] (ssafy_msgs) JobProgress: {'identifier': 'ssafy_msgs', 'progress': 'cmake'}
+[1.468000] (ssafy_msgs) StderrLine: {'line': b'Traceback (most recent call last):\n  File "c:\\python37\\lib\\site-packages\\colcon_core\\executor\\__init__.py", line 91, in __call__\n    rc = await self.task(*args, **kwargs)\n  File "c:\\python37\\lib\\site-packages\\colcon_core\\task\\__init__.py", line 93, in __call__\n    return await task_method(*args, **kwargs)\n  File "c:\\python37\\lib\\site-packages\\colcon_ros\\task\\ament_cmake\\build.py", line 61, in build\n    environment_callback=add_app_to_cpp)\n  File "c:\\python37\\lib\\site-packages\\colcon_cmake\\task\\cmake\\build.py", line 87, in build\n    rc = await self._reconfigure(args, env)\n  File "c:\\python37\\lib\\site-packages\\colcon_cmake\\task\\cmake\\build.py", line 152, in _reconfigure\n    \'VisualStudioVersion is not set, \'\nRuntimeError: VisualStudioVersion is not set, please run within a Visual Studio Command Prompt.\n'}
+[1.484000] (ssafy_msgs) JobEnded: {'identifier': 'ssafy_msgs', 'rc': 1}
+[1.484000] (my_package) JobEnded: {'identifier': 'my_package', 'rc': 'SIGINT'}
+[1.484000] (ssafy_bridge) JobEnded: {'identifier': 'ssafy_bridge', 'rc': 'SIGINT'}
+[1.484000] (-) EventReactorShutdown: {}
