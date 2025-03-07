@@ -21,8 +21,15 @@ setup(
     entry_points={
         'console_scripts': [
             'my_node = my_package.my_node:main',
+            'controller = my_package.controller:main',
             'publisher=my_package.publisher:main',
-            'subscriber=my_package.subscriber:main'
+            'subscriber=my_package.subscriber:main',
+            'perception=my_package.perception:main',
+            'handcontrol=my_package.handcontrol:main',
+            'odom=my_package.odom:main',
+            'make_path=my_package.make_path:main',
+            'path_pub=my_package.path_pub:main',
+            'path_tracking=my_package.path_tracking:main'
         ],
     },
 )

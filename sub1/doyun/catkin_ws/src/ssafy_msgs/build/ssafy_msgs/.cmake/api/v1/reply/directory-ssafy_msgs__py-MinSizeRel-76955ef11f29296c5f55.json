@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "ssafy_msgs__py",
+		"source" : "build/ssafy_msgs/ssafy_msgs__py"
+	}
+}

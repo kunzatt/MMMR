@@ -1,0 +1,28 @@
+^C:\USERS\SSAFY\DESKTOP\DOYUN\PROJECT2\S12P21A703\SUB1\DOYUN\CATKIN_WS\BUILD\SSAFY_MSGS\CMAKEFILES\BB85ACE0CA51E7B77D89532091942514\NUM_.IDL.RULE
+setlocal
+C:\Python37\python.exe C:/dev/ros2-windows/lib/rosidl_generator_dds_idl/rosidl_generator_dds_idl --additional-service-templates --generator-arguments-file C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/rosidl_generator_dds_idl__dds_connext__arguments.json --subfolders dds_connext --extension
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\SSAFY\DESKTOP\DOYUN\PROJECT2\S12P21A703\SUB1\DOYUN\CATKIN_WS\BUILD\SSAFY_MSGS\CMAKEFILES\5C2FF7BD4E533A7191BFAF8D33C1E85B\SSAFY_MSGS__DDS_CONNEXT_IDL.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\SSAFY\DESKTOP\DOYUN\PROJECT2\S12P21A703\SUB1\DOYUN\CATKIN_WS\SRC\SSAFY_MSGS\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs -BC:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs --check-stamp-file C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

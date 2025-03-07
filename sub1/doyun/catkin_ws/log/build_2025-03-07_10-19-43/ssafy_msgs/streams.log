@@ -1,0 +1,1065 @@
+[0.687s] Invoking command in 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs': C:\Program Files\CMake\bin\cmake.EXE C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs -DCMAKE_INSTALL_PREFIX=C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\ssafy_msgs -G Visual Studio 17 2022
+[0.875s] -- Selecting Windows SDK version 10.0.22621.0 to target Windows 10.0.26100.
+[2.578s] -- The C compiler identification is MSVC 19.42.34435.0
+[3.359s] -- The CXX compiler identification is MSVC 19.42.34435.0
+[3.609s] -- Detecting C compiler ABI info
+[4.359s] -- Detecting C compiler ABI info - done
+[4.375s] -- Check for working C compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/cl.exe - skipped
+[4.390s] -- Detecting C compile features
+[4.390s] -- Detecting C compile features - done
+[4.437s] -- Detecting CXX compiler ABI info
+[5.094s] -- Detecting CXX compiler ABI info - done
+[5.109s] -- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/cl.exe - skipped
+[5.109s] -- Detecting CXX compile features
+[5.125s] -- Detecting CXX compile features - done
+[5.172s] -- Found ament_cmake: 0.8.2 (C:/dev/ros2-windows/share/ament_cmake/cmake)
+[5.297s] CMake Warning (dev) at C:/dev/ros2-windows/share/ament_cmake_core/cmake/core/python.cmake:22 (find_package):
+[5.297s]   Policy CMP0148 is not set: The FindPythonInterp and FindPythonLibs modules
+[5.297s]   are removed.  Run "cmake --help-policy CMP0148" for policy details.  Use
+[5.297s]   the cmake_policy command to set the policy and suppress this warning.
+[5.297s] 
+[5.297s] Call Stack (most recent call first):
+[5.297s]   C:/dev/ros2-windows/share/ament_cmake_core/cmake/core/all.cmake:53 (include)
+[5.297s]   C:/dev/ros2-windows/share/ament_cmake_core/cmake/ament_cmake_core-extras.cmake:17 (include)
+[5.297s]   C:/dev/ros2-windows/share/ament_cmake_core/cmake/ament_cmake_coreConfig.cmake:38 (include)
+[5.297s]   C:/dev/ros2-windows/share/ament_cmake/cmake/ament_cmake_export_dependencies-extras.cmake:15 (find_package)
+[5.297s]   C:/dev/ros2-windows/share/ament_cmake/cmake/ament_cmakeConfig.cmake:38 (include)
+[5.297s]   CMakeLists.txt:19 (find_package)
+[5.297s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[5.297s] 
+[5.375s] -- Found PythonInterp: C:/Python37/python.exe (found suitable version "3.7.5", minimum required is "3") 
+[5.375s] -- Using PYTHON_EXECUTABLE: C:/Python37/python.exe
+[6.015s] -- Found rosidl_default_generators: 0.8.0 (C:/dev/ros2-windows/share/rosidl_default_generators/cmake)
+[6.219s] -- Found RTI Connext: C:/Program Files/rti_connext_dds-5.3.1
+[6.234s] CMake Warning (dev) at C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:163 (list):
+[6.234s]   Policy CMP0121 is not set: The list() command now validates parsing of
+[6.234s]   index arguments.  Run "cmake --help-policy CMP0121" for policy details.
+[6.234s]   Use the cmake_policy command to set the policy and suppress this warning.
+[6.234s]   Invalid list index "nddsc.lib".
+[6.234s] Call Stack (most recent call first):
+[6.234s]   C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:195 (_count_found_libraries)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_c-extras.cmake:5 (find_package)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_cConfig.cmake:38 (include)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generators-extras.cmake:21 (find_package)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generatorsConfig.cmake:38 (include)
+[6.234s]   CMakeLists.txt:20 (find_package)
+[6.234s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[6.234s] 
+[6.234s] CMake Warning (dev) at C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:163 (list):
+[6.234s]   Policy CMP0121 is not set: The list() command now validates parsing of
+[6.234s]   index arguments.  Run "cmake --help-policy CMP0121" for policy details.
+[6.234s]   Use the cmake_policy command to set the policy and suppress this warning.
+[6.234s]   Invalid list index "nddscore.lib".
+[6.234s] Call Stack (most recent call first):
+[6.234s]   C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:195 (_count_found_libraries)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_c-extras.cmake:5 (find_package)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_cConfig.cmake:38 (include)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generators-extras.cmake:21 (find_package)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generatorsConfig.cmake:38 (include)
+[6.234s]   CMakeLists.txt:20 (find_package)
+[6.234s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[6.234s] 
+[6.234s] CMake Warning (dev) at C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:163 (list):
+[6.234s]   Policy CMP0121 is not set: The list() command now validates parsing of
+[6.234s]   index arguments.  Run "cmake --help-policy CMP0121" for policy details.
+[6.234s]   Use the cmake_policy command to set the policy and suppress this warning.
+[6.234s]   Invalid list index "nddscpp.lib".
+[6.234s] Call Stack (most recent call first):
+[6.234s]   C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:195 (_count_found_libraries)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_c-extras.cmake:5 (find_package)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_cConfig.cmake:38 (include)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generators-extras.cmake:21 (find_package)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generatorsConfig.cmake:38 (include)
+[6.234s]   CMakeLists.txt:20 (find_package)
+[6.234s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[6.234s] 
+[6.234s] CMake Warning (dev) at C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:163 (list):
+[6.234s]   Policy CMP0121 is not set: The list() command now validates parsing of
+[6.234s]   index arguments.  Run "cmake --help-policy CMP0121" for policy details.
+[6.234s]   Use the cmake_policy command to set the policy and suppress this warning.
+[6.234s]   Invalid list index "rticonnextmsgcpp.lib".
+[6.234s] Call Stack (most recent call first):
+[6.234s]   C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:195 (_count_found_libraries)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_c-extras.cmake:5 (find_package)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_cConfig.cmake:38 (include)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generators-extras.cmake:21 (find_package)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generatorsConfig.cmake:38 (include)
+[6.234s]   CMakeLists.txt:20 (find_package)
+[6.234s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[6.234s] 
+[6.234s] CMake Warning (dev) at C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:163 (list):
+[6.234s]   Policy CMP0121 is not set: The list() command now validates parsing of
+[6.234s]   index arguments.  Run "cmake --help-policy CMP0121" for policy details.
+[6.234s]   Use the cmake_policy command to set the policy and suppress this warning.
+[6.234s]   Invalid list index "nddscd.lib".
+[6.234s] Call Stack (most recent call first):
+[6.234s]   C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:196 (_count_found_libraries)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_c-extras.cmake:5 (find_package)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_cConfig.cmake:38 (include)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generators-extras.cmake:21 (find_package)
+[6.234s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generatorsConfig.cmake:38 (include)
+[6.234s]   CMakeLists.txt:20 (find_package)
+[6.234s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[6.250s] 
+[6.250s] CMake Warning (dev) at C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:163 (list):
+[6.250s]   Policy CMP0121 is not set: The list() command now validates parsing of
+[6.250s]   index arguments.  Run "cmake --help-policy CMP0121" for policy details.
+[6.250s]   Use the cmake_policy command to set the policy and suppress this warning.
+[6.250s]   Invalid list index "nddscored.lib".
+[6.250s] Call Stack (most recent call first):
+[6.250s]   C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:196 (_count_found_libraries)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_c-extras.cmake:5 (find_package)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_cConfig.cmake:38 (include)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generators-extras.cmake:21 (find_package)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generatorsConfig.cmake:38 (include)
+[6.250s]   CMakeLists.txt:20 (find_package)
+[6.250s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[6.250s] 
+[6.250s] CMake Warning (dev) at C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:163 (list):
+[6.250s]   Policy CMP0121 is not set: The list() command now validates parsing of
+[6.250s]   index arguments.  Run "cmake --help-policy CMP0121" for policy details.
+[6.250s]   Use the cmake_policy command to set the policy and suppress this warning.
+[6.250s]   Invalid list index "nddscppd.lib".
+[6.250s] Call Stack (most recent call first):
+[6.250s]   C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:196 (_count_found_libraries)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_c-extras.cmake:5 (find_package)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_cConfig.cmake:38 (include)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generators-extras.cmake:21 (find_package)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generatorsConfig.cmake:38 (include)
+[6.250s]   CMakeLists.txt:20 (find_package)
+[6.250s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[6.250s] 
+[6.250s] CMake Warning (dev) at C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:163 (list):
+[6.250s]   Policy CMP0121 is not set: The list() command now validates parsing of
+[6.250s]   index arguments.  Run "cmake --help-policy CMP0121" for policy details.
+[6.250s]   Use the cmake_policy command to set the policy and suppress this warning.
+[6.250s]   Invalid list index "rticonnextmsgcppd.lib".
+[6.250s] Call Stack (most recent call first):
+[6.250s]   C:/dev/ros2-windows/share/connext_cmake_module/cmake/Modules/FindConnext.cmake:196 (_count_found_libraries)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_c-extras.cmake:5 (find_package)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_typesupport_connext_c/cmake/rosidl_typesupport_connext_cConfig.cmake:38 (include)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generators-extras.cmake:21 (find_package)
+[6.250s]   C:/dev/ros2-windows/share/rosidl_default_generators/cmake/rosidl_default_generatorsConfig.cmake:38 (include)
+[6.250s]   CMakeLists.txt:20 (find_package)
+[6.250s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[6.250s] 
+[6.625s] -- Found rosidl_adapter: 0.8.2 (C:/dev/ros2-windows/share/rosidl_adapter/cmake)
+[7.125s] -- Found OpenSSL: optimized;C:/OpenSSL-Win64/lib/VC/libeay32MD.lib;debug;C:/OpenSSL-Win64/lib/VC/libeay32MDd.lib (found version "1.0.2u")  
+[7.219s] -- Found FastRTPS: C:/dev/ros2-windows/include  
+[7.422s] -- Found PrismTech OpenSplice: C:/dev/opensplice/HDE/x86_64.win64
+[7.656s] -- Found std_msgs: 0.8.1 (C:/dev/ros2-windows/share/std_msgs/cmake)
+[7.781s] -- Found geometry_msgs: 0.8.1 (C:/dev/ros2-windows/share/geometry_msgs/cmake)
+[7.875s] CMake Warning (dev) at C:/dev/ros2-windows/share/rosidl_adapter/cmake/rosidl_adapt_interfaces.cmake:40 (find_package):
+[7.875s]   Policy CMP0148 is not set: The FindPythonInterp and FindPythonLibs modules
+[7.875s]   are removed.  Run "cmake --help-policy CMP0148" for policy details.  Use
+[7.875s]   the cmake_policy command to set the policy and suppress this warning.
+[7.875s] 
+[7.875s] Call Stack (most recent call first):
+[7.875s]   C:/dev/ros2-windows/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:130 (rosidl_adapt_interfaces)
+[7.875s]   CMakeLists.txt:24 (rosidl_generate_interfaces)
+[7.875s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[7.875s] 
+[7.906s] -- Found PythonInterp: C:/Python37/python.exe (found version "3.7.5") 
+[8.344s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_connext_c;rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c;rosidl_typesupport_opensplice_c
+[8.469s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_connext_cpp;rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp;rosidl_typesupport_opensplice_cpp
+[10.015s] -- Found rmw_implementation_cmake: 0.8.1 (C:/dev/ros2-windows/share/rmw_implementation_cmake/cmake)
+[10.062s] CMake Warning (dev) at C:/dev/ros2-windows/share/rosidl_generator_py/cmake/rosidl_generator_py_generate_interfaces.cmake:21 (find_package):
+[10.062s]   Policy CMP0148 is not set: The FindPythonInterp and FindPythonLibs modules
+[10.062s]   are removed.  Run "cmake --help-policy CMP0148" for policy details.  Use
+[10.062s]   the cmake_policy command to set the policy and suppress this warning.
+[10.062s] 
+[10.062s] Call Stack (most recent call first):
+[10.062s]   C:/dev/ros2-windows/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)
+[10.062s]   C:/dev/ros2-windows/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:286 (ament_execute_extensions)
+[10.062s]   CMakeLists.txt:24 (rosidl_generate_interfaces)
+[10.062s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[10.062s] 
+[10.109s] -- Found PythonInterp: C:/Python37/python.exe (found suitable version "3.7.5", minimum required is "3.5") 
+[10.109s] -- Found python_cmake_module: 0.8.0 (C:/dev/ros2-windows/share/python_cmake_module/cmake)
+[10.125s] CMake Warning (dev) at C:/dev/ros2-windows/share/python_cmake_module/cmake/Modules/FindPythonExtra.cmake:45 (find_package):
+[10.125s]   Policy CMP0148 is not set: The FindPythonInterp and FindPythonLibs modules
+[10.125s]   are removed.  Run "cmake --help-policy CMP0148" for policy details.  Use
+[10.125s]   the cmake_policy command to set the policy and suppress this warning.
+[10.125s] 
+[10.125s] Call Stack (most recent call first):
+[10.125s]   C:/dev/ros2-windows/share/rosidl_generator_py/cmake/rosidl_generator_py_generate_interfaces.cmake:24 (find_package)
+[10.125s]   C:/dev/ros2-windows/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)
+[10.125s]   C:/dev/ros2-windows/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:286 (ament_execute_extensions)
+[10.125s]   CMakeLists.txt:24 (rosidl_generate_interfaces)
+[10.125s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[10.125s] 
+[10.156s] CMake Warning (dev) at C:/dev/ros2-windows/share/python_cmake_module/cmake/Modules/FindPythonExtra.cmake:133 (find_package):
+[10.156s]   Policy CMP0148 is not set: The FindPythonInterp and FindPythonLibs modules
+[10.156s]   are removed.  Run "cmake --help-policy CMP0148" for policy details.  Use
+[10.156s]   the cmake_policy command to set the policy and suppress this warning.
+[10.156s] 
+[10.156s] Call Stack (most recent call first):
+[10.156s]   C:/dev/ros2-windows/share/rosidl_generator_py/cmake/rosidl_generator_py_generate_interfaces.cmake:24 (find_package)
+[10.156s]   C:/dev/ros2-windows/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)
+[10.156s]   C:/dev/ros2-windows/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:286 (ament_execute_extensions)
+[10.156s]   CMakeLists.txt:24 (rosidl_generate_interfaces)
+[10.156s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[10.156s] 
+[10.203s] -- Found PythonLibs: C:/Python37/libs/python37.lib (found suitable version "3.7.5", minimum required is "3.5") 
+[10.203s] -- Using PYTHON_EXECUTABLE: C:/Python37/python.exe
+[10.203s] -- Using PYTHON_INCLUDE_DIRS: C:/Python37/include
+[10.203s] -- Using PYTHON_LIBRARIES: C:/Python37/libs/python37.lib
+[10.250s] -- Found PythonExtra: .pyd  
+[11.719s] -- Using numpy include directory: C:\Python37\lib\site-packages\numpy\core\include
+[11.765s] -- Found ament_lint_auto: 0.8.1 (C:/dev/ros2-windows/share/ament_lint_auto/cmake)
+[12.453s] -- Added test 'copyright' to check for copyright in CMake / C / C++ / Python code
+[12.609s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[12.609s] -- Configured cppcheck include dirs: 
+[12.765s] -- Added test 'cpplint' to check C / C++ code against the Google style
+[12.797s] -- Added test 'flake8' to check Python code syntax and style conventions
+[12.844s] -- Added test 'lint_cmake' to check CMake code style
+[12.875s] -- Added test 'pep257' to check Python code against some of the style conventions in PEP 257
+[13.000s] -- Added test 'uncrustify' to check C / C++ code style
+[13.031s] -- Added test 'xmllint' to check XML markup files
+[13.094s] -- Configuring done (12.3s)
+[14.375s] -- Generating done (1.2s)
+[15.094s] -- Build files have been written to: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs
+[15.109s] Invoked command in 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs' returned '0': C:\Program Files\CMake\bin\cmake.EXE C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs -DCMAKE_INSTALL_PREFIX=C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\ssafy_msgs -G Visual Studio 17 2022
+[15.109s] Invoking command in 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs': CL=/MP C:\Program Files\CMake\bin\cmake.EXE --build C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs --config Release
+[15.219s] msbuild 버전 17.12.12+1cce77968(.NET Framework용)
+[15.250s] 
+[15.500s]   1>Checking Build System
+[15.687s]   Generating C++ code for ROS interfaces
+[16.250s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[16.390s]   Generating C code for ROS interfaces
+[16.969s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[17.125s]   num__functions.c
+[17.125s]   enviroment_status__functions.c
+[17.125s]   turtlebot_status__functions.c
+[17.125s]   b_box__functions.c
+[17.125s]   object_info__functions.c
+[17.125s]   hand_control__functions.c
+[17.125s]   custom_object_info__functions.c
+[17.281s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_generator_c.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_generator_c.exp 개체를 생성하고 있습니다.
+[17.328s]   ssafy_msgs__rosidl_generator_c.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_generator_c.dll
+[17.406s]   Generating C type support dispatch for ROS interfaces
+[17.765s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[17.859s]   num__type_support.cpp
+[17.859s]   enviroment_status__type_support.cpp
+[17.875s]   turtlebot_status__type_support.cpp
+[17.875s]   b_box__type_support.cpp
+[17.875s]   object_info__type_support.cpp
+[17.875s]   hand_control__type_support.cpp
+[17.875s]   custom_object_info__type_support.cpp
+[17.984s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_c.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_c.exp 개체를 생성하고 있습니다.
+[18.062s]   ssafy_msgs__rosidl_typesupport_c.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_c.dll
+[18.140s]   Generating DDS interfaces
+[18.484s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[18.594s]   Generating C++ type support for RTI Connext (using 'rtiddsgen_server.bat')
+[26.812s]   INFO com.rti.ndds.nddsgen.Main Running rtiddsgen version 2.5.2, please wait ...
+[26.812s]   
+[26.812s]   INFO com.rti.ndds.nddsgen.Main Done
+[26.812s]   
+[27.047s]   INFO com.rti.ndds.nddsgen.Main Running rtiddsgen version 2.5.2, please wait ...
+[27.047s]   
+[27.047s]   INFO com.rti.ndds.nddsgen.Main Done
+[27.047s]   
+[27.265s]   INFO com.rti.ndds.nddsgen.Main Running rtiddsgen version 2.5.2, please wait ...
+[27.265s]   
+[27.265s]   INFO com.rti.ndds.nddsgen.Main Done
+[27.265s]   
+[27.484s]   INFO com.rti.ndds.nddsgen.Main Running rtiddsgen version 2.5.2, please wait ...
+[27.484s]   
+[27.484s]   INFO com.rti.ndds.nddsgen.Main Done
+[27.484s]   
+[27.703s]   INFO com.rti.ndds.nddsgen.Main Running rtiddsgen version 2.5.2, please wait ...
+[27.703s]   
+[27.703s]   INFO com.rti.ndds.nddsgen.Main Done
+[27.703s]   
+[27.922s]   INFO com.rti.ndds.nddsgen.Main Running rtiddsgen version 2.5.2, please wait ...
+[27.922s]   
+[27.922s]   INFO com.rti.ndds.nddsgen.Main Done
+[27.922s]   
+[28.125s]   INFO com.rti.ndds.nddsgen.Main Running rtiddsgen version 2.5.2, please wait ...
+[28.125s]   
+[28.125s]   INFO com.rti.ndds.nddsgen.Main Done
+[28.125s]   
+[28.156s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[28.297s]   num__type_support.cpp
+[28.297s]   enviroment_status__type_support.cpp
+[28.297s]   turtlebot_status__type_support.cpp
+[28.297s]   b_box__type_support.cpp
+[28.297s]   object_info__type_support.cpp
+[28.297s]   hand_control__type_support.cpp
+[28.297s]   custom_object_info__type_support.cpp
+[28.297s]   Num_.cxx
+[28.297s]   Num_Plugin.cxx
+[28.297s]   Num_Support.cxx
+[28.297s]   EnviromentStatus_.cxx
+[28.312s]   EnviromentStatus_Plugin.cxx
+[29.547s]   EnviromentStatus_Support.cxx
+[29.609s]   TurtlebotStatus_.cxx
+[29.640s]   TurtlebotStatus_Plugin.cxx
+[29.656s]   TurtlebotStatus_Support.cxx
+[29.734s]   BBox_.cxx
+[29.734s]   BBox_Plugin.cxx
+[29.734s]   BBox_Support.cxx
+[29.765s]   ObjectInfo_.cxx
+[29.765s]   ObjectInfo_Plugin.cxx
+[29.797s]   ObjectInfo_Support.cxx
+[29.828s]   HandControl_.cxx
+[29.906s]   HandControl_Plugin.cxx
+[30.875s]   HandControl_Support.cxx
+[31.000s]   CustomObjectInfo_.cxx
+[31.047s]   CustomObjectInfo_Plugin.cxx
+[31.094s]   CustomObjectInfo_Support.cxx
+[32.234s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_connext_cpp.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_connext_cpp.exp 개체를 생성하고 있습니다.
+[32.312s]   ssafy_msgs__rosidl_typesupport_connext_cpp.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_connext_cpp.dll
+[32.375s]   Generating C type support for RTI Connext
+[32.828s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[32.953s]   num__type_support_c.cpp
+[32.953s]   enviroment_status__type_support_c.cpp
+[32.953s]   turtlebot_status__type_support_c.cpp
+[32.953s]   b_box__type_support_c.cpp
+[32.969s]   object_info__type_support_c.cpp
+[32.969s]   hand_control__type_support_c.cpp
+[32.969s]   custom_object_info__type_support_c.cpp
+[32.969s]   Num_.cxx
+[32.969s]   Num_Plugin.cxx
+[32.969s]   Num_Support.cxx
+[32.969s]   EnviromentStatus_.cxx
+[32.969s]   EnviromentStatus_Plugin.cxx
+[34.187s]   EnviromentStatus_Support.cxx
+[34.328s]   TurtlebotStatus_.cxx
+[34.328s]   TurtlebotStatus_Plugin.cxx
+[34.328s]   TurtlebotStatus_Support.cxx
+[34.344s]   BBox_.cxx
+[34.359s]   BBox_Plugin.cxx
+[34.375s]   BBox_Support.cxx
+[34.375s]   ObjectInfo_.cxx
+[34.375s]   ObjectInfo_Plugin.cxx
+[34.406s]   ObjectInfo_Support.cxx
+[34.437s]   HandControl_.cxx
+[34.453s]   HandControl_Plugin.cxx
+[35.562s]   HandControl_Support.cxx
+[35.578s]   CustomObjectInfo_.cxx
+[35.672s]   CustomObjectInfo_Plugin.cxx
+[35.703s]   CustomObjectInfo_Support.cxx
+[36.765s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_connext_c.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_connext_c.exp 개체를 생성하고 있습니다.
+[36.844s]   ssafy_msgs__rosidl_typesupport_connext_c.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_connext_c.dll
+[36.922s]   Generating C++ type support dispatch for ROS interfaces
+[37.281s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[37.390s]   num__type_support.cpp
+[37.390s]   enviroment_status__type_support.cpp
+[37.390s]   turtlebot_status__type_support.cpp
+[37.390s]   b_box__type_support.cpp
+[37.390s]   object_info__type_support.cpp
+[37.390s]   hand_control__type_support.cpp
+[37.390s]   custom_object_info__type_support.cpp
+[37.734s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_cpp.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_cpp.exp 개체를 생성하고 있습니다.
+[37.812s]   ssafy_msgs__rosidl_typesupport_cpp.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_cpp.dll
+[37.906s]   Generating C++ type support for eProsima Fast-RTPS
+[38.375s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[38.484s]   num__type_support.cpp
+[38.484s]   enviroment_status__type_support.cpp
+[38.484s]   turtlebot_status__type_support.cpp
+[38.484s]   b_box__type_support.cpp
+[38.484s]   object_info__type_support.cpp
+[38.500s]   hand_control__type_support.cpp
+[38.500s]   custom_object_info__type_support.cpp
+[39.156s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_fastrtps_cpp.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_fastrtps_cpp.exp 개체를 생성하고 있습니다.
+[39.234s]   ssafy_msgs__rosidl_typesupport_fastrtps_cpp.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_fastrtps_cpp.dll
+[39.297s]   Generating C type support for eProsima Fast-RTPS
+[39.797s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[39.922s]   num__type_support_c.cpp
+[39.922s]   enviroment_status__type_support_c.cpp
+[39.922s]   turtlebot_status__type_support_c.cpp
+[39.922s]   b_box__type_support_c.cpp
+[39.922s]   object_info__type_support_c.cpp
+[39.922s]   hand_control__type_support_c.cpp
+[39.922s]   custom_object_info__type_support_c.cpp
+[40.484s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_fastrtps_c.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_fastrtps_c.exp 개체를 생성하고 있습니다.
+[40.547s]   ssafy_msgs__rosidl_typesupport_fastrtps_c.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_fastrtps_c.dll
+[40.609s]   Generating C introspection for ROS interfaces
+[41.062s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[41.187s]   num__type_support.c
+[41.187s]   enviroment_status__type_support.c
+[41.187s]   turtlebot_status__type_support.c
+[41.187s]   b_box__type_support.c
+[41.187s]   object_info__type_support.c
+[41.187s]   hand_control__type_support.c
+[41.187s]   custom_object_info__type_support.c
+[41.281s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_introspection_c.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_introspection_c.exp 개체를 생성하고 있습니다.
+[41.344s]   ssafy_msgs__rosidl_typesupport_introspection_c.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_introspection_c.dll
+[41.422s]   Generating C++ introspection for ROS interfaces
+[41.875s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[42.000s]   num__type_support.cpp
+[42.000s]   enviroment_status__type_support.cpp
+[42.000s]   turtlebot_status__type_support.cpp
+[42.000s]   b_box__type_support.cpp
+[42.000s]   object_info__type_support.cpp
+[42.000s]   hand_control__type_support.cpp
+[42.000s]   custom_object_info__type_support.cpp
+[42.406s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_introspection_cpp.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_introspection_cpp.exp 개체를 생성하고 있습니다.
+[42.469s]   ssafy_msgs__rosidl_typesupport_introspection_cpp.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_introspection_cpp.dll
+[42.609s]   Generating DDS interfaces
+[42.906s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[43.015s]   Generating C++ type support for PrismTech OpenSplice
+[59.328s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[59.453s]   num__type_support.cpp
+[59.453s]   enviroment_status__type_support.cpp
+[59.453s]   turtlebot_status__type_support.cpp
+[59.453s]   b_box__type_support.cpp
+[59.453s]   object_info__type_support.cpp
+[59.469s]   hand_control__type_support.cpp
+[59.469s]   custom_object_info__type_support.cpp
+[59.469s]   Num_.cpp
+[59.469s]   Num_Dcps.cpp
+[59.469s]   Num_Dcps_impl.cpp
+[59.469s]   Num_SplDcps.cpp
+[59.469s]   EnviromentStatus_.cpp
+[59.594s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.609s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_.cpp'을(를) 컴파일하는 중)
+[59.609s]   
+[59.609s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.625s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/Num_Dcps.cpp'을(를) 컴파일하는 중)
+[59.625s]   
+[59.640s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.640s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/Num_.cpp'을(를) 컴파일하는 중)
+[59.640s]   
+[59.640s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.640s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/Num_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[59.640s]   
+[59.640s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.640s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/Num_SplDcps.cpp'을(를) 컴파일하는 중)
+[59.640s]   
+[59.703s]   EnviromentStatus_Dcps.cpp
+[59.703s]   EnviromentStatus_Dcps_impl.cpp
+[59.734s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.750s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[59.750s]   
+[59.750s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.750s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_Dcps.cpp'을(를) 컴파일하는 중)
+[59.750s]   
+[59.797s]   EnviromentStatus_SplDcps.cpp
+[59.875s]   TurtlebotStatus_.cpp
+[59.906s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.906s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_.cpp'을(를) 컴파일하는 중)
+[59.906s]   
+[59.922s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.922s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/enviroment_status__type_support.cpp'을(를) 컴파일하는 중)
+[59.922s]   
+[59.937s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.937s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/hand_control__type_support.cpp'을(를) 컴파일하는 중)
+[59.937s]   
+[59.937s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.937s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_SplDcps.cpp'을(를) 컴파일하는 중)
+[59.937s]   
+[59.953s]   TurtlebotStatus_Dcps.cpp
+[59.953s]   TurtlebotStatus_Dcps_impl.cpp
+[59.969s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.969s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_Dcps.cpp'을(를) 컴파일하는 중)
+[59.969s]   
+[59.969s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.969s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[59.969s]   
+[59.969s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[59.969s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/turtlebot_status__type_support.cpp'을(를) 컴파일하는 중)
+[59.969s]   
+[59.984s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.000s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/custom_object_info__type_support.cpp'을(를) 컴파일하는 중)
+[60.000s]   
+[60.000s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.000s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/b_box__type_support.cpp'을(를) 컴파일하는 중)
+[60.000s]   
+[60.000s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.000s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/num__type_support.cpp'을(를) 컴파일하는 중)
+[60.000s]   
+[60.000s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.015s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/object_info__type_support.cpp'을(를) 컴파일하는 중)
+[60.015s]   
+[60.078s]   TurtlebotStatus_SplDcps.cpp
+[60.094s]   BBox_.cpp
+[60.140s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.140s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/BBox_.cpp'을(를) 컴파일하는 중)
+[60.140s]   
+[60.140s]   BBox_Dcps.cpp
+[60.172s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.172s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/BBox_Dcps.cpp'을(를) 컴파일하는 중)
+[60.172s]   
+[60.203s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.203s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_SplDcps.cpp'을(를) 컴파일하는 중)
+[60.203s]   
+[60.203s]   BBox_Dcps_impl.cpp
+[60.219s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.219s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/BBox_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[60.219s]   
+[60.344s]   BBox_SplDcps.cpp
+[60.344s]   ObjectInfo_.cpp
+[60.359s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.359s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/ObjectInfo_.cpp'을(를) 컴파일하는 중)
+[60.359s]   
+[60.406s]   ObjectInfo_Dcps.cpp
+[60.437s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.453s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/ObjectInfo_Dcps.cpp'을(를) 컴파일하는 중)
+[60.453s]   
+[60.453s]   ObjectInfo_Dcps_impl.cpp
+[60.469s]   ObjectInfo_SplDcps.cpp
+[60.469s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.469s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/ObjectInfo_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[60.469s]   
+[60.515s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.515s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/BBox_SplDcps.cpp'을(를) 컴파일하는 중)
+[60.515s]   
+[60.531s]   HandControl_.cpp
+[60.531s]   HandControl_Dcps.cpp
+[60.562s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.562s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/HandControl_Dcps.cpp'을(를) 컴파일하는 중)
+[60.562s]   
+[60.562s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.562s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/HandControl_.cpp'을(를) 컴파일하는 중)
+[60.562s]   
+[60.640s]   HandControl_Dcps_impl.cpp
+[60.640s]   HandControl_SplDcps.cpp
+[60.656s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.672s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/HandControl_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[60.672s]   
+[60.672s]   CustomObjectInfo_.cpp
+[60.687s]   CustomObjectInfo_Dcps.cpp
+[60.687s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.687s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/ObjectInfo_SplDcps.cpp'을(를) 컴파일하는 중)
+[60.687s]   
+[60.703s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.703s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_.cpp'을(를) 컴파일하는 중)
+[60.703s]   
+[60.703s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.703s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_Dcps.cpp'을(를) 컴파일하는 중)
+[60.703s]   
+[60.703s]   CustomObjectInfo_Dcps_impl.cpp
+[60.734s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.734s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[60.734s]   
+[60.765s]   CustomObjectInfo_SplDcps.cpp
+[60.797s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.797s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/HandControl_SplDcps.cpp'을(를) 컴파일하는 중)
+[60.797s]   
+[60.906s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj]
+[60.906s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_SplDcps.cpp'을(를) 컴파일하는 중)
+[60.906s]   
+[61.265s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_opensplice_cpp.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_opensplice_cpp.exp 개체를 생성하고 있습니다.
+[61.344s]   ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_opensplice_cpp.dll
+[61.390s]   Generating C type support for PrismTech OpenSplice
+[61.937s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[62.078s]   num__type_support_c.cpp
+[62.078s]   enviroment_status__type_support_c.cpp
+[62.078s]   turtlebot_status__type_support_c.cpp
+[62.094s]   b_box__type_support_c.cpp
+[62.094s]   object_info__type_support_c.cpp
+[62.094s]   hand_control__type_support_c.cpp
+[62.094s]   custom_object_info__type_support_c.cpp
+[62.094s]   Num_.cpp
+[62.094s]   Num_Dcps.cpp
+[62.094s]   Num_Dcps_impl.cpp
+[62.094s]   Num_SplDcps.cpp
+[62.094s]   EnviromentStatus_.cpp
+[62.125s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.125s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/Num_Dcps.cpp'을(를) 컴파일하는 중)
+[62.125s]   
+[62.125s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.125s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/Num_.cpp'을(를) 컴파일하는 중)
+[62.125s]   
+[62.125s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.125s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/Num_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[62.125s]   
+[62.125s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.125s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_.cpp'을(를) 컴파일하는 중)
+[62.125s]   
+[62.250s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.250s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/Num_SplDcps.cpp'을(를) 컴파일하는 중)
+[62.250s]   
+[62.312s]   EnviromentStatus_Dcps.cpp
+[62.375s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.375s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_Dcps.cpp'을(를) 컴파일하는 중)
+[62.375s]   
+[62.375s]   EnviromentStatus_Dcps_impl.cpp
+[62.375s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.375s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[62.375s]   
+[62.453s]   EnviromentStatus_SplDcps.cpp
+[62.484s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.484s]   (소스 파일 'rosidl_typesupport_opensplice_c/ssafy_msgs/msg/dds_opensplice_c/b_box__type_support_c.cpp'을(를) 컴파일하는 중)
+[62.484s]   
+[62.484s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.484s]   (소스 파일 'rosidl_typesupport_opensplice_c/ssafy_msgs/msg/dds_opensplice_c/turtlebot_status__type_support_c.cpp'을(를) 컴파일하는 중)
+[62.484s]   
+[62.500s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.500s]   (소스 파일 'rosidl_typesupport_opensplice_c/ssafy_msgs/msg/dds_opensplice_c/enviroment_status__type_support_c.cpp'을(를) 컴파일하는 중)
+[62.500s]   
+[62.500s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.500s]   (소스 파일 'rosidl_typesupport_opensplice_c/ssafy_msgs/msg/dds_opensplice_c/object_info__type_support_c.cpp'을(를) 컴파일하는 중)
+[62.500s]   
+[62.500s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.500s]   (소스 파일 'rosidl_typesupport_opensplice_c/ssafy_msgs/msg/dds_opensplice_c/custom_object_info__type_support_c.cpp'을(를) 컴파일하는 중)
+[62.500s]   
+[62.500s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.500s]   (소스 파일 'rosidl_typesupport_opensplice_c/ssafy_msgs/msg/dds_opensplice_c/hand_control__type_support_c.cpp'을(를) 컴파일하는 중)
+[62.500s]   
+[62.578s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.578s]   (소스 파일 'rosidl_typesupport_opensplice_c/ssafy_msgs/msg/dds_opensplice_c/num__type_support_c.cpp'을(를) 컴파일하는 중)
+[62.578s]   
+[62.578s]   TurtlebotStatus_.cpp
+[62.578s]   TurtlebotStatus_Dcps.cpp
+[62.578s]   TurtlebotStatus_Dcps_impl.cpp
+[62.594s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.594s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_.cpp'을(를) 컴파일하는 중)
+[62.594s]   
+[62.594s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.594s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_Dcps.cpp'을(를) 컴파일하는 중)
+[62.594s]   
+[62.609s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.609s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[62.609s]   
+[62.625s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.625s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_SplDcps.cpp'을(를) 컴파일하는 중)
+[62.625s]   
+[62.781s]   TurtlebotStatus_SplDcps.cpp
+[62.812s]   BBox_.cpp
+[62.812s]   BBox_Dcps.cpp
+[62.844s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.844s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/BBox_.cpp'을(를) 컴파일하는 중)
+[62.844s]   
+[62.844s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.844s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/BBox_Dcps.cpp'을(를) 컴파일하는 중)
+[62.844s]   
+[62.844s]   BBox_Dcps_impl.cpp
+[62.875s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.875s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/BBox_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[62.875s]   
+[62.937s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[62.937s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_SplDcps.cpp'을(를) 컴파일하는 중)
+[62.937s]   
+[63.015s]   BBox_SplDcps.cpp
+[63.078s]   ObjectInfo_.cpp
+[63.078s]   ObjectInfo_Dcps.cpp
+[63.109s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.109s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/ObjectInfo_.cpp'을(를) 컴파일하는 중)
+[63.109s]   
+[63.109s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.109s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/ObjectInfo_Dcps.cpp'을(를) 컴파일하는 중)
+[63.109s]   
+[63.109s]   ObjectInfo_Dcps_impl.cpp
+[63.109s]   ObjectInfo_SplDcps.cpp
+[63.125s]   HandControl_.cpp
+[63.125s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.125s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/ObjectInfo_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[63.125s]   
+[63.140s]   HandControl_Dcps.cpp
+[63.140s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.140s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/HandControl_.cpp'을(를) 컴파일하는 중)
+[63.140s]   
+[63.156s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.156s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/HandControl_Dcps.cpp'을(를) 컴파일하는 중)
+[63.156s]   
+[63.172s]   HandControl_Dcps_impl.cpp
+[63.172s]   HandControl_SplDcps.cpp
+[63.172s]   CustomObjectInfo_.cpp
+[63.203s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.203s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_.cpp'을(를) 컴파일하는 중)
+[63.203s]   
+[63.203s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.203s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/HandControl_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[63.203s]   
+[63.265s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.265s]   CustomObjectInfo_Dcps.cpp
+[63.265s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/BBox_SplDcps.cpp'을(를) 컴파일하는 중)
+[63.265s]   
+[63.281s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.281s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_Dcps.cpp'을(를) 컴파일하는 중)
+[63.281s]   
+[63.281s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.281s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/ObjectInfo_SplDcps.cpp'을(를) 컴파일하는 중)
+[63.281s]   
+[63.297s]   CustomObjectInfo_Dcps_impl.cpp
+[63.312s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.312s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_Dcps_impl.cpp'을(를) 컴파일하는 중)
+[63.312s]   
+[63.312s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.312s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/HandControl_SplDcps.cpp'을(를) 컴파일하는 중)
+[63.312s]   
+[63.344s]   CustomObjectInfo_SplDcps.cpp
+[63.500s] C:\dev\opensplice\HDE\x86_64.win64\include\dcps\C++\SACPP\sacpp_dds_basic_types.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오. [C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj]
+[63.500s]   (소스 파일 'rosidl_typesupport_opensplice_cpp/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_SplDcps.cpp'을(를) 컴파일하는 중)
+[63.500s]   
+[63.812s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_opensplice_c.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__rosidl_typesupport_opensplice_c.exp 개체를 생성하고 있습니다.
+[63.906s]   ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_opensplice_c.dll
+[63.969s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[64.109s]   Generating Python code for ROS interfaces
+[65.109s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/ssafy_msgs__py/CMakeLists.txt
+[65.203s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[65.328s]   _num_s.c
+[65.328s]   _enviroment_status_s.c
+[65.328s]   _turtlebot_status_s.c
+[65.328s]   _b_box_s.c
+[65.328s]   _object_info_s.c
+[65.328s]   _hand_control_s.c
+[65.328s]   _custom_object_info_s.c
+[65.609s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__python.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs__python.exp 개체를 생성하고 있습니다.
+[65.687s]   ssafy_msgs__python.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs__python.dll
+[65.765s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[65.844s]   _ssafy_msgs_s.ep.rosidl_typesupport_c.c
+[66.000s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs_s__rosidl_typesupport_c.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs_s__rosidl_typesupport_c.exp 개체를 생성하고 있습니다.
+[66.062s]   ssafy_msgs__rosidl_typesupport_c__pyext.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs_s__rosidl_typesupport_c.pyd
+[66.140s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[66.234s]   _ssafy_msgs_s.ep.rosidl_typesupport_connext_c.c
+[66.390s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs_s__rosidl_typesupport_connext_c.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs_s__rosidl_typesupport_connext_c.exp 개체를 생성하고 있습니다.
+[66.484s]   ssafy_msgs__rosidl_typesupport_connext_c__pyext.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs_s__rosidl_typesupport_connext_c.pyd
+[66.547s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[66.640s]   _ssafy_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[66.797s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs_s__rosidl_typesupport_fastrtps_c.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs_s__rosidl_typesupport_fastrtps_c.exp 개체를 생성하고 있습니다.
+[66.859s]   ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs_s__rosidl_typesupport_fastrtps_c.pyd
+[66.937s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[67.015s]   _ssafy_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[67.156s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs_s__rosidl_typesupport_introspection_c.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs_s__rosidl_typesupport_introspection_c.exp 개체를 생성하고 있습니다.
+[67.219s]   ssafy_msgs__rosidl_typesupport_introspection_c__pyext.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs_s__rosidl_typesupport_introspection_c.pyd
+[67.281s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[67.359s]   _ssafy_msgs_s.ep.rosidl_typesupport_opensplice_c.c
+[67.515s]      C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs_s__rosidl_typesupport_opensplice_c.lib 라이브러리 및 C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/build/ssafy_msgs/Release/ssafy_msgs_s__rosidl_typesupport_opensplice_c.exp 개체를 생성하고 있습니다.
+[67.578s]   ssafy_msgs__rosidl_typesupport_opensplice_c__pyext.vcxproj -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs_s__rosidl_typesupport_opensplice_c.pyd
+[67.625s]   Building Custom Rule C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[67.719s] Invoked command in 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs' returned '0': CL=/MP C:\Program Files\CMake\bin\cmake.EXE --build C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs --config Release
+[67.750s] Invoking command in 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs': C:\Program Files\CMake\bin\cmake.EXE --install C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs --config Release
+[67.781s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ament_index/resource_index/rosidl_interfaces/ssafy_msgs
+[67.797s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__rosidl_typesupport_c.lib
+[67.812s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__rosidl_typesupport_c.dll
+[67.812s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__rosidl_typesupport_cpp.lib
+[67.828s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__rosidl_typesupport_cpp.dll
+[67.828s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs
+[67.828s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg
+[67.844s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__rosidl_typesupport_connext_c.h
+[67.844s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__rosidl_typesupport_connext_c.h
+[67.844s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext
+[67.844s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__rosidl_typesupport_connext_c.h
+[67.875s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__rosidl_typesupport_connext_c.h
+[67.875s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__rosidl_typesupport_connext_c.h
+[67.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__rosidl_typesupport_connext_c.h
+[67.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/rosidl_typesupport_connext_c__visibility_control.h
+[67.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__rosidl_typesupport_connext_c.h
+[67.906s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__rosidl_typesupport_connext_c.lib
+[67.937s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__rosidl_typesupport_connext_c.dll
+[67.937s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs
+[67.937s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg
+[67.937s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box.h
+[67.953s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__functions.c
+[67.953s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__functions.h
+[67.969s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__struct.h
+[67.969s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__type_support.h
+[67.969s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info.h
+[67.984s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__functions.c
+[68.000s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__functions.h
+[68.000s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__struct.h
+[68.015s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__type_support.h
+[68.015s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status.h
+[68.015s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__functions.c
+[68.031s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__functions.h
+[68.031s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__struct.h
+[68.047s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__type_support.h
+[68.062s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control.h
+[68.062s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__functions.c
+[68.062s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__functions.h
+[68.078s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__struct.h
+[68.094s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__type_support.h
+[68.094s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num.h
+[68.109s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__functions.c
+[68.109s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__functions.h
+[68.125s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__struct.h
+[68.125s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__type_support.h
+[68.125s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info.h
+[68.140s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__functions.c
+[68.156s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__functions.h
+[68.172s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__struct.h
+[68.172s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__type_support.h
+[68.187s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/rosidl_generator_c__visibility_control.h
+[68.187s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status.h
+[68.203s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__functions.c
+[68.219s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__functions.h
+[68.219s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__struct.h
+[68.219s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__type_support.h
+[68.234s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__rosidl_generator_c.lib
+[68.250s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__rosidl_generator_c.dll
+[68.250s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_connext
+[68.250s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_connext/BBox_.idl
+[68.265s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_connext/CustomObjectInfo_.idl
+[68.265s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_connext/EnviromentStatus_.idl
+[68.265s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_connext/HandControl_.idl
+[68.265s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_connext/Num_.idl
+[68.265s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_connext/ObjectInfo_.idl
+[68.265s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_connext/TurtlebotStatus_.idl
+[68.265s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs
+[68.265s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg
+[68.281s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__rosidl_typesupport_connext_cpp.hpp
+[68.281s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__rosidl_typesupport_connext_cpp.hpp
+[68.281s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext
+[68.281s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/BBox_.cxx
+[68.281s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/BBox_.h
+[68.281s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/BBox_Plugin.cxx
+[68.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/BBox_Plugin.h
+[68.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/BBox_Support.cxx
+[68.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/BBox_Support.h
+[68.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/CustomObjectInfo_.cxx
+[68.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/CustomObjectInfo_.h
+[68.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/CustomObjectInfo_Plugin.cxx
+[68.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/CustomObjectInfo_Plugin.h
+[68.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/CustomObjectInfo_Support.cxx
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/CustomObjectInfo_Support.h
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/EnviromentStatus_.cxx
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/EnviromentStatus_.h
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/EnviromentStatus_Plugin.cxx
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/EnviromentStatus_Plugin.h
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/EnviromentStatus_Support.cxx
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/EnviromentStatus_Support.h
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/HandControl_.cxx
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/HandControl_.h
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/HandControl_Plugin.cxx
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/HandControl_Plugin.h
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/HandControl_Support.cxx
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/HandControl_Support.h
+[68.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/Num_.cxx
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/Num_.h
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/Num_Plugin.cxx
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/Num_Plugin.h
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/Num_Support.cxx
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/Num_Support.h
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/ObjectInfo_.cxx
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/ObjectInfo_.h
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/ObjectInfo_Plugin.cxx
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/ObjectInfo_Plugin.h
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/ObjectInfo_Support.cxx
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/ObjectInfo_Support.h
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/TurtlebotStatus_.cxx
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/TurtlebotStatus_.h
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/TurtlebotStatus_Plugin.cxx
+[68.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/TurtlebotStatus_Plugin.h
+[68.344s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/TurtlebotStatus_Support.cxx
+[68.344s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_connext/TurtlebotStatus_Support.h
+[68.344s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__rosidl_typesupport_connext_cpp.hpp
+[68.344s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__rosidl_typesupport_connext_cpp.hpp
+[68.359s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__rosidl_typesupport_connext_cpp.hpp
+[68.359s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__rosidl_typesupport_connext_cpp.hpp
+[68.375s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/rosidl_typesupport_connext_cpp__visibility_control.h
+[68.406s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__rosidl_typesupport_connext_cpp.hpp
+[68.406s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__rosidl_typesupport_connext_cpp.lib
+[68.453s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__rosidl_typesupport_connext_cpp.dll
+[68.453s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs
+[68.453s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg
+[68.453s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box.hpp
+[68.469s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__struct.hpp
+[68.469s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__traits.hpp
+[68.484s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info.hpp
+[68.484s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__struct.hpp
+[68.500s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__traits.hpp
+[68.500s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status.hpp
+[68.515s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__struct.hpp
+[68.531s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__traits.hpp
+[68.531s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control.hpp
+[68.547s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__struct.hpp
+[68.547s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__traits.hpp
+[68.562s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num.hpp
+[68.562s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__struct.hpp
+[68.578s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__traits.hpp
+[68.594s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info.hpp
+[68.594s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__struct.hpp
+[68.594s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__traits.hpp
+[68.609s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status.hpp
+[68.609s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__struct.hpp
+[68.625s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__traits.hpp
+[68.625s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs
+[68.625s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg
+[68.640s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__rosidl_typesupport_fastrtps_c.h
+[68.640s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__rosidl_typesupport_fastrtps_c.h
+[68.656s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__rosidl_typesupport_fastrtps_c.h
+[68.656s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__rosidl_typesupport_fastrtps_c.h
+[68.687s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__rosidl_typesupport_fastrtps_c.h
+[68.687s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__rosidl_typesupport_fastrtps_c.h
+[68.687s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[68.703s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__rosidl_typesupport_fastrtps_c.h
+[68.703s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__rosidl_typesupport_fastrtps_c.lib
+[68.734s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__rosidl_typesupport_fastrtps_c.dll
+[68.734s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs
+[68.734s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg
+[68.734s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__rosidl_typesupport_fastrtps_cpp.hpp
+[68.750s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__rosidl_typesupport_fastrtps_cpp.hpp
+[68.750s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_fastrtps
+[68.750s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__rosidl_typesupport_fastrtps_cpp.hpp
+[68.765s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__rosidl_typesupport_fastrtps_cpp.hpp
+[68.765s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__rosidl_typesupport_fastrtps_cpp.hpp
+[68.781s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__rosidl_typesupport_fastrtps_cpp.hpp
+[68.781s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[68.797s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__rosidl_typesupport_fastrtps_cpp.hpp
+[68.797s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__rosidl_typesupport_fastrtps_cpp.lib
+[68.828s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__rosidl_typesupport_fastrtps_cpp.dll
+[68.828s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs
+[68.828s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg
+[68.828s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__rosidl_typesupport_introspection_c.h
+[68.844s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__type_support.c
+[68.859s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__rosidl_typesupport_introspection_c.h
+[68.875s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__type_support.c
+[68.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__rosidl_typesupport_introspection_c.h
+[68.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__type_support.c
+[68.906s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__rosidl_typesupport_introspection_c.h
+[68.937s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__type_support.c
+[68.937s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__rosidl_typesupport_introspection_c.h
+[68.969s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__type_support.c
+[68.969s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__rosidl_typesupport_introspection_c.h
+[68.984s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__type_support.c
+[68.984s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[69.000s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__rosidl_typesupport_introspection_c.h
+[69.015s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__type_support.c
+[69.015s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__rosidl_typesupport_introspection_c.lib
+[69.031s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__rosidl_typesupport_introspection_c.dll
+[69.031s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs
+[69.047s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg
+[69.047s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__rosidl_typesupport_opensplice_c.h
+[69.047s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__rosidl_typesupport_opensplice_c.h
+[69.047s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice_c
+[69.062s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__rosidl_typesupport_opensplice_c.h
+[69.078s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__rosidl_typesupport_opensplice_c.h
+[69.094s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__rosidl_typesupport_opensplice_c.h
+[69.094s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__rosidl_typesupport_opensplice_c.h
+[69.094s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/rosidl_typesupport_opensplice_c__visibility_control.h
+[69.094s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__rosidl_typesupport_opensplice_c.h
+[69.094s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__rosidl_typesupport_opensplice_c.lib
+[69.156s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__rosidl_typesupport_opensplice_c.dll
+[69.156s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_opensplice
+[69.156s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_opensplice/BBox_.idl
+[69.156s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_.idl
+[69.156s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_.idl
+[69.156s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_opensplice/HandControl_.idl
+[69.156s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_opensplice/Num_.idl
+[69.156s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_opensplice/ObjectInfo_.idl
+[69.156s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_.idl
+[69.156s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs
+[69.156s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg
+[69.156s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__rosidl_typesupport_opensplice_cpp.hpp
+[69.187s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__rosidl_typesupport_opensplice_cpp.hpp
+[69.187s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice
+[69.203s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/BBox_.h
+[69.203s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/BBox_Dcps.h
+[69.203s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/BBox_Dcps_impl.h
+[69.203s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/BBox_SplDcps.h
+[69.203s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/ccpp_BBox_.h
+[69.219s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/ccpp_CustomObjectInfo_.h
+[69.219s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/ccpp_EnviromentStatus_.h
+[69.219s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/ccpp_HandControl_.h
+[69.219s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/ccpp_Num_.h
+[69.219s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/ccpp_ObjectInfo_.h
+[69.219s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/ccpp_TurtlebotStatus_.h
+[69.219s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_.h
+[69.234s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_Dcps.h
+[69.234s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_Dcps_impl.h
+[69.234s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/CustomObjectInfo_SplDcps.h
+[69.234s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_.h
+[69.250s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_Dcps.h
+[69.250s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_Dcps_impl.h
+[69.250s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/EnviromentStatus_SplDcps.h
+[69.250s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/HandControl_.h
+[69.265s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/HandControl_Dcps.h
+[69.265s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/HandControl_Dcps_impl.h
+[69.265s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/HandControl_SplDcps.h
+[69.265s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/Num_.h
+[69.281s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/Num_Dcps.h
+[69.281s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/Num_Dcps_impl.h
+[69.281s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/Num_SplDcps.h
+[69.281s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/ObjectInfo_.h
+[69.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/ObjectInfo_Dcps.h
+[69.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/ObjectInfo_Dcps_impl.h
+[69.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/ObjectInfo_SplDcps.h
+[69.297s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_.h
+[69.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_Dcps.h
+[69.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_Dcps_impl.h
+[69.312s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/dds_opensplice/TurtlebotStatus_SplDcps.h
+[69.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__rosidl_typesupport_opensplice_cpp.hpp
+[69.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__rosidl_typesupport_opensplice_cpp.hpp
+[69.328s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__rosidl_typesupport_opensplice_cpp.hpp
+[69.344s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__rosidl_typesupport_opensplice_cpp.hpp
+[69.359s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/rosidl_typesupport_opensplice_cpp__visibility_control.h
+[69.359s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__rosidl_typesupport_opensplice_cpp.hpp
+[69.359s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__rosidl_typesupport_opensplice_cpp.lib
+[69.390s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__rosidl_typesupport_opensplice_cpp.dll
+[69.390s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs
+[69.390s] -- Up-to-date: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg
+[69.390s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__rosidl_typesupport_introspection_cpp.hpp
+[69.422s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/b_box__type_support.cpp
+[69.422s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__rosidl_typesupport_introspection_cpp.hpp
+[69.437s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/custom_object_info__type_support.cpp
+[69.453s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__rosidl_typesupport_introspection_cpp.hpp
+[69.469s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/enviroment_status__type_support.cpp
+[69.469s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__rosidl_typesupport_introspection_cpp.hpp
+[69.484s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/hand_control__type_support.cpp
+[69.500s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__rosidl_typesupport_introspection_cpp.hpp
+[69.515s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/num__type_support.cpp
+[69.515s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__rosidl_typesupport_introspection_cpp.hpp
+[69.531s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/object_info__type_support.cpp
+[69.547s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__rosidl_typesupport_introspection_cpp.hpp
+[69.562s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/include/ssafy_msgs/msg/turtlebot_status__type_support.cpp
+[69.562s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__rosidl_typesupport_introspection_cpp.lib
+[69.578s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__rosidl_typesupport_introspection_cpp.dll
+[69.594s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/environment/pythonpath.bat
+[69.594s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/environment/pythonpath.dsv
+[69.594s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/__init__.py
+[69.640s] Compiling 'C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/__init__.py'...
+[69.656s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg
+[69.656s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_b_box.py
+[69.656s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_b_box_s.c
+[69.656s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_custom_object_info.py
+[69.672s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_custom_object_info_s.c
+[69.672s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_enviroment_status.py
+[69.687s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_enviroment_status_s.c
+[69.687s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_hand_control.py
+[69.687s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_hand_control_s.c
+[69.687s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_num.py
+[69.703s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_num_s.c
+[69.703s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_object_info.py
+[69.719s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_object_info_s.c
+[69.719s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_turtlebot_status.py
+[69.719s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/_turtlebot_status_s.c
+[69.719s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/msg/__init__.py
+[69.734s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/ssafy_msgs_s__rosidl_typesupport_c.lib
+[69.750s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/ssafy_msgs_s__rosidl_typesupport_c.pyd
+[69.750s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/ssafy_msgs_s__rosidl_typesupport_connext_c.lib
+[69.765s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/ssafy_msgs_s__rosidl_typesupport_connext_c.pyd
+[69.797s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/ssafy_msgs_s__rosidl_typesupport_introspection_c.lib
+[69.797s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/ssafy_msgs_s__rosidl_typesupport_introspection_c.pyd
+[69.812s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/ssafy_msgs_s__rosidl_typesupport_fastrtps_c.lib
+[69.828s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/ssafy_msgs_s__rosidl_typesupport_fastrtps_c.pyd
+[69.844s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/ssafy_msgs_s__rosidl_typesupport_opensplice_c.lib
+[69.859s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/Lib/site-packages/ssafy_msgs/ssafy_msgs_s__rosidl_typesupport_opensplice_c.pyd
+[69.875s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/lib/ssafy_msgs__python.lib
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/bin/ssafy_msgs__python.dll
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/Num.idl
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/EnviromentStatus.idl
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/TurtlebotStatus.idl
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/BBox.idl
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/ObjectInfo.idl
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/HandControl.idl
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/CustomObjectInfo.idl
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/Num.msg
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/EnviromentStatus.msg
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/TurtlebotStatus.msg
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/BBox.msg
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/ObjectInfo.msg
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/HandControl.msg
+[69.890s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/msg/CustomObjectInfo.msg
+[69.922s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ament_index/resource_index/package_run_dependencies/ssafy_msgs
+[69.922s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ament_index/resource_index/parent_prefix_path/ssafy_msgs
+[69.922s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/environment/ament_prefix_path.bat
+[69.922s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/environment/ament_prefix_path.dsv
+[69.922s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/environment/path.bat
+[69.937s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/environment/path.dsv
+[69.937s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/local_setup.bat
+[69.937s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/local_setup.dsv
+[69.937s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/package.dsv
+[69.937s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ament_index/resource_index/packages/ssafy_msgs
+[69.953s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/cmake/rosidl_cmake-extras.cmake
+[69.953s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[69.953s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[69.953s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[69.953s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[69.953s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/cmake/ssafy_msgsConfig.cmake
+[69.953s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/cmake/ssafy_msgsConfig-version.cmake
+[69.953s] -- Installing: C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/install/ssafy_msgs/share/ssafy_msgs/package.xml
+[69.969s] Invoked command in 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs' returned '0': C:\Program Files\CMake\bin\cmake.EXE --install C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\ssafy_msgs --config Release

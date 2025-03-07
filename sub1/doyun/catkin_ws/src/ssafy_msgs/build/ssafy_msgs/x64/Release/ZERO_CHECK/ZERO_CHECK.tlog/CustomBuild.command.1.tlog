@@ -1,0 +1,10 @@
+^C:\USERS\SSAFY\DESKTOP\DOYUN\PROJECT2\S12P21A703\SUB1\DOYUN\CATKIN_WS\SRC\SSAFY_MSGS\BUILD\SSAFY_MSGS\CMAKEFILES\0C59CDE8BE742B16C39AB7AC3A5F0315\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs -BC:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/build/ssafy_msgs --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/build/ssafy_msgs/ssafy_msgs.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
