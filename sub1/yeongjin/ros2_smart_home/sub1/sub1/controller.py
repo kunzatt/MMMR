@@ -5,6 +5,7 @@ from geometry_msgs.msg import Twist
 from ssafy_msgs.msg import TurtlebotStatus,EnviromentStatus
 from std_msgs.msg import Float32,Int8MultiArray
 
+import time
 # controller는 시뮬레이터로 부터를 데이터를 수신해서 확인(출력)하고, 송신해서 제어가 되는지 확인해보는 통신 테스트를 위한 노드입니다.
 # 메시지를 받아서 어떤 데이터들이 있는지 확인하고, 어떤 메시지를 보내야 가전 또는 터틀봇이 제어가 되는지 확인해보면서 ros2 통신에 익숙해지세요.
 # 수신 데이터 : 터틀봇 상태(/turtlebot_status), 환경정보(/envir_status), 가전정보(/app_status)
@@ -76,11 +77,17 @@ class Controller(Node):
         '''
         로직 2. 특정 가전 제품 ON
         '''
+        self.app_control_msg.data[num]=1
+        self.app_control_pub.publish(self.app_control_msg)
+        print(f"{num}제품 on")
 
     def app_off_select(self,num):
         '''
         로직 3. 특정 가전 제품 OFF
         '''
+        self.app_control_msg.data[num]=2
+        self.app_control_pub.publish(self.app_control_msg)
+        print(f"{num}제품 off")
 
     def turtlebot_go(self) :
         self.cmd_msg.linear.x=0.3
@@ -124,11 +131,17 @@ class Controller(Node):
             print("가전 상태:", self.app_status_msg.data)
 
         ## IOT(가전) 제어 함수
-        # self.app_all_on()
-        # self.app_all_off()
-        # self.app_on_select(12)
-        # self.app_off_select(12)
+        self.app_all_off()
+        time.sleep(3)
 
+        self.app_on_select(12)
+        time.sleep(3)
+
+        self.app_off_select(12)
+        time.sleep(3)
+
+        self.app_all_on()
+        time.sleep(3)
 
         ## 터틀봇 제어 함수
         self.turtlebot_go()
