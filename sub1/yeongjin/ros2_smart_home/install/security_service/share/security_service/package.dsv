@@ -1,0 +1,6 @@
+source;share\security_service\hook\pythonpath.ps1
+source;share\security_service\hook\pythonpath.bat
+source;share\security_service\hook\pythonpath.dsv
+source;share\security_service\hook\ament_prefix_path.ps1
+source;share\security_service\hook\ament_prefix_path.bat
+source;share\security_service\hook\ament_prefix_path.dsv
