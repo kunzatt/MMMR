@@ -1,0 +1,46 @@
+[1.687s] Invoking command in 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\my_package': PYTHONPATH=C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\Lib\site-packages;%PYTHONPATH% c:\python37\python.exe -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ..\..\build\my_package build --build-base C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\my_package\build install --record C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\my_package\install.log --install-scripts $base/lib/my_package --single-version-externally-managed install_data
+[2.312s] running egg_info
+[2.359s] writing ..\..\build\my_package\my_package.egg-info\PKG-INFO
+[2.359s] writing dependency_links to ..\..\build\my_package\my_package.egg-info\dependency_links.txt
+[2.359s] writing entry points to ..\..\build\my_package\my_package.egg-info\entry_points.txt
+[2.359s] writing requirements to ..\..\build\my_package\my_package.egg-info\requires.txt
+[2.359s] writing top-level names to ..\..\build\my_package\my_package.egg-info\top_level.txt
+[2.437s] reading manifest file '..\..\build\my_package\my_package.egg-info\SOURCES.txt'
+[2.437s] writing manifest file '..\..\build\my_package\my_package.egg-info\SOURCES.txt'
+[2.437s] running build
+[2.437s] running build_py
+[2.437s] copying my_package\controller.py -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\my_package\build\lib\my_package
+[2.468s] running install
+[2.468s] running install_lib
+[2.500s] copying C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\my_package\build\lib\my_package\controller.py -> C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\Lib\site-packages\my_package
+[2.500s] byte-compiling C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\Lib\site-packages\my_package\controller.py to controller.cpython-37.pyc
+[2.515s] running install_data
+[2.515s] running install_egg_info
+[2.546s] removing 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\Lib\site-packages\my_package-0.0.0-py3.7.egg-info' (and everything under it)
+[2.546s] Copying ..\..\build\my_package\my_package.egg-info to C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\Lib\site-packages\my_package-0.0.0-py3.7.egg-info
+[2.593s] running install_scripts
+[2.921s] Installing controller-script.py script to C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\lib\my_package
+[2.921s] Installing controller.exe script to C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\lib\my_package
+[2.921s] Installing my_node-script.py script to C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\lib\my_package
+[2.921s] Installing my_node.exe script to C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\lib\my_package
+[2.921s] Installing publisher-script.py script to C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\lib\my_package
+[2.937s] Installing publisher.exe script to C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\lib\my_package
+[2.937s] Installing subscriber-script.py script to C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\lib\my_package
+[2.937s] Installing subscriber.exe script to C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\lib\my_package
+[2.937s] writing list of installed files to 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\my_package\install.log'
+[2.937s] c:\python37\lib\site-packages\setuptools\dist.py:745: SetuptoolsDeprecationWarning: Invalid dash-separated options
+[2.937s] !!
+[2.937s] 
+[2.937s]         ********************************************************************************
+[2.937s]         Usage of dash-separated 'script-dir' will not be supported in future
+[2.937s]         versions. Please use the underscore name 'script_dir' instead.
+[2.937s] 
+[2.937s]         This deprecation is overdue, please update your project and remove deprecated
+[2.937s]         calls to avoid build errors in the future.
+[2.937s] 
+[2.937s]         See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+[2.937s]         ********************************************************************************
+[2.937s] 
+[2.937s] !!
+[2.937s]   opt = self.warn_dash_deprecation(opt, section)
+[3.031s] Invoked command in 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\my_package' returned '0': PYTHONPATH=C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\install\my_package\Lib\site-packages;%PYTHONPATH% c:\python37\python.exe -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ..\..\build\my_package build --build-base C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\my_package\build install --record C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\build\my_package\install.log --install-scripts $base/lib/my_package --single-version-externally-managed install_data

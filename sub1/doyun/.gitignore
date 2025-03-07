@@ -1,0 +1,22 @@
+# CMake 생성 파일
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+
+# CMake 빌드 디렉토리
+build/
+out/
+cmake-build-*/
+
+# Visual Studio CMake 설정
+CMakeSettings.json
+
+# CLion CMake 설정
+.idea/

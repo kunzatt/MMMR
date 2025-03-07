@@ -1,0 +1,33 @@
+[0.047s] Invoking command in 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs': C:\Program Files\CMake\bin\cmake.EXE C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs -DCMAKE_INSTALL_PREFIX=C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\install\ssafy_msgs -G Visual Studio 17 2022
+[0.187s] -- Selecting Windows SDK version 10.0.22621.0 to target Windows 10.0.26100.
+[1.953s] -- The C compiler identification is MSVC 19.42.34435.0
+[2.765s] -- The CXX compiler identification is MSVC 19.42.34435.0
+[2.937s] -- Detecting C compiler ABI info
+[3.640s] -- Detecting C compiler ABI info - done
+[3.672s] -- Check for working C compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/cl.exe - skipped
+[3.687s] -- Detecting C compile features
+[3.687s] -- Detecting C compile features - done
+[3.734s] -- Detecting CXX compiler ABI info
+[4.422s] -- Detecting CXX compiler ABI info - done
+[4.437s] -- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/cl.exe - skipped
+[4.437s] -- Detecting CXX compile features
+[4.437s] -- Detecting CXX compile features - done
+[4.547s] CMake Error at CMakeLists.txt:19 (find_package):
+[4.547s]   By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project
+[4.547s]   has asked CMake to find a package configuration file provided by
+[4.547s]   "ament_cmake", but CMake did not find one.
+[4.547s] 
+[4.547s]   Could not find a package configuration file provided by "ament_cmake" with
+[4.547s]   any of the following names:
+[4.547s] 
+[4.547s]     ament_cmakeConfig.cmake
+[4.547s]     ament_cmake-config.cmake
+[4.547s] 
+[4.547s]   Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set
+[4.547s]   "ament_cmake_DIR" to a directory containing one of the above files.  If
+[4.547s]   "ament_cmake" provides a separate development package or SDK, be sure it
+[4.547s]   has been installed.
+[4.547s] 
+[4.547s] 
+[4.547s] -- Configuring incomplete, errors occurred!
+[4.562s] Invoked command in 'C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs' returned '1': C:\Program Files\CMake\bin\cmake.EXE C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs -DCMAKE_INSTALL_PREFIX=C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\install\ssafy_msgs -G Visual Studio 17 2022

@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'my_node = my_package.my_node:main',
+            'controller = my_package.controller:main',
             'publisher=my_package.publisher:main',
             'subscriber=my_package.subscriber:main'
         ],
