@@ -7,6 +7,7 @@ class MinimalSubscriber(Node):
     def __init__(self):
         super().__init__('subscriber')
         self.subscription = self.create_subscription(String,'/test',self.listener_callback,10)
+        
 
     def listener_callback(self,msg):
         print('Sub: '+msg.data)
@@ -18,7 +19,6 @@ def main(args=None):
     rclpy.spin(minimal_subscriber)
     minimal_subscriber.destroy_node()
     rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()
