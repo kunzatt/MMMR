@@ -112,6 +112,12 @@ class pathPub(Node):
                     current_waypoint=
             
             '''
+            min_dis=100000
+            for i,waypoint in enumerate(self.global_path_msg.poses) :
+                distance=sqrt((waypoint.pose.position.x-x)**2+(waypoint.pose.position.y-y)**2)
+                if distance < min_dis :
+                    min_dis=distance
+                    current_waypoint=i
 
 
             
@@ -128,6 +134,10 @@ class pathPub(Node):
                     
                         
             '''
+            if current_waypoint != -1 :
+                if current_waypoint + self.local_path_size < len(self.global_path_msg.poses):                 
+                    for i in range(self.local_path_size):
+                        local_path_msg.poses.append(self.global_path_msg.poses[current_waypoint+i])
 
             self.local_path_pub.publish(local_path_msg)
 
