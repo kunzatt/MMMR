@@ -24,7 +24,8 @@ setup(
             'controller = my_package.controller:main',
             'publisher=my_package.publisher:main',
             'subscriber=my_package.subscriber:main',
-            'perception=my_package.perception:main'
+            'perception=my_package.perception:main',
+            'handcontrol=my_package.handcontrol:main'
         ],
     },
 )
