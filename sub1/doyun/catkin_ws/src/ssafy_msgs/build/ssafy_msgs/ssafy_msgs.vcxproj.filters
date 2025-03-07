@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\CMakeFiles\0c59cde8be742b16c39ab7ac3a5f0315\ssafy_msgs.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\Num.msg" />
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\EnviromentStatus.msg" />
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\TurtlebotStatus.msg" />
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\BBox.msg" />
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\ObjectInfo.msg" />
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\HandControl.msg" />
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\CustomObjectInfo.msg" />
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\CMakeFiles\ssafy_msgs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{9CE90B99-02C3-3EF4-A096-3F1CB9265A74}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

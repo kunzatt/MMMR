@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\CMakeFiles\0c59cde8be742b16c39ab7ac3a5f0315\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\ament_cmake_core\package.cmake">
+      <Filter>Buildsystem Input Files\build\ssafy_msgs\ament_cmake_core</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\ament_cmake_export_dependencies\ament_cmake_export_dependencies-extras.cmake">
+      <Filter>Buildsystem Input Files\build\ssafy_msgs\ament_cmake_export_dependencies</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\ament_cmake_export_include_directories\ament_cmake_export_include_directories-extras.cmake">
+      <Filter>Buildsystem Input Files\build\ssafy_msgs\ament_cmake_export_include_directories</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\ament_cmake_export_libraries\ament_cmake_export_libraries-extras.cmake">
+      <Filter>Buildsystem Input Files\build\ssafy_msgs\ament_cmake_export_libraries</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\ament_cmake_package_templates\templates.cmake">
+      <Filter>Buildsystem Input Files\build\ssafy_msgs\ament_cmake_package_templates</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\call_for_each_rmw_implementation.cmake">
+      <Filter>Buildsystem Input Files\build\ssafy_msgs</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\rosidl_cmake\rosidl_cmake-extras.cmake">
+      <Filter>Buildsystem Input Files\build\ssafy_msgs\rosidl_cmake</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\rosidl_cmake\rosidl_cmake_export_typesupport_libraries-extras.cmake">
+      <Filter>Buildsystem Input Files\build\ssafy_msgs\rosidl_cmake</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\build\ssafy_msgs\ssafy_msgs__py\CMakeLists.txt">
+      <Filter>Buildsystem Input Files\build\ssafy_msgs\ssafy_msgs__py</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\BBox.msg">
+      <Filter>Buildsystem Input Files\msg</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\CustomObjectInfo.msg">
+      <Filter>Buildsystem Input Files\msg</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\EnviromentStatus.msg">
+      <Filter>Buildsystem Input Files\msg</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\HandControl.msg">
+      <Filter>Buildsystem Input Files\msg</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\Num.msg">
+      <Filter>Buildsystem Input Files\msg</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\ObjectInfo.msg">
+      <Filter>Buildsystem Input Files\msg</Filter>
+    </None>
+    <None Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\msg\TurtlebotStatus.msg">
+      <Filter>Buildsystem Input Files\msg</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <XML Include="C:\Users\SSAFY\Desktop\doyun\project2\S12P21A703\sub1\doyun\catkin_ws\src\ssafy_msgs\package.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{9CE90B99-02C3-3EF4-A096-3F1CB9265A74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\build\ssafy_msgs">
+      <UniqueIdentifier>{FCEDD747-6C96-3819-A058-59A3841EC60B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\build\ssafy_msgs\ament_cmake_core">
+      <UniqueIdentifier>{76D800E2-80B7-3A4A-A0FB-39E4B0E86B82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\build\ssafy_msgs\ament_cmake_export_dependencies">
+      <UniqueIdentifier>{BCC0C0FD-22F6-3DF5-93CF-A72FBCEEB28D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\build\ssafy_msgs\ament_cmake_export_include_directories">
+      <UniqueIdentifier>{9CDDC631-9C88-3F9F-80CB-020CD0D18DDB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\build\ssafy_msgs\ament_cmake_export_libraries">
+      <UniqueIdentifier>{9A6FEE95-C069-3F26-A752-353D11D6E8AD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\build\ssafy_msgs\ament_cmake_package_templates">
+      <UniqueIdentifier>{CD3E0A38-ED32-36D5-9F78-B2AE43E65EB7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\build\ssafy_msgs\rosidl_cmake">
+      <UniqueIdentifier>{DB4C7AB5-7C5C-3FDE-A22F-BDDA254F859C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\build\ssafy_msgs\ssafy_msgs__py">
+      <UniqueIdentifier>{7052CFCA-BD62-3A98-9A8D-E2768D6477B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\msg">
+      <UniqueIdentifier>{AF34AA1D-3317-39C5-BC66-4775BB8D1D3C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

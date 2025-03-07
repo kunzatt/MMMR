@@ -1,0 +1,1172 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-4f7bedb337a5d8879095.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25
+					]
+				},
+				{
+					"build" : "ssafy_msgs__py",
+					"jsonFile" : "directory-ssafy_msgs__py-Debug-76955ef11f29296c5f55.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "build/ssafy_msgs/ssafy_msgs__py",
+					"targetIndexes" : 
+					[
+						6
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "ssafy_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-Debug-fa7fc72956e7d482e56d.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-Debug-de8359107a1546eea2d1.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs-Debug-3724e3601ac000e24b22.json",
+					"name" : "ssafy_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__cpp-Debug-90d3005127341c60b631.json",
+					"name" : "ssafy_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__dds_connext_idl::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__dds_connext_idl-Debug-12dcf10823b435f8ff3b.json",
+					"name" : "ssafy_msgs__dds_connext_idl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__dds_opensplice_idl::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__dds_opensplice_idl-Debug-6951a4a32599c5019203.json",
+					"name" : "ssafy_msgs__dds_opensplice_idl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ssafy_msgs__py::@d62f79fc04945c850fef",
+					"jsonFile" : "target-ssafy_msgs__py-Debug-4cc49062fec84aed5eca.json",
+					"name" : "ssafy_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__python::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__python-Debug-14c30000fd099ab73a85.json",
+					"name" : "ssafy_msgs__python",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_generator_c-Debug-52f4ad7a8e9fb79f6f95.json",
+					"name" : "ssafy_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_c-Debug-c6e858fb1d9f2ea1d532.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_c__pyext-Debug-d1e5c50b36aab89357c3.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_c-Debug-e95858591f506c77be9b.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_c__pyext-Debug-7cadbcedaebc1c7ad0d7.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_cpp-Debug-6fc66626d8ad8d25934d.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_cpp-Debug-e071628edd4b79124184.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_c-Debug-9891c87e20a7040a3bdc.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext-Debug-b7379e1187e078b1f7ae.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_cpp-Debug-eb8a2d00ea357e1f4d44.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_c-Debug-d9c3ee4cdf449c363c64.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_c__pyext-Debug-6a3f5481ea6dbcb50e12.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_cpp-Debug-1dd806ed8ed6ad460fd3.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_c-Debug-d0f8bd82e6d0c5ced707.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_c__pyext-Debug-e814ab7b03662b140263.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_cpp-Debug-cfbcbb53b6596d05e40a.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs_uninstall-Debug-6c8a3532985c620b9f90.json",
+					"name" : "ssafy_msgs_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Debug-00498b34d0dfbbf488c8.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Release-2b7b3156d0ea0e84fb2e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25
+					]
+				},
+				{
+					"build" : "ssafy_msgs__py",
+					"jsonFile" : "directory-ssafy_msgs__py-Release-76955ef11f29296c5f55.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "build/ssafy_msgs/ssafy_msgs__py",
+					"targetIndexes" : 
+					[
+						6
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "ssafy_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-Release-fa7fc72956e7d482e56d.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-Release-de8359107a1546eea2d1.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs-Release-3724e3601ac000e24b22.json",
+					"name" : "ssafy_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__cpp-Release-90d3005127341c60b631.json",
+					"name" : "ssafy_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__dds_connext_idl::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__dds_connext_idl-Release-12dcf10823b435f8ff3b.json",
+					"name" : "ssafy_msgs__dds_connext_idl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__dds_opensplice_idl::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__dds_opensplice_idl-Release-6951a4a32599c5019203.json",
+					"name" : "ssafy_msgs__dds_opensplice_idl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ssafy_msgs__py::@d62f79fc04945c850fef",
+					"jsonFile" : "target-ssafy_msgs__py-Release-4cc49062fec84aed5eca.json",
+					"name" : "ssafy_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__python::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__python-Release-47c95bd2d5b1c60c14f2.json",
+					"name" : "ssafy_msgs__python",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_generator_c-Release-97bac346121d405585c2.json",
+					"name" : "ssafy_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_c-Release-978b43a27bb1f93faeef.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_c__pyext-Release-598e5fa33dac24d38e6d.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_c-Release-2a9d02d93e41c93855ab.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_c__pyext-Release-296d99c39aff47dde17f.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_cpp-Release-bd49eabf2bb0e20785ea.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_cpp-Release-bf77a8edc3b89b5da75a.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_c-Release-c05dd42575c1588f5b7f.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext-Release-f40803ed64efe2060e89.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_cpp-Release-5f241fc70e0a81365742.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_c-Release-1a76aab9d92c239b924a.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_c__pyext-Release-7edf352e494614a414dd.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_cpp-Release-6619f369a084d8098204.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_c-Release-6b2dde895cc7e7b20564.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_c__pyext-Release-a337ac3fc0c0c9c4c090.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_cpp-Release-9e966957b1b6048fd2a7.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs_uninstall-Release-6c8a3532985c620b9f90.json",
+					"name" : "ssafy_msgs_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Release-00498b34d0dfbbf488c8.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-MinSizeRel-2dbe8f1560c0310bc268.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25
+					]
+				},
+				{
+					"build" : "ssafy_msgs__py",
+					"jsonFile" : "directory-ssafy_msgs__py-MinSizeRel-76955ef11f29296c5f55.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "build/ssafy_msgs/ssafy_msgs__py",
+					"targetIndexes" : 
+					[
+						6
+					]
+				}
+			],
+			"name" : "MinSizeRel",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "ssafy_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-fa7fc72956e7d482e56d.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-MinSizeRel-de8359107a1546eea2d1.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs-MinSizeRel-3724e3601ac000e24b22.json",
+					"name" : "ssafy_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__cpp-MinSizeRel-90d3005127341c60b631.json",
+					"name" : "ssafy_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__dds_connext_idl::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__dds_connext_idl-MinSizeRel-12dcf10823b435f8ff3b.json",
+					"name" : "ssafy_msgs__dds_connext_idl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__dds_opensplice_idl::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__dds_opensplice_idl-MinSizeRel-6951a4a32599c5019203.json",
+					"name" : "ssafy_msgs__dds_opensplice_idl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ssafy_msgs__py::@d62f79fc04945c850fef",
+					"jsonFile" : "target-ssafy_msgs__py-MinSizeRel-4cc49062fec84aed5eca.json",
+					"name" : "ssafy_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__python::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__python-MinSizeRel-2a60daff0c8a752bf466.json",
+					"name" : "ssafy_msgs__python",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_generator_c-MinSizeRel-0a1aa4e2a4e879f76631.json",
+					"name" : "ssafy_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_c-MinSizeRel-2d71d8c75d1b669ad2b3.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_c__pyext-MinSizeRel-e776c020382b4125ba00.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_c-MinSizeRel-853bbedda0313208a780.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_c__pyext-MinSizeRel-4e5375a05b86dbf3afbf.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_cpp-MinSizeRel-c84c2f47ffc8ede30fc9.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_cpp-MinSizeRel-7496c1c4d39e2e189c20.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_c-MinSizeRel-d679b983bbf60b73951d.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext-MinSizeRel-29bea6992a9f71e01f43.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_cpp-MinSizeRel-073c83d5c2ee97a2e7c3.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_c-MinSizeRel-0da68533b3a5585bee2f.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_c__pyext-MinSizeRel-38b3b4e245d90e45c8e8.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_cpp-MinSizeRel-4c47e832b2c120fc5b53.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_c-MinSizeRel-022e3513b8e1a24d8725.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_c__pyext-MinSizeRel-e9ef206664a586134ea5.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_cpp-MinSizeRel-21d6416b633c210d4188.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs_uninstall-MinSizeRel-6c8a3532985c620b9f90.json",
+					"name" : "ssafy_msgs_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-MinSizeRel-00498b34d0dfbbf488c8.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-RelWithDebInfo-7ff61c9ec226373b421e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25
+					]
+				},
+				{
+					"build" : "ssafy_msgs__py",
+					"jsonFile" : "directory-ssafy_msgs__py-RelWithDebInfo-76955ef11f29296c5f55.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "build/ssafy_msgs/ssafy_msgs__py",
+					"targetIndexes" : 
+					[
+						6
+					]
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "ssafy_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-fa7fc72956e7d482e56d.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-RelWithDebInfo-de8359107a1546eea2d1.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs-RelWithDebInfo-3724e3601ac000e24b22.json",
+					"name" : "ssafy_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__cpp-RelWithDebInfo-90d3005127341c60b631.json",
+					"name" : "ssafy_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__dds_connext_idl::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__dds_connext_idl-RelWithDebInfo-12dcf10823b435f8ff3b.json",
+					"name" : "ssafy_msgs__dds_connext_idl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__dds_opensplice_idl::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__dds_opensplice_idl-RelWithDebInfo-6951a4a32599c5019203.json",
+					"name" : "ssafy_msgs__dds_opensplice_idl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ssafy_msgs__py::@d62f79fc04945c850fef",
+					"jsonFile" : "target-ssafy_msgs__py-RelWithDebInfo-4cc49062fec84aed5eca.json",
+					"name" : "ssafy_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__python::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__python-RelWithDebInfo-6db29686d22b0d5c4f88.json",
+					"name" : "ssafy_msgs__python",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_generator_c-RelWithDebInfo-b2c953d3d96518683737.json",
+					"name" : "ssafy_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_c-RelWithDebInfo-cf7b07679af7dd868625.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_c__pyext-RelWithDebInfo-f5f800ba20ed8923aa15.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_c-RelWithDebInfo-ee816b2451a5a832388f.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_c__pyext-RelWithDebInfo-1bbfd966c2cb93aff2dc.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_connext_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_connext_cpp-RelWithDebInfo-9bda3012c6c084bfcc9d.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_connext_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_cpp-RelWithDebInfo-7f8ebea7df396b512f33.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_c-RelWithDebInfo-08b080fd4495369c8b3f.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext-RelWithDebInfo-efc1746c8146a830675f.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_fastrtps_cpp-RelWithDebInfo-d91e56b71e93d913da3d.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_c-RelWithDebInfo-3a19a59d6bcc617402f3.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_c__pyext-RelWithDebInfo-774bb52d617be7148591.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_introspection_cpp-RelWithDebInfo-08bb1f0272a5e92d1aa6.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_c-RelWithDebInfo-2f14c74de06f738eb70a.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_c__pyext-RelWithDebInfo-aaf78a8f1b7dfcef5544.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs__rosidl_typesupport_opensplice_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs__rosidl_typesupport_opensplice_cpp-RelWithDebInfo-de3d17b22b28810893c7.json",
+					"name" : "ssafy_msgs__rosidl_typesupport_opensplice_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ssafy_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ssafy_msgs_uninstall-RelWithDebInfo-6c8a3532985c620b9f90.json",
+					"name" : "ssafy_msgs_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-RelWithDebInfo-00498b34d0dfbbf488c8.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/build/ssafy_msgs",
+		"source" : "C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

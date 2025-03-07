@@ -1,0 +1,28 @@
+^C:\USERS\SSAFY\DESKTOP\DOYUN\PROJECT2\S12P21A703\SUB1\DOYUN\CATKIN_WS\SRC\SSAFY_MSGS\BUILD\SSAFY_MSGS\CMAKEFILES\DBA1E10BB06D5073CA470BB24C6404F0\NUM_.IDL.RULE
+setlocal
+C:\Python37\python.exe C:/dev/ros2-windows/lib/rosidl_generator_dds_idl/rosidl_generator_dds_idl --additional-service-templates C:/dev/ros2-windows/share/rosidl_typesupport_opensplice_cpp/resource/service_request_wrapper.idl.em C:/dev/ros2-windows/share/rosidl_typesupport_opensplice_cpp/resource/service_response_wrapper.idl.em --generator-arguments-file C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/build/ssafy_msgs/rosidl_generator_dds_idl__dds_opensplice__arguments.json --subfolders dds_opensplice --extension rosidl_typesupport_opensplice_cpp.rosidl_generator_dds_idl_extension
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\SSAFY\DESKTOP\DOYUN\PROJECT2\S12P21A703\SUB1\DOYUN\CATKIN_WS\SRC\SSAFY_MSGS\BUILD\SSAFY_MSGS\CMAKEFILES\0C59CDE8BE742B16C39AB7AC3A5F0315\SSAFY_MSGS__DDS_OPENSPLICE_IDL.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\SSAFY\DESKTOP\DOYUN\PROJECT2\S12P21A703\SUB1\DOYUN\CATKIN_WS\SRC\SSAFY_MSGS\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs -BC:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/build/ssafy_msgs --check-stamp-file C:/Users/SSAFY/Desktop/doyun/project2/S12P21A703/sub1/doyun/catkin_ws/src/ssafy_msgs/build/ssafy_msgs/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
