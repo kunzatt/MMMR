@@ -5,20 +5,6 @@ from geometry_msgs.msg import Twist
 from ssafy_msgs.msg import TurtlebotStatus,EnviromentStatus
 from std_msgs.msg import Float32,Int8MultiArray
 
-# controller는 시뮬레이터로 부터를 데이터를 수신해서 확인(출력)하고, 송신해서 제어가 되는지 확인해보는 통신 테스트를 위한 노드입니다.
-# 메시지를 받아서 어떤 데이터들이 있는지 확인하고, 어떤 메시지를 보내야 가전 또는 터틀봇이 제어가 되는지 확인해보면서 ros2 통신에 익숙해지세요.
-# 수신 데이터 : 터틀봇 상태(/turtlebot_status), 환경정보(/envir_status), 가전정보(/app_status)
-# 송신 데이터 : 터틀봇 제어(/ctrl_cmd), 가전제어(/app_control)
-
-# 노드 로직 순서
-# 1. 수신 데이터 출력
-# 2. 특정 가전제품 ON
-# 3. 특정 가전제품 OFF
-# 4. 터틀봇 정지
-# 5. 터틀봇 시계방향 회전
-# 6. 터틀봇 반시계방향 회전
-
-
 class Controller(Node):
 
     def __init__(self):
@@ -31,7 +17,9 @@ class Controller(Node):
         self.turtlebot_status_sub = self.create_subscription(TurtlebotStatus,'/turtlebot_status',self.listener_callback,10)
         self.envir_status_sub = self.create_subscription(EnviromentStatus,'/envir_status',self.envir_callback,10)
         self.app_status_sub = self.create_subscription(Int8MultiArray,'/app_status',self.app_callback,10)
-        self.timer = self.create_timer(0.033, self.timer_callback)
+        self.timer = self.create_timer(1.5, self.timer_callback)
+        self.cnt = 0
+        self.iotcnt = 0
 
         ## 제어 메시지 변수 생성 
         self.cmd_msg=Twist()
@@ -73,58 +61,68 @@ class Controller(Node):
         self.app_control_pub.publish(self.app_control_msg)
         
     def app_on_select(self,num):
-        '''
-        로직 2. 특정 가전 제품 ON
-        '''
+        # 특정 가전 제품 ON
+        self.app_control_msg.data[num] = 1
+        self.app_control_pub.publish(self.app_control_msg)
 
     def app_off_select(self,num):
-        '''
-        로직 3. 특정 가전 제품 OFF
-        '''
+        # 특정 가전 제품 OFF
+        self.app_control_msg.data[num] = 2
+        self.app_control_pub.publish(self.app_control_msg)
 
     def turtlebot_go(self) :
         self.cmd_msg.linear.x=0.3
         self.cmd_msg.angular.z=0.0
 
     def turtlebot_stop(self) :
-        '''
-        로직 4. 터틀봇 정지
-        '''
+        # 터틀봇 정지
+        self.cmd_msg.linear.x=0.0
+        self.cmd_msg.angular.z=0.0
 
     def turtlebot_cw_rot(self) :
-        '''
-        로직 5. 터틀봇 시계방향 회전
-        '''
+        # 터틀봇 시계방향 회전
+        self.cmd_msg.linear.x=0.0
+        self.cmd_msg.angular.z=1.0
 
     def turtlebot_cww_rot(self) :
-        '''
-        로직 6. 터틀봇 반시계방향 회전
-        '''
+        # 터틀봇 반시계방향 회전
+        self.cmd_msg.linear.x=0.0
+        self.cmd_msg.angular.z=-1.0
 
 
     def timer_callback(self):
-
-        '''
-        로직1. 수신 데이터 출력
-        터틀봇 상태 : 현재 선솏도, 현재 각속도, 배터리 상태, 충전 상태 출력
-        환경 정보 : 날짜, 시간, 온도, 날씨 출력
-        가전 제품 : 가전상태 출력        
-        '''
+        print(f"linear: {self.turtlebot_status_msg.twist.linear.x}, angular: {self.turtlebot_status_msg.twist.linear.z}")
+        print(f"battery percentage: {self.turtlebot_status_msg.battery_percentage}, charge status: {self.turtlebot_status_msg.power_supply_status}")
+        print(f"date: {self.envir_status_msg.month}/{self.envir_status_msg.day} {self.envir_status_msg.hour}:{self.envir_status_msg.minute}, temperature: {self.envir_status_msg.temperature}, weather: {self.envir_status_msg.weather}")
+        print(f"app status: {self.app_status_msg}")
+        print("count: " + str(self.cnt) + ", IOT count: " + str(self.iotcnt))
+        
 
         ## IOT(가전) 제어 함수
-        # self.app_all_on()
-        # self.app_all_off()
-        # self.app_select_on(12)
-        # self.app_select_off(12)
+        if self.iotcnt % 19 == 17:
+            self.app_all_on()
+        elif self.iotcnt % 19 == 18:
+            self.app_all_off()
+        else:
+            if self.app_control_msg.data[self.iotcnt % 19] == 1:
+                self.app_off_select(self.iotcnt % 19)
+            else:
+                self.app_on_select(self.iotcnt % 19)
 
 
         ## 터틀봇 제어 함수
-        self.turtlebot_go()
-        # self.turtlebot_stop()
-        # self.turtlebot_cw_rot()
-        # self.turtlebot_ccw_rot()
+        if self.cnt % 4 == 0:
+            self.turtlebot_go()
+        elif self.cnt % 4 == 1:
+            self.turtlebot_stop()
+        elif self.cnt % 4 == 2:
+            self.turtlebot_cw_rot()
+        else:
+            self.turtlebot_cww_rot()
 
         self.cmd_publisher.publish(self.cmd_msg)
+        self.cnt += 1
+        self.iotcnt += 1
 
 
 def main(args=None):
