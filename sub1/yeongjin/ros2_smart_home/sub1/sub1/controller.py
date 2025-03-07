@@ -94,18 +94,22 @@ class Controller(Node):
         self.cmd_msg.angular.z=0.0
 
     def turtlebot_stop(self) :
-        self.cmd_msg
+        self.cmd_msg.linear.x=0.0
+        self.cmd_msg.angular.z=0.0
 
     def turtlebot_cw_rot(self) :
         '''
         로직 5. 터틀봇 시계방향 회전
         '''
+        self.cmd_msg.linear.x=0.0
+        self.cmd_msg.angular.z=0.5
 
     def turtlebot_ccw_rot(self) :
         '''
         로직 6. 터틀봇 반시계방향 회전
         '''
-
+        self.cmd_msg.linear.x=0.0
+        self.cmd_msg.angular.z=-0.5
 
     def timer_callback(self):
 
@@ -145,9 +149,28 @@ class Controller(Node):
 
         ## 터틀봇 제어 함수
         self.turtlebot_go()
-        # self.turtlebot_stop()
-        # self.turtlebot_cw_rot()
-        # self.turtlebot_ccw_rot()
+        time.sleep(3)
+
+        self.turtlebot_stop()
+        time.sleep(3)
+        
+        self.turtlebot_cw_rot()
+        time.sleep(3)
+
+        self.turtlebot_stop()
+        time.sleep(3)
+
+        self.turtlebot_go()
+        time.sleep(3)
+
+        self.turtlebot_stop()
+        time.sleep(3)
+        
+        self.turtlebot_ccw_rot()
+        time.sleep(3)
+        
+        self.turtlebot_stop()
+        time.sleep(3)
 
         self.cmd_publisher.publish(self.cmd_msg)
 
