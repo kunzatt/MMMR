@@ -60,10 +60,9 @@ class a_star(Node):
         self.is_grid_update=True
         '''
         로직 3. 맵 데이터 행렬로 바꾸기
-        map_to_grid=
-        self.grid=
         '''
-
+        map_to_grid = np.array(self.map_msg.data).reshape(self.map_size_y, self.map_size_x)
+        self.grid = map_to_grid
 
     def pose_to_grid_cell(self,x,y):
         map_point_x = 0
