@@ -110,12 +110,13 @@ class a_star(Node):
         if msg.header.frame_id=='map':
             '''
             로직 6. goal_pose 메시지 수신하여 목표 위치 설정
-            goal_x=
-            goal_y=
-            goal_cell=
-            self.goal = 
             '''             
-            print(msg)
+            
+            goal_x= msg.pose.position.x
+            goal_y= msg.pose.position.y
+            goal_cell= self.pose_to_grid_cell(goal_x,goal_y)
+            self.goal = goal_cell
+            #print(msg)
             
 
             if self.is_map ==True and self.is_odom==True  :
