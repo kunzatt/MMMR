@@ -71,9 +71,10 @@ class a_star(Node):
         로직 4. 위치(x,y)를 map의 grid cell로 변환 
         (테스트) pose가 (-8,-4)라면 맵의 중앙에 위치하게 된다. 따라서 map_point_x,y 는 map size의 절반인 (175,175)가 된다.
         pose가 (-16.75,12.75) 라면 맵의 시작점에 위치하게 된다. 따라서 map_point_x,y는 (0,0)이 된다.
-        map_point_x= ?
-        map_point_y= ?
         '''
+        map_point_x= int((x - self.map_offset_x) / self.map_resolution)
+        map_point_y= int((y - self.map_offset_y) / self.map_resolution)
+        
         
         return map_point_x,map_point_y
 
@@ -86,11 +87,11 @@ class a_star(Node):
         로직 5. map의 grid cell을 위치(x,y)로 변환
         (테스트) grid cell이 (175,175)라면 맵의 중앙에 위치하게 된다. 따라서 pose로 변환하게 되면 맵의 중앙인 (-8,-4)가 된다.
         grid cell이 (350,350)라면 맵의 제일 끝 좌측 상단에 위치하게 된다. 따라서 pose로 변환하게 되면 맵의 좌측 상단인 (0.75,6.25)가 된다.
-
-        x=?
-        y=?
-
         '''
+
+        x= grid_cell[0] * self.map_resolution + self.map_offset_x
+        y= grid_cell[1] * self.map_resolution + self.map_offset_y
+
         return [x,y]
 
 
