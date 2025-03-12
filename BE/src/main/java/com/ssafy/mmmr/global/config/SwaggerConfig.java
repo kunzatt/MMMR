@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.servers.Server;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +14,8 @@ import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
+
+	// http://localhost:8088/api/swagger-ui/index.html#/
 
 	@Bean
 	public OpenAPI customOpenAPI() {
@@ -30,7 +33,7 @@ public class SwaggerConfig {
 					.url("https://lab.ssafy.com/s12-mobility-smarthome-sub1/S12P21A703")))
 			.externalDocs(new ExternalDocumentation()
 				.description("MMMR Documentation")
-				.url("hhttps://lab.ssafy.com/s12-mobility-smarthome-sub1/S12P21A703"))
+				.url("https://lab.ssafy.com/s12-mobility-smarthome-sub1/S12P21A703"))
 			.servers(List.of(
 				new Server().url("/api").description("Local server")
 			));
