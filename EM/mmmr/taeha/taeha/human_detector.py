@@ -19,7 +19,6 @@ from ssafy_msgs.msg import BBox
 
 
 def non_maximum_supression(bboxes, threshold=0.5):
-
     """
     non maximum supression 로직
     로직 1 : bounding box 크기 역순으로 sort
@@ -39,9 +38,7 @@ def non_maximum_supression(bboxes, threshold=0.5):
     bboxes.pop(0)
 
     for _, bbox in enumerate(bboxes):
-
         for new_bbox in new_bboxes:
-
             x1_tl = bbox[0]
             x2_tl = new_bbox[0]
             x1_br = bbox[0] + bbox[2]
@@ -75,7 +72,6 @@ class HumanDetector(Node):
 
     def __init__(self):
         super().__init__(node_name='human_detector')
-
         # 로직 1 : 노드에 필요한 publisher, subscriber, descriptor, detector, timer 정의
         self.subs_img = self.create_subscription(
             CompressedImage,
@@ -83,12 +79,9 @@ class HumanDetector(Node):
             self.img_callback,
             1)
 
-        self.img_bgr = None
-        
+        self.img_bgr = None       
         self.timer_period = 0.03
-
         self.timer = self.create_timer(self.timer_period, self.timer_callback)
-
         self.bbox_pub_ = self.create_publisher(BBox, '/bbox', 1)
 
         self.pedes_detector = cv2.HOGDescriptor()                              
@@ -97,13 +90,11 @@ class HumanDetector(Node):
         self.able_to_pub = True
 
     def img_callback(self, msg):
-
         np_arr = np.frombuffer(msg.data, np.uint8)
 
         self.img_bgr = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
   
     def detect_human(self, img_bgr):
-    
         self.bbox_msg = BBox()
     
         # 로직 2 : image grayscale conversion
@@ -136,20 +127,17 @@ class HumanDetector(Node):
                 hl = [max(-32768, min(32767, int(h))) for h in hl]
 
             if self.able_to_pub:
-
                 self.bbox_msg.num_bbox = len(rects)
 
                 obj_list = list(range(len(rects)))
 
                 self.bbox_msg.idx_bbox = obj_list
-
                 self.bbox_msg.x = xl
                 self.bbox_msg.y = yl
                 self.bbox_msg.w = wl
                 self.bbox_msg.h = hl
 
             for (x,y,w,h) in rects:
-
                 cv2.rectangle(img_bgr, (x,y),(x+w,y+h),(0,255,255), 2)
 
         else:
@@ -168,7 +156,6 @@ class HumanDetector(Node):
     def timer_callback(self):
 
         if self.img_bgr is not None:
-
             self.detect_human(self.img_bgr)
 
             # 로직 8 : bbox msg 송신s
@@ -178,14 +165,9 @@ class HumanDetector(Node):
             pass
 
 def main(args=None):
-
     rclpy.init(args=args)
-
     hdetector = HumanDetector()
-
     rclpy.spin(hdetector)
 
 if __name__ == '__main__':
-
     main()
-
