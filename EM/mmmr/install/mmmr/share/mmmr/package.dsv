@@ -1,0 +1,6 @@
+source;share\mmmr\hook\pythonpath.ps1
+source;share\mmmr\hook\pythonpath.bat
+source;share\mmmr\hook\pythonpath.dsv
+source;share\mmmr\hook\ament_prefix_path.ps1
+source;share\mmmr\hook\ament_prefix_path.bat
+source;share\mmmr\hook\ament_prefix_path.dsv
