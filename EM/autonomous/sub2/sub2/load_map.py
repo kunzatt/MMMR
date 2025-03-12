@@ -57,19 +57,24 @@ class loadMap(Node):
         
         '''
         로직 2. 맵 데이터 읽고, 2차원 행렬로 변환
+        '''
 
-        full_path=
-        self.f=
-        
-        line=
-        line_data=
+        pkg_path =os.getcwd()
+        back_folder='..'
+        folder_name='map'
+        file_name='map.txt'
+        full_path=os.path.join(pkg_path,back_folder,folder_name,file_name)
+
+        self.f=open(full_path,'r')
+
+        line=self.f.readlines()
+        line_data=line[0].split()
         
         for num,data in enumerate(line_data) :
-            self.map_data[num]=
+            self.map_data[num]=int(data)
    
-        map_to_grid=
-        grid=
-        '''
+        map_to_grid=np.array(self.map_data)
+        grid=np.reshape(map_to_grid,(350,350))
 
 
         for y in range(350):
