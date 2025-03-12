@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'mmmr'
+package_name = 'taeha'
 
 setup(
     name=package_name,
@@ -20,9 +20,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'main = mmmr.main:main',
-            'ex_calib = mmmr.ex_calib:main',
-            'human_detector = mmmr.human_detector:main'
+            'main = taeha.main:main',
+            'ex_calib = taeha.ex_calib:main',
+            'human_detector = taeha.human_detector:main'
         ],
     },
 )

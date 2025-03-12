@@ -5,8 +5,8 @@
 :: the prefix is two levels up from the package specific share directory
 for %%p in ("%~dp0..\..") do set "COLCON_CURRENT_PREFIX=%%~fp"
 
-call:call_file "%%COLCON_CURRENT_PREFIX%%\share\mmmr\hook\pythonpath.bat"
-call:call_file "%%COLCON_CURRENT_PREFIX%%\share\mmmr\hook\ament_prefix_path.bat"
+call:call_file "%%COLCON_CURRENT_PREFIX%%\share\taeha\hook\pythonpath.bat"
+call:call_file "%%COLCON_CURRENT_PREFIX%%\share\taeha\hook\ament_prefix_path.bat"
 
 set COLCON_CURRENT_PREFIX=
 
