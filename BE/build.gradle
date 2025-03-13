@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.4.3'
-	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.springframework.boot' version '3.3.5'
+	id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'com.ssafy'
@@ -15,6 +15,11 @@ java {
 
 repositories {
 	mavenCentral()
+}
+
+// commons-logging 의존성 제거
+configurations.all {
+	exclude group: 'commons-logging', module: 'commons-logging'
 }
 
 dependencies {
@@ -36,6 +41,9 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test:6.4.2'
 	testImplementation 'org.mockito:mockito-inline:3.12.4'
 	testImplementation 'com.h2database:h2'
+
+	// H2 Database
+	runtimeOnly 'com.h2database:h2'
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
@@ -63,6 +71,16 @@ dependencies {
 
 	// JSON
 	implementation 'org.json:json:20231013'
+
+	// Spring Batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+	// CSV 파일 처리를 위한 라이브러리
+	implementation 'com.opencsv:opencsv:5.9'
+
+	// Excel 파일 처리를 위한 라이브러리
+	implementation 'org.apache.poi:poi:5.2.5'
+	implementation 'org.apache.poi:poi-ooxml:5.2.5'
 }
 
 tasks.named('test') {

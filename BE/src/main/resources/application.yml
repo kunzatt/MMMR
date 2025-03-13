@@ -8,6 +8,12 @@ spring:
   jackson:
     time-zone: Asia/Seoul
 
+  batch:
+    job:
+      enabled: true
+    jdbc:
+      initialize-schema: embedded
+
   servlet:
     multipart:
       max-file-size: 20MB
@@ -19,6 +25,8 @@ spring:
     storage:
       path: ${FILE_STORAGE_PATH}
 #      default-image: ${FILE_STORAGE_PATH}/default-profile.png
+    csv:
+      upload-dir: ${FILE_STORAGE_PATH}/csv
 
   datasource:
     url: ${DB_URL}
