@@ -11,8 +11,10 @@ from collections import deque
 # a_star 노드는  OccupancyGrid map을 받아 grid map 기반 최단경로 탐색 알고리즘을 통해 로봇이 목적지까지 가는 경로를 생성하는 노드입니다.
 # 로봇의 위치(/pose), 맵(/map), 목표 위치(/goal_pose)를 받아서 전역경로(/global_path)를 만들어 줍니다. 
 # goal_pose는 rviz2에서 2D Goal Pose 버튼을 누르고 위치를 찍으면 메시지가 publish 됩니다. 
-# 주의할 점 : odom을 받아서 사용하는데 기존 odom 노드는 시작했을 때 로봇의 초기 위치가 x,y,heading(0,0,0) 입니다. 로봇의 초기위치를 맵 상에서 로봇의 위치와 맞춰줘야 합니다. 
-# 따라서 sub2의 odom 노드를 수정해줍니다. turtlebot_status 안에는 정답데이터(절대 위치)가 있는데 그 정보를 사용해서 맵과 로봇의 좌표를 맞춰 줍니다.
+# 주의할 점 : odom을 받아서 사용하는데 기존 odom 노드는 시작했을 때 로봇의 초기 위치가 x,y,heading(0,0,0) 입니다. 
+# 로봇의 초기위치를 맵 상에서 로봇의 위치와 맞춰줘야 합니다. 
+# 따라서 sub2의 odom 노드를 수정해줍니다. 
+# turtlebot_status 안에는 정답데이터(절대 위치)가 있는데 그 정보를 사용해서 맵과 로봇의 좌표를 맞춰 줍니다.
 
 # 노드 로직 순서
 # 1. publisher, subscriber 만들기
@@ -75,7 +77,6 @@ class a_star(Node):
         map_point_x= int((x - self.map_offset_x) / self.map_resolution)
         map_point_y= int((y - self.map_offset_y) / self.map_resolution)
         
-        
         return map_point_x,map_point_y
 
 
@@ -136,8 +137,8 @@ class a_star(Node):
                 
                 # 다익스트라 알고리즘을 완성하고 주석을 해제 시켜주세요. 
                 # 시작지, 목적지가 탐색가능한 영역이고, 시작지와 목적지가 같지 않으면 경로탐색을 합니다.
-                # if self.grid[start_grid_cell[0]][start_grid_cell[1]] ==0  and self.grid[self.goal[0]][self.goal[1]] ==0  and start_grid_cell != self.goal :
-                #     self.dijkstra(start_grid_cell)
+                if self.grid[start_grid_cell[0]][start_grid_cell[1]] ==0  and self.grid[self.goal[0]][self.goal[1]] ==0  and start_grid_cell != self.goal :
+                    self.dijkstra(start_grid_cell)
 
 
                 self.global_path_msg=Path()
@@ -160,28 +161,28 @@ class a_star(Node):
         found = False
         '''
         로직 7. grid 기반 최단경로 탐색
+        '''       
         
-        while ??:
-            if ??:
-                ??
+        while len(Q) != 0:
+            if found:
+                break
 
-            current =??
+            current = Q.popleft()
 
             for i in range(8):
-                next = ??
+                next = [current[0]+self.dx[i], current[1]+ self.dy[i]]
                 if next[0] >= 0 and next[1] >= 0 and next[0] < self.GRIDSIZE and next[1] < self.GRIDSIZE:
-                        if self.grid[next[0]][next[1]] < 50:
-                            if ??:
-                                Q.??
-                                self.path[next[0]][next[1]] = ???
-                                self.cost[next[0]][next[1]] = ???
+                        if self.grid[next[0]][next[1]] < 50: # 장애물이 아닌 경우
+                            if self.cost[current[0]][current[1]] + self.dCost[i] < self.cost[next[0]][next[1]]:
+                                Q.append(next)
+                                self.path[next[0]][next[1]] = current
+                                self.cost[next[0]][next[1]] = self.cost[current[0]][current[1]] + self.dCost[i]
 
-        node = ??
-        while ?? 
-            nextNode = ??
-            self.final_path.??
-            node = ??
-        '''       
+        node = self.goal
+        while node != start: 
+            nextNode = self.path[node[0]][node[1]]
+            self.final_path.append(node)
+            node = nextNode
         
 
         
