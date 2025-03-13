@@ -37,6 +37,10 @@ dependencies {
 	testImplementation 'org.mockito:mockito-inline:3.12.4'
 	testImplementation 'com.h2database:h2'
 
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
 	// Test에서 lombok 사용을 위한 의존성 추가
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
