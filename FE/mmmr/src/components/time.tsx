@@ -20,7 +20,7 @@ export default function Time() {
     }, []);
 
     return (
-        <div className="p-3 h-32 bg-gray-800 text-white rounded-lg shadow-md text-center">
+        <div className="p-3 h-32 rounded-lg shadow-md text-center">
             <h2 className="text-xl font-semibold">🕒 Current Time</h2>
             <p className="text-2xl font-bold mt-2">{currentTime}</p>
         </div>

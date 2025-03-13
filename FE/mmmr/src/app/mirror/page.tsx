@@ -31,11 +31,11 @@ export default function Page() {
     const [horizontalStack, setHorizontalStack] = useState<string[]>([]);
 
     const addToVerticalStack = (name: string) => {
-        setVerticalStack((prev) => [...prev, name]);
+        setVerticalStack((prev) => (prev.includes(name) ? prev : [...prev, name])); // 중복 방지
     };
 
     const addToHorizontalStack = (name: string) => {
-        setHorizontalStack((prev) => [name, ...prev]); // 맨 앞에 추가
+        setHorizontalStack((prev) => (prev.includes(name) ? prev : [name, ...prev])); // 중복 방지
     };
 
     const removeFromVerticalStack = () => {
