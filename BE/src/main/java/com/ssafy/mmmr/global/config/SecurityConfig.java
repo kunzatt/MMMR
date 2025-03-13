@@ -26,7 +26,6 @@ public class SecurityConfig {
 				).permitAll()
 				.anyRequest().permitAll()
 			)
-			.oauth2Login(oauth2 -> oauth2.disable())
 			.build();
 	}
 }
