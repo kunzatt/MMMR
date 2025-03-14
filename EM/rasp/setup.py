@@ -5,8 +5,6 @@ import os
 def install_requirements():
     print("필요한 패키지 설치 중...")
     
-    # requirements.txt 파일 생성
-    # sounddevice는 윈도우 용
     with open('requirements.txt', 'w') as f:
         f.write('pvporcupine\n')
         f.write('pyaudio\n')
