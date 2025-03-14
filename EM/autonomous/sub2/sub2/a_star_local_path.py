@@ -71,19 +71,16 @@ class astarLocalpath(Node):
                     current_waypoint = i   
             
             
-            '''
-            로직 5. local_path 예외 처리
-
-            if current_waypoint != -1 : 
+            # 로직 5. 지역경로 생성 및 예외처리
+            if current_waypoint != -1:
                 if current_waypoint + self.local_path_size < len(self.global_path_msg.poses):
-                    
-                    
-                
-                else :
+                    local_path_msg.poses = self.global_path_msg.poses[
+                        current_waypoint:current_waypoint + self.local_path_size
+                    ]
+                else:
+                    local_path_msg.poses = self.global_path_msg.poses[current_waypoint:]
 
-                    
-                              
-            '''           
+            self.local_path_pub.publish(local_path_msg)
 
             self.local_path_pub.publish(local_path_msg)
         
