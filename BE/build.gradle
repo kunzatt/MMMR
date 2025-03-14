@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.4.3'
-	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.springframework.boot' version '3.3.5'
+	id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'com.ssafy'
@@ -15,6 +15,11 @@ java {
 
 repositories {
 	mavenCentral()
+}
+
+// commons-logging 의존성 제거
+configurations.all {
+	exclude group: 'commons-logging', module: 'commons-logging'
 }
 
 dependencies {
@@ -63,6 +68,20 @@ dependencies {
 
 	// JSON
 	implementation 'org.json:json:20231013'
+
+	// Spring Batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+	// CSV 파일 처리를 위한 라이브러리
+	implementation 'com.opencsv:opencsv:5.9'
+
+	// Excel 처리를 위한 Apache POI
+	implementation 'org.apache.poi:poi:4.1.2'
+	implementation 'org.apache.poi:poi-ooxml:4.1.2'
+
+	// 대용량 Excel 처리를 위한 의존성
+	implementation 'com.monitorjbl:xlsx-streamer:2.2.0'
+
 }
 
 tasks.named('test') {

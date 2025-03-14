@@ -22,7 +22,16 @@ public enum ErrorCode {
 	LOGIN_BAD_CREDENTIALS(401, "이메일 또는 비밀번호가 일치하지 않습니다."),
 	LOGIN_FAILED(401, "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요."),
 	PASSWORD_MISMATCH(400, "새 비밀번호가 일치하지 않습니다"),
-	USERNAME_EMAIL_MISMATCH(400, "사용자 이름과 이메일이 일치하지 않습니다");
+	USERNAME_EMAIL_MISMATCH(400, "사용자 이름과 이메일이 일치하지 않습니다"),
+
+	// BusInformation
+	INVALID_EXTENSION_VALUE(400, "올바른 확장자 명이 아닙니다"),
+	FILE_UPLOAD_ERROR(500, "파일 업로드 중 오류가 발생했습니다"),
+	BATCH_PROCESSING_ERROR(500, "배치 작업 실행 중 오류가 발생했습니다"),
+
+	// Excel File
+	EMPTY_FILE(400, "파일이 비어있습니다"),
+	EXCEL_PROCESSING_ERROR(500, "엑셀 파일 처리 중 오류가 발생했습니다");
 
 	private final int status;
 	private final String message;
