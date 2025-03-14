@@ -42,9 +42,6 @@ dependencies {
 	testImplementation 'org.mockito:mockito-inline:3.12.4'
 	testImplementation 'com.h2database:h2'
 
-	// H2 Database
-	runtimeOnly 'com.h2database:h2'
-
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -78,9 +75,13 @@ dependencies {
 	// CSV 파일 처리를 위한 라이브러리
 	implementation 'com.opencsv:opencsv:5.9'
 
-	// Excel 파일 처리를 위한 라이브러리
-	implementation 'org.apache.poi:poi:5.2.5'
-	implementation 'org.apache.poi:poi-ooxml:5.2.5'
+	// Excel 처리를 위한 Apache POI
+	implementation 'org.apache.poi:poi:4.1.2'
+	implementation 'org.apache.poi:poi-ooxml:4.1.2'
+
+	// 대용량 Excel 처리를 위한 의존성
+	implementation 'com.monitorjbl:xlsx-streamer:2.2.0'
+
 }
 
 tasks.named('test') {

@@ -1,95 +1,146 @@
 package com.ssafy.mmmr.businformation.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameter;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersInvalidException;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
+import com.monitorjbl.xlsx.StreamingReader;
+import com.ssafy.mmmr.businformation.entity.BusInformationEntity;
 import com.ssafy.mmmr.businformation.repository.BusInformationRepository;
 import com.ssafy.mmmr.global.error.code.ErrorCode;
 import com.ssafy.mmmr.global.error.exception.BusInformationException;
+import com.ssafy.mmmr.global.error.exception.BusinessException;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class BusInformationService {
 
 	private final BusInformationRepository busInformationRepository;
-	private final JobLauncher jobLauncher;	// Spring Batch 작업을 실행하는 런처
-	private final Job busInformationImportJob;
 
-	@Value("${CSV_UPLOAD_DIR}")
-	private String uploadDir;
+	private static final int BATCH_SIZE = 500;
 
-	public String uploadAndProcessFile(MultipartFile file) {
-		try {
-			// 업로드 하는 디렉토리가 없으면 업로드 디렉토리 생성
-			File directory = new File(uploadDir);
-			if (!directory.exists()) {
-				directory.mkdirs();
+	@Transactional
+	public int importExcelFile(MultipartFile file) throws IOException {
+		int totalImported = 0;
+		List<BusInformationEntity> batchList = new ArrayList<>(BATCH_SIZE);
+
+		try (InputStream is = file.getInputStream()) {
+			// 대용량 처리를 위한 StreamingReader 사용
+			Workbook workbook = StreamingReader.builder()
+				.rowCacheSize(100)    // 캐시할 행 수
+				.bufferSize(4096)     // 버퍼 크기
+				.open(is);
+
+			Sheet sheet = workbook.getSheetAt(0);  // 첫 번째 시트 사용
+
+			boolean isFirstRow = true;  // 헤더 행 건너뛰기 용도
+
+			for (Row row : sheet) {
+				if (isFirstRow) {
+					isFirstRow = false;
+					continue;  // 헤더 행 건너뛰기
+				}
+
+				try {
+					BusInformationEntity busInfo = parseRowToBusInformation(row);
+					if (busInfo != null) {
+						batchList.add(busInfo);
+						totalImported++;
+
+						// 배치 크기에 도달하면 저장 후 리스트 비우기
+						if (batchList.size() >= BATCH_SIZE) {
+							busInformationRepository.saveAll(batchList);
+							batchList.clear();
+						}
+					}
+				} catch (Exception e) {
+					// 로그 남기기
+					throw new BusInformationException(ErrorCode.EXCEL_PROCESSING_ERROR);
+				}
 			}
 
-			// 파일 저장
-			String originalFilename = file.getOriginalFilename();
-			String fileExtension = getFileExtension(originalFilename);
-
-			if (!fileExtension.equals("csv")) {
-				throw new BusInformationException(ErrorCode.INVALID_EXTENSION_VALUE);
+			// 남은 데이터 저장
+			if (!batchList.isEmpty()) {
+				busInformationRepository.saveAll(batchList);
 			}
-
-			String filename = System.currentTimeMillis() + "." + fileExtension;
-			Path targetLocation = Paths.get(uploadDir).resolve(filename);
-			// 업로드된 파일을 지정된 위치에 저장
-			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-
-			// 배치 작업 실행
-			Map<String, JobParameter<?>> jobParametersMap = new HashMap<>();
-			jobParametersMap.put("time", new JobParameter<>(System.currentTimeMillis(), Long.class));
-			jobParametersMap.put("filePath", new JobParameter<>(targetLocation.toString(), String.class));
-
-			JobParameters jobParameters = new JobParameters(jobParametersMap);
-			JobExecution jobExecution = jobLauncher.run(busInformationImportJob, jobParameters);
-			;
-
-			return "파일 업로드 및 DB 저장 JobId: " + jobExecution.getJobId();
 		} catch (IOException e) {
 			throw new BusInformationException(ErrorCode.FILE_UPLOAD_ERROR);
-		} catch (JobParametersInvalidException | JobExecutionAlreadyRunningException
-				 | JobRestartException | JobInstanceAlreadyCompleteException e) {
-			throw new BusInformationException(ErrorCode.BATCH_PROCESSING_ERROR);
+		} catch (BusInformationException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new BusInformationException(ErrorCode.EXCEL_PROCESSING_ERROR);
 		}
 
-
+		return totalImported;
 	}
 
-	// csv 파일인지 검증
-	public String getFileExtension(String originalFilename) {
-		if (originalFilename == null) {
-			return "";
+	private BusInformationEntity parseRowToBusInformation(Row row) {
+		try {
+			// 셀 값 가져오기, 숫자형은 반드시 숫자로 변환
+			int routeId = (int) getNumericCellValue(row.getCell(0));
+			String route = getStringCellValue(row.getCell(1));
+			int sequence = (int) getNumericCellValue(row.getCell(2));
+			int stationId = (int) getNumericCellValue(row.getCell(3));
+			String station = getStringCellValue(row.getCell(4));
+
+			// 필수 값 검증
+			if (route == null || route.isEmpty() || station == null || station.isEmpty()) {
+				return null;
+			}
+
+			return BusInformationEntity.builder()
+				.routeId(routeId)
+				.route(route)
+				.sequence(sequence)
+				.stationId(stationId)
+				.station(station)
+				.build();
+
+		} catch (BusinessException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new BusInformationException(ErrorCode.INVALID_INPUT_VALUE);
 		}
-		int dotIndex = originalFilename.lastIndexOf(".");
-		if (dotIndex == -1) {
-			return "";
-		}
-		return originalFilename.substring(dotIndex + 1);
 	}
 
+	private double getNumericCellValue(Cell cell) {
+		if (cell == null) {
+			return 0;
+		}
+
+		switch (cell.getCellType()) {
+			case NUMERIC:
+				return cell.getNumericCellValue();
+			case STRING:
+				try {
+					return Double.parseDouble(cell.getStringCellValue().trim());
+				} catch (NumberFormatException e) {
+					return 0;
+				}
+			default:
+				return 0;
+		}
+	}
+
+	private String getStringCellValue(Cell cell) {
+		if (cell == null) {
+			return "";
+		}
+
+		switch (cell.getCellType()) {
+			case STRING:
+				return cell.getStringCellValue().trim();
+			case NUMERIC:
+				return String.valueOf((int) cell.getNumericCellValue());
+			default:
+				return "";
+		}
+	}
 }
