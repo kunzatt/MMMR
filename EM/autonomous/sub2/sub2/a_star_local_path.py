@@ -45,14 +45,9 @@ class astarLocalpath(Node):
 
 
     def path_callback(self,msg):
-        pass
-        '''
-        로직 2. global_path 데이터 수신 후 저장
-
-        self.is_path=
-        self.global_path_msg=
-        
-        '''
+        # 로직 2. 글로벌 경로 수신
+        self.is_path = True
+        self.global_path_msg = msg
 
         
     def timer_callback(self):
