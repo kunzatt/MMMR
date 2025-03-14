@@ -9,6 +9,7 @@ def install_requirements():
     # sounddevice는 윈도우 용
     with open('requirements.txt', 'w') as f:
         f.write('pvporcupine\n')
+        f.write('pyaudio\n')
         f.write('sounddevice\n')
         f.write('numpy\n')
         f.write('python-dotenv\n')
