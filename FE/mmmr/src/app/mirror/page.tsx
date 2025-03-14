@@ -30,33 +30,35 @@ export default function Page() {
     const [verticalStack, setVerticalStack] = useState<string[]>([]);
     const [horizontalStack, setHorizontalStack] = useState<string[]>([]);
 
+    // 특정 컴포넌트 추가 (중복 방지)
     const addToVerticalStack = (name: string) => {
-        setVerticalStack((prev) => (prev.includes(name) ? prev : [...prev, name])); // 중복 방지
+        setVerticalStack((prev) => (prev.includes(name) ? prev : [...prev, name]));
     };
 
     const addToHorizontalStack = (name: string) => {
-        setHorizontalStack((prev) => (prev.includes(name) ? prev : [name, ...prev])); // 중복 방지
+        setHorizontalStack((prev) => (prev.includes(name) ? prev : [name, ...prev]));
     };
 
-    const removeFromVerticalStack = () => {
-        setVerticalStack((prev) => prev.slice(0, -1));
+    // 특정 컴포넌트 삭제
+    const removeFromVerticalStack = (name: string) => {
+        setVerticalStack((prev) => prev.filter((item) => item !== name));
     };
 
-    const removeFromHorizontalStack = () => {
-        setHorizontalStack((prev) => prev.slice(1)); // 맨 앞 삭제
+    const removeFromHorizontalStack = (name: string) => {
+        setHorizontalStack((prev) => prev.filter((item) => item !== name));
     };
 
     return (
-        <div className="flex flex-col items-center mt-10 min-h-screen ">
-            {/* 버튼 그룹 */}
-            <div className="flex gap-2 mb-6">
+        <div className="flex flex-col items-center mt-10 min-h-screen">
+            {/* 추가 버튼 그룹 */}
+            <div className="flex flex-wrap gap-2 mb-6">
                 {Object.keys(vcomponentMap).map((name) => (
                     <button
                         key={name}
                         onClick={() => addToVerticalStack(name)}
                         className="px-2 py-2 bg-blue-600 rounded-md hover:bg-blue-500"
                     >
-                        Add {name}
+                        Add {name} (Vertical)
                     </button>
                 ))}
                 {Object.keys(hcomponentMap).map((name) => (
@@ -65,21 +67,31 @@ export default function Page() {
                         onClick={() => addToHorizontalStack(name)}
                         className="px-2 py-2 bg-red-600 rounded-md hover:bg-red-500"
                     >
-                        Add {name}
+                        Add {name} (Horizontal)
                     </button>
                 ))}
-                <button
-                    onClick={removeFromVerticalStack}
-                    className="px-2 py-2 bg-blue-800 rounded-md hover:bg-blue-700"
-                >
-                    Pop Vertical
-                </button>
-                <button
-                    onClick={removeFromHorizontalStack}
-                    className="px-2 py-2 bg-red-800 rounded-md hover:bg-red-700"
-                >
-                    Pop Horizontal
-                </button>
+            </div>
+
+            {/* 삭제 버튼 그룹 */}
+            <div className="flex flex-wrap gap-2 mb-6">
+                {verticalStack.map((name) => (
+                    <button
+                        key={name}
+                        onClick={() => removeFromVerticalStack(name)}
+                        className="px-2 py-2 bg-blue-800 rounded-md hover:bg-blue-700 text-white"
+                    >
+                        Remove {name} (Vertical)
+                    </button>
+                ))}
+                {horizontalStack.map((name) => (
+                    <button
+                        key={name}
+                        onClick={() => removeFromHorizontalStack(name)}
+                        className="px-2 py-2 bg-red-800 rounded-md hover:bg-red-700 text-white"
+                    >
+                        Remove {name} (Horizontal)
+                    </button>
+                ))}
             </div>
 
             {/* 스택 UI */}
