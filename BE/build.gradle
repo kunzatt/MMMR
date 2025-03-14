@@ -71,6 +71,7 @@ dependencies {
 
 	// jsoup
 	implementation 'org.jsoup:jsoup:1.18.3'
+
 	// Spring Batch
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
 

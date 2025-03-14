@@ -41,7 +41,7 @@ public class NewsService {
 
         }catch (Exception e){
             log.error("getNewsTitleList : {}", e.getMessage());
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "뉴스 제목 크롤링 실패");
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "뉴스 제목 조회 실패");
         }
 
     }
@@ -53,14 +53,13 @@ public class NewsService {
 
             assert newsEntity != null : "newsEntity is null";
             return NewsContentDto.builder()
-                    .id(newsEntity.getId())
                     .title(newsEntity.getTitle())
                     .content(newsEntity.getContent())
                     .build();
 
         }catch (Exception e){
             log.error("getNewsContentById : {}", e.getMessage());
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "뉴스 내용 크롤링 실패");
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "뉴스 내용 조회 실패");
         }
     }
 

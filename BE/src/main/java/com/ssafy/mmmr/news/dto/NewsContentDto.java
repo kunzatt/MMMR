@@ -12,9 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class NewsContentDto {
 
-    @Schema(description = "뉴스 ID", example = "1")
-    private long id;
-
     @Schema(description = "뉴스 제목", example = "'주주에 대한 이사 충실의무' 상법 개정안, 野주도 국회 통과")
     private String title;
 
