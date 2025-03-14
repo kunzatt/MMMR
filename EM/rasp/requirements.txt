@@ -1,0 +1,5 @@
+pvporcupine
+pyaudio
+sounddevice
+numpy
+python-dotenv
