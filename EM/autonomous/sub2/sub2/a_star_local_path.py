@@ -60,17 +60,15 @@ class astarLocalpath(Node):
             y=self.odom_msg.pose.pose.position.y
             current_waypoint=-1
             
-            '''
-            로직 4. global_path 중 로봇과 가장 가까운 포인트 계산
-            
-            min_dis=
-            for i,waypoint in enumerate(self.global_path_msg.poses) : 
-                distance=
-                if distance < min_dis :
-                    min_dis=
-                    current_waypoint=
-
-            '''           
+            # 로직 4. 가장 가까운 웨이포인트 찾기
+            for i, waypoint in enumerate(self.global_path_msg.poses):
+                dx = waypoint.pose.position.x - x
+                dy = waypoint.pose.position.y - y
+                distance = sqrt(dx**2 + dy**2)
+                
+                if distance < min_dis:
+                    min_dis = distance
+                    current_waypoint = i   
             
             
             '''
