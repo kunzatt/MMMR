@@ -35,7 +35,7 @@ public class SwaggerConfig {
 				.description("MMMR Documentation")
 				.url("https://lab.ssafy.com/s12-mobility-smarthome-sub1/S12P21A703"))
 			.servers(List.of(
-				new Server().url("/api").description("Local server")
+				new Server().url("").description("Local server")
 			));
 	}
 

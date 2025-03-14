@@ -8,6 +8,12 @@ spring:
   jackson:
     time-zone: Asia/Seoul
 
+  batch:
+    job:
+      enabled: true
+    jdbc:
+      initialize-schema: embedded
+
   servlet:
     multipart:
       max-file-size: 20MB
@@ -19,6 +25,8 @@ spring:
     storage:
       path: ${FILE_STORAGE_PATH}
 #      default-image: ${FILE_STORAGE_PATH}/default-profile.png
+    csv:
+      upload-dir: ${FILE_STORAGE_PATH}/csv
 
   datasource:
     url: ${DB_URL}
@@ -59,8 +67,7 @@ logging:
     root: ${LOG_LEVEL_ROOT:INFO}
     org.springframework.web: ${LOG_LEVEL_SPRING_WEB:DEBUG}
     org.hibernate.SQL: ${LOG_LEVEL_HIBERNATE:DEBUG}
-    com.corp: ${LOG_LEVEL_APP:DEBUG}
-    org.mybatis: ${LOG_LEVEL_MYBATIS:TRACE}
+    com.ssafy: ${LOG_LEVEL_APP:DEBUG}
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
