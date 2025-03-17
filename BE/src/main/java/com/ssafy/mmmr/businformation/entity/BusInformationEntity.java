@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "businformations")
 @Getter
-@Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BusInformationEntity {
