@@ -125,6 +125,8 @@ def transformMTX_lidar2cam(params_lidar, params_cam):
 
     """
     로직 3. 카메라의 자세로 맞춰주는 rotation 행렬을 정의
+    카메라의 좌표는 z축이 카메라 렌즈를 향하고, x축이 이미지 화면 아래,  y축이 오른쪽을 향하는게 일반적임
+    이에 맞는 순소러 rotation을 여러 개 만들어서 곱해줘야한다.
     """
 
     # 먼저 라이다의 orientation을 제거한 다음, 카메라의 orientation을 적용
@@ -134,8 +136,16 @@ def transformMTX_lidar2cam(params_lidar, params_cam):
     
     R_cam = rotationMtx(cam_yaw, cam_pitch, cam_roll)
     
-    # 라이다의 orientation 제거 후 카메라 orientation 적용
-    Rmtx = np.matmul(R_cam, R_lidar_inv)
+    # 축 방향 보정 행렬 (좌표계 변환)
+    R_axis = np.array([
+        [0, -1, 0, 0],  # X_lidar → -Y_cam
+        [0, 0, -1, 0],  # Y_lidar → -Z_cam 
+        [1, 0, 0, 0],   # Z_lidar → X_cam
+        [0, 0, 0, 1]
+    ])
+    
+    # 최종 회전 행렬 조합
+    Rmtx = R_cam @ R_axis @ R_lidar_inv  # 순서 중요!
 
 
     """
@@ -143,6 +153,7 @@ def transformMTX_lidar2cam(params_lidar, params_cam):
     로직 4. 위의 두 행렬을 가지고 최종 라이다-카메라 변환 행렬을 정의
     """
     RT = Tmtx @ Rmtx
+
 
 
     # return np.eye(4)
