@@ -14,6 +14,11 @@ def install_requirements():
         f.write('pygame\n')
         f.write('google-cloud-speech\n')
         f.write('google-cloud-texttospeech\n')
+        f.write('torch\n')
+        f.write('faster-whisper\n')
+        f.write('uvicorn\n')
+        f.write('fastapi\n')
+        f.write('websockets\n')
         
     try:    
         # 필요한 패키지 설치
