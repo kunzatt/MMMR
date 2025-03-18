@@ -220,6 +220,7 @@ class LIDAR2CAMTransform:
         LIDAR2CAMTransform 정의 및 기능 로직 순서
         1. Params를 입력으로 받아서 필요한 파라메터들과 RT 행렬, projection 행렬 등을 정의. 
         2. 클래스 내 self.RT로 라이다 포인트들을 카메라 좌표계로 변환.
+        4*4 매트릭스에 3차원의 좌표를 곱하기 위해서 augmentation 해서 차원 맞추기기
         3. RT로 좌표 변환된 포인트들의 normalizing plane 상의 위치를 계산. 
         4. normalizing plane 상의 라이다 포인트들에 proj_mtx를 곱해 픽셀 좌표값 계산.
         5. 이미지 프레임 밖을 벗어나는 포인트들을 crop.
@@ -238,15 +239,15 @@ class LIDAR2CAMTransform:
 
     def transform_lidar2cam(self, xyz_p):
         
-        xyz_c = xyz_p
         
         """
-        
         로직 2. 클래스 내 self.RT로 라이다 포인트들을 카메라 좌표계로 변환시킨다.
-        
-        xyz_c = 
-        
         """
+        # 4*4 행렬로 변환
+        xyz_aug = np.hstack([xyz_p, np.ones((xyz_p.shape[0],1))]).T
+        # 행렬 곱 연산 후 차원 축소
+        xyz_c = (self.RT @ xyz_aug).T[:,:3]
+
         return xyz_c
 
     def project_pts2img(self, xyz_c, crop=True):
@@ -255,22 +256,29 @@ class LIDAR2CAMTransform:
 
         """
         로직 3. RT로 좌표 변환된 포인트들의 normalizing plane 상의 위치를 계산.
-        xn, yn = 
-
         """
-        
+        xn = xyz_c[:,0] / xyz_c[:,2] # x값 나누기 z값
+        yn = xyz_c[:,1] / xyz_c[:,2] # y값 나누기 z값
+
         # 로직 4. normalizing plane 상의 라이다 포인트들에 proj_mtx를 곱해 픽셀 좌표값 계산.
 
-        # xyi = np.matmul(self.proj_mtx, np.concatenate([xn, yn, np.ones_like(xn)], axis=0))
+        xyi = np.matmul(self.proj_mtx, np.concatenate([xn, yn, np.ones_like(xn)], axis=0))
 
         """
         로직 5. 이미지 프레임 밖을 벗어나는 포인트들을 crop.
+        """
 
         if crop:
-            xyi = 
+            # 조건을 만족하는 요소의 인덱스 튜플 반환
+            # valid_idx = np.where(
+            #     (xyi[:,0] >= 0) & (xyi[:,0] < self.width) & # 이미지 범위 내의 x 좌표
+            #     ((xyi[:,1] >= 0) & (xyi[:,1] < self.height)) # 이미지 범위 내의 y 좌표
+            # )[0]
+
+            # xyi = xyi[valid_idx]
+            xyi = self.crop_pts(xyi)
         else:
             pass
-        """
         return xyi
 
     def crop_pts(self, xyi):
@@ -280,6 +288,7 @@ class LIDAR2CAMTransform:
 
         return xyi
 
+    
     
 
 
