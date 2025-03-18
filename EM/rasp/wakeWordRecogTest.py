@@ -51,7 +51,7 @@ def play_alert_sound():
     else:
         print(f"알림음 파일을 찾을 수 없습니다: {ALERT_SOUND_PATH}")
 
-def test_wake_word():
+def recog_wake_word():
     porcupine = None
     audio = None
     stream = None
@@ -125,7 +125,6 @@ def test_wake_word():
                 recording_start_time = time_module.time()
                 recorded_frames = [pcm.tobytes()]  # 현재 프레임부터 녹음 시작
 
-            # CPU 사용량 최적화
             time_module.sleep(0.01)
 
     except Exception as e:
@@ -169,5 +168,4 @@ if __name__ == "__main__":
     if missing_vars:
         print(f"오류: .env 파일에 필요한 환경변수가 설정되지 않았습니다: {', '.join(missing_vars)}")
         exit(1)
-
-    test_wake_word()
+    recog_wake_word()
