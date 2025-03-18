@@ -1,24 +1,58 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
 export default function News() {
-    const news: Array<string> = [
-        '테슬라 시총 하루만에 190조 증발…트럼프 당선 상승분',
-        '[단독] 수원 일가족 4명 사망… “40대 가장, 빌려준',
-        '초인종 울려 나갔다가…자녀 앞에서 무차별 폭행 당한',
-        '유재석, 현금 200억 주고 산 논현동 땅에 빌딩 올린',
-        '"이젠 정말 한계다"…맘스터치 일부 사장님들, 결국',
-    ];
+    const [news, setNews] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        const fetchNews = async () => {
+            try {
+                const response = await fetch('http://70.12.246.168:8088/api/news');
+                const data = await response.json();
+                const titles = data.slice(0, 5).map((item: { title: string }) => item.title); // 상위 5개 뉴스 제목만 추출
+                setNews(titles);
+            } catch (error) {
+                console.error('Failed to fetch news:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchNews();
+    }, []);
+
+    const truncateText = (text: string, maxLength: number) => {
+        if (text.length <= maxLength) return text;
+
+        const words = text.split(' '); // 공백 기준으로 단어 배열 생성
+        let truncated = '';
+
+        for (const word of words) {
+            if ((truncated + word).length > maxLength) break; // 최대 길이 초과 시 종료
+            truncated += (truncated ? ' ' : '') + word;
+        }
+
+        return truncated + '...'; // 단어 단위로 자르고 "..." 추가
+    };
+
     return (
         <div className="font-sans py-3 px-5 w-auto h-44 shadow-md">
             <div>
                 <h2 className="text-lg font-semibold">Top5 News</h2>
             </div>
             <div>
-                {news.map((item, index) => (
-                    <div key={index} className="text-sm flex gap-2 items-center">
-                        <p className="font-bold text-base">{index + 1}</p>
-                        {item.length > 20 && <p>{item.slice(0, 20)}...</p>}
-                        {item.length <= 20 && <p>{item}</p>}
-                    </div>
-                ))}
+                {loading ? (
+                    <p>Loading...</p>
+                ) : (
+                    news.map((item, index) => (
+                        <div key={index} className="text-sm flex gap-2 items-center">
+                            <p className="font-bold text-base">{index + 1}</p>
+                            {item.length > 20 ? <p>{truncateText(item, 20)}</p> : <p>{item}</p>}
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );
