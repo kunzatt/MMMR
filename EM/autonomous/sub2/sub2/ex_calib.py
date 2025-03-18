@@ -172,47 +172,33 @@ def project2img_mtx(params_cam):
     
     """
     로직 1. params에서 카메라의 width, height, fov를 가져와서 focal length를 계산.
-    
-    fc_x = 
-    fc_y = 
     """
+    #focal length(렌즈-카메라 거리), working distance(렌즈-피사체 거리), FOV(카메라의 이미지 센서 채우는 피사체 영역- 시야각)
+    #focal length = Image sensor size * working distance / FOV
+    #FOV = 2 * (working distance * tan(세타/2))
+
+    fc_x = params_cam["WIDTH"] / (2.0 * np.tan(params_cam["FOV"] * np.pi / 360.0))
+    fc_y = params_cam["HEIGHT"] / (2.0 * np.tan(params_cam["FOV"] * np.pi / 360.0))
 
     """
     로직 2. 카메라의 파라메터로 이미지 프레임 센터를 계산.
-    cx = 
-    cy = 
     """
+    cx = params_cam["WIDTH"] / 2.0
+    cy = params_cam["HEIGHT"] / 2.0
 
     """
 
     로직 3. Projection 행렬을 계산.
-    R_f =
-
     """
+    R_f = np.array([[fc_x,  0,     cx],
+                    [0,     fc_y,  cy]])
 
-    """
-    테스트
 
-    params_cam = {
-        "WIDTH": 320, # image width
-        "HEIGHT": 240, # image height
-        "FOV": 60, # Field of view
-        "X": 0., # meter
-        "Y": 0,
-        "Z":  1.0,
-        "YAW": 0, # deg
-        "PITCH": 0.0,
-        "ROLL": 0
-    }
+    
 
-    이면
+    # return np.zeros((2,3))
+    return R_f
 
-    R_f = 
-    [[207.84609691   0.         160.        ]
-    [  0.         207.84609691 120.        ]]
-    """
-
-    return np.zeros((2,3))
 
 
 def draw_pts_img(img, xi, yi):
