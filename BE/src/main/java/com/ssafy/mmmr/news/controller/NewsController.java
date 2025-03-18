@@ -83,7 +83,7 @@ public class NewsController {
                     )
             )
     })
-    @GetMapping("/list")
+    @GetMapping
     ResponseEntity<List<NewsResponseDto>> getNewsTitleList() {
         List<NewsResponseDto> newsResponseDtos = newsService.getNewsList();
         return new ResponseEntity<>(newsResponseDtos, HttpStatus.OK);
