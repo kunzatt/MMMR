@@ -24,7 +24,7 @@ export default function Timer() {
         return `${minutes}:${secs}`;
     };
     return (
-        <div className="font-sans py-3 px-10 w-auto h-44 shadow-md text-center flex items-center">
+        <div className="py-3 px-10 w-auto h-44 shadow-md text-center flex items-center">
             <p className="text-7xl font-medium">{formatTime(timeLeft)}</p>
         </div>
     );

@@ -8,7 +8,7 @@ export default function Todo() {
     ];
 
     return (
-        <div className="font-sans py-3 px-5 h-auto w-48 shadow-md">
+        <div className="py-3 px-5 h-auto w-48 shadow-md">
             <h2 className="text-lg font-semibold border-b-2 border-black">Todo List</h2>
             <ul className="pt-2 list-disc list-outside text-sm pl-3">
                 {todoItems.map((item, index) => (
