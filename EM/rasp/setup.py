@@ -11,6 +11,7 @@ def install_requirements():
         f.write('sounddevice\n')
         f.write('numpy\n')
         f.write('python-dotenv\n')
+        f.write('websockets\n')
         
     try:    
         # 필요한 패키지 설치
