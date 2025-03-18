@@ -101,7 +101,7 @@ export default function Page() {
                     {verticalStack.map((name, index) => {
                         const Component = vcomponentMap[name];
                         return Component ? (
-                            <div key={index} className="w-48">
+                            <div key={index}>
                                 <Component />
                             </div>
                         ) : null;

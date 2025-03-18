@@ -7,14 +7,14 @@ export default function News() {
         '"이젠 정말 한계다"…맘스터치 일부 사장님들, 결국',
     ];
     return (
-        <div className="p-2 w-72 h-36 rounded-lg shadow-md">
+        <div className="font-sans py-3 px-5 w-auto h-44 rounded-lg shadow-md">
             <div>
-                <h2 className="text-l font-semibold">Top5 News</h2>
+                <h2 className="text-lg font-semibold">Top5 News</h2>
             </div>
             <div>
                 {news.map((item, index) => (
-                    <div key={index} className="text-sm flex gap-2">
-                        <p className="font-bold">{index + 1}</p>
+                    <div key={index} className="text-sm flex gap-2 items-center">
+                        <p className="font-bold text-base">{index + 1}</p>
                         {item.length > 20 && <p>{item.slice(0, 20)}...</p>}
                         {item.length <= 20 && <p>{item}</p>}
                     </div>
