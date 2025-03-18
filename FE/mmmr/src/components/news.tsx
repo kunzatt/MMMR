@@ -7,7 +7,7 @@ export default function News() {
         '"이젠 정말 한계다"…맘스터치 일부 사장님들, 결국',
     ];
     return (
-        <div className="font-sans py-3 px-5 w-auto h-44 rounded-lg shadow-md">
+        <div className="font-sans py-3 px-5 w-auto h-44 shadow-md">
             <div>
                 <h2 className="text-lg font-semibold">Top5 News</h2>
             </div>
