@@ -1,8 +1,8 @@
-package com.ssafy.mmmr.businformation.service;
+package com.ssafy.mmmr.businformations.service;
 
 import com.monitorjbl.xlsx.StreamingReader;
-import com.ssafy.mmmr.businformation.entity.BusInformationEntity;
-import com.ssafy.mmmr.businformation.repository.BusInformationRepository;
+import com.ssafy.mmmr.businformations.entity.BusInformationEntity;
+import com.ssafy.mmmr.businformations.repository.BusInformationRepository;
 import com.ssafy.mmmr.global.error.code.ErrorCode;
 import com.ssafy.mmmr.global.error.exception.BusInformationException;
 import com.ssafy.mmmr.global.error.exception.BusinessException;
