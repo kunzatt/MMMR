@@ -28,7 +28,7 @@ PORT = int(os.getenv("PORT", "8000"))
 
 # 음성 감지 설정
 ENERGY_THRESHOLD = float(os.getenv("ENERGY_THRESHOLD", "0.05"))
-SILENCE_THRESHOLD = int(os.getenv("SILENCE_THRESHOLD", "15"))
+SILENCE_THRESHOLD = int(os.getenv("SILENCE_THRESHOLD", "25"))
 MIN_AUDIO_LENGTH = float(os.getenv("MIN_AUDIO_LENGTH", "0.5"))
 
 app = FastAPI(title="Speech-to-Text WebSocket Server")
@@ -244,7 +244,6 @@ async def websocket_endpoint(websocket: WebSocket):
                 streaming = False
                 break
             except Exception as e:
-                # 바이너리 데이터일 수 있으므로 바이너리로 시도
                 try:
                     binary_data = await websocket.receive_bytes()
                     # 바이너리 오디오 데이터 처리
