@@ -31,7 +31,12 @@ public enum ErrorCode {
 
 	// Excel File
 	EMPTY_FILE(400, "파일이 비어있습니다"),
-	EXCEL_PROCESSING_ERROR(500, "엑셀 파일 처리 중 오류가 발생했습니다");
+	EXCEL_PROCESSING_ERROR(500, "엑셀 파일 처리 중 오류가 발생했습니다"),
+
+	// News
+	NEWS_FETCH_FAILED(500, "뉴스 조회에 실패했습니다. 다시 시도해주세요."),
+	NEWS_CRAWLING_FAILED(500, "뉴스 크롤링 중 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+
 
 	private final int status;
 	private final String message;
