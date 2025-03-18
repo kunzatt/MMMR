@@ -8,7 +8,7 @@ from google.cloud import texttospeech
 import pygame
 from dotenv import load_dotenv
 
-def record_audio(seconds=8, sample_rate=16000, output_file="recorded_audio.wav"):
+def record_audio(seconds=2.82, sample_rate=16000, output_file="recorded_audio.wav"):
     """
     sounddevice를 사용하여 마이크에서 지정된 시간(초) 동안 오디오를 녹음합니다.
     저렴한 옵션을 위해 16kHz 샘플레이트와 mono 채널을 사용합니다.
@@ -38,13 +38,19 @@ def record_audio(seconds=8, sample_rate=16000, output_file="recorded_audio.wav")
 def transcribe_audio(audio_file_path):
     """
     오디오 파일을 텍스트로 변환합니다. (가장 저렴한 옵션 사용)
+    STT 응답 시간을 측정합니다.
     """
+    # 시작 시간 기록
+    start_time = time.time()
+    
     # Speech 클라이언트 초기화
     client = speech.SpeechClient()
     
     # 오디오 파일 읽기
     with open(audio_file_path, "rb") as audio_file:
         content = audio_file.read()
+    
+    print("STT 요청 시작 시간:", time.strftime("%H:%M:%S", time.localtime(start_time)))
     
     # 오디오 설정 - 저렴한 옵션 사용
     audio = speech.RecognitionAudio(content=content)
@@ -60,6 +66,13 @@ def transcribe_audio(audio_file_path):
     
     # STT 요청 실행
     response = client.recognize(config=config, audio=audio)
+    
+    # 종료 시간 기록
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    
+    print("STT 응답 종료 시간:", time.strftime("%H:%M:%S", time.localtime(end_time)))
+    print(f"STT 처리 시간: {elapsed_time:.2f}초")
     
     # 결과 처리
     transcript = ""

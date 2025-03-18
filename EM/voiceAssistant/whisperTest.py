@@ -7,7 +7,6 @@ import torch
 from faster_whisper import WhisperModel
 import wave
 import os
-import json
 
 SAMPLE_RATE = 16000
 CHANNELS = 1
