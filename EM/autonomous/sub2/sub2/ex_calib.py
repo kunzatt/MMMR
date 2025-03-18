@@ -13,7 +13,7 @@ params_lidar = {
     "Block_SIZE": int(1206),
     "X": 0, # meter
     "Y": 0,
-    "Z": 0.4+0.1,
+    "Z": 0.6,
     "YAW": 0, # deg
     "PITCH": 0,
     "ROLL": 0
@@ -21,15 +21,15 @@ params_lidar = {
 
 
 params_cam = {
-    "WIDTH": 320, # image width
-    "HEIGHT": 240, # image height
-    "FOV": 60, # Field of view
+    "WIDTH": 640, # image width
+    "HEIGHT": 480, # image height
+    "FOV": 90, # Field of view
     "localIP": "127.0.0.1",
     "localPort": 1232,
     "Block_SIZE": int(65000),
     "X": 0., # meter
     "Y": 0,
-    "Z":  0.8,
+    "Z":  1.0,
     "YAW": 0, # deg
     "PITCH": 0.0,
     "ROLL": 0
@@ -106,73 +106,47 @@ def transformMTX_lidar2cam(params_lidar, params_cam):
 
     """
     로직 1. params에서 라이다와 카메라 센서들의 자세, 위치 정보를 뽑기.
-
-    lidar_yaw, lidar_pitch, lidar_roll =
-    cam_yaw, cam_pitch, cam_roll =
-    
-    lidar_pos = 
-    cam_pos = 
-
     """
+
+    lidar_yaw, lidar_pitch, lidar_roll = params_lidar["YAW"], params_lidar["PITCH"], params_lidar["ROLL"]
+    cam_yaw, cam_pitch, cam_roll = params_cam["YAW"], params_cam["PITCH"], params_cam["ROLL"]
+    
+    lidar_pos = np.array([params_lidar["X"], params_lidar["Y"], params_lidar["Z"]])
+    cam_pos = np.array([params_cam["X"], params_cam["Y"], params_cam["Z"]])
+
 
     """
 
     로직 2. 라이다에서 카메라 까지 변환하는 translation 행렬을 정의
-    Tmtx = 
-
     """
+    pose_diff = cam_pos - lidar_pos
+    Tmtx = translationMtx(*pose_diff) # *을 통해 리스트나 튜플 등의 반복 가능 한 요소를 분해해서 전달
+
 
     """
     로직 3. 카메라의 자세로 맞춰주는 rotation 행렬을 정의
-
-    Rmtx = 
-
     """
+
+    # 먼저 라이다의 orientation을 제거한 다음, 카메라의 orientation을 적용
+    # 이를 위해 라이다 회전 행렬의 역행렬(전치행렬)과 카메라 회전 행렬을 곱합니다
+    R_lidar = rotationMtx(lidar_yaw, lidar_pitch, lidar_roll)
+    R_lidar_inv = np.transpose(R_lidar)  # 회전 행렬의 역행렬은 전치행렬
+    
+    R_cam = rotationMtx(cam_yaw, cam_pitch, cam_roll)
+    
+    # 라이다의 orientation 제거 후 카메라 orientation 적용
+    Rmtx = np.matmul(R_cam, R_lidar_inv)
+
 
     """
 
     로직 4. 위의 두 행렬을 가지고 최종 라이다-카메라 변환 행렬을 정의
-    RT = 
-
     """
-
-    """
-    테스트
-
-    params_lidar = {
-        "X": 0, # meter
-        "Y": 0,
-        "Z": 0.6,
-        "YAW": 0, # deg
-        "PITCH": 0,
-        "ROLL": 0
-    }
+    RT = Tmtx @ Rmtx
 
 
-    params_cam = {
-        "WIDTH": 640, # image width
-        "HEIGHT": 480, # image height
-        "FOV": 90, # Field of view
-        "X": 0., # meter
-        "Y": 0,
-        "Z":  1.0,
-        "YAW": 0, # deg
-        "PITCH": 0.0,
-        "ROLL": 0
-    }
-
-    이면
-
-    R_T = 
-    [[ 6.12323400e-17 -1.00000000e+00  0.00000000e+00  0.00000000e+00]
-    [ 6.12323400e-17  3.74939946e-33 -1.00000000e+00  4.00000000e-01]
-    [ 1.00000000e+00  6.12323400e-17  6.12323400e-17 -2.44929360e-17]
-    [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
-
-    """
-
-    return np.eye(4)
-
+    # return np.eye(4)
+    return RT
 
 def project2img_mtx(params_cam):
 
