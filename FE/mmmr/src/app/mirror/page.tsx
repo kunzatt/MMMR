@@ -75,6 +75,14 @@ export default function Page() {
         setActiveModules((prev) => ({ ...prev, [name]: !prev[name] }));
     };
 
+    const removeModule = (name: string) => {
+        setActiveModules((prev) => {
+            const updatedModules = { ...prev };
+            delete updatedModules[name];
+            return updatedModules;
+        });
+    };
+
     return (
         <div className="font-sans flex flex-col items-center min-h-screen">
             {/* 버튼 UI (높이 고려) */}
@@ -87,7 +95,7 @@ export default function Page() {
                             activeModules[name] ? 'bg-red-500 text-white' : 'bg-blue-100 hover:bg-blue-200'
                         }`}
                     >
-                        {activeModules[name] ? `Remove ${name}` : `Add ${name}`}
+                        {activeModules[name] ? `${name}` : `${name}`}
                     </button>
                 ))}
             </div>
@@ -110,11 +118,22 @@ export default function Page() {
                 </div>
 
                 {/* 가로 스택 (정해진 순서 유지) */}
-                <div className="flex flex-wrap-reverse gap-4 flex-grow justify-end">
+                <div className="flex flex-wrap gap-4 w-full h-min justify-end items-start">
                     {horizontalModules.map(({ name, component: Component }) =>
                         activeModules[name] ? (
-                            <div key={name}>
-                                <Component />
+                            <div
+                                key={name}
+                                className="w-auto"
+                                style={{
+                                    order: name === 'news' ? -1 : 0, // 뉴스는 항상 아래로 내려가지 않도록 유지
+                                    alignSelf: 'flex-start', // 모듈들이 위쪽에 고정됨
+                                }}
+                            >
+                                {name === 'timer' ? (
+                                    <Timer onExpire={() => removeModule('timer')} /> // 👈 여기만 추가
+                                ) : (
+                                    <Component />
+                                )}
                             </div>
                         ) : null
                     )}
