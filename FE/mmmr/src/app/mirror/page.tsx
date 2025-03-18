@@ -56,18 +56,18 @@ export default function Page() {
                     <button
                         key={name}
                         onClick={() => addToVerticalStack(name)}
-                        className="px-2 py-2 bg-blue-600 rounded-md hover:bg-blue-500"
+                        className="px-2 py-2 bg-blue-100 rounded-md hover:bg-blue-200"
                     >
-                        Add {name} (Vertical)
+                        Add {name}
                     </button>
                 ))}
                 {Object.keys(hcomponentMap).map((name) => (
                     <button
                         key={name}
                         onClick={() => addToHorizontalStack(name)}
-                        className="px-2 py-2 bg-red-600 rounded-md hover:bg-red-500"
+                        className="px-2 py-2 bg-red-100 rounded-md hover:bg-red-200"
                     >
-                        Add {name} (Horizontal)
+                        Add {name}
                     </button>
                 ))}
             </div>
@@ -80,7 +80,7 @@ export default function Page() {
                         onClick={() => removeFromVerticalStack(name)}
                         className="px-2 py-2 bg-blue-800 rounded-md hover:bg-blue-700 text-white"
                     >
-                        Remove {name} (Vertical)
+                        Remove {name}
                     </button>
                 ))}
                 {horizontalStack.map((name) => (
@@ -89,7 +89,7 @@ export default function Page() {
                         onClick={() => removeFromHorizontalStack(name)}
                         className="px-2 py-2 bg-red-800 rounded-md hover:bg-red-700 text-white"
                     >
-                        Remove {name} (Horizontal)
+                        Remove {name}
                     </button>
                 ))}
             </div>
