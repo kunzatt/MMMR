@@ -336,15 +336,19 @@ class SensorCalib(Node):
 
     def scan_callback(self, msg):
     
+        
         """
 
         로직 4. 라이다 2d scan data(거리와 각도)를 가지고 x,y 좌표계로 변환
+        """
 
-        self.R = 
+        self.R = np.array(msg.ranges)
+        # cos, sin 함수로 각각 x,y축으로 매핑
+        # np.linspace() 함수로 0 ~ 2pi 를 360개의 각도로 나눔
+        x = self.R * np.cos(np.linspace(0, 2*np.pi, 360)) 
+        y = self.R * np.spin(np.linspace(0, 2*np.pi, 360))
+        z = np.zeros_like(x) # 2d 데이터이므로 z 값은 0으로 설정정
 
-        x = 
-        y = 
-        z = 
 
         self.xyz = np.concatenate([
             x.reshape([-1, 1]),
@@ -352,7 +356,6 @@ class SensorCalib(Node):
             z.reshape([-1, 1])
         ], axis=1)
         
-        """
 
     def timer_callback(self):
 
