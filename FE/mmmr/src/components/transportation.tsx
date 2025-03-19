@@ -14,7 +14,7 @@ const rawData = [
 
 export default function Transportation() {
     return (
-        <div className="py-2 px-5 h-auto w-52 shadow-md">
+        <div className="py-1 px-5 h-auto w-52 shadow-md">
             {rawData.map((item, index) => (
                 <div
                     key={index}
