@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 import logging
 import json
 from typing import Dict, List, Any
+import openai
 
 # 로깅 설정
 logging.basicConfig(
@@ -25,9 +26,13 @@ MODEL_SIZE = os.getenv("MODEL_SIZE", "small")
 LANGUAGE = os.getenv("LANGUAGE", "ko")
 HOST = os.getenv("HOST", "0.0.0.0")
 PORT = int(os.getenv("PORT", "8000"))
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+
+# OpenAI API 키 설정
+openai.api_key = OPENAI_API_KEY
 
 # 음성 감지 설정
-ENERGY_THRESHOLD = float(os.getenv("ENERGY_THRESHOLD", "0.05"))
+ENERGY_THRESHOLD = float(os.getenv("ENERGY_THRESHOLD", "0.02"))
 SILENCE_THRESHOLD = int(os.getenv("SILENCE_THRESHOLD", "25"))
 MIN_AUDIO_LENGTH = float(os.getenv("MIN_AUDIO_LENGTH", "0.5"))
 
@@ -47,6 +52,10 @@ app.add_middleware(
 async def startup_event():
     global model
     logger.info("서버 시작 중...")
+    
+    # OpenAI API 키 확인
+    if not OPENAI_API_KEY:
+        logger.warning("OPENAI_API_KEY가 설정되지 않았습니다. JSON 변환 기능이 작동하지 않을 수 있습니다.")
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     logger.info(f"사용 중인 장치: {device}")
@@ -205,6 +214,99 @@ async def transcribe_audio(audio_data: np.ndarray, metadata: Dict[str, Any]) -> 
         logger.error(traceback.format_exc())
         return ""
 
+async def text_to_json(text: str) -> str:
+    """
+    인식된 텍스트를 JSON 형식으로 변환
+    
+    Args:
+        text: 변환할 텍스트
+        
+    Returns:
+        str: JSON 형식 문자열
+    """
+    if not text:
+        logger.warning("변환할 텍스트가 없습니다.")
+        return json.dumps({
+            "type": "none",
+            "contents": {
+                "default": "OFF",
+                "data": ""
+            }
+        })
+    
+    try:
+        start_time = time.time()
+        
+        # 시스템 프롬프트 정의
+        system_prompt = """당신은 한국어 텍스트를 분석하여 정확한 JSON으로 변환하는 전문가입니다.
+다음 형식으로만 결과를 반환하세요:
+{
+    "type": "[카테고리]",
+    "contents": {
+        "default": "[ON/OFF]",
+        "data": "[관련 데이터]"
+    }
+}
+
+type은 다음 중 하나여야 합니다: "iot", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "none"
+
+- iot: 전등, 조명, 가전제품 등의 제어 명령 (예: "전등 켜줘", "불 꺼줘", "TV 켜줘")
+- weather: 날씨 정보 요청 (예: "오늘 날씨 어때?", "비 올 예정이야?")
+- news: 뉴스 정보 요청 (예: "오늘 뉴스 보여줘", "최신 뉴스 알려줘", "3번째 뉴스 알려줘")
+- youtube: 유튜브 관련 요청 (예: "유튜브 틀어줘", "음악 동영상 보여줘")
+- timer: 타이머 설정 요청 (예: "5분 타이머 설정해줘", "30초 타이머")
+- todo: 할 일 관련 요청 (예: "오늘 할 일 추가해줘", "할 일 목록 보여줘")
+- schedule: 일정 관련 요청 (예: "내일 회의 일정 추가해줘", "이번 주 일정 알려줘")
+- time: 시간 관련 요청 (예: "지금 몇 시야?", "시계 보여줘")
+- transportation: 교통 정보 요청 (예: "버스 언제 와?", "지하철 운행 정보")
+- none: 위 분류에 해당하지 않는 경우
+
+contents.default는 기능을 켜는 명령의 경우 "ON", 끄는 명령인 경우 "OFF"로 설정합니다.
+
+contents.data는 유형에 따라 다르게 설정합니다:
+- iot: "light ON" 또는 "light OFF"와 같은 형태
+- news: "1"부터 "5" 사이의 숫자 (뉴스 번호) 혹은 빈 문자열
+- timer: "00H05M00S"와 같은 형태 (시간, 분, 초)
+- youtube : "남자 요가 영상"와 같은 검색어
+- 다른 유형: 빈 문자열
+
+응답은 유효한 JSON 형식이어야 하며, 추가 설명이나 주석 없이 JSON만 반환합니다."""
+
+        # OpenAI API 호출
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": f"다음 텍스트를 분석하여 JSON으로 변환해주세요: {text}"}
+            ],
+            response_format={"type": "json_object"},
+            temperature=0.2
+        )
+        
+        result = response.choices[0].message.content.strip()
+        process_time = time.time() - start_time
+        
+        # 결과 검증
+        json_result = json.loads(result)
+        logger.info(f"JSON 변환 결과: {json_result}")
+        logger.info(f"JSON 변환 시간: {process_time:.2f}초")
+        
+        return result
+        
+    except Exception as e:
+        logger.error(f"JSON 변환 오류: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+        
+        # 오류 발생 시 기본값 반환
+        return json.dumps({
+            "type": "none",
+            "contents": {
+                "default": "OFF",
+                "data": ""
+            }
+        })
+
 @app.websocket("/listen")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
@@ -266,13 +368,37 @@ async def websocket_endpoint(websocket: WebSocket):
         logger.info(f"총 수신된 오디오 길이: {duration:.2f}초")
         
         if duration >= MIN_AUDIO_LENGTH:
+            # STT 처리
             transcription = await transcribe_audio(audio_data, processor.metadata)
-            # 결과 전송
-            await websocket.send_text(transcription)
-            logger.info("STT 결과 전송 완료")
+            
+            if transcription:
+                # STT 결과를 JSON으로 변환
+                json_result = await text_to_json(transcription)
+                
+                # JSON 결과 전송
+                await websocket.send_text(json_result)
+                logger.info("JSON 변환 결과 전송 완료")
+            else:
+                # 빈 결과 전송
+                default_json = json.dumps({
+                    "type": "none",
+                    "contents": {
+                        "default": "OFF",
+                        "data": ""
+                    }
+                })
+                await websocket.send_text(default_json)
+                logger.info("빈 STT 결과에 대한 기본 JSON 전송")
         else:
             logger.warning("오디오가 너무 짧아 처리하지 않습니다.")
-            await websocket.send_text("")
+            default_json = json.dumps({
+                "type": "none",
+                "contents": {
+                    "default": "OFF",
+                    "data": ""
+                }
+            })
+            await websocket.send_text(default_json)
         
     except WebSocketDisconnect:
         logger.info("클라이언트 연결 종료")
