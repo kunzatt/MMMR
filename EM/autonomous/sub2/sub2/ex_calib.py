@@ -327,12 +327,12 @@ class SensorCalib(Node):
         """
    
         로직 3. 카메라 콜백함수에서 이미지를 클래스 내 변수로 저장.
-
-        np_arr = 
-
-        self.img = 
-
         """
+        # np.frombuffer() 로 압축된 바이트 데이터 numpy로 변환
+        np_arr = np.frombuffer(msg.data, np.uint8)
+
+        #cv2.imdecode() 로 numpy 배열을 컬러 이미지로 디코딩
+        self.img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
     def scan_callback(self, msg):
     
