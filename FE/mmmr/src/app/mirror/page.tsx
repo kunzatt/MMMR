@@ -23,9 +23,9 @@ const verticalModules = [
 ];
 
 const horizontalModules = [
-    { name: 'timer', component: Timer },
-    { name: 'youtubeh', component: Youtubeh },
     { name: 'news', component: News },
+    { name: 'youtubeh', component: Youtubeh },
+    { name: 'timer', component: Timer },
 ];
 
 export default function Page() {
@@ -92,7 +92,7 @@ export default function Page() {
                         key={name}
                         onClick={() => toggleModule(name)}
                         className={`px-2 py-2 rounded-md ${
-                            activeModules[name] ? 'bg-red-500 text-white' : 'bg-blue-100 hover:bg-blue-200'
+                            activeModules[name] ? 'bg-blue-500 text-white' : 'bg-blue-100 hover:bg-blue-200'
                         }`}
                     >
                         {activeModules[name] ? `${name}` : `${name}`}
@@ -105,7 +105,7 @@ export default function Page() {
                 {/* 세로 스택 (버튼 높이를 고려한 최대 높이 제한) */}
                 <div
                     ref={verticalContainerRef}
-                    className="flex flex-col gap-4 w-48 items-center overflow-hidden"
+                    className="flex flex-col gap-4 w-56 items-center overflow-hidden"
                     style={{ maxHeight: `${availableHeight}px` }}
                 >
                     {verticalModules
@@ -116,19 +116,11 @@ export default function Page() {
                             </div>
                         ))}
                 </div>
-
                 {/* 가로 스택 (정해진 순서 유지) */}
                 <div className="flex flex-wrap gap-4 w-full h-min justify-end items-start">
                     {horizontalModules.map(({ name, component: Component }) =>
                         activeModules[name] ? (
-                            <div
-                                key={name}
-                                className="w-auto"
-                                style={{
-                                    order: name === 'news' ? -1 : 0, // 뉴스는 항상 아래로 내려가지 않도록 유지
-                                    alignSelf: 'flex-start', // 모듈들이 위쪽에 고정됨
-                                }}
-                            >
+                            <div key={name} className="w-auto">
                                 {name === 'timer' ? (
                                     <Timer onExpire={() => removeModule('timer')} /> // 👈 여기만 추가
                                 ) : (

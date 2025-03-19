@@ -31,7 +31,7 @@ export default function Time() {
     }, []);
 
     return (
-        <div className="py-3 px-5 h-auto w-48 shadow-md text-center">
+        <div className="py-3 px-5 h-auto w-52 shadow-md text-center">
             <p className="text-3xl font-bold pb-1">{currentTime}</p>
             <p className="text-xl">{currentDate}</p>
         </div>

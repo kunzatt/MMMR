@@ -14,7 +14,7 @@ export default function Schedule() {
         },
     ];
     return (
-        <div className="py-3 px-5 h-auto w-48 shadow-md">
+        <div className="py-3 px-5 h-auto w-52 shadow-md">
             {scheduleData.map((entry, index) => (
                 <div key={index} className="mb-4">
                     <h3 className="text-lg font-semibold border-b-2 border-black">{entry.date}</h3>

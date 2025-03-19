@@ -20,7 +20,7 @@ export default function Vyoutube() {
     };
 
     return (
-        <div className="py-3 px-5 h-auto w-48 shadow-md text-center">
+        <div className="py-3 px-5 h-auto w-52 shadow-md text-center">
             {!videoId && (
                 <div>
                     <h2 className="text-lg font-semibold mb-3">YouTube Player</h2>
