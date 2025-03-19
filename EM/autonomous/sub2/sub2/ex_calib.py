@@ -60,22 +60,22 @@ params_cam = {
 
 def rotationMtx(yaw, pitch, roll):
     
-    R_x = np.array([[1,         0,              0,                0],
-                    [0,         math.cos(roll), -math.sin(roll) , 0],
-                    [0,         math.sin(roll), math.cos(roll)  , 0],
-                    [0,         0,              0,               1],
+    R_x = np.array([[1.0,         0.0,              0.0,                0.0],
+                    [0.0,         math.cos(roll), -math.sin(roll) , 0.0],
+                    [0.0,         math.sin(roll), math.cos(roll)  , 0.0],
+                    [0.0,         0.0,              0.0,               1.0],
                     ])
                      
-    R_y = np.array([[math.cos(pitch),    0,      math.sin(pitch) , 0],
-                    [0,                  1,      0               , 0],
-                    [-math.sin(pitch),   0,      math.cos(pitch) , 0],
-                    [0,         0,              0,               1],
+    R_y = np.array([[math.cos(pitch),    0.0,      math.sin(pitch) , 0.0],
+                    [0.0,                  1.0,      0.0               , 0.0],
+                    [-math.sin(pitch),   0.0,      math.cos(pitch) , 0.0],
+                    [0.0,         0.0,              0.0,               1.0],
                     ])
     
-    R_z = np.array([[math.cos(yaw),    -math.sin(yaw),    0,    0],
-                    [math.sin(yaw),    math.cos(yaw),     0,    0],
-                    [0,                0,                 1,    0],
-                    [0,         0,              0,               1],
+    R_z = np.array([[math.cos(yaw),    -math.sin(yaw),    0.0,    0.0],
+                    [math.sin(yaw),    math.cos(yaw),     0.0,    0.0],
+                    [0.0,                0.0,                 1.0,    0.0],
+                    [0.0,         0.0,              0.0,               1.0],
                     ])
                      
     R = np.matmul(R_x, np.matmul(R_y, R_z))
@@ -84,10 +84,10 @@ def rotationMtx(yaw, pitch, roll):
 
 def translationMtx(x, y, z):
      
-    M = np.array([[1,         0,              0,               x],
-                  [0,         1,              0,               y],
-                  [0,         0,              1,               z],
-                  [0,         0,              0,               1],
+    M = np.array([[1.0,         0.0,              0.0,               x],
+                  [0.0,         1.0,              0.0,               y],
+                  [0.0,         0.0,              1.0,               z],
+                  [0.0,         0.0,              0.0,               1],
                   ])
     
     return M
@@ -138,10 +138,10 @@ def transformMTX_lidar2cam(params_lidar, params_cam):
     
     # 축 방향 보정 행렬 (좌표계 변환)
     R_axis = np.array([
-        [0, -1, 0, 0],  # X_lidar → -Y_cam
-        [0, 0, -1, 0],  # Y_lidar → -Z_cam 
-        [1, 0, 0, 0],   # Z_lidar → X_cam
-        [0, 0, 0, 1]
+        [0.0, -1.0, 0.0, 0.0],  # X_lidar → -Y_cam
+        [0.0, 0.0, -1.0, 0.0],  # Y_lidar → -Z_cam 
+        [1.0, 0.0, 0.0, 0.0],   # Z_lidar → X_cam
+        [0.0, 0.0, 0.0, 1.0]
     ])
     
     # 최종 회전 행렬 조합
@@ -155,9 +155,44 @@ def transformMTX_lidar2cam(params_lidar, params_cam):
     RT = Tmtx @ Rmtx
 
 
+    """
+    테스트
+
+    params_lidar = {
+        "X": 0, # meter
+        "Y": 0,
+        "Z": 0.6,
+        "YAW": 0, # deg
+        "PITCH": 0,
+        "ROLL": 0
+    }
+
+
+    params_cam = {
+        "WIDTH": 640, # image width
+        "HEIGHT": 480, # image height
+        "FOV": 90, # Field of view
+        "X": 0., # meter
+        "Y": 0,
+        "Z":  1.0,
+        "YAW": 0, # deg
+        "PITCH": 0.0,
+        "ROLL": 0
+    }
+
+    이면
+
+    R_T = 
+    [[ 6.12323400e-17 -1.00000000e+00  0.00000000e+00  0.00000000e+00]
+    [ 6.12323400e-17  3.74939946e-33 -1.00000000e+00  4.00000000e-01]
+    [ 1.00000000e+00  6.12323400e-17  6.12323400e-17 -2.44929360e-17]
+    [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+
+    """
 
     # return np.eye(4)
     return RT
+
 
 def project2img_mtx(params_cam):
 
@@ -198,7 +233,6 @@ def project2img_mtx(params_cam):
 
     # return np.zeros((2,3))
     return R_f
-
 
 
 def draw_pts_img(img, xi, yi):
@@ -261,8 +295,12 @@ class LIDAR2CAMTransform:
         yn = xyz_c[:,1] / xyz_c[:,2] # y값 나누기 z값
 
         # 로직 4. normalizing plane 상의 라이다 포인트들에 proj_mtx를 곱해 픽셀 좌표값 계산.
+        # np.stack을 사용하여 xn, yn, ones를 3차원 배열로 결합
+        
+        ones = np.ones_like(xn)
+        points = np.stack((xn, yn, ones), axis=-1)
+        xyi = np.matmul(self.proj_mtx, points.T).T
 
-        xyi = np.matmul(self.proj_mtx, np.concatenate([xn, yn, np.ones_like(xn)], axis=0))
 
         """
         로직 5. 이미지 프레임 밖을 벗어나는 포인트들을 crop.
@@ -288,7 +326,6 @@ class LIDAR2CAMTransform:
 
         return xyi
 
-    
     
 
 
@@ -336,7 +373,6 @@ class SensorCalib(Node):
 
     def scan_callback(self, msg):
     
-        
         """
 
         로직 4. 라이다 2d scan data(거리와 각도)를 가지고 x,y 좌표계로 변환
@@ -346,7 +382,7 @@ class SensorCalib(Node):
         # cos, sin 함수로 각각 x,y축으로 매핑
         # np.linspace() 함수로 0 ~ 2pi 를 360개의 각도로 나눔
         x = self.R * np.cos(np.linspace(0, 2*np.pi, 360)) 
-        y = self.R * np.spin(np.linspace(0, 2*np.pi, 360))
+        y = self.R * np.sin(np.linspace(0, 2*np.pi, 360))
         z = np.zeros_like(x) # 2d 데이터이므로 z 값은 0으로 설정정
 
 
@@ -363,27 +399,27 @@ class SensorCalib(Node):
 
             """
             로직 5. 라이다 x,y 좌표 데이터 중 정면 부분만 crop
-            xyz_p = 
             """
+            xyz_p = self.xyz[np.where(self.xyz[:,0] > 0)]
 
             """
             로직 6. transformation class 의 transform_lidar2cam 로 카메라 3d 좌표 변환
-            xyz_c = 
             """
+            xyz_c = self.l2c_trans.transform_lidar2cam(xyz_p)
 
             """
             로직 7. transformation class 의 project_pts2img로 카메라 프레임으로 정사영
-            xy_i = 
             """
+            xy_i = self.l2c_trans.project_pts2img(xyz_c) 
 
             """
             로직 8. draw_pts_img()로 카메라 이미지에 라이다 포인트를 draw 하고 show
+            """
             
-            img_l2c = 
+            img_l2c = draw_pts_img(self.img, xy_i[:,0].astype(int), xy_i[:,1].astype(int))
 
             cv2.imshow("Lidar2Cam", img_l2c)
             cv2.waitKey(1)
-            """
 
         else:
 
