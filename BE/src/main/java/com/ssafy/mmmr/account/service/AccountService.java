@@ -43,6 +43,13 @@ public class AccountService {
 		accountRepository.save(account);
 	}
 
+	@Transactional
+	public void checkEmailExists(String email) {
+		if (accountRepository.existsByEmail(email)) {
+			throw new AccountException(ErrorCode.EMAIL_EXIST);
+		}
+	}
+
 	@Transactional(readOnly = true)
 	public String[] login(LogInRequestDto logInRequestDto) {
 		AccountEntity account = accountRepository.findByEmail(logInRequestDto.getEmail())
@@ -134,18 +141,10 @@ public class AccountService {
 	}
 
 	@Transactional
-	public void logoutWithToken(TokenRequestDto tokenRequestDto) {
+	public void logout(TokenRequestDto tokenRequestDto) {
 		String accessToken = processTokenFromDto(tokenRequestDto);
-		System.out.println("로그아웃 처리할 토큰: " + accessToken);
-
-		logout(accessToken);
-	}
-
-	@Transactional
-	public void logout(String accessToken) {
 		// 헤더 검증
 		if (!StringUtils.hasText(accessToken)) {
-			System.out.println("토큰이 비어있음");
 			throw new JwtException(ErrorCode.INVALID_TOKEN);
 		}
 
@@ -158,24 +157,17 @@ public class AccountService {
 
 		// 토큰에서 이메일 추출
 		String email = jwtTokenProvider.getEmailFromToken(accessToken);
-		System.out.println("추출된 이메일: " + email);
 
 		// 토큰의 남은 유효 시간 계산
 		long remainingTime = jwtTokenProvider.getRemainingTimeFromToken(accessToken);
-		System.out.println("토큰 남은 시간: " + remainingTime + "초");
 
 		// 블랙리스트에 토큰 추가
 		jwtRedisService.addToBlacklist(accessToken, remainingTime);
-		System.out.println("블랙리스트에 토큰 추가 완료");
 
 		// 리프레시 토큰 삭제
 		String refreshToken = jwtRedisService.getRefreshToken(email);
 		if (refreshToken != null) {
-			System.out.println("삭제할 리프레시 토큰: " + refreshToken);
 			jwtRedisService.deleteRefreshToken(email);
-			System.out.println("리프레시 토큰 삭제 완료");
-		} else {
-			System.out.println("삭제할 리프레시 토큰이 없습니다.");
 		}
 	}
 }

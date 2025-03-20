@@ -10,14 +10,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import com.ssafy.mmmr.account.entity.AccountEntity;
-
 @Configuration
 @EnableRedisRepositories
 public class RedisConfig {
 
 	@Value("${spring.data.redis.host}")
-	private String redeisHost;
+	private String redisHost;
 
 	@Value("${spring.data.redis.port}")
 	private int redisPort;
@@ -28,7 +26,7 @@ public class RedisConfig {
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
 		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-		redisStandaloneConfiguration.setHostName(redeisHost);
+		redisStandaloneConfiguration.setHostName(redisHost);
 		redisStandaloneConfiguration.setPort(redisPort);
 		redisStandaloneConfiguration.setPassword(redisPassword);
 		return new LettuceConnectionFactory(redisStandaloneConfiguration);
@@ -40,7 +38,6 @@ public class RedisConfig {
 
 		redisTemplate.setConnectionFactory(redisConnectionFactory());
 
-		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.setHashKeySerializer(new StringRedisSerializer());
 		redisTemplate.setHashValueSerializer(new StringRedisSerializer());
