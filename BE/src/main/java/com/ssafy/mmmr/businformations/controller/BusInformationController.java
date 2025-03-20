@@ -1,4 +1,4 @@
-package com.ssafy.mmmr.businformation.controller;
+package com.ssafy.mmmr.businformations.controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.mmmr.businformation.service.BusInformationService;
+import com.ssafy.mmmr.businformations.service.BusInformationService;
 import com.ssafy.mmmr.global.error.code.ErrorCode;
 import com.ssafy.mmmr.global.error.dto.ErrorResponse;
 import com.ssafy.mmmr.global.error.exception.BusinessException;

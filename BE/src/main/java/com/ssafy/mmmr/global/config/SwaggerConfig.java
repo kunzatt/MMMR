@@ -1,10 +1,12 @@
 package com.ssafy.mmmr.global.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
 import org.springframework.context.annotation.Bean;
@@ -19,10 +21,18 @@ public class SwaggerConfig {
 
 	@Bean
 	public OpenAPI customOpenAPI() {
+		// Security 스키마 설정
+		SecurityScheme securityScheme = new SecurityScheme()
+			.type(SecurityScheme.Type.APIKEY)  // API 키 타입으로 변경
+			.in(SecurityScheme.In.HEADER)     // 헤더에 전달
+			.name("Authorization")            // 헤더 이름
+			.description("JWT Token");        // 설명 추가
+
 		return new OpenAPI()
 			.info(new Info()
 				.title("MMMR API Documentation")
-				.description("<h3>MMMR Reference for Developers</h3>Swagger를 이용한 MMMR API")
+				.description("<h3>MMMR Reference for Developers</h3>Swagger를 이용한 MMMR API<br>" +
+					"<b>인증 헤더 사용 방법:</b> Authorization 헤더에 토큰 값을 그대로 입력하세요.")
 				.version("v1.0")
 				.contact(new Contact()
 					.name("Support Team")
@@ -36,9 +46,8 @@ public class SwaggerConfig {
 				.url("https://lab.ssafy.com/s12-mobility-smarthome-sub1/S12P21A703"))
 			.servers(List.of(
 				new Server().url("").description("Local server")
-			));
+			))
+			.components(new Components()
+				.addSecuritySchemes("Authorization", securityScheme));  // 시큐리티 스키마 추가
 	}
-
 }
-
-
