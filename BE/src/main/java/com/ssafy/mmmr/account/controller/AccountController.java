@@ -12,11 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.mmmr.account.dto.AccessTokenResponseDto;
-import com.ssafy.mmmr.account.dto.LogInRequestDto;
-import com.ssafy.mmmr.account.dto.LogInResponseDto;
 import com.ssafy.mmmr.account.dto.SignUpReqeustDto;
-import com.ssafy.mmmr.account.dto.TokenRequestDto;
 import com.ssafy.mmmr.account.service.AccountService;
 import com.ssafy.mmmr.global.error.code.ErrorCode;
 import com.ssafy.mmmr.global.error.dto.ErrorResponse;
@@ -37,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/accounts")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "계정 관리", description = "회원가입, 로그인, 토큰 관리 API")
+@Tag(name = "계정 관리", description = "회원가입, 비밀번호 변경 관련 API")
 public class AccountController {
 
 	private final AccountService accountService;
@@ -122,171 +118,5 @@ public class AccountController {
 			throw e;
 		}
 	}
-	@PostMapping("/login")
-	@Operation(summary = "로그인", description = "이메일과 비밀번호로 로그인하여 액세스 토큰과 리프레시 토큰을 발급받습니다.")
-	@ApiResponses({
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-			responseCode = "200",
-			description = "로그인 성공",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(implementation = ApiResponse.class),
-				examples = @ExampleObject(value = """
-					{
-						"message": "로그인 성공",
-						"data": {
-							"accessToken": "eyJhbGciOiJIUzUxMiJ9...",
-							"refreshToken": "eyJhbGciOiJIUzUxMiJ9..."
-						}
-					}
-					""")
-			)
-		),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-			responseCode = "404",
-			description = "계정을 찾을 수 없음",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(implementation = ErrorResponse.class),
-				examples = @ExampleObject(value = """
-					{
-						"timestamp": "2024-03-20T10:00:00",
-						"status": 404,
-						"message": "계정을 찾을 수 없습니다",
-						"errors": []
-					}
-					""")
-			)
-		),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-			responseCode = "400",
-			description = "비밀번호가 일치하지 않음",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(implementation = ErrorResponse.class),
-				examples = @ExampleObject(value = """
-					{
-						"timestamp": "2024-03-20T10:00:00",
-						"status": 400,
-						"message": "비밀번호가 일치하지 않습니다",
-						"errors": []
-					}
-					""")
-			)
-		)
-	})
-	public ResponseEntity<ApiResponse> login(
-		@Parameter(description = "로그인 정보", required = true)
-		@RequestBody LogInRequestDto logInRequestDto
-	) {
-		String[] tokens = accountService.login(logInRequestDto);
-		LogInResponseDto loginResponseDto = LogInResponseDto.builder()
-			.accessToken(tokens[0])
-			.refreshToken(tokens[1])
-			.build();
 
-		return ResponseEntity.ok(new ApiResponse("로그인 성공", loginResponseDto));
-	}
-
-	@PostMapping("/refresh")
-	@Operation(summary = "액세스 토큰 갱신", description = "리프레시 토큰을 사용해 새 액세스 토큰을 발급받습니다.")
-	@ApiResponses({
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-			responseCode = "200",
-			description = "토큰 리프레시 성공",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(implementation = ApiResponse.class),
-				examples = @ExampleObject(value = """
-					{
-						"message": "토큰 리프레시 성공",
-						"data": {
-							"accessToken": "eyJhbGciOiJIUzUxMiJ9..."
-						}
-					}
-					""")
-			)
-		),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-			responseCode = "401",
-			description = "유효하지 않은 토큰 또는 만료된 토큰",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(implementation = ErrorResponse.class),
-				examples = {
-					@ExampleObject(
-						name = "유효하지 않은 토큰",
-						value = """
-							{
-								"timestamp": "2024-03-20T10:00:00",
-								"status": 401,
-								"message": "유효하지 않은 토큰입니다",
-								"errors": []
-							}
-							"""
-					),
-					@ExampleObject(
-						name = "만료된 토큰",
-						value = """
-							{
-								"timestamp": "2024-03-20T10:00:00",
-								"status": 401,
-								"message": "만료된 토큰입니다",
-								"errors": []
-							}
-							"""
-					)
-				}
-			)
-		)
-	})
-	public ResponseEntity<ApiResponse> refreshToken(
-		@Parameter(description = "리프레시 토큰 정보", required = true)
-		@RequestBody TokenRequestDto tokenDto
-	) {
-		String newAccessToken = accountService.refreshToken(tokenDto, null);
-		return ResponseEntity.ok(new ApiResponse("토큰 리프레시 성공",
-			new AccessTokenResponseDto(newAccessToken)));
-	}
-
-	@PostMapping("/logout")
-	@Operation(summary = "로그아웃", description = "액세스 토큰을 무효화하고 리프레시 토큰을 삭제합니다.")
-	@ApiResponses({
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-			responseCode = "200",
-			description = "로그아웃 성공",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(implementation = ApiResponse.class),
-				examples = @ExampleObject(value = """
-					{
-						"message": "로그아웃 성공"
-					}
-					""")
-			)
-		),
-		@io.swagger.v3.oas.annotations.responses.ApiResponse(
-			responseCode = "401",
-			description = "유효하지 않은 토큰",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(implementation = ErrorResponse.class),
-				examples = @ExampleObject(value = """
-					{
-						"timestamp": "2024-03-20T10:00:00",
-						"status": 401,
-						"message": "유효하지 않은 토큰입니다",
-						"errors": []
-					}
-					""")
-			)
-		)
-	})
-	public ResponseEntity<ApiResponse> logout(
-		@Parameter(description = "액세스 토큰 정보", required = true)
-		@RequestBody TokenRequestDto tokenDto
-	) {
-		accountService.logout(tokenDto);
-		return ResponseEntity.ok(new ApiResponse("로그아웃 성공", null));
-	}
 }
