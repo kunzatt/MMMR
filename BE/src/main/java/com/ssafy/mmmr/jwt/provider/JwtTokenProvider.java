@@ -95,4 +95,17 @@ public class JwtTokenProvider {
 			return 0;
 		}
 	}
+
+	public boolean isTokenValid(String token) {
+		if (token == null) {
+			return false;
+		}
+
+		try {
+			Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

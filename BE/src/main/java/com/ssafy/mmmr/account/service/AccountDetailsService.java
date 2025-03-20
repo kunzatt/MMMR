@@ -26,7 +26,7 @@ public class AccountDetailsService implements UserDetailsService {
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		AccountEntity account = accountRepository.findByEmail(email)
-			.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+			.orElseThrow(() -> new UsernameNotFoundException("찾을 수 없는 이메일 : " + email));
 
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 
