@@ -1,3 +1,4 @@
+#sub2
 import rclpy
 from rclpy.node import Node
 
@@ -28,6 +29,7 @@ class odom(Node):
         
         # 로직 1. publisher, subscriber, broadcaster 만들기
         self.subscription = self.create_subscription(TurtlebotStatus,'/turtlebot_status',self.listener_callback,10)
+        self.imu_sub = self.create_subscription(Imu,'/imu',self.imu_callback,10)
         self.odom_publisher = self.create_publisher(Odometry, 'odom', 10)
         self.broadcaster = tf2_ros.StaticTransformBroadcaster(self)
 
@@ -42,8 +44,8 @@ class odom(Node):
         self.is_calc_theta=False
         # x,y,theta는 추정한 로봇의 위치를 저장할 변수 입니다.        
         # 로봇의 초기위치를 맵 상에서 로봇의 위치와 맞춰줘야 합니다. 
-        self.x=0.0
-        self.y=0.0
+        self.x = -4.3073
+        self.y = -5.2784
         self.theta=0.0
         # imu_offset은 초기 로봇의 orientation을 저장할 변수 입니다.
         self.imu_offset=0
@@ -58,11 +60,23 @@ class odom(Node):
 
         self.laser_transform.header.frame_id = 'base_link'
         self.laser_transform.child_frame_id = 'laser'      
-        self.laser_transform.transform.translation.x = 0.15
+        self.laser_transform.transform.translation.x = 0.0
         self.laser_transform.transform.translation.y = 0.0
-        self.laser_transform.transform.translation.z = 0.13
+        self.laser_transform.transform.translation.z = 1.0
         self.laser_transform.transform.rotation.w = 1.0
     
+
+    def imu_callback(self,msg):
+        '''
+        로직 3. IMU 에서 받은 quaternion을 euler angle로 변환해서 사용
+        '''
+        if self.is_imu == False:    
+            self.is_imu = True
+            imu_q = Quaternion(msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z)
+            self.imu_offset = imu_q.to_euler()
+        else:
+            imu_q = Quaternion(msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z)
+            self.theta = imu_q.to_euler()[2] + self.imu_offset[2]
 
     def listener_callback(self, msg):
         print('linear_vel : {}  angular_vel : {}'.format(msg.twist.linear.x,-msg.twist.angular.z))
