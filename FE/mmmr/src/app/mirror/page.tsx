@@ -18,7 +18,6 @@ const verticalModules = [
     { name: 'transportation', component: Transportation },
     { name: 'schedule', component: Schedule },
     { name: 'todo', component: Todo },
-    { name: 'iot', component: Iot },
     { name: 'youtubev', component: Youtubev },
 ];
 
@@ -26,6 +25,7 @@ const horizontalModules = [
     { name: 'news', component: News },
     { name: 'youtubeh', component: Youtubeh },
     { name: 'timer', component: Timer },
+    { name: 'iot', component: Iot },
 ];
 
 export default function Page() {
@@ -84,7 +84,7 @@ export default function Page() {
     };
 
     return (
-        <div className="font-sans flex flex-col items-center min-h-screen">
+        <div className="font-sans flex flex-col items-center min-h-screen bg-gray-100">
             {/* 버튼 UI (높이 고려) */}
             <div ref={buttonContainerRef} className="flex flex-wrap gap-2 mb-6">
                 {[...verticalModules, ...horizontalModules].map(({ name }) => (
@@ -105,7 +105,7 @@ export default function Page() {
                 {/* 세로 스택 (버튼 높이를 고려한 최대 높이 제한) */}
                 <div
                     ref={verticalContainerRef}
-                    className="flex flex-col gap-4 w-56 items-center overflow-hidden"
+                    className="flex flex-col w-56 items-center overflow-hidden"
                     style={{ maxHeight: `${availableHeight}px` }}
                 >
                     {verticalModules
@@ -117,7 +117,7 @@ export default function Page() {
                         ))}
                 </div>
                 {/* 가로 스택 (정해진 순서 유지) */}
-                <div className="flex flex-wrap gap-4 w-full h-min justify-end items-start">
+                <div className="flex flex-wrap w-full h-min justify-end items-start">
                     {horizontalModules.map(({ name, component: Component }) =>
                         activeModules[name] ? (
                             <div key={name} className="w-auto">
