@@ -19,6 +19,7 @@ def install_requirements():
         f.write('uvicorn\n')
         f.write('fastapi\n')
         f.write('websockets\n')
+        f.write('openai\n')
         
     try:    
         # 필요한 패키지 설치
