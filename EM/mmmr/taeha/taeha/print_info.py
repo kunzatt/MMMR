@@ -4,7 +4,6 @@ from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from ssafy_msgs.msg import TurtlebotStatus,EnviromentStatus
 from std_msgs.msg import Float32,Int8MultiArray, Int32
-import time
 
 # IoT 제어 코드 변수
 IOT_ON = 1
@@ -19,7 +18,6 @@ sim_month = ["", "January", "February", "March", "April", "May", "June", "July",
              "November", "December"]
 
 class Controller(Node):
-
     def __init__(self):
         super().__init__('sub1_controller')
         ## 메시지 송신을 위한 PUBLISHER 생성
@@ -82,7 +80,6 @@ class Controller(Node):
             print("invalid input. try again.")
 
     def print_date(self):
-
         print(f"{sim_month[self.envir_status_msg.month]} {self.envir_status_msg.day}"
               f"{'st' if self.envir_status_msg.day in [1, 21, 31] else 'nd' if self.envir_status_msg.day in [2, 22] else 'rd' if self.envir_status_msg.day in [3, 23] else 'th'} "
               f"{self.envir_status_msg.hour:02d}:{self.envir_status_msg.minute:02d}")
