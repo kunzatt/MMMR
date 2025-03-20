@@ -33,7 +33,7 @@ export default function Timer({ onExpire }: TimerProps) {
     };
 
     return (
-        <div className="py-3 px-10 w-auto h-44 shadow-md text-center flex items-center justify-center">
+        <div className="py-3 px-10 w-auto h-44 text-center flex items-center justify-center">
             <p className="text-7xl font-medium">{formatTime(timeLeft)}</p>
         </div>
     );

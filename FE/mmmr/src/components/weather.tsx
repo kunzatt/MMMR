@@ -13,7 +13,7 @@ const weatherData = {
 
 export default function Weather() {
     return (
-        <div className="py-3 px-5 w-52 shadow-md text-center flex flex-col gap-1">
+        <div className="py-3 px-5 w-52 text-center flex flex-col gap-1">
             {/* 현재 기온 */}
             <div>
                 <div className="flex justify-center items-center space-x-2">
@@ -22,7 +22,7 @@ export default function Weather() {
                 </div>
 
                 {/* 최저/최고 기온 */}
-                <div className="flex justify-center space-x-6 mt-1 text-lg">
+                <div className="flex justify-center space-x-6 text-lg">
                     <span>{weatherData.minTemp}°</span>
                     <span>{weatherData.maxTemp}°</span>
                 </div>

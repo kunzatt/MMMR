@@ -38,7 +38,7 @@ export default function News() {
     };
 
     return (
-        <div className="py-3 px-5 w-auto h-44 shadow-md">
+        <div className="py-3 px-5 w-auto h-44">
             <div>
                 <h2 className="text-lg font-semibold">Top5 News</h2>
             </div>

@@ -14,18 +14,18 @@ export default function Schedule() {
         },
     ];
     return (
-        <div className="py-3 px-5 h-auto w-52 shadow-md">
+        <div className="py-3 px-5 h-auto w-52">
             {scheduleData.map((entry, index) => (
-                <div key={index} className="mb-4">
+                <div key={index} className={`${index === scheduleData.length - 1 ? '' : 'mb-4'}`}>
                     <h3 className="text-lg font-semibold border-b-2 border-black">{entry.date}</h3>
                     <div className="pt-2 flex flex-col gap-2">
                         {entry.tasks.map((task, taskIndex) => (
-                            <button
+                            <div
                                 key={taskIndex}
-                                className="px-3 py-1 border border-black rounded-md bg-white text-sm break-keep"
+                                className="px-3 py-1 border border-black rounded-md text-sm break-keep text-center"
                             >
                                 {task}
-                            </button>
+                            </div>
                         ))}
                     </div>
                 </div>

@@ -20,7 +20,7 @@ export default function Hyoutube() {
     };
 
     return (
-        <div className="py-3 px-5 w-auto h-44 shadow-md text-center">
+        <div className="py-3 px-5 w-auto h-44 text-center">
             {!videoId && (
                 <div>
                     <h2 className="text-lg font-semibold mb-3">YouTube Player</h2>
