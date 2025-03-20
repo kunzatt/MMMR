@@ -15,6 +15,8 @@ iot_str = ["Entrance Light", "Room1 Light", "Room2 Light", "Room3 Light", "Room4
            "Kitchen Light", "LivingRoom Light", "Room1 AirConditioner", "Room2 AirConditioner",
            "Room3 AirConditioner", "LivingRoom AirConditioner", "AirPurifier", "TV", "Room1 Curtain",
            "Room2 Curtain", "Room3 Curtain", "LivingRoom Curtain"]
+sim_month = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+             "November", "December"]
 
 class Controller(Node):
 
@@ -43,7 +45,6 @@ class Controller(Node):
         for i in range(17):
             self.app_control_msg.data.append(0)
 
-
         self.turtlebot_status_msg=TurtlebotStatus()
         self.envir_status_msg=EnviromentStatus()
         self.app_status_msg=Int8MultiArray()
@@ -64,48 +65,27 @@ class Controller(Node):
 
     def app_callback(self, msg):
         self.is_app_status=True
-        self.app_status_msg=msg  
-
-    def app_all_on(self):
-        for i in range(17):
-            self.app_control_msg.data[i]=1
-        self.app_control_pub.publish(self.app_control_msg)
-        
-    def app_all_off(self):
-        for i in range(17):
-            self.app_control_msg.data[i]=2
-        self.app_control_pub.publish(self.app_control_msg)
-        
-    def app_on_select(self,num):
-        # 특정 가전 제품 ON
-        print(f"{num} on")
-        self.app_control_msg.data[num] = 1
-        self.app_control_pub.publish(self.app_control_msg)
-
-    def app_off_select(self,num):
-        # 특정 가전 제품 OFF
-        self.app_control_msg.data[num] = 2
-        self.app_control_pub.publish(self.app_control_msg)
+        self.app_status_msg=msg
 
     def timer_callback(self):
-        #self.app_control_msg.data[1]=1
-        #self.app_control_msg.data[3]=1
-        '''
-        self.app_control_pub.publish(self.app_control_msg)
-        print(f"iot turned on {self.cnt}")
-        self.cnt += 1
-        '''
-
-        menu = int(input("1) temperature  2) weather  3) IoT state : "))
+        menu = int(input("1) date  2) temperature  3) weather  4) IoT state : "))
 
         if menu == 1:
-            self.print_temp()
+            self.print_date()
         elif menu == 2:
-            self.print_weather()
+            self.print_temp()
         elif menu == 3:
+            self.print_weather()
+        elif menu == 4:
             self.print_IoT()
         else:
             print("invalid input. try again.")
+
+    def print_date(self):
+
+        print(f"{sim_month[self.envir_status_msg.month]} {self.envir_status_msg.day}"
+              f"{'st' if self.envir_status_msg.day in [1, 21, 31] else 'nd' if self.envir_status_msg.day in [2, 22] else 'rd' if self.envir_status_msg.day in [3, 23] else 'th'} "
+              f"{self.envir_status_msg.hour:02d}:{self.envir_status_msg.minute:02d}")
 
     def print_temp(self):
         print(f"Temperature: {self.envir_status_msg.temperature}")
