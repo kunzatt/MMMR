@@ -10,7 +10,11 @@ const devices = [
     { id: 4, name: 'TV', x: '80%', y: '60%' },
 ];
 
-export default function Iot() {
+interface IotProps {
+    isDarkMode: boolean;
+}
+
+export default function Iot({ isDarkMode }: IotProps) {
     const [activeDevices, setActiveDevices] = useState<number[]>([]);
 
     const toggleDevice = (id: number) => {
@@ -22,7 +26,7 @@ export default function Iot() {
             <div className="relative w-full h-full flex items-center justify-center">
                 <div className="relative w-48 h-36">
                     <Image
-                        src="/images/iot_map.png"
+                        src={isDarkMode ? '/images/iot_map_dark.png' : '/images/iot_map.png'}
                         alt="IoT Map"
                         fill
                         style={{ objectFit: 'contain' }}
@@ -35,7 +39,13 @@ export default function Iot() {
                             onClick={() => toggleDevice(device.id)}
                             style={{ position: 'absolute', left: device.x, top: device.y }}
                             className={`absolute text-sm px-2 py-1 rounded-full shadow-md whitespace-nowrap
-                                ${activeDevices.includes(device.id) ? 'bg-green-500 text-white' : 'bg-white'}
+                                ${
+                                    activeDevices.includes(device.id)
+                                        ? 'bg-green-500 text-white'
+                                        : isDarkMode
+                                        ? 'bg-black text-white'
+                                        : 'bg-white'
+                                }
                             `}
                         >
                             {device.name}

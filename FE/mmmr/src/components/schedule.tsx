@@ -1,4 +1,8 @@
-export default function Schedule() {
+interface IotProps {
+    isDarkMode: boolean;
+}
+
+export default function Schedule({ isDarkMode }: IotProps) {
     const scheduleData = [
         {
             date: 'March 10',
@@ -17,12 +21,16 @@ export default function Schedule() {
         <div className="py-3 px-5 h-auto w-52">
             {scheduleData.map((entry, index) => (
                 <div key={index} className={`${index === scheduleData.length - 1 ? '' : 'mb-4'}`}>
-                    <h3 className="text-lg font-semibold border-b-2 border-black">{entry.date}</h3>
+                    <h3 className={`text-lg font-semibold border-b-2 ${isDarkMode ? 'border-white' : 'border-black'}`}>
+                        {entry.date}
+                    </h3>
                     <div className="pt-2 flex flex-col gap-2">
                         {entry.tasks.map((task, taskIndex) => (
                             <div
                                 key={taskIndex}
-                                className="px-3 py-1 border border-black rounded-md text-sm break-keep text-center"
+                                className={`px-3 py-1 border ${
+                                    isDarkMode ? 'border-white' : 'border-black'
+                                } rounded-md text-sm break-keep text-center`}
                             >
                                 {task}
                             </div>

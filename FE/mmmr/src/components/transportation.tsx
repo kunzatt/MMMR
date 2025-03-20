@@ -12,13 +12,19 @@ const rawData = [
     { type: 'subway', station: '역삼역', direction: '강남행', number: '2호선', time: '2분 뒤 도착' },
 ];
 
-export default function Transportation() {
+export default function Transportation(isDarkMode: boolean) {
     return (
         <div className="py-1 px-5 h-auto w-52">
             {rawData.map((item, index) => (
                 <div
                     key={index}
-                    className={`flex items-center py-2 ${index !== rawData.length - 1 ? 'border-b border-black' : ''}`}
+                    className={`flex items-center py-2 ${
+                        index !== rawData.length - 1
+                            ? isDarkMode
+                                ? 'border-b border-white'
+                                : 'border-b border-black'
+                            : ''
+                    }`}
                 >
                     {/* 아이콘 */}
                     <div className="text-2xl mr-3">{item.type === 'bus' ? <FaBus /> : <FaSubway />}</div>
@@ -28,7 +34,7 @@ export default function Transportation() {
                         <p className="text-sm font-bold">
                             {item.station.length < 8 ? item.station : item.station.slice(0, 8) + '...'}
                         </p>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs">
                             {item.direction.length <= 10 ? item.direction : item.direction.slice(0, 10) + '...'}
                         </p>
                         <div className="text-sm flex justify-between font-bold mt-1">

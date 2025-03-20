@@ -33,7 +33,7 @@ export default function Weather() {
                     <WiHumidity className="text-4xl" />
                     <span>Hum {weatherData.humidity}%</span>
                 </div>
-                <span className="text-gray-600">|</span>
+                <span>|</span>
                 <div className="flex items-center">
                     <WiRain className="text-4xl" />
                     <span>Rain {weatherData.rainProbability}%</span>

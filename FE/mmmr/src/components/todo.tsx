@@ -1,4 +1,8 @@
-export default function Todo() {
+interface IotProps {
+    isDarkMode: boolean;
+}
+
+export default function Todo({ isDarkMode }: IotProps) {
     const todoItems = [
         '할일 1번 어쩌고 저쩌고',
         '삼성 서류 내기',
@@ -9,7 +13,9 @@ export default function Todo() {
 
     return (
         <div className="py-3 px-5 h-auto w-52">
-            <h2 className="text-lg font-semibold border-b-2 border-black">Todo List</h2>
+            <h2 className={`text-lg font-semibold border-b-2 ${isDarkMode ? 'border-white' : 'border-black'}`}>
+                Todo List
+            </h2>
             <ul className="pt-2 list-disc list-outside text-sm pl-3">
                 {todoItems.map((item, index) => (
                     <li key={index} className="leading-relaxed break-keep">

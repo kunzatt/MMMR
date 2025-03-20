@@ -12,7 +12,12 @@ import Todo from '@/components/todo';
 import Timer from '@/components/timer';
 import News from '@/components/news';
 
-const verticalModules = [
+interface Module {
+    name: string;
+    component: React.ComponentType<any>; // 모든 컴포넌트 타입을 받도록 함
+}
+
+const verticalModules: Module[] = [
     { name: 'time', component: Time },
     { name: 'weather', component: Weather },
     { name: 'transportation', component: Transportation },
@@ -21,7 +26,7 @@ const verticalModules = [
     { name: 'youtubev', component: Youtubev },
 ];
 
-const horizontalModules = [
+const horizontalModules: Module[] = [
     { name: 'news', component: News },
     { name: 'youtubeh', component: Youtubeh },
     { name: 'timer', component: Timer },
@@ -30,6 +35,7 @@ const horizontalModules = [
 
 export default function Page() {
     const [activeModules, setActiveModules] = useState<Record<string, boolean>>({});
+    const [isDarkMode, setIsDarkMode] = useState(false);
     const verticalContainerRef = useRef<HTMLDivElement>(null);
     const buttonContainerRef = useRef<HTMLDivElement>(null);
     const [availableHeight, setAvailableHeight] = useState<number>(0);
@@ -40,7 +46,7 @@ export default function Page() {
         const updateAvailableHeight = () => {
             const viewportHeight = window.innerHeight;
             const buttonHeight = buttonContainerRef.current?.offsetHeight || 0;
-            const padding = 20; // 여백 고려
+            const padding = 20;
             setAvailableHeight(viewportHeight - buttonHeight - padding);
         };
 
@@ -58,20 +64,18 @@ export default function Page() {
         );
     };
 
-    // 모듈이 추가된 후 높이를 체크하고 초과하면 원래 상태로 되돌리기
     useEffect(() => {
         if (Object.keys(prevActiveModules).length === 0) return;
 
         const newUsedHeight = getUsedHeight();
         if (newUsedHeight > availableHeight) {
             alert('세로형 모듈이 화면을 초과하여 더 이상 추가할 수 없습니다.');
-            setActiveModules(prevActiveModules); // 이전 상태로 복구
+            setActiveModules(prevActiveModules);
         }
     }, [activeModules, availableHeight]);
 
-    // 모듈 추가 및 삭제 함수
     const toggleModule = (name: string) => {
-        setPrevActiveModules(activeModules); // 이전 상태 저장
+        setPrevActiveModules(activeModules);
         setActiveModules((prev) => ({ ...prev, [name]: !prev[name] }));
     };
 
@@ -83,9 +87,27 @@ export default function Page() {
         });
     };
 
+    const toggleDarkMode = () => {
+        setIsDarkMode(!isDarkMode);
+    };
+
     return (
-        <div className="font-sans flex flex-col items-center min-h-screen bg-gray-100">
-            {/* 버튼 UI (높이 고려) */}
+        <div
+            className={`${
+                isDarkMode ? 'bg-gray-300 text-white' : 'bg-gray-100 text-black'
+            } font-sans flex flex-col items-center min-h-screen`}
+        >
+            {/* 다크 모드 토글 버튼 */}
+            <button
+                onClick={toggleDarkMode}
+                className={`px-4 py-2 rounded-md mb-4 ${
+                    isDarkMode ? 'bg-gray-600 text-white' : 'bg-gray-300 text-black'
+                }`}
+            >
+                {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+            </button>
+
+            {/* 버튼 UI */}
             <div ref={buttonContainerRef} className="flex flex-wrap gap-2 mb-6">
                 {[...verticalModules, ...horizontalModules].map(({ name }) => (
                     <button
@@ -102,29 +124,31 @@ export default function Page() {
 
             {/* 스택 UI */}
             <div className="flex w-full px-5 gap-4">
-                {/* 세로 스택 (버튼 높이를 고려한 최대 높이 제한) */}
+                {/* 세로 스택 */}
                 <div
                     ref={verticalContainerRef}
-                    className="flex flex-col w-56 items-center overflow-hidden"
+                    className={`flex flex-col w-56 items-center overflow-hidden ${
+                        isDarkMode ? 'border-white' : 'border-black'
+                    }`}
                     style={{ maxHeight: `${availableHeight}px` }}
                 >
                     {verticalModules
                         .filter(({ name }) => activeModules[name])
                         .map(({ name, component: Component }) => (
                             <div key={name} id={`module-${name}`}>
-                                <Component />
+                                <Component isDarkMode={isDarkMode} />
                             </div>
                         ))}
                 </div>
-                {/* 가로 스택 (정해진 순서 유지) */}
+                {/* 가로 스택 */}
                 <div className="flex flex-wrap w-full h-min justify-end items-start">
                     {horizontalModules.map(({ name, component: Component }) =>
                         activeModules[name] ? (
                             <div key={name} className="w-auto">
                                 {name === 'timer' ? (
-                                    <Timer onExpire={() => removeModule('timer')} /> // 👈 여기만 추가
+                                    <Timer onExpire={() => removeModule('timer')} />
                                 ) : (
-                                    <Component />
+                                    <Component isDarkMode={isDarkMode} />
                                 )}
                             </div>
                         ) : null
