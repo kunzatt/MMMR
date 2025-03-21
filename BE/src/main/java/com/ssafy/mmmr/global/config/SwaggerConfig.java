@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
@@ -21,18 +22,23 @@ public class SwaggerConfig {
 
 	@Bean
 	public OpenAPI customOpenAPI() {
-		// Security 스키마 설정
-		SecurityScheme securityScheme = new SecurityScheme()
-			.type(SecurityScheme.Type.APIKEY)  // API 키 타입으로 변경
-			.in(SecurityScheme.In.HEADER)     // 헤더에 전달
-			.name("Authorization")            // 헤더 이름
-			.description("JWT Token");        // 설명 추가
+		// Security 스키마 설정 - Bearer Authentication
+		SecurityScheme bearerScheme = new SecurityScheme()
+			.type(SecurityScheme.Type.HTTP)
+			.scheme("bearer")
+			.bearerFormat("JWT")
+			.in(SecurityScheme.In.HEADER)
+			.name("Authorization")
+			.description("JWT Bearer 토큰을 입력하세요");
+
+		// Security Requirement 객체 생성
+		SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
 
 		return new OpenAPI()
 			.info(new Info()
 				.title("MMMR API Documentation")
 				.description("<h3>MMMR Reference for Developers</h3>Swagger를 이용한 MMMR API<br>" +
-					"<b>인증 헤더 사용 방법:</b> Authorization 헤더에 토큰 값을 그대로 입력하세요.")
+					"<b>인증 방법:</b> Authorize 버튼을 클릭하여 JWT 토큰을 입력하세요. Bearer 접두사는 자동으로 추가됩니다.")
 				.version("v1.0")
 				.contact(new Contact()
 					.name("Support Team")
@@ -48,6 +54,7 @@ public class SwaggerConfig {
 				new Server().url("").description("Local server")
 			))
 			.components(new Components()
-				.addSecuritySchemes("Authorization", securityScheme));  // 시큐리티 스키마 추가
+				.addSecuritySchemes("bearerAuth", bearerScheme))
+			.addSecurityItem(securityRequirement);
 	}
 }
