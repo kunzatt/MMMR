@@ -48,11 +48,6 @@ public class AccountService {
 		boolean exists = accountRepository.existsByEmail(email);
 		result.put("exists", exists);
 
-		if (exists) {
-			// 컨트롤러에서 예외 처리하기 쉽도록 예외를 던지지 않고 결과 맵 반환
-			return result;
-		}
-
 		return result;
 	}
 
