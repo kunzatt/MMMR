@@ -272,11 +272,6 @@ def main():
     except KeyboardInterrupt:
         print("\n종료 중...")
     
-    except Exception as e:
-        print(f"오류 발생: {e}")
-        import tracebacky
-        traceback.print_exc()
-    
     finally:
         if 'stt' in locals():
             stt.stop()
