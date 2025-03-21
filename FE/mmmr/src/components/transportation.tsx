@@ -12,7 +12,11 @@ const rawData = [
     { type: 'subway', station: '역삼역', direction: '강남행', number: '2호선', time: '2분 뒤 도착' },
 ];
 
-export default function Transportation(isDarkMode: boolean) {
+interface IotProps {
+    isDarkMode: boolean;
+}
+
+export default function Transportation({ isDarkMode }: IotProps) {
     return (
         <div className="py-1 px-5 h-auto w-52">
             {rawData.map((item, index) => (
