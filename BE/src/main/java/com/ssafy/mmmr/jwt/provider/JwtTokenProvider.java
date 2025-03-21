@@ -4,13 +4,15 @@ import com.ssafy.mmmr.global.error.code.ErrorCode;
 import com.ssafy.mmmr.global.error.exception.JwtException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import jakarta.security.auth.message.AuthException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
+import java.util.regex.Pattern;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 public class JwtTokenProvider {
@@ -24,6 +26,9 @@ public class JwtTokenProvider {
 	@Value("${jwt.refreshTokenExpiration}")
 	private long refreshTokenExpiration;
 
+	// JWT 토큰 형식을 확인하는 정규 표현식 패턴
+	private static final Pattern JWT_PATTERN = Pattern.compile("^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_.+/=]*$");
+
 	public String generateAccessToken(String email) {
 		return generateToken(email, accessTokenExpiration);
 	}
@@ -36,12 +41,13 @@ public class JwtTokenProvider {
 		Date now = new Date();
 		Date expiryDate = new Date(now.getTime() + expiration * 1000);
 
-		return Jwts.builder()
+		String token = Jwts.builder()
 			.setSubject(email)
 			.setIssuedAt(now)
 			.setExpiration(expiryDate)
 			.signWith(getSigningKey(), SignatureAlgorithm.HS512)
 			.compact();
+		return token;
 	}
 
 	private Key getSigningKey() {
@@ -64,6 +70,11 @@ public class JwtTokenProvider {
 
 	private Claims getAllClaimsFromToken(String token) {
 		try {
+			// 토큰 형식 기본 검증
+			if (!isValidJwtFormat(token)) {
+				throw new JwtException(ErrorCode.INVALID_TOKEN);
+			}
+
 			return Jwts.parser()
 				.setSigningKey(getSigningKey())
 				.build()
@@ -78,7 +89,15 @@ public class JwtTokenProvider {
 
 	public boolean validateToken(String token) {
 		try {
-			Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
+			// 토큰 형식 기본 검증
+			if (!isValidJwtFormat(token)) {
+				return false;
+			}
+
+			Jwts.parser()
+				.setSigningKey(getSigningKey())
+				.build()
+				.parseClaimsJws(token);
 			return true;
 		} catch (ExpiredJwtException e) {
 			throw new JwtException(ErrorCode.EXPIRED_TOKEN);
@@ -102,10 +121,37 @@ public class JwtTokenProvider {
 		}
 
 		try {
-			Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
+			Jwts.parser()
+				.setSigningKey(getSigningKey())
+				.build()
+				.parseClaimsJws(token);
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	private boolean isValidJwtFormat(String token) {
+		if (token == null || token.isEmpty()) {
+			return false;
+		}
+
+		// 기본 형식 확인: 점(.)으로 구분된 세 부분으로 구성되어 있어야 함
+		String[] parts = token.split("\\.");
+		if (parts.length != 3) {
+			return false;
+		}
+
+		// 토큰은 'e'로 시작해야 함 (ey...)
+		if (!token.startsWith("e")) {
+			return false;
+		}
+
+		// JWT 패턴 확인
+		boolean matches = JWT_PATTERN.matcher(token).matches();
+		if (!matches) {
+		}
+
+		return matches;
 	}
 }

@@ -23,17 +23,15 @@ public class AccountDetailsService implements UserDetailsService {
 	private final AccountRepository accountRepository;
 
 	@Override
-	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
 		AccountEntity account = accountRepository.findByEmail(email)
-			.orElseThrow(() -> new UsernameNotFoundException("찾을 수 없는 이메일 : " + email));
+			.orElseThrow(() -> {
+				return new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email);
+			});
 
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 
-		return new User(
-			account.getEmail(),
-			account.getPassword(),
-			authorities
-		);
+		return new User(account.getEmail(), account.getPassword(), authorities);
 	}
 }
