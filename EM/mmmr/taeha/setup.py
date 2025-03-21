@@ -22,7 +22,8 @@ setup(
         'console_scripts': [
             'main = taeha.main:main',
             'ex_calib = taeha.ex_calib:main',
-            'human_detector = taeha.human_detector:main'
+            'human_detector = taeha.human_detector:main',
+            'seg_binarizer = taeha.seg_binarizer:main'
         ],
     },
 )
