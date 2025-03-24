@@ -25,6 +25,10 @@ public enum ErrorCode {
 	PASSWORD_MISMATCH(400, "새 비밀번호가 일치하지 않습니다"),
 	USERNAME_EMAIL_MISMATCH(400, "사용자 이름과 이메일이 일치하지 않습니다"),
 
+	// Profile
+	NICKNAME_EXISTS(409, "이미 사용중인 프로필 닉네임 입니다."),
+	PROFILE_NOT_FOUND(400, "프로필을 찾을 수 없습니다."),
+
 	// BusInformation
 	INVALID_EXTENSION_VALUE(400, "올바른 확장자 명이 아닙니다"),
 	FILE_UPLOAD_ERROR(500, "파일 업로드 중 오류가 발생했습니다"),
