@@ -8,16 +8,38 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const handleLogin = () => {
-        if (email === 'test@test.com' && password === 'password') {
-            localStorage.setItem('token', 'sampleToken');
-            alert('로그인 성공!');
-            router.refresh(); // 페이지를 새로고침하여 상태를 업데이트
-            router.push('/mobile/home');
-        } else {
-            alert('로그인 실패! 이메일 또는 비밀번호를 확인하세요.');
+    const handleLogin = async () => {
+        setLoading(true);
+
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // 로그인 성공 시 토큰을 localStorage에 저장
+                localStorage.setItem('accessToken', data.data.accessToken);
+                localStorage.setItem('refreshToken', data.data.refreshToken);
+
+                alert('로그인 성공!');
+                router.refresh(); // 상태 업데이트 후 새로고침하여 Footer 표시
+                router.push('/mobile/home'); // 홈 화면으로 이동
+            } else {
+                // 로그인 실패 시 에러 메시지 표시
+                alert(data.message || '로그인에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('로그인 오류:', error);
+            alert('서버 연결에 실패했습니다.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -51,9 +73,28 @@ export default function LoginPage() {
                     </div>
                 </div>
 
-                <button onClick={handleLogin} className="w-full bg-blue-300 text-white py-2 rounded-md mt-4">
-                    Login
+                <button
+                    onClick={handleLogin}
+                    className="w-full bg-blue-300 text-white py-2 rounded-md mt-4"
+                    disabled={loading}
+                >
+                    {loading ? '로그인 중...' : 'Login'}
                 </button>
+
+                <div className="flex justify-between mt-2">
+                    <span
+                        onClick={() => router.push('/mobile/reset-password')}
+                        className="text-sm text-blue-500 cursor-pointer"
+                    >
+                        비밀번호 찾기
+                    </span>
+                    <span
+                        onClick={() => router.push('/mobile/signup')}
+                        className="text-sm text-blue-500 cursor-pointer"
+                    >
+                        회원가입
+                    </span>
+                </div>
             </div>
         </div>
     );

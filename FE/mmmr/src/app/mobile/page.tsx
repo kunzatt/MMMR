@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import LoginPage from '@/components/mobile/login';
 import { useRouter } from 'next/navigation';
 
 export default function Page() {
