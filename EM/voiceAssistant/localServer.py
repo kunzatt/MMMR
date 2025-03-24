@@ -375,6 +375,12 @@ async def websocket_endpoint(websocket: WebSocket):
                 # STT 결과를 JSON으로 변환
                 json_result = await text_to_json(transcription)
                 
+                """ 
+                이 부분에 json 데이터 처리 
+                json에 결과 추가 필요
+                
+                """
+
                 # JSON 결과 전송
                 await websocket.send_text(json_result)
                 logger.info("JSON 변환 결과 전송 완료")
@@ -385,7 +391,8 @@ async def websocket_endpoint(websocket: WebSocket):
                     "contents": {
                         "default": "OFF",
                         "data": ""
-                    }
+                    },
+                    "result" : "-1"
                 })
                 await websocket.send_text(default_json)
                 logger.info("빈 STT 결과에 대한 기본 JSON 전송")
@@ -396,7 +403,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 "contents": {
                     "default": "OFF",
                     "data": ""
-                }
+                },
+                "result" : "-1"
             })
             await websocket.send_text(default_json)
         
