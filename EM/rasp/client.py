@@ -6,6 +6,7 @@ import os
 import signal
 import asyncio
 import websockets
+import json
 from dotenv import load_dotenv
 import subprocess
 
@@ -21,6 +22,11 @@ MODEL_PATH = os.getenv("MODEL_PATH")
 ALERT_SOUND_PATH = os.getenv("ALERT_SOUND_PATH", "alert.mp3")
 KEYWORD_NAMES = ["미미", "해태"]
 SERVER_URL = os.getenv("SERVER_URL", "ws://localhost:8000/listen")
+
+# TTS 파일 경로
+TTS_DIR = "./tts_files"
+MIMI_TTS_FILE = "f.wav"  # 미미용 TTS 파일
+HAETAE_TTS_FILE = "m.wav"  # 해태용 TTS 파일
 
 # 민감도 설정
 SENSITIVITIES = [0.7, 0.7]
@@ -49,6 +55,21 @@ def play_alert_sound():
             print(f"알림음 재생 중 오류 발생: {e}")
     else:
         print(f"알림음 파일을 찾을 수 없습니다: {ALERT_SOUND_PATH}")
+
+def play_tts_file(keyword):
+    """호출어에 따른 TTS 파일 재생"""
+    try:
+        tts_file = MIMI_TTS_FILE if keyword == "미미" else HAETAE_TTS_FILE
+        tts_path = os.path.join(TTS_DIR, tts_file)
+        
+        if os.path.exists(tts_path):
+            print(f"TTS 파일 재생 중: {tts_path}")
+            subprocess.call(["aplay", tts_path])
+            print("TTS 파일 재생 완료")
+        else:
+            print(f"TTS 파일을 찾을 수 없습니다: {tts_path}")
+    except Exception as e:
+        print(f"TTS 파일 재생 중 오류 발생: {e}")
 
 async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detected_keyword):
     """웹소켓을 통해 서버로 오디오 스트리밍"""
@@ -99,6 +120,18 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
             try:
                 result = await asyncio.wait_for(websocket.recv(), timeout=5.0)
                 print(f"STT 결과: {result}")
+                
+                # 결과 JSON 파싱
+                try:
+                    json_result = json.loads(result)
+                    
+                    # 결과가 -1인 경우 호출어에 따른 TTS 파일 재생
+                    if "result" in json_result and json_result["result"] == "-1":
+                        print(f"결과가 -1입니다. '{detected_keyword}'에 해당하는 TTS 파일을 재생합니다.")
+                        play_tts_file(detected_keyword)
+                except json.JSONDecodeError:
+                    print("JSON 파싱 오류")
+                
             except asyncio.TimeoutError:
                 print("STT 결과를 받지 못했습니다.")
 
@@ -137,6 +170,11 @@ async def async_wake_word_detection():
 
         print("Wake word 감지 시작... ('Ctrl+C'로 종료)")
         print(f"'{KEYWORD_NAMES[0]}' 또는 '{KEYWORD_NAMES[1]}'라고 말해보세요...")
+
+        # TTS 디렉토리 확인 및 생성
+        if not os.path.exists(TTS_DIR):
+            print(f"TTS 디렉토리가 없습니다. 생성합니다: {TTS_DIR}")
+            os.makedirs(TTS_DIR)
 
         while running:
             # 오디오 프레임 읽기
