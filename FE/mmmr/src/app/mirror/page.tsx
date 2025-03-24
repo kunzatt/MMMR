@@ -1,16 +1,16 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Time from '@/components/time';
-import Weather from '@/components/weather';
-import Youtubeh from '@/components/youtubeh';
-import Youtubev from '@/components/youtubev';
-import Schedule from '@/components/schedule';
-import Transportation from '@/components/transportation';
-import Iot from '@/components/iot';
-import Todo from '@/components/todo';
-import Timer from '@/components/timer';
-import News from '@/components/news';
+import Time from '@/components/mirror/time';
+import Weather from '@/components/mirror/weather';
+import Youtubeh from '@/components/mirror/youtubeh';
+import Youtubev from '@/components/mirror/youtubev';
+import Schedule from '@/components/mirror/schedule';
+import Transportation from '@/components/mirror/transportation';
+import Iot from '@/components/mirror/iot';
+import Todo from '@/components/mirror/todo';
+import Timer from '@/components/mirror/timer';
+import News from '@/components/mirror/news';
 
 interface Module {
     name: string;

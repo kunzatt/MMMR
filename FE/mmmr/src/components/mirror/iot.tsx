@@ -34,9 +34,8 @@ export default function Iot({ isDarkMode }: IotProps) {
                     />
 
                     {devices.map((device) => (
-                        <button
+                        <div
                             key={device.id}
-                            onClick={() => toggleDevice(device.id)}
                             style={{ position: 'absolute', left: device.x, top: device.y }}
                             className={`absolute text-sm px-2 py-1 rounded-full shadow-md whitespace-nowrap
                                 ${
@@ -49,7 +48,7 @@ export default function Iot({ isDarkMode }: IotProps) {
                             `}
                         >
                             {device.name}
-                        </button>
+                        </div>
                     ))}
                 </div>
             </div>
