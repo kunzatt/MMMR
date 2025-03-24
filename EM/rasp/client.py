@@ -25,8 +25,8 @@ SERVER_URL = os.getenv("SERVER_URL", "ws://localhost:8000/listen")
 
 # TTS 파일 경로
 TTS_DIR = "./tts_files"
-MIMI_TTS_FILE = "f.wav"  # 미미용 TTS 파일
-HAETAE_TTS_FILE = "m.wav"  # 해태용 TTS 파일
+MIMI_TTS_FILE = "not_understand_f.wav"
+HAETAE_TTS_FILE = "not_understand_m.wav"
 
 # 민감도 설정
 SENSITIVITIES = [0.7, 0.7]
