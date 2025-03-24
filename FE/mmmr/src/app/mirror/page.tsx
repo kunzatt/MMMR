@@ -94,7 +94,7 @@ export default function Page() {
     return (
         <div
             className={`${
-                isDarkMode ? 'bg-gray-300 text-white' : 'bg-gray-100 text-black'
+                isDarkMode ? 'bg-black text-white' : 'bg-white text-black'
             } font-sans flex flex-col items-center min-h-screen`}
         >
             {/* 다크 모드 토글 버튼 */}
