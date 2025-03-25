@@ -9,7 +9,7 @@ export default function Page() {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken'); // 'token' -> 'accessToken'으로 수정
             if (token) {
                 setIsAuthenticated(true);
                 router.push('/mobile/home'); // 로그인되어 있으면 홈 페이지로 리다이렉트

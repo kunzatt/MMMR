@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { API_ROUTES } from '@/config/apiRoutes';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -12,10 +13,8 @@ export default function LoginPage() {
     const router = useRouter();
 
     const handleLogin = async () => {
-        setLoading(true);
-
         try {
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch(API_ROUTES.auth.login, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
@@ -24,22 +23,17 @@ export default function LoginPage() {
             const data = await response.json();
 
             if (response.ok) {
-                // 로그인 성공 시 토큰을 localStorage에 저장
+                alert('로그인 성공!');
                 localStorage.setItem('accessToken', data.data.accessToken);
                 localStorage.setItem('refreshToken', data.data.refreshToken);
-
-                alert('로그인 성공!');
-                router.refresh(); // 상태 업데이트 후 새로고침하여 Footer 표시
-                router.push('/mobile/home'); // 홈 화면으로 이동
+                router.push('/mobile/home');
             } else {
-                // 로그인 실패 시 에러 메시지 표시
-                alert(data.message || '로그인에 실패했습니다.');
+                alert(data.message || '로그인에 실패했습니다. 다시 시도하세요.');
+                console.log('로그인 실패:', data.message);
             }
         } catch (error) {
-            console.error('로그인 오류:', error);
-            alert('서버 연결에 실패했습니다.');
-        } finally {
-            setLoading(false);
+            alert('서버 오류가 발생했습니다. 다시 시도해주세요.');
+            console.log('로그인 오류:', error);
         }
     };
 
