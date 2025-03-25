@@ -50,6 +50,14 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         jdbc:
           time_zone: Asia/Seoul
+jwt:
+  secret: ${JWT_SECRET}
+  issuer: mmmr-auth
+  subject-prefix: mmmr
+  accessTokenExpiration: ${JWT_ACCESS_TOKEN_EXPIRATION}
+  refreshTokenExpiration: ${JWT_REFRESH_TOKEN_EXPIRATION}
+  temporaryTokenExpiration: ${JWT_TEMPORARY_TOKEN_EXPIRATION}
+
 
 cookie:
   secure-flag: false

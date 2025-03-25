@@ -5,8 +5,8 @@ import com.ssafy.mmmr.global.error.code.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class UserException extends BusinessException {
-	public UserException(ErrorCode errorCode) {
+public class AccountException extends BusinessException {
+	public AccountException(ErrorCode errorCode) {
 		super(errorCode);
 	}
 }
