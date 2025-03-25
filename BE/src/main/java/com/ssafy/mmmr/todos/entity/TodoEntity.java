@@ -70,7 +70,7 @@ public class TodoEntity {
 		this.content = content;
 	}
 
-	public void toggleDone() {
+	public void toggle() {
 		this.isDone = !this.isDone;
 	}
 }

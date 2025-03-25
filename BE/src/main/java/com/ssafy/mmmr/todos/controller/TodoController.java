@@ -37,7 +37,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/todos")
 @RequiredArgsConstructor
-@Tag(name = "투두 관리", description = "투두 생성, 조회, 수정, 삭제 관련 API")
+@Tag(name = "Todo 리스트", description = "투두 생성, 조회, 수정, 삭제 관련 API")
 public class TodoController {
 
 	private final TodoService todoService;

@@ -103,7 +103,7 @@ public class TodoService {
 			throw new TodoException(ErrorCode.TODO_DELETED);
 		}
 
-		todo.toggleDone();
+		todo.toggle();
 		return TodoResponseDto.fromEntity(todo);
 	}
 
