@@ -55,7 +55,7 @@ public class TodoEntity {
 	private Boolean deleted;
 
 	@Builder
-	public TodoEntity (ProfileEntity profile, String content, Boolean isDone, Boolean deleted) {
+	public TodoEntity(ProfileEntity profile, String content, Boolean isDone, Boolean deleted) {
 		this.profile = profile;
 		this.content = content;
 		this.isDone = isDone;
@@ -68,5 +68,9 @@ public class TodoEntity {
 
 	public void updateContent(String content) {
 		this.content = content;
+	}
+
+	public void toggleDone() {
+		this.isDone = !this.isDone;
 	}
 }

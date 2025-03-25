@@ -34,6 +34,10 @@ public enum ErrorCode {
 	FILE_UPLOAD_ERROR(500, "파일 업로드 중 오류가 발생했습니다"),
 	BATCH_PROCESSING_ERROR(500, "배치 작업 실행 중 오류가 발생했습니다"),
 
+	// Todo List
+	TODO_NOT_FOUND(400, "투두리스트가 없습니다."),
+	TODO_DELETED(400, "삭제된 할 일 입니다."),
+
 	// Excel File
 	EMPTY_FILE(400, "파일이 비어있습니다"),
 	EXCEL_PROCESSING_ERROR(500, "엑셀 파일 처리 중 오류가 발생했습니다"),
