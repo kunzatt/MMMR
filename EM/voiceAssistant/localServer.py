@@ -284,6 +284,9 @@ contents.data는 유형에 따라 다르게 설정합니다:
         )
         
         result = response.choices[0].message.content.strip()
+        json_result = json.loads(result)
+        json_result["result"] = "-1"
+        result = json.dumps(json_result)
         process_time = time.time() - start_time
         
         # 결과 검증
@@ -304,7 +307,8 @@ contents.data는 유형에 따라 다르게 설정합니다:
             "contents": {
                 "default": "OFF",
                 "data": ""
-            }
+            },
+            "result": "-1"
         })
 
 @app.websocket("/listen")
