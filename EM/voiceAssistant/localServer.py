@@ -23,7 +23,7 @@ logger = logging.getLogger("stt-server")
 load_dotenv()
 
 # 환경 변수 설정
-MODEL_SIZE = os.getenv("MODEL_SIZE", "small")
+MODEL_SIZE = os.getenv("MODEL_SIZE", "medium") #base samall medium
 LANGUAGE = os.getenv("LANGUAGE", "ko")
 HOST = os.getenv("HOST", "0.0.0.0")
 PORT = int(os.getenv("PORT", "8000"))
