@@ -45,7 +45,7 @@ public class ProfileEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "callsign", nullable = false)
-	private CallSign callsign;
+	private CallSign callSign;
 
 	@Column(name = "deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
 	private Boolean deleted = false;
@@ -59,10 +59,10 @@ public class ProfileEntity {
 	private LocalDateTime updatedAt;
 
 	@Builder
-	public ProfileEntity(AccountEntity account, String nickname, CallSign callsign) {
+	public ProfileEntity(AccountEntity account, String nickname, CallSign callSign) {
 		this.account = account;
 		this.nickname = nickname;
-		this.callsign = callsign;
+		this.callSign = callSign;
 	}
 
 	public void delete() {
@@ -73,7 +73,7 @@ public class ProfileEntity {
 		this.nickname = nickname;
 	}
 
-	public void changeCallsign(CallSign callsign) {
-		this.callsign = callsign;
+	public void changeCallSign(CallSign callSign) {
+		this.callSign = callSign;
 	}
 }

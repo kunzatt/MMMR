@@ -40,7 +40,7 @@ public class ProfileService {
 		ProfileEntity profile = ProfileEntity.builder()
 			.account(account)
 			.nickname(profileRequestDto.getNickname())
-			.callsign(profileRequestDto.getCallSign())
+			.callSign(profileRequestDto.getCallSign())
 			.build();
 
 		account.addProfile(profile);
@@ -71,8 +71,8 @@ public class ProfileService {
 			profile.changeNickname(updateDto.getNickname());
 		}
 
-		if (updateDto.getCallSign() != null && !updateDto.getCallSign().equals(profile.getCallsign())) {
-			profile.changeCallsign(updateDto.getCallSign());
+		if (updateDto.getCallSign() != null && !updateDto.getCallSign().equals(profile.getCallSign())) {
+			profile.changeCallSign(updateDto.getCallSign());
 		}
 	}
 
@@ -89,7 +89,7 @@ public class ProfileService {
 		List<CallSign> allCallSigns = Arrays.asList(CallSign.values());
 		List<CallSign> usedCallSigns = profileRepository.findByAccountIdAndDeletedFalse(accountId)
 			.stream()
-			.map(ProfileEntity::getCallsign)
+			.map(ProfileEntity::getCallSign)
 			.collect(Collectors.toList());
 
 		return allCallSigns.stream()
@@ -102,7 +102,7 @@ public class ProfileService {
 		return ProfileResponseDto.builder()
 			.id(profile.getId())
 			.nickname(profile.getNickname())
-			.callSign(profile.getCallsign())
+			.callSign(profile.getCallSign())
 			.build();
 	}
 
