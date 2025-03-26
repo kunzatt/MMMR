@@ -7,7 +7,6 @@ import openai
 
 Login_url = os.getenv("LOGIN_URL")
 GetNews_url = os.getenv("GETNEWS_URL")
-getProfiles_url = os.getenv("GETPROFILES_URL")
 email = os.getenv("EMAIL")
 password = os.getenv("PASSWORD") 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
@@ -35,16 +34,14 @@ def login():
         logger.error(f"로그인 요청 중 오류: {e}")
         return None
     
-def getProfiles(access_token):
-
 
 def get_news(access_token, id=0):
+    print("a")
     try:
         response = requests.get(GetNews_url, headers={"Authorization": f"Bearer {access_token}"})
         if response.status_code == 200:
             if id == 0:
                 return "success"
-            
             data = response.json()
             news_item = None
             logger.info(f"뉴스 데이터: {data}")
@@ -61,7 +58,7 @@ def get_news(access_token, id=0):
             if not openai_api_key:
                 logger.error("OpenAI API 키가 설정되지 않음")
                 return None
-            
+
             openai_url = "https://api.openai.com/v1/chat/completions"
             headers = {
                 "Authorization": f"Bearer {openai_api_key}",
