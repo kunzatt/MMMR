@@ -45,7 +45,8 @@ public class SecurityConfig {
 					"/api/accounts/",
 					"/api/accounts/email-exists",
 					"/api/auth/login",
-					"api/news"
+					"api/news",
+					"api/mail/**"
 				)
 				.permitAll()
 				.anyRequest().authenticated()

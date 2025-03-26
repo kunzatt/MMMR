@@ -17,9 +17,9 @@ public enum ErrorCode {
 	INVALID_TOKEN(401, "유효하지 않은 토큰입니다"),
 	EXPIRED_TOKEN(401, "만료된 토큰입니다"),
 	TOKEN_NOT_FOUND(401, "토큰을 찾을 수 없습니다."),
-	EMAIL_EXIST(400, "이미 존재하는 이메일입니다"),
+	EMAIL_EXIST(409, "이미 존재하는 이메일입니다"),
 	INVALID_PASSWORD(400, "잘못된 비밀번호입니다"),
-	ACCOUNT_NOT_FOUND(400, "사용자를 찾을 수 없습니다."),
+	ACCOUNT_NOT_FOUND(404, "사용자를 찾을 수 없습니다."),
 	LOGIN_BAD_CREDENTIALS(401, "이메일 또는 비밀번호가 일치하지 않습니다."),
 	LOGIN_FAILED(401, "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요."),
 	PASSWORD_MISMATCH(400, "새 비밀번호가 일치하지 않습니다"),
@@ -27,7 +27,7 @@ public enum ErrorCode {
 
 	// Profile
 	NICKNAME_EXISTS(409, "이미 사용중인 프로필 닉네임 입니다."),
-	PROFILE_NOT_FOUND(400, "프로필을 찾을 수 없습니다."),
+	PROFILE_NOT_FOUND(404, "프로필을 찾을 수 없습니다."),
 
 	// BusInformation
 	INVALID_EXTENSION_VALUE(400, "올바른 확장자 명이 아닙니다"),
@@ -35,8 +35,12 @@ public enum ErrorCode {
 	BATCH_PROCESSING_ERROR(500, "배치 작업 실행 중 오류가 발생했습니다"),
 
 	// Todo List
-	TODO_NOT_FOUND(400, "투두리스트가 없습니다."),
-	TODO_DELETED(400, "삭제된 할 일 입니다."),
+	TODO_NOT_FOUND(404, "투두리스트가 없습니다."),
+	TODO_DELETED(410, "삭제된 할 일 입니다."),
+
+	// Email
+	EMAIL_SEND_FAIL(400, "이메일 전송에 실패했습니다."),
+	INVALID_EMAIL_VERIFICATION(400, "인증번호 인증에 실패했습니다"),
 
 	// Excel File
 	EMPTY_FILE(400, "파일이 비어있습니다"),
