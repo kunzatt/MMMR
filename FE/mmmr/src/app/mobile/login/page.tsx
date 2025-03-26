@@ -28,7 +28,7 @@ export default function LoginPage() {
                 alert("로그인 성공!");
                 localStorage.setItem("accessToken", data.data.accessToken);
                 localStorage.setItem("refreshToken", data.data.refreshToken);
-                router.push("/mobile/home");
+                router.push("/mobile/profile");
             } else {
                 alert(data.message || "로그인에 실패했습니다. 다시 시도하세요.");
                 console.log("로그인 실패:", data.message);
