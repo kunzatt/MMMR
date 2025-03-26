@@ -228,7 +228,7 @@ public class ProfileController {
 					value = """
 					{
 						"nickname": "string",
-						"callsign": "미미"
+						"callSign": "미미"
 					}
 					"""
 				)
