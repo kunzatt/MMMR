@@ -38,7 +38,7 @@ public class AccountController {
 
 	private final AccountService accountService;
 
-	@PostMapping("/")
+	@PostMapping
 	@Operation(summary = "회원가입", description = "신규 사용자를 등록합니다.")
 	@ApiResponses({
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
