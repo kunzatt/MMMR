@@ -7,6 +7,7 @@ import openai
 
 Login_url = os.getenv("LOGIN_URL")
 GetNews_url = os.getenv("GETNEWS_URL")
+getProfiles_url = os.getenv("GETPROFILES_URL")
 email = os.getenv("EMAIL")
 password = os.getenv("PASSWORD") 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
@@ -34,6 +35,8 @@ def login():
         logger.error(f"로그인 요청 중 오류: {e}")
         return None
     
+def getProfiles(access_token):
+
 
 def get_news(access_token, id=0):
     try:
@@ -44,7 +47,7 @@ def get_news(access_token, id=0):
             
             data = response.json()
             news_item = None
-            
+            logger.info(f"뉴스 데이터: {data}")
             for item in data:
                 if item["id"] == id:
                     news_item = item
@@ -78,6 +81,7 @@ def get_news(access_token, id=0):
             openai_response = requests.post(openai_url, headers=headers, json=payload)
             if openai_response.status_code == 200:
                 summary = openai_response.json()["choices"][0]["message"]["content"].strip()
+                logger.info(f"OpenAI 요청 성공: {summary}")
                 return summary
             else:
                 logger.error(f"OpenAI API 요청 실패: {openai_response.status_code}, {openai_response.text}")
