@@ -42,7 +42,7 @@ public class SecurityConfig {
 					"/api/swagger-ui/**",
 					"/api/api-docs/**",
 					// 인증 및 계정 관련 공개 API
-					"/api/accounts/",
+					"/api/accounts",
 					"/api/accounts/email-exists",
 					"/api/auth/login",
 					"api/news",
