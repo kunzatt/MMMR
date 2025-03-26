@@ -6,8 +6,10 @@ import os
 import signal
 import asyncio
 import websockets
+import json
 from dotenv import load_dotenv
 import subprocess
+from google.cloud import texttospeech
 
 load_dotenv()
 
@@ -21,6 +23,11 @@ MODEL_PATH = os.getenv("MODEL_PATH")
 ALERT_SOUND_PATH = os.getenv("ALERT_SOUND_PATH", "alert.mp3")
 KEYWORD_NAMES = ["미미", "해태"]
 SERVER_URL = os.getenv("SERVER_URL", "ws://localhost:8000/listen")
+
+# TTS 파일 경로
+TTS_DIR = "./tts_files"
+MIMI_TTS_FILE = "not_understand_f.wav"
+HAETAE_TTS_FILE = "not_understand_m.wav"
 
 # 민감도 설정
 SENSITIVITIES = [0.7, 0.7]
@@ -49,6 +56,70 @@ def play_alert_sound():
             print(f"알림음 재생 중 오류 발생: {e}")
     else:
         print(f"알림음 파일을 찾을 수 없습니다: {ALERT_SOUND_PATH}")
+
+def play_tts_file(keyword):
+    """호출어에 따른 TTS 파일 재생"""
+    try:
+        tts_file = MIMI_TTS_FILE if keyword == "미미" else HAETAE_TTS_FILE
+        tts_path = os.path.join(TTS_DIR, tts_file)
+        
+        if os.path.exists(tts_path):
+            print(f"TTS 파일 재생 중: {tts_path}")
+            subprocess.call(["aplay", tts_path])
+            print("TTS 파일 재생 완료")
+        else:
+            print(f"TTS 파일을 찾을 수 없습니다: {tts_path}")
+    except Exception as e:
+        print(f"TTS 파일 재생 중 오류 발생: {e}")
+
+def speak_text(text, gender="female"):
+    """Google TTS로 텍스트를 음성으로 변환하여 출력"""
+    try:
+        client = texttospeech.TextToSpeechClient()
+        
+        synthesis_input = texttospeech.SynthesisInput(text=text)
+        
+        # 성별에 따른 음성 설정
+        if gender.lower() == "male":
+            voice_name = "ko-KR-Standard-C"  # 남성 음성
+            ssml_gender = texttospeech.SsmlVoiceGender.MALE
+        else:
+            voice_name = "ko-KR-Standard-A"  # 여성 음성
+            ssml_gender = texttospeech.SsmlVoiceGender.FEMALE
+        
+        # 음성 설정
+        voice = texttospeech.VoiceSelectionParams(
+            language_code="ko-KR",
+            name=voice_name,
+            ssml_gender=ssml_gender
+        )
+        
+        # 오디오 출력 설정
+        audio_config = texttospeech.AudioConfig(
+            audio_encoding=texttospeech.AudioEncoding.LINEAR16,
+            speaking_rate=1.2
+        )
+        
+        # TTS 요청 실행
+        print(f"텍스트 '{text}'를 음성으로 변환 중...")
+        response = client.synthesize_speech(
+            input=synthesis_input, voice=voice, audio_config=audio_config
+        )
+        
+        # 임시 파일로 저장
+        temp_file = os.path.join(TTS_DIR, "temp_tts.wav")
+        with open(temp_file, "wb") as out:
+            out.write(response.audio_content)
+        
+        # 음성 재생
+        subprocess.call(["aplay", temp_file])
+        
+        # 임시 파일 삭제
+        os.remove(temp_file)
+        
+        print("TTS 재생 완료")
+    except Exception as e:
+        print(f"TTS 변환 또는 재생 중 오류 발생: {e}")
 
 async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detected_keyword):
     """웹소켓을 통해 서버로 오디오 스트리밍"""
@@ -99,12 +170,38 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
             try:
                 result = await asyncio.wait_for(websocket.recv(), timeout=5.0)
                 print(f"STT 결과: {result}")
+                
+                # 결과 JSON 파싱
+                try:
+                    json_result = json.loads(result)
+                    
+                    # 뉴스 타입 및 유효한 결과인지 확인
+                    if json_result.get("type") == "news" and "result" in json_result:
+                        if json_result["result"] not in ["-1", "0"]:
+                            # 유효한 뉴스 결과가 있으면 TTS로 읽어주기
+                            print("뉴스 결과를 TTS로 읽어줍니다.")
+                            # 호출어에 따라 다른 음성으로 TTS 실행
+                            gender = "female" if detected_keyword == "미미" else "male"
+                            speak_text(json_result["result"], gender)
+                        else:
+                            # 결과가 없는 경우 호출어에 맞는 기본 안내 음성 재생
+                            print(f"유효한 뉴스 결과가 없습니다. '{detected_keyword}'에 해당하는 TTS 파일을 재생합니다.")
+                            play_tts_file(detected_keyword)
+                    elif "result" in json_result and json_result["result"] == "-1":
+                        # 다른 타입의 명령에서 결과가 -1인 경우 기본 TTS 파일 재생
+                        print(f"결과가 -1입니다. '{detected_keyword}'에 해당하는 TTS 파일을 재생합니다.")
+                        play_tts_file(detected_keyword)
+                
+                except json.JSONDecodeError:
+                    print("JSON 파싱 오류")
+                
             except asyncio.TimeoutError:
                 print("STT 결과를 받지 못했습니다.")
 
     except Exception as e:
         print(f"웹소켓 연결 오류: {e}")
 
+# 나머지 코드는 그대로 유지
 async def async_wake_word_detection():
     global running
     porcupine = None
@@ -137,6 +234,11 @@ async def async_wake_word_detection():
 
         print("Wake word 감지 시작... ('Ctrl+C'로 종료)")
         print(f"'{KEYWORD_NAMES[0]}' 또는 '{KEYWORD_NAMES[1]}'라고 말해보세요...")
+
+        # TTS 디렉토리 확인 및 생성
+        if not os.path.exists(TTS_DIR):
+            print(f"TTS 디렉토리가 없습니다. 생성합니다: {TTS_DIR}")
+            os.makedirs(TTS_DIR)
 
         while running:
             # 오디오 프레임 읽기
@@ -184,6 +286,8 @@ def check_environment_vars():
         missing_vars.append("HAETAE_KEYWORD_PATH")
     if not MODEL_PATH:
         missing_vars.append("MODEL_PATH")
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'):
+        missing_vars.append("GOOGLE_APPLICATION_CREDENTIALS")
 
     if missing_vars:
         print(f"오류: .env 파일에 필요한 환경변수가 설정되지 않았습니다: {', '.join(missing_vars)}")

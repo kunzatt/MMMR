@@ -11,6 +11,7 @@ import logging
 import json
 from typing import Dict, List, Any
 import openai
+import data_processor
 
 # 로깅 설정
 logging.basicConfig(
@@ -22,7 +23,7 @@ logger = logging.getLogger("stt-server")
 load_dotenv()
 
 # 환경 변수 설정
-MODEL_SIZE = os.getenv("MODEL_SIZE", "small")
+MODEL_SIZE = os.getenv("MODEL_SIZE", "medium") #base samall medium
 LANGUAGE = os.getenv("LANGUAGE", "ko")
 HOST = os.getenv("HOST", "0.0.0.0")
 PORT = int(os.getenv("PORT", "8000"))
@@ -284,6 +285,9 @@ contents.data는 유형에 따라 다르게 설정합니다:
         )
         
         result = response.choices[0].message.content.strip()
+        json_result = json.loads(result)
+        json_result["result"] = "-1"
+        result = json.dumps(json_result)
         process_time = time.time() - start_time
         
         # 결과 검증
@@ -304,7 +308,8 @@ contents.data는 유형에 따라 다르게 설정합니다:
             "contents": {
                 "default": "OFF",
                 "data": ""
-            }
+            },
+            "result": "-1"
         })
 
 @app.websocket("/listen")
@@ -374,8 +379,25 @@ async def websocket_endpoint(websocket: WebSocket):
             if transcription:
                 # STT 결과를 JSON으로 변환
                 json_result = await text_to_json(transcription)
+                json_obj = json.loads(json_result)
                 
+                """ 
+                이 부분에 json 데이터 처리 
+                json에 결과 추가 필요
+                
+                """
+                type = json_obj['type']
+                contents = json_obj["contents"]
+                if access_token:
+                    if type == "news":
+                        news_result = data_processor.getNews(access_token, int(contents["data"]))
+                        if news_result:
+                            json_obj["result"] = news_result
+                        else:
+                            json_obj["result"] = "-1"
+                json_result = json.dumps(json_obj)
                 # JSON 결과 전송
+                logger.info(f"JSON 변환 결과: {json_result}")
                 await websocket.send_text(json_result)
                 logger.info("JSON 변환 결과 전송 완료")
             else:
@@ -385,7 +407,8 @@ async def websocket_endpoint(websocket: WebSocket):
                     "contents": {
                         "default": "OFF",
                         "data": ""
-                    }
+                    },
+                    "result" : "-1"
                 })
                 await websocket.send_text(default_json)
                 logger.info("빈 STT 결과에 대한 기본 JSON 전송")
@@ -396,7 +419,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 "contents": {
                     "default": "OFF",
                     "data": ""
-                }
+                },
+                "result" : "-1"
             })
             await websocket.send_text(default_json)
         
@@ -415,5 +439,12 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
+    tokens = data_processor.login()
+    if tokens:
+        access_token = tokens["access_token"]
+        refresh_token = tokens['refresh_token']
+    else:
+        access_token = None
+        refresh_token = None
     logger.info(f"서버 시작: {HOST}:{PORT}")
     uvicorn.run(app, host=HOST, port=PORT)
