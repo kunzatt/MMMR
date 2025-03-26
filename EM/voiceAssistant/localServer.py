@@ -390,7 +390,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 contents = json_obj["contents"]
                 if access_token:
                     if type == "news":
-                        news_result = data_processor.get_news(access_token, int(contents["data"]))
+                        news_result = data_processor.getNews(access_token, int(contents["data"]))
                         if news_result:
                             json_obj["result"] = news_result
                         else:

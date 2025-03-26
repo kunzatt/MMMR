@@ -5,8 +5,11 @@ import os
 from localServer import logger
 import openai
 
-Login_url = os.getenv("LOGIN_URL")
-GetNews_url = os.getenv("GETNEWS_URL")
+load_dotenv()
+
+login_url = os.getenv("LOGIN_URL")
+getNews_url = os.getenv("GETNEWS_URL")
+getProfiles_url = os.getenv("GETPROFILES_URL")
 email = os.getenv("EMAIL")
 password = os.getenv("PASSWORD") 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
@@ -19,7 +22,7 @@ def login():
         "password": password
     }
     try:
-        response = requests.post(Login_url, data=json.dumps(login_data), headers={"Content-Type": "application/json"})
+        response = requests.post(login_url, data=json.dumps(login_data), headers={"Content-Type": "application/json"})
         if response.status_code == 200:
             data = response.json()
             logger.info(f"로그인 성공: {data}")
@@ -34,11 +37,25 @@ def login():
         logger.error(f"로그인 요청 중 오류: {e}")
         return None
     
+def getProfiles(access_token):
+    try:
+        response = requests.get(getProfiles_url, headers={"Authorization": f"Bearer {access_token}"})
+        if response.status_code == 200:
+            data = response.json()
+            logger.info(f"프로필 데이터: {data}")
+            return data
+        else:
+            logger.error(f"프로필 가져오기 실패: {response.status_code}")
+            return None
+    except requests.exceptions.RequestException as e:
+        logger.error(f"프로필 요청 중 오류: {e}")
+        return None
 
-def get_news(access_token, id=0):
+
+def getNews(access_token, id=0):
     print("a")
     try:
-        response = requests.get(GetNews_url, headers={"Authorization": f"Bearer {access_token}"})
+        response = requests.get(getNews_url, headers={"Authorization": f"Bearer {access_token}"})
         if response.status_code == 200:
             if id == 0:
                 return "success"
@@ -78,7 +95,6 @@ def get_news(access_token, id=0):
             openai_response = requests.post(openai_url, headers=headers, json=payload)
             if openai_response.status_code == 200:
                 summary = openai_response.json()["choices"][0]["message"]["content"].strip()
-                logger.info(f"OpenAI 요청 성공: {summary}")
                 return summary
             else:
                 logger.error(f"OpenAI API 요청 실패: {openai_response.status_code}, {openai_response.text}")
@@ -89,3 +105,21 @@ def get_news(access_token, id=0):
     except requests.exceptions.RequestException as e:
         logger.error(f"뉴스 요청 중 오류: {e}")
         return None
+    
+if __name__ == "__main__":
+    
+    access_data = login()
+    if access_data:
+        access_token = access_data["access_token"]
+        profiles = getProfiles(access_token)
+        if profiles:
+            print("프로필 데이터:")
+            print(profiles)
+            for profile in profiles:
+                print(f"이름: {profile['name']}, 이메일: {profile['email']}")
+            
+            news = getNews(access_token, 1)
+            if news:
+                print(f"뉴스 요약: {news}")
+    else:
+        print("로그인 실패")
