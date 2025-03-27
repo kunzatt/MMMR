@@ -113,9 +113,8 @@ class a_star(Node):
             goal_x= msg.pose.position.x
             goal_y= msg.pose.position.y
             goal_cell= self.pose_to_grid_cell(goal_x,goal_y)
-            self.goal = goal_cell
+            self.goal = [goal_cell[0],350-goal_cell[1]]
             #print(msg)
-            
 
             if self.is_map ==True and self.is_odom==True  :
                 if self.is_grid_update==False :
@@ -151,35 +150,48 @@ class a_star(Node):
                 if len(self.final_path)!=0 :
                     self.a_star_pub.publish(self.global_path_msg)
 
-    def dijkstra(self,start):
-        Q = deque()
-        Q.append(start)
-        self.cost[start[0]][start[1]] = 1
-        found = False
-        '''
-        로직 7. grid 기반 최단경로 탐색
-        '''       
-        
-        while len(Q) != 0:
-            if found:
+    def heuristic(self, a, b):
+        return abs(b[0] - a[0]) + abs(b[1] - a[1])
+
+    def a_star(self, start):
+        pq = [(0, start)]
+        self.cost = np.full((self.GRIDSIZE, self.GRIDSIZE), np.inf)
+        self.cost[start[0]][start[1]] = 0
+        self.path = [[None for _ in range(self.GRIDSIZE)] for _ in range(self.GRIDSIZE)]
+        f_score = {start: self.heuristic(start, self.goal)}
+
+        while pq:
+            current_f, current = heapq.heappop(pq)
+
+            if current == self.goal:
                 break
 
-            current = Q.popleft()
-
             for i in range(8):
-                next = [current[0]+self.dx[i], current[1]+ self.dy[i]]
-                if next[0] >= 0 and next[1] >= 0 and next[0] < self.GRIDSIZE and next[1] < self.GRIDSIZE:
-                        if self.grid[next[0]][next[1]] < 50: # 장애물이 아닌 경우
-                            if self.cost[current[0]][current[1]] + self.dCost[i] < self.cost[next[0]][next[1]]:
-                                Q.append(next)
-                                self.path[next[0]][next[1]] = current
-                                self.cost[next[0]][next[1]] = self.cost[current[0]][current[1]] + self.dCost[i]
+                next_x = current[0] + self.dx[i]
+                next_y = current[1] + self.dy[i]
 
-        node = self.goal
-        while node != start: 
-            nextNode = self.path[node[0]][node[1]]
+                if 0 <= next_x < self.GRIDSIZE and 0 <= next_y < self.GRIDSIZE:
+                    # print(self.grid[next_x][next_y]," - ", self.grid_cell_to_pose([next_x,next_y]))
+                    if self.grid[next_x][next_y] == 100:
+                        continue
+                    if self.grid[next_x][next_y] == 127:
+                        continue
+                    
+                    new_cost = self.cost[current[0]][current[1]] + self.dCost[i]
+                    if new_cost < self.cost[next_x][next_y]:
+                        self.cost[next_x][next_y] = new_cost
+                        self.path[next_x][next_y] = current
+                        f_score = new_cost + self.heuristic((next_x, next_y), self.goal)
+                        heapq.heappush(pq, (f_score, (next_x, next_y)))
+
+        node = self.goal.copy()
+        while node != start:
             self.final_path.append(node)
-            node = nextNode
+            node = self.path[node[0]][node[1]]
+            if node is None:
+                self.final_path = []
+                break
+
         
 
         
