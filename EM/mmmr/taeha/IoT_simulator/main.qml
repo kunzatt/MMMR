@@ -74,10 +74,10 @@ Window {
         ColumnLayout {
             anchors {
                 top: parent.top
-                topMargin: 30
+                topMargin: 20
             }
 
-            spacing: 10
+            spacing: 7
 
             Switch {
                 text: qsTr("LivingRoom Light")
@@ -107,6 +107,43 @@ Window {
                 text: qsTr("LivingRoom Curtain")
                 checked: false
                 onClicked: area_curtain.visible = checked
+            }
+
+            TextArea {
+                id: jsonInput
+                placeholderText: qsTr("Enter json format")
+                Layout.topMargin: 20
+                wrapMode: TextArea.WordWrap
+
+                background: Rectangle {
+                    implicitWidth: 200
+                    implicitHeight: 70
+                    color: control.enabled ? "transparent" : "#353637"
+                    border.color: jsonInput.enabled ? "#21be2b" : "transparent"
+                }
+            }
+
+            Button {
+                anchors.right: parent.right
+                text: "Ok"
+                implicitWidth: 100
+                onClicked: {
+                    var jsonText = jsonInput.text;
+                    var result = jsonProcessor.processJson(jsonText);
+                    if (result.error) {
+                        jsonOutput.text = "Error: " + result.error;
+                    } else {
+                        jsonOutput.text = "JSON parsed successfully\nDevice: " + result.device + ", State: " + result.state;
+                    }
+                }
+            }
+
+            TextArea {
+                id: jsonOutput
+                width: parent.width * 0.8
+                height: 200
+                wrapMode: TextArea.Wrap
+                placeholderText: "Parsed JSON will appear here..."
             }
         }
     }
