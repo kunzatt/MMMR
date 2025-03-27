@@ -55,10 +55,12 @@ class astarLocalpath(Node):
             
             local_path_msg=Path()
             local_path_msg.header.frame_id='/map'
+            local_path_msg.header.stamp = self.get_clock().now().to_msg()
             
             x=self.odom_msg.pose.pose.position.x
             y=self.odom_msg.pose.pose.position.y
             current_waypoint=-1
+            min_dis = float('inf')
             
             # 로직 4. 가장 가까운 웨이포인트 찾기
             for i, waypoint in enumerate(self.global_path_msg.poses):
@@ -80,7 +82,6 @@ class astarLocalpath(Node):
                 else:
                     local_path_msg.poses = self.global_path_msg.poses[current_waypoint:]
 
-            self.local_path_pub.publish(local_path_msg)
 
             self.local_path_pub.publish(local_path_msg)
         
@@ -88,11 +89,8 @@ class astarLocalpath(Node):
         
 def main(args=None):
     rclpy.init(args=args)
-
     a_star_local = astarLocalpath()
-
     rclpy.spin(a_star_local)
-
     a_star_local.destroy_node()
     rclpy.shutdown()
 
