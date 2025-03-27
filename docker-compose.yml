@@ -7,14 +7,14 @@ services:
     build:
       context: ./BE
       dockerfile: Dockerfile
-    env_file:
-      - BE/.env
+    environment:
+      - DB_URL=jdbc:mysql://172.17.0.1:3306/mmmr?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&maxAllowedPacket=67108864
+      - DB_USERNAME=mmmruser
+      - DB_PASSWORD=mysqlformmmr703
     expose:
       - "8088"
     depends_on:
       - redis
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   # redis 
   redis:
