@@ -17,8 +17,11 @@ export const API_ROUTES = {
     // 계정 관리 관련 API
     accounts: {
         emailExists: `${BASE_URL}/api/accounts/email-exists`,
+        codeVerification: (email: string) => `${BASE_URL}/api/mail/verification/${email}`,
+        sendCodes: `${BASE_URL}/api/mail/codes`,
         signUp: `${BASE_URL}/api/accounts`,
         changePassword: `${BASE_URL}/api/accounts/password`,
+        sendPassword: `${BASE_URL}/api/mail/password`,
     },
 
     // 로그인 / 인증 관련 API
@@ -27,6 +30,18 @@ export const API_ROUTES = {
         refresh: `${BASE_URL}/api/auth/refresh`,
         logout: `${BASE_URL}/api/auth/logout`,
         login: `${BASE_URL}/api/auth/login`,
+    },
+
+    // Todo 리스트 관련 API
+    todos: {
+        listByProfile: (profileId: number) => `${BASE_URL}/api/todos/profile/${profileId}`,
+        listByStatus: (profileId: number, status: string) =>
+            `${BASE_URL}/api/todos/profile/${profileId}/status?status=${status}`,
+        detail: (todoId: number) => `${BASE_URL}/api/todos/${todoId}`,
+        add: `${BASE_URL}/api/todos`,
+        update: (todoId: number) => `${BASE_URL}/api/todos/${todoId}`,
+        delete: (todoId: number) => `${BASE_URL}/api/todos/${todoId}`,
+        toggle: (todoId: number) => `${BASE_URL}/api/todos/${todoId}/toggle`,
     },
 };
 

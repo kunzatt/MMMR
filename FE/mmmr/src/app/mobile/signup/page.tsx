@@ -7,6 +7,8 @@ import API_ROUTES from "@/config/apiRoutes";
 
 export default function SignupPage() {
     const [email, setEmail] = useState("");
+    const [showConfirmEmail, setShowConfirmEmail] = useState(false);
+    const [emailCode, setEmailCode] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [address, setAddress] = useState("");
@@ -21,7 +23,7 @@ export default function SignupPage() {
         return emailPattern.test(email);
     };
 
-    const handleEmailVerification = async () => {
+    const handleEmailCheck = async () => {
         if (!validateEmail(email)) {
             setEmailError("이메일 형식이 잘못되었습니다. 다시 입력해주세요.");
             return;
@@ -36,12 +38,47 @@ export default function SignupPage() {
             if (response.ok && !data.data.exists) {
                 alert("사용 가능한 이메일입니다.");
                 setEmailVerified(true);
+                try {
+                    const response = await fetch(API_ROUTES.accounts.sendCodes, {
+                        method: "POST",
+                        body: JSON.stringify({ email: email }),
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        alert(data.message || "인증 코드가 전송되었습니다.");
+                        setShowConfirmEmail(true);
+                    } else {
+                        alert(data.message || "인증 코드 전송에 실패했습니다.");
+                    }
+                } catch (error) {
+                    alert("인증 코드 전송 오류가 발생했습니다. 다시 시도해주세요.");
+                    console.error("인증 코드 전송 오류:", error);
+                }
             } else {
-                alert(data.message || "이미 존재하는 이메일입니다.");
+                setEmailError(data.message || "이미 존재하는 이메일입니다.");
             }
         } catch (error) {
             alert("이메일 확인 오류가 발생했습니다. 다시 시도해주세요.");
             console.error("이메일 확인 오류:", error);
+        }
+    };
+
+    const handleEmailVerification = async () => {
+        try {
+            const response = await fetch(API_ROUTES.accounts.codeVerification(email), {
+                method: "POST",
+                body: JSON.stringify({ code: emailCode }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert(data.message || "이메일 인증 성공!");
+                setEmailVerified(true);
+            } else {
+                setEmailError(data.message || "이메일 인증에 실패했습니다.");
+            }
+        } catch (error) {
+            alert("이메일 인증 오류가 발생했습니다. 다시 시도해주세요.");
+            console.error("이메일 인증 오류:", error);
         }
     };
 
@@ -109,14 +146,35 @@ export default function SignupPage() {
                             placeholder="email"
                         />
                         <button
-                            onClick={handleEmailVerification}
-                            className="bg-blue-300 text-white text-sm break-keep rounded-md ml-2 h-10 px-3"
+                            onClick={handleEmailCheck}
+                            className="bg-blue-300 text-white text-sm break-keep rounded-md ml-2 h-10 w-24 px-2"
                         >
                             이메일 인증
                         </button>
                     </div>
                     {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
                 </div>
+
+                {showConfirmEmail && (
+                    <div className="flex flex-col">
+                        <div className="flex">
+                            <input
+                                className="w-full p-2 border rounded-md h-10"
+                                type="text"
+                                value={emailCode}
+                                onChange={(e) => setEmailCode(e.target.value)}
+                                placeholder="인증 코드"
+                            />
+                            <button
+                                onClick={handleEmailVerification}
+                                className="bg-blue-300 text-white text-sm break-keep rounded-md ml-2  h-10  w-24 px-2"
+                            >
+                                인증 코드 확인
+                            </button>
+                        </div>
+                        {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
+                    </div>
+                )}
 
                 <div className="relative">
                     <input

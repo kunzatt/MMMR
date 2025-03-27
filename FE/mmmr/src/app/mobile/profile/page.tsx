@@ -35,7 +35,7 @@ export default function ProfilePage() {
 
     const fetchProfiles = async () => {
         const accessToken = getTokens();
-
+        if (!accessToken) return;
         try {
             const response = await fetch(API_ROUTES.profiles.list, {
                 method: "GET",
@@ -58,7 +58,7 @@ export default function ProfilePage() {
 
     const fetchCallSigns = async () => {
         const accessToken = getTokens();
-
+        if (!accessToken) return;
         try {
             const response = await fetch(API_ROUTES.profiles.availableCallsigns, {
                 method: "GET",
@@ -80,8 +80,11 @@ export default function ProfilePage() {
     };
 
     useEffect(() => {
-        fetchProfiles();
-        fetchCallSigns();
+        const accessToken = getTokens();
+        if (accessToken) {
+            fetchProfiles();
+            fetchCallSigns();
+        }
     }, [router]);
 
     useEffect(() => {
