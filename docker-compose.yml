@@ -5,8 +5,8 @@ services:
   # backend
   backend:
     build:
-      context: ./BE
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: BE/Dockerfile
     expose:
       - "8088"
     depends_on:
