@@ -113,6 +113,7 @@ class a_star(Node):
             goal_x= msg.pose.position.x
             goal_y= msg.pose.position.y
             goal_cell= self.pose_to_grid_cell(goal_x,goal_y)
+            #pose -> grid 후 y좌표를 350-y 로 바꿔줘야 grid의 좌표 값과 일치함
             self.goal = [goal_cell[0],350-goal_cell[1]]
             #print(msg)
 
@@ -126,20 +127,22 @@ class a_star(Node):
                 x=self.odom_msg.pose.pose.position.x
                 y=self.odom_msg.pose.pose.position.y
                 start_grid_cell=self.pose_to_grid_cell(x,y)
+                #pose -> grid 후 y좌표를 350-y 로 바꿔줘야 grid의 좌표 값과 일치함
+                start_grid_cell=(start_grid_cell[0],350-start_grid_cell[1])
 
-                self.path = [[0 for col in range(self.GRIDSIZE)] for row in range(self.GRIDSIZE)]
+                self.path = [[None for _ in range(self.GRIDSIZE)] for _ in range(self.GRIDSIZE)]
                 self.cost = np.array([[self.GRIDSIZE*self.GRIDSIZE for col in range(self.GRIDSIZE)] for row in range(self.GRIDSIZE)])
 
-                
-                # 다익스트라 알고리즘을 완성하고 주석을 해제 시켜주세요. 
-                # 시작지, 목적지가 탐색가능한 영역이고, 시작지와 목적지가 같지 않으면 경로탐색을 합니다.
-                if self.grid[start_grid_cell[0]][start_grid_cell[1]] ==0  and self.grid[self.goal[0]][self.goal[1]] ==0  and start_grid_cell != self.goal :
-                    self.dijkstra(start_grid_cell)
-
+                 
+                # 시작지와 목적지가 같지 않으면 경로탐색을 합니다.
+                if start_grid_cell != self.goal:
+                    self.a_star(start_grid_cell)
 
                 self.global_path_msg=Path()
                 self.global_path_msg.header.frame_id='map'
                 for grid_cell in reversed(self.final_path) :
+                    #pose -> grid 후 y좌표를 350-y 로 바꿔줘야 grid의 좌표 값과 일치함
+                    grid_cell = (grid_cell[0], 350 - grid_cell[1])
                     tmp_pose=PoseStamped()
                     waypoint_x,waypoint_y=self.grid_cell_to_pose(grid_cell)
                     tmp_pose.pose.position.x=waypoint_x
