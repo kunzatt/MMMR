@@ -44,8 +44,8 @@ class odom(Node):
         self.is_calc_theta=False
         # x,y,theta는 추정한 로봇의 위치를 저장할 변수 입니다.        
         # 로봇의 초기위치를 맵 상에서 로봇의 위치와 맞춰줘야 합니다. 
-        self.x = -4.3073
-        self.y = -5.2784
+        self.x = -9.24
+        self.y = -7.77
         self.theta=0.0
         # imu_offset은 초기 로봇의 orientation을 저장할 변수 입니다.
         self.imu_offset=0
@@ -73,7 +73,8 @@ class odom(Node):
         if self.is_imu == False:    
             self.is_imu = True
             imu_q = Quaternion(msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z)
-            self.imu_offset = imu_q.to_euler()
+            #imu 방향 값을 시계방향으로 90도 회전
+            self.imu_offset = (imu_q.to_euler()[0], imu_q.to_euler()[1], imu_q.to_euler()[2]- pi/2)
         else:
             imu_q = Quaternion(msg.orientation.w, msg.orientation.x, msg.orientation.y, msg.orientation.z)
             self.theta = imu_q.to_euler()[2] + self.imu_offset[2]
