@@ -178,14 +178,20 @@ export default function ProfilePage() {
                         key={profile.id}
                         className="relative flex items-center justify-center w-24 h-24 bg-blue-300 rounded-2xl cursor-pointer"
                         onClick={() => {
-                            setCurrentProfile(profile);
-                            setNickname(profile.nickname);
-                            setEditCallSigns(() => [profile.callSign, ...availableCallSigns]);
-                            setShowEditModal(true);
+                            localStorage.setItem("currentProfile", JSON.stringify(profile));
+                            router.push("/mobile/home");
                         }}
                     >
                         <span className="text-white text-lg">{profile.nickname}</span>
-                        <AiOutlineEdit className="absolute top-1 right-1 text-white" />
+                        <AiOutlineEdit
+                            className="absolute top-1 right-1 text-white"
+                            onClick={() => {
+                                setCurrentProfile(profile);
+                                setNickname(profile.nickname);
+                                setEditCallSigns(() => [profile.callSign, ...availableCallSigns]);
+                                setShowEditModal(true);
+                            }}
+                        />
                     </div>
                 ))}
                 <div
