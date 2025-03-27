@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+# nginx
+nginx:
+  image: nginx:alpine
+  ports:
+    - "443:443"
+  volumes:
+    - /etc/nginx:/etc/nginx
+  depends_on:
+    - backend
+
+# backend
+  backend: 
+    build: 
+      context: ./BE
+      dockerfile: Dockerfile
+    expose: "8088"
+    depends_on: 
+      - redis
+      
+  # redis 
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"

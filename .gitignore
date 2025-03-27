@@ -225,8 +225,8 @@ temp/
 HELP.md
 
 ### Docker ###
-docker-compose.yml
-dockerfile
+# docker-compose.yml
+# dockerfile
 backend-dockerfile
 frontend-dockerfile
 
