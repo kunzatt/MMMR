@@ -16,6 +16,6 @@ RUN curl -L "https://github.com/docker/compose/releases/download/v2.24.5/docker-
     && ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
     
 # 도커 그룹에 jenkins 유저 추가
-RUN usermod -aG docker jenkins
+RUN groupadd docker && usermod -aG docker jenkins
 
 USER jenkins
