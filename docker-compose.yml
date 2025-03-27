@@ -8,8 +8,7 @@ services:
       context: ./BE
       dockerfile: Dockerfile
     env_file:
-      - /home/ubuntu/jenkins-data/workspace/mmmr-backend-develop/BE/.env
-    command: ["sh", "-c", "pwd"]
+      - /var/jenkins_home/workspace/mmmr-backend-develop/BE/.env
     expose:
       - "8088"
     depends_on:
