@@ -2,12 +2,79 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Controls.Basic
+import QtWebSockets
 
 Window {
     width: 800
     height: 480
     visible: true
     title: qsTr("IoT Control Simulator")
+
+    WebSocket {
+        id: webSocket
+        url: "ws://localhost:12345"
+        active: false
+
+        onStatusChanged: {
+            if (webSocket.status === WebSocket.Open) {
+                console.log("WebSocket connected!");
+
+                // 연결 완료 후 메시지 전송
+                var jsonMessage = JSON.stringify({ type: "register", client_type: "receiver" });
+                webSocket.sendTextMessage(jsonMessage);
+                console.log("Sent: " + jsonMessage);
+            }
+        }
+
+        onTextMessageReceived: (message) => {
+            console.log("Received: " + message)
+
+            var json = JSON.parse(message)
+            if (json.type === "ack") {
+                console.log("receiver " + json.message)
+            }
+            else if(json.type === "control") {
+                controlDevices(json.device, json.state)
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        console.log("Attempting to connect WebSocket...");
+        webSocket.active = true;  // 프로그램 실행 시 자동 연결
+    }
+
+    function controlDevices(devName, devState) {
+        if(devState !== "ON" && devState !== "OFF") {
+            jsonOutput.text = "Error: Invalid device state"
+        }
+        else {
+            if (devName === "livingroomLight") {
+                area_livingroomLight.visible = devState === "ON" ? true : false;
+                sw_livingroomLight.checked = devState === "ON" ? true : false;
+            }
+            else if (devName === "airConditioner") {
+                area_airConditioner.visible = devState === "ON" ? true : false;
+                sw_airConditioner.checked = devState === "ON" ? true : false;
+            }
+            else if (devName === "airPurifier") {
+                area_airPurifier.visible = devState === "ON" ? true : false;
+                sw_airPurifier.checked = devState === "ON" ? true : false;
+            }
+            else if (devName === "TV") {
+                area_TV.visible = devState === "ON" ? true : false;
+                sw_TV.checked = devState === "ON" ? true : false;
+            }
+            else if (devName === "curtain") {
+                area_curtain.visible = devState === "ON" ? true : false;
+                sw_curtain.checked = devState === "ON" ? true : false;
+            }
+            else {
+                jsonOutput.text = "Error: Can't find " + devName
+            }
+        }
+    }
 
     GridLayout {
         anchors.fill: parent
@@ -71,10 +138,7 @@ Window {
         }
 
         ColumnLayout {
-            anchors {
-                top: parent.top
-                topMargin: 20
-            }
+            Layout.alignment: Qt.AlignTop
             id: sw_wrapper
             spacing: 7
 
@@ -122,13 +186,12 @@ Window {
                 background: Rectangle {
                     implicitWidth: 200
                     implicitHeight: 70
-                    color: control.enabled ? "transparent" : "#353637"
                     border.color: jsonInput.enabled ? "#21be2b" : "transparent"
                 }
             }
 
             Button {
-                anchors.right: parent.right
+                Layout.alignment: Qt.AlignRight
                 text: "Ok"
                 implicitWidth: 100
                 onClicked: {
@@ -139,34 +202,7 @@ Window {
                     } else {
                         jsonOutput.text = result.device + ", " + result.state
 
-                        if(result.state !== "ON" && result.state !== "OFF") {
-                            jsonOutput.text = "Error: Invalid device state"
-                        }
-                        else {
-                            if (result.device === "livingroomLight") {
-                                area_livingroomLight.visible = result.state === "ON" ? true : false;
-                                sw_livingroomLight.checked = result.state === "ON" ? true : false;
-                            }
-                            else if (result.device === "airConditioner") {
-                                area_airConditioner.visible = result.state === "ON" ? true : false;
-                                sw_airConditioner.checked = result.state === "ON" ? true : false;
-                            }
-                            else if (result.device === "airPurifier") {
-                                area_airPurifier.visible = result.state === "ON" ? true : false;
-                                sw_airPurifier.checked = result.state === "ON" ? true : false;
-                            }
-                            else if (result.device === "TV") {
-                                area_TV.visible = result.state === "ON" ? true : false;
-                                sw_TV.checked = result.state === "ON" ? true : false;
-                            }
-                            else if (result.device === "curtain") {
-                                area_curtain.visible = result.state === "ON" ? true : false;
-                                sw_curtain.checked = result.state === "ON" ? true : false;
-                            }
-                            else {
-                                jsonOutput.text = "Error: Can't find " + result.device
-                            }
-                        }
+                        controlDevices(result.device, result.state)
                     }
                 }
             }
