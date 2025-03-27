@@ -7,10 +7,8 @@ services:
     build:
       context: ./BE
       dockerfile: Dockerfile
-    environment:
-      - DB_URL=jdbc:mysql://172.17.0.1:3306/mmmr?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&maxAllowedPacket=67108864
-      - DB_USERNAME=mmmruser
-      - DB_PASSWORD=mysqlformmmr703
+    env_file:
+      - ./BE/.env
     expose:
       - "8088"
     depends_on:
