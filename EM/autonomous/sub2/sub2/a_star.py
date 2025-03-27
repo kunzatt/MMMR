@@ -32,7 +32,7 @@ class a_star(Node):
         # 로직 1. publisher, subscriber 만들기
         self.map_sub = self.create_subscription(OccupancyGrid,'map',self.map_callback,1)
         self.odom_sub = self.create_subscription(Odometry,'odom',self.odom_callback,1)
-        self.goal_sub = self.create_subscription(PoseStamped,'goal_pose',self.goal_callback,1)
+        self.goal_sub = self.create_subscription(PoseStamped,'goal',self.goal_callback,1)
         self.a_star_pub= self.create_publisher(Path, 'global_path', 1)
         
         self.map_msg=OccupancyGrid()
@@ -64,11 +64,11 @@ class a_star(Node):
         로직 3. 맵 데이터 행렬로 바꾸기
         '''
         map_to_grid = np.array(self.map_msg.data).reshape(self.map_size_y, self.map_size_x)
+        # map 데이터 반시계 방향으로 90도 이동(시계방향 270도)해서 grid에 저장장
+        self.grid = np.rot90(map_to_grid,3)
         self.grid = map_to_grid
 
     def pose_to_grid_cell(self,x,y):
-        map_point_x = 0
-        map_point_y = 0
         '''
         로직 4. 위치(x,y)를 map의 grid cell로 변환 
         (테스트) pose가 (-8,-4)라면 맵의 중앙에 위치하게 된다. 따라서 map_point_x,y 는 map size의 절반인 (175,175)가 된다.
@@ -81,9 +81,6 @@ class a_star(Node):
 
 
     def grid_cell_to_pose(self,grid_cell):
-
-        x = 0
-        y = 0
         '''
         로직 5. map의 grid cell을 위치(x,y)로 변환
         (테스트) grid cell이 (175,175)라면 맵의 중앙에 위치하게 된다. 따라서 pose로 변환하게 되면 맵의 중앙인 (-8,-4)가 된다.
