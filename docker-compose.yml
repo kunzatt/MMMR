@@ -9,6 +9,7 @@ services:
       dockerfile: Dockerfile
     env_file:
       - BE/.env
+    command: ["sh", "pwd"]
     expose:
       - "8088"
     depends_on:
