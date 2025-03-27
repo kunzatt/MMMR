@@ -97,7 +97,7 @@ def speak_text(text, gender="female"):
         # 오디오 출력 설정
         audio_config = texttospeech.AudioConfig(
             audio_encoding=texttospeech.AudioEncoding.LINEAR16,
-            speaking_rate=1.2
+            speaking_rate=1.1
         )
         
         # TTS 요청 실행
