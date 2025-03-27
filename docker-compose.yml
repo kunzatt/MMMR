@@ -9,12 +9,3 @@ services:
       dockerfile: Dockerfile
     expose:
       - "8088"
-    depends_on:
-      - redis
-
-  # redis 
-  redis:
-    image: redis:alpine
-    ports:
-      - "6379:6379"
-
