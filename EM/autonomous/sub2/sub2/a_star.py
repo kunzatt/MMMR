@@ -32,7 +32,7 @@ class a_star(Node):
         # 로직 1. publisher, subscriber 만들기
         self.map_sub = self.create_subscription(OccupancyGrid,'map',self.map_callback,1)
         self.odom_sub = self.create_subscription(Odometry,'odom',self.odom_callback,1)
-        self.goal_sub = self.create_subscription(PoseStamped,'goal_pose',self.goal_callback,1)
+        self.goal_sub = self.create_subscription(PoseStamped,'goal',self.goal_callback,1)
         self.a_star_pub= self.create_publisher(Path, 'global_path', 1)
         
         self.map_msg=OccupancyGrid()
@@ -64,11 +64,11 @@ class a_star(Node):
         로직 3. 맵 데이터 행렬로 바꾸기
         '''
         map_to_grid = np.array(self.map_msg.data).reshape(self.map_size_y, self.map_size_x)
+        # map 데이터 반시계 방향으로 90도 이동(시계방향 270도)해서 grid에 저장장
+        self.grid = np.rot90(map_to_grid,3)
         self.grid = map_to_grid
 
     def pose_to_grid_cell(self,x,y):
-        map_point_x = 0
-        map_point_y = 0
         '''
         로직 4. 위치(x,y)를 map의 grid cell로 변환 
         (테스트) pose가 (-8,-4)라면 맵의 중앙에 위치하게 된다. 따라서 map_point_x,y 는 map size의 절반인 (175,175)가 된다.
@@ -81,9 +81,6 @@ class a_star(Node):
 
 
     def grid_cell_to_pose(self,grid_cell):
-
-        x = 0
-        y = 0
         '''
         로직 5. map의 grid cell을 위치(x,y)로 변환
         (테스트) grid cell이 (175,175)라면 맵의 중앙에 위치하게 된다. 따라서 pose로 변환하게 되면 맵의 중앙인 (-8,-4)가 된다.
@@ -116,9 +113,9 @@ class a_star(Node):
             goal_x= msg.pose.position.x
             goal_y= msg.pose.position.y
             goal_cell= self.pose_to_grid_cell(goal_x,goal_y)
-            self.goal = goal_cell
+            #pose -> grid 후 y좌표를 350-y 로 바꿔줘야 grid의 좌표 값과 일치함
+            self.goal = [goal_cell[0],350-goal_cell[1]]
             #print(msg)
-            
 
             if self.is_map ==True and self.is_odom==True  :
                 if self.is_grid_update==False :
@@ -130,20 +127,22 @@ class a_star(Node):
                 x=self.odom_msg.pose.pose.position.x
                 y=self.odom_msg.pose.pose.position.y
                 start_grid_cell=self.pose_to_grid_cell(x,y)
+                #pose -> grid 후 y좌표를 350-y 로 바꿔줘야 grid의 좌표 값과 일치함
+                start_grid_cell=(start_grid_cell[0],350-start_grid_cell[1])
 
-                self.path = [[0 for col in range(self.GRIDSIZE)] for row in range(self.GRIDSIZE)]
+                self.path = [[None for _ in range(self.GRIDSIZE)] for _ in range(self.GRIDSIZE)]
                 self.cost = np.array([[self.GRIDSIZE*self.GRIDSIZE for col in range(self.GRIDSIZE)] for row in range(self.GRIDSIZE)])
 
-                
-                # 다익스트라 알고리즘을 완성하고 주석을 해제 시켜주세요. 
-                # 시작지, 목적지가 탐색가능한 영역이고, 시작지와 목적지가 같지 않으면 경로탐색을 합니다.
-                if self.grid[start_grid_cell[0]][start_grid_cell[1]] ==0  and self.grid[self.goal[0]][self.goal[1]] ==0  and start_grid_cell != self.goal :
-                    self.dijkstra(start_grid_cell)
-
+                 
+                # 시작지와 목적지가 같지 않으면 경로탐색을 합니다.
+                if start_grid_cell != self.goal:
+                    self.a_star(start_grid_cell)
 
                 self.global_path_msg=Path()
                 self.global_path_msg.header.frame_id='map'
                 for grid_cell in reversed(self.final_path) :
+                    #pose -> grid 후 y좌표를 350-y 로 바꿔줘야 grid의 좌표 값과 일치함
+                    grid_cell = (grid_cell[0], 350 - grid_cell[1])
                     tmp_pose=PoseStamped()
                     waypoint_x,waypoint_y=self.grid_cell_to_pose(grid_cell)
                     tmp_pose.pose.position.x=waypoint_x
@@ -154,35 +153,48 @@ class a_star(Node):
                 if len(self.final_path)!=0 :
                     self.a_star_pub.publish(self.global_path_msg)
 
-    def dijkstra(self,start):
-        Q = deque()
-        Q.append(start)
-        self.cost[start[0]][start[1]] = 1
-        found = False
-        '''
-        로직 7. grid 기반 최단경로 탐색
-        '''       
-        
-        while len(Q) != 0:
-            if found:
+    def heuristic(self, a, b):
+        return abs(b[0] - a[0]) + abs(b[1] - a[1])
+
+    def a_star(self, start):
+        pq = [(0, start)]
+        self.cost = np.full((self.GRIDSIZE, self.GRIDSIZE), np.inf)
+        self.cost[start[0]][start[1]] = 0
+        self.path = [[None for _ in range(self.GRIDSIZE)] for _ in range(self.GRIDSIZE)]
+        f_score = {start: self.heuristic(start, self.goal)}
+
+        while pq:
+            current_f, current = heapq.heappop(pq)
+
+            if current == self.goal:
                 break
 
-            current = Q.popleft()
-
             for i in range(8):
-                next = [current[0]+self.dx[i], current[1]+ self.dy[i]]
-                if next[0] >= 0 and next[1] >= 0 and next[0] < self.GRIDSIZE and next[1] < self.GRIDSIZE:
-                        if self.grid[next[0]][next[1]] < 50: # 장애물이 아닌 경우
-                            if self.cost[current[0]][current[1]] + self.dCost[i] < self.cost[next[0]][next[1]]:
-                                Q.append(next)
-                                self.path[next[0]][next[1]] = current
-                                self.cost[next[0]][next[1]] = self.cost[current[0]][current[1]] + self.dCost[i]
+                next_x = current[0] + self.dx[i]
+                next_y = current[1] + self.dy[i]
 
-        node = self.goal
-        while node != start: 
-            nextNode = self.path[node[0]][node[1]]
+                if 0 <= next_x < self.GRIDSIZE and 0 <= next_y < self.GRIDSIZE:
+                    # print(self.grid[next_x][next_y]," - ", self.grid_cell_to_pose([next_x,next_y]))
+                    if self.grid[next_x][next_y] == 100:
+                        continue
+                    if self.grid[next_x][next_y] == 127:
+                        continue
+                    
+                    new_cost = self.cost[current[0]][current[1]] + self.dCost[i]
+                    if new_cost < self.cost[next_x][next_y]:
+                        self.cost[next_x][next_y] = new_cost
+                        self.path[next_x][next_y] = current
+                        f_score = new_cost + self.heuristic((next_x, next_y), self.goal)
+                        heapq.heappush(pq, (f_score, (next_x, next_y)))
+
+        node = self.goal.copy()
+        while node != start:
             self.final_path.append(node)
-            node = nextNode
+            node = self.path[node[0]][node[1]]
+            if node is None:
+                self.final_path = []
+                break
+
         
 
         
