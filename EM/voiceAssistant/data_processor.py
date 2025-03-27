@@ -2,7 +2,7 @@ import requests
 import json
 from dotenv import load_dotenv
 import os
-from localServer import logger
+from localServer_gcp import logger
 import openai
 
 load_dotenv()
@@ -53,7 +53,6 @@ def getProfiles(access_token):
 
 
 def getNews(access_token, id=0):
-    print("a")
     try:
         response = requests.get(getNews_url, headers={"Authorization": f"Bearer {access_token}"})
         if response.status_code == 200:

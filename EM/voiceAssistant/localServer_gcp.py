@@ -5,13 +5,13 @@ import time
 import torch
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from faster_whisper import WhisperModel
 from dotenv import load_dotenv
 import logging
 import json
 from typing import Dict, List, Any
 import openai
 import data_processor
+from google.cloud import speech
 
 # 로깅 설정
 logging.basicConfig(
@@ -23,8 +23,7 @@ logger = logging.getLogger("stt-server")
 load_dotenv()
 
 # 환경 변수 설정
-MODEL_SIZE = os.getenv("MODEL_SIZE", "medium") #base samall medium
-LANGUAGE = os.getenv("LANGUAGE", "ko")
+LANGUAGE = os.getenv("LANGUAGE", "ko-KR")
 HOST = os.getenv("HOST", "0.0.0.0")
 PORT = int(os.getenv("PORT", "8000"))
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
@@ -48,33 +47,34 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 모델 로드
+# Google Cloud Speech 클라이언트 초기화
+speech_client = None
+
+# 서버 시작 시 Google Cloud Speech 클라이언트 초기화
 @app.on_event("startup")
 async def startup_event():
-    global model
+    global speech_client
     logger.info("서버 시작 중...")
     
     # OpenAI API 키 확인
     if not OPENAI_API_KEY:
         logger.warning("OPENAI_API_KEY가 설정되지 않았습니다. JSON 변환 기능이 작동하지 않을 수 있습니다.")
     
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    logger.info(f"사용 중인 장치: {device}")
+    # Google Cloud 인증 확인
+    google_credentials = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+    if not google_credentials:
+        logger.warning("GOOGLE_APPLICATION_CREDENTIALS가 설정되지 않았습니다. Google Speech-to-Text API가 작동하지 않을 수 있습니다.")
+    else:
+        logger.info(f"Google Cloud 인증 파일: {google_credentials}")
     
-    if device == "cuda":
-        gpu_name = torch.cuda.get_device_name(0)
-        logger.info(f"GPU: {gpu_name}")
-        logger.info(f"CUDA 버전: {torch.version.cuda}")
-    
-    # Whisper 모델 로드
-    logger.info(f"Whisper 모델({MODEL_SIZE}) 로딩 중...")
+    # Google Cloud Speech 클라이언트 초기화
     try:
-        compute_type = "float16" if device == "cuda" else "int8"
-        model = WhisperModel(MODEL_SIZE, device=device, compute_type=compute_type)
-        logger.info("모델 로드 완료!")
+        speech_client = speech.SpeechClient()
+        logger.info("Google Cloud Speech 클라이언트 초기화 완료!")
     except Exception as e:
-        logger.error(f"모델 로드 오류: {e}")
-        raise
+        logger.error(f"Google Cloud Speech 클라이언트 초기화 오류: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
 
 class AudioProcessor:
     def __init__(self, sample_rate: int = 16000):
@@ -84,7 +84,7 @@ class AudioProcessor:
         self.silence_counter = 0
         self.total_frames = 0
         self.metadata = {}
-        self.frame_buffer = bytearray()  # 바이트 프레임 버퍼 추가
+        self.frame_buffer = bytearray()  # 추가: 바이트 프레임 버퍼
         self.channels = 1  # 기본값
         self.encoding = "PCM_16BIT"  # 기본값
     
@@ -183,9 +183,6 @@ class AudioProcessor:
                 audio_data
             )
             
-            # DC 오프셋 제거 (평균값 제거)
-            audio_data = audio_data - np.mean(audio_data)
-            
             # 정규화
             max_value = np.max(np.abs(audio_data))
             if max_value > 0:
@@ -199,7 +196,7 @@ class AudioProcessor:
 
 async def transcribe_audio(audio_data: np.ndarray, metadata: Dict[str, Any]) -> str:
     """
-    오디오 데이터를 텍스트로 변환 (Whisper 모델 사용)
+    오디오 데이터를 텍스트로 변환 (Google Cloud Speech-to-Text 사용)
     
     Args:
         audio_data: 처리할 오디오 데이터
@@ -208,6 +205,12 @@ async def transcribe_audio(audio_data: np.ndarray, metadata: Dict[str, Any]) -> 
     Returns:
         str: 인식된 텍스트
     """
+    global speech_client
+    
+    if speech_client is None:
+        logger.error("Google Cloud Speech 클라이언트가 초기화되지 않았습니다.")
+        return ""
+    
     if len(audio_data) == 0:
         logger.warning("빈 오디오 데이터. 처리를 건너뜁니다.")
         return ""
@@ -223,43 +226,59 @@ async def transcribe_audio(audio_data: np.ndarray, metadata: Dict[str, Any]) -> 
     
     detected_keyword = metadata.get("keyword", "")
     
-    # 명령어 인식을 위한 초기 프롬프트 강화
-    if detected_keyword:
-        initial_prompt = f"{detected_keyword}에게 명령하는 중입니다. 이것은 짧은 음성 명령입니다."
-    else:
-        initial_prompt = "이것은 짧은 음성 명령입니다."
-    
     try:
-        # Whisper로 음성 인식 - 파라미터 최적화
-        segments, info = model.transcribe(
-            audio_data, 
-            language=LANGUAGE,
-            beam_size=5,  # 빔 크기 증가로 정확도 향상
-            vad_filter=True,  # VAD 필터링 활성화
-            vad_parameters={"threshold": 0.5},  # VAD 임계값 조정
-            initial_prompt=initial_prompt,
-            word_timestamps=False,  # 속도 최적화
-            condition_on_previous_text=True,  # 이전 텍스트 컨텍스트 활용
-            compression_ratio_threshold=2.4,  # 압축비 임계값 조정
-            no_speech_threshold=0.6  # 무음 감지 임계값 조정
+        # 오디오 데이터를 int16 형식으로 변환 (볼륨 정규화 적용)
+        audio_int16 = (audio_data * 32767).astype(np.int16)
+        
+        # 바이트 배열로 변환
+        audio_bytes = audio_int16.tobytes()
+        
+        # Google Cloud Speech 요청 생성
+        audio = speech.RecognitionAudio(content=audio_bytes)
+        
+        # 음성 인식 설정 - 오류 수정: model_variant 필드 제거
+        config = speech.RecognitionConfig(
+            encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+            sample_rate_hertz=16000,
+            language_code=LANGUAGE,
+            model="command_and_search",  # 짧은 명령어에 최적화된 모델
+            enable_automatic_punctuation=True,
+            use_enhanced=True,  # 향상된 모델 사용
+            audio_channel_count=1,  # 명시적으로 모노 채널 지정
+            # 추가: 말하는 환경 최적화
+            speech_contexts=[
+                speech.SpeechContext(
+                    phrases=[detected_keyword] if detected_keyword else [],
+                    boost=10.0  # 가중치 추가
+                )
+            ],
+            # 추가: 명령어 인식에 최적화된 설정
+            profanity_filter=False,
+            enable_word_time_offsets=False,
+            enable_word_confidence=True
+            # 오류 수정: model_variant 필드 제거
         )
         
-        # 결과 처리 - 세그먼트 병합 및 정제
-        texts = []
-        for segment in segments:
-            # 세그먼트 텍스트 정제
-            text = segment.text.strip()
-            if text:
-                texts.append(text)
+        # 음성 인식 요청
+        response = speech_client.recognize(config=config, audio=audio)
         
-        full_text = " ".join(texts).strip()
+        # 결과 처리
+        full_text = ""
+        confidence = 0.0
+        result_count = 0
         
-        # 텍스트 후처리: 중복 단어 제거, 불필요한 공백 제거
-        full_text = " ".join(full_text.split())
+        for result in response.results:
+            alternative = result.alternatives[0]
+            full_text += alternative.transcript
+            confidence += alternative.confidence
+            result_count += 1
+        
+        # 평균 신뢰도 계산
+        avg_confidence = confidence / result_count if result_count > 0 else 0
         
         process_time = time.time() - start_time
         
-        logger.info(f"인식된 텍스트: {full_text}")
+        logger.info(f"인식된 텍스트: {full_text} (신뢰도: {avg_confidence:.2f})")
         logger.info(f"처리 시간: {process_time:.2f}초")
         
         return full_text
@@ -269,7 +288,7 @@ async def transcribe_audio(audio_data: np.ndarray, metadata: Dict[str, Any]) -> 
         import traceback
         logger.error(traceback.format_exc())
         return ""
-    
+
 async def text_to_json(text: str) -> str:
     """
     인식된 텍스트를 JSON 형식으로 변환
@@ -375,7 +394,11 @@ async def websocket_endpoint(websocket: WebSocket):
     processor = AudioProcessor()
     streaming = True
     
-    # 웹소켓 수신 버퍼 최적화
+    # 웹소켓 수신 버퍼 최적화 설정
+    # 참고: FastAPI/Starlette에서 지원하는 경우 아래 코드 적용
+    # websocket.client.transport.get_extra_info('socket').setsockopt(
+    #     socket.SOL_SOCKET, socket.SO_RCVBUF, 65536)
+    
     pending_bytes = bytearray()
     
     try:
@@ -456,7 +479,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 type = json_obj['type']
                 contents = json_obj["contents"]
                 if access_token:
-                    if type == "news":
+                    if type == "news" and contents["data"]:
                         news_result = data_processor.getNews(access_token, int(contents["data"]))
                         if news_result:
                             json_obj["result"] = news_result
