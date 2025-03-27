@@ -9,7 +9,6 @@ Window {
     visible: true
     title: qsTr("IoT Control Simulator")
 
-
     GridLayout {
         anchors.fill: parent
         anchors.margins: 20
@@ -18,6 +17,7 @@ Window {
         columns: 3
 
         Item {
+            id: map_wrapper
             Layout.leftMargin: 30
             width: 460
             height: 320
@@ -70,40 +70,44 @@ Window {
             }
         }
 
-
         ColumnLayout {
             anchors {
                 top: parent.top
                 topMargin: 20
             }
-
+            id: sw_wrapper
             spacing: 7
 
             Switch {
+                id: sw_livingroomLight
                 text: qsTr("LivingRoom Light")
                 checked: false
                 onClicked: area_livingroomLight.visible = checked
             }
 
             Switch {
+                id: sw_TV
                 text: qsTr("TV")
                 checked: false
                 onClicked: area_TV.visible = checked
             }
 
             Switch {
+                id: sw_airConditioner
                 text: qsTr("Air Conditioner")
                 checked: false
                 onClicked: area_airConditioner.visible = checked
             }
 
             Switch {
+                id: sw_airPurifier
                 text: qsTr("Air Purifier")
                 checked: false
                 onClicked: area_airPurifier.visible = checked
             }
 
             Switch {
+                id: sw_curtain
                 text: qsTr("LivingRoom Curtain")
                 checked: false
                 onClicked: area_curtain.visible = checked
@@ -133,7 +137,36 @@ Window {
                     if (result.error) {
                         jsonOutput.text = "Error: " + result.error;
                     } else {
-                        jsonOutput.text = "JSON parsed successfully\nDevice: " + result.device + ", State: " + result.state;
+                        jsonOutput.text = result.device + ", " + result.state
+
+                        if(result.state !== "ON" && result.state !== "OFF") {
+                            jsonOutput.text = "Error: Invalid device state"
+                        }
+                        else {
+                            if (result.device === "livingroomLight") {
+                                area_livingroomLight.visible = result.state === "ON" ? true : false;
+                                sw_livingroomLight.checked = result.state === "ON" ? true : false;
+                            }
+                            else if (result.device === "airConditioner") {
+                                area_airConditioner.visible = result.state === "ON" ? true : false;
+                                sw_airConditioner.checked = result.state === "ON" ? true : false;
+                            }
+                            else if (result.device === "airPurifier") {
+                                area_airPurifier.visible = result.state === "ON" ? true : false;
+                                sw_airPurifier.checked = result.state === "ON" ? true : false;
+                            }
+                            else if (result.device === "TV") {
+                                area_TV.visible = result.state === "ON" ? true : false;
+                                sw_TV.checked = result.state === "ON" ? true : false;
+                            }
+                            else if (result.device === "curtain") {
+                                area_curtain.visible = result.state === "ON" ? true : false;
+                                sw_curtain.checked = result.state === "ON" ? true : false;
+                            }
+                            else {
+                                jsonOutput.text = "Error: Can't find " + result.device
+                            }
+                        }
                     }
                 }
             }
