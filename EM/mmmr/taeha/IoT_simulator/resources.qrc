@@ -6,5 +6,15 @@
         <file>images/livingroomLight.png</file>
         <file>images/map.png</file>
         <file>images/TV.png</file>
+        <file>devices/RoomLight/RoomLight.qml</file>
+        <file>devices/RoomLight/qmldir</file>
+        <file>devices/TV/TV.qml</file>
+        <file>devices/TV/qmldir</file>
+        <file>devices/AirConditioner/AirConditioner.qml</file>
+        <file>devices/AirConditioner/qmldir</file>
+        <file>devices/AirPurifier/AirPurifier.qml</file>
+        <file>devices/AirPurifier/qmldir</file>
+        <file>devices/Curtain/Curtain.qml</file>
+        <file>devices/Curtain/qmldir</file>
     </qresource>
 </RCC>

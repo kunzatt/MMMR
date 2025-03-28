@@ -4,6 +4,11 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 import QtWebSockets
+import RoomLight
+import TV
+import AirConditioner
+import AirPurifier
+import Curtain
 
 Window {
     width: 800
@@ -13,7 +18,7 @@ Window {
 
     WebSocket {
         id: webSocket
-        url: "ws://localhost:12345"
+        url: "ws://127.0.0.1:12345"
         active: false
 
         onStatusChanged: {
@@ -51,23 +56,23 @@ Window {
         }
         else {
             if (devName === "livingroomLight") {
-                area_livingroomLight.visible = devState === "ON" ? true : false;
+                livingLight.imgId.visible = devState === "ON" ? true : false;
                 sw_livingroomLight.checked = devState === "ON" ? true : false;
             }
             else if (devName === "airConditioner") {
-                area_airConditioner.visible = devState === "ON" ? true : false;
+                livingAirCon.imgId.visible = devState === "ON" ? true : false;
                 sw_airConditioner.checked = devState === "ON" ? true : false;
             }
             else if (devName === "airPurifier") {
-                area_airPurifier.visible = devState === "ON" ? true : false;
+                livingAirPurifier.imgId.visible = devState === "ON" ? true : false;
                 sw_airPurifier.checked = devState === "ON" ? true : false;
             }
             else if (devName === "TV") {
-                area_TV.visible = devState === "ON" ? true : false;
+                livingTV.imgId.visible = devState === "ON" ? true : false;
                 sw_TV.checked = devState === "ON" ? true : false;
             }
             else if (devName === "curtain") {
-                area_curtain.visible = devState === "ON" ? true : false;
+                livingCurtain.imgId.visible = devState === "ON" ? true : false;
                 sw_curtain.checked = devState === "ON" ? true : false;
             }
             else {
@@ -89,51 +94,46 @@ Window {
             width: 460
             height: 320
 
+            TV {
+                id: livingTV
+                width: 460
+                height: 320
+                imgId.source: "qrc:/images/TV.png"
+            }
+
+            RoomLight {
+                id: livingLight
+                imgId.width: 460
+                imgId.height: 320
+                imgId.source: "qrc:/images/livingroomLight.png"
+            }
+
+            AirConditioner {
+                id: livingAirCon
+                imgId.width: 460
+                imgId.height: 320
+                imgId.source: "qrc:/images/airconditioner.png"
+            }
+
+            AirPurifier {
+                id: livingAirPurifier
+                imgId.width: 460
+                imgId.height: 320
+                imgId.source: "qrc:/images/airpurifier.png"
+            }
+
+            Curtain {
+                id: livingCurtain
+                imgId.width: 460
+                imgId.height: 320
+                imgId.source: "qrc:/images/curtain.png"
+            }
+
             Image {
                 id: map_home
                 fillMode: Image.PreserveAspectFit
                 width: parent.width
                 source: "qrc:/images/map.png"
-            }
-
-            Image {
-                id: area_livingroomLight
-                fillMode: Image.PreserveAspectFit
-                width: parent.width
-                source: "qrc:/images/livingroomLight.png"
-                visible: false
-            }
-
-            Image {
-                id: area_airConditioner
-                fillMode: Image.PreserveAspectFit
-                width: parent.width
-                source: "qrc:/images/airconditioner.png"
-                visible: false
-            }
-
-            Image {
-                id: area_airPurifier
-                fillMode: Image.PreserveAspectFit
-                width: parent.width
-                source: "qrc:/images/airpurifier.png"
-                visible: false
-            }
-
-            Image {
-                id: area_TV
-                fillMode: Image.PreserveAspectFit
-                width: parent.width
-                source: "qrc:/images/TV.png"
-                visible: false
-            }
-
-            Image {
-                id: area_curtain
-                fillMode: Image.PreserveAspectFit
-                width: parent.width
-                source: "qrc:/images/curtain.png"
-                visible: false
             }
         }
 
@@ -146,35 +146,35 @@ Window {
                 id: sw_livingroomLight
                 text: qsTr("LivingRoom Light")
                 checked: false
-                onClicked: area_livingroomLight.visible = checked
+                onClicked: livingLight.imgId.visible = checked
             }
 
             Switch {
                 id: sw_TV
                 text: qsTr("TV")
                 checked: false
-                onClicked: area_TV.visible = checked
+                onClicked: livingTV.imgId.visible = checked
             }
 
             Switch {
                 id: sw_airConditioner
                 text: qsTr("Air Conditioner")
                 checked: false
-                onClicked: area_airConditioner.visible = checked
+                onClicked: livingAirCon.imgId.visible = checked
             }
 
             Switch {
                 id: sw_airPurifier
                 text: qsTr("Air Purifier")
                 checked: false
-                onClicked: area_airPurifier.visible = checked
+                onClicked: livingAirPurifier.imgId.visible = checked
             }
 
             Switch {
                 id: sw_curtain
                 text: qsTr("LivingRoom Curtain")
                 checked: false
-                onClicked: area_curtain.visible = checked
+                onClicked: livingCurtain.imgId.visible = checked
             }
 
             TextArea {
@@ -182,6 +182,7 @@ Window {
                 placeholderText: qsTr("Enter json format")
                 Layout.topMargin: 20
                 wrapMode: TextArea.WordWrap
+                width: 200
 
                 background: Rectangle {
                     implicitWidth: 200
