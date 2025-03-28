@@ -27,7 +27,9 @@ setup(
             'load_map = sub2.load_map:main',
             'odom = sub2.odom:main',
             'path_tracking = sub2.path_tracking:main',
-            'seg_binarizer = sub2.seg_binarizer:main'
+            'seg_binarizer = sub2.seg_binarizer:main',
+            'goal_pub = sub2.goal_pub:main',
+            'nav_command_ws = sub2.nav_command_ws:main'
         ],
     },
 )
