@@ -12,6 +12,9 @@ from typing import Dict, List, Any
 import openai
 import data_processor
 from google.cloud import speech
+from iot_ws import WebSocketServer
+import threading
+
 
 # 로깅 설정
 logging.basicConfig(
@@ -37,6 +40,8 @@ SILENCE_THRESHOLD = int(os.getenv("SILENCE_THRESHOLD", "25"))
 MIN_AUDIO_LENGTH = float(os.getenv("MIN_AUDIO_LENGTH", "0.5"))
 
 app = FastAPI(title="Speech-to-Text WebSocket Server")
+app.state.access_token = None
+app.state.refresh_token = None
 
 # CORS 설정
 app.add_middleware(
@@ -84,9 +89,10 @@ class AudioProcessor:
         self.silence_counter = 0
         self.total_frames = 0
         self.metadata = {}
-        self.frame_buffer = bytearray()  # 추가: 바이트 프레임 버퍼
+        self.frame_buffer = bytearray()  # 바이트 프레임 버퍼
         self.channels = 1  # 기본값
         self.encoding = "PCM_16BIT"  # 기본값
+        self.received_bytes = 0  # 수신된 총 바이트 수 추적
     
     def reset(self):
         """음성 처리 상태 초기화"""
@@ -95,6 +101,7 @@ class AudioProcessor:
         self.silence_counter = 0
         self.total_frames = 0
         self.frame_buffer = bytearray()
+        self.received_bytes = 0
     
     def process_frame(self, frame_data: bytes) -> bool:
         """
@@ -106,6 +113,9 @@ class AudioProcessor:
         Returns:
             bool: 음성 종료 감지 여부
         """
+        # 수신된 데이터 크기 기록 (디버깅용)
+        self.received_bytes += len(frame_data)
+        
         # 프레임 버퍼에 추가
         self.frame_buffer.extend(frame_data)
         
@@ -120,6 +130,7 @@ class AudioProcessor:
         usable_length = len(self.frame_buffer) - remainder
         
         if usable_length <= 0:
+            logger.debug(f"처리 가능한 프레임 없음. 버퍼 크기: {len(self.frame_buffer)}")
             return False
             
         # 완전한 프레임만 처리
@@ -127,42 +138,48 @@ class AudioProcessor:
         self.frame_buffer = self.frame_buffer[usable_length:]
         
         # 바이트 데이터를 numpy 배열로 변환
-        audio_frame = np.frombuffer(usable_buffer, dtype=np.int16)
-        self.total_frames += len(audio_frame)
-        
-        # 정규화
-        audio_float = audio_frame.astype(np.float32) / 32767.0
-        
-        # 에너지 계산 (음성 감지용)
-        energy = np.mean(np.abs(audio_float))
-        max_amplitude = np.max(np.abs(audio_float))
-        
-        # 품질 관련 지표 로깅 (디버깅용)
-        if max_amplitude > ENERGY_THRESHOLD * 0.5:
-            logger.debug(f"최대진폭: {max_amplitude:.6f}, 평균에너지: {energy:.6f}, 임계값: {ENERGY_THRESHOLD:.6f}")
-        
-        # 음성 감지 로직
-        if not self.is_speaking and max_amplitude > ENERGY_THRESHOLD:
-            self.is_speaking = True
-            self.silence_counter = 0
-            logger.info("음성 감지됨. 오디오 캡처 중...")
-        
-        # 현재 말하고 있는 상태면 버퍼에 추가
-        self.audio_buffer.append(audio_float)
-        
-        # 무음 감지
-        if self.is_speaking:
-            if max_amplitude <= ENERGY_THRESHOLD:
-                self.silence_counter += 1
-                if self.silence_counter % 10 == 0:
-                    logger.debug(f"무음 카운터: {self.silence_counter}/{SILENCE_THRESHOLD}")
-            else:
-                self.silence_counter = 0
+        try:
+            audio_frame = np.frombuffer(usable_buffer, dtype=np.int16)
+            self.total_frames += len(audio_frame)
             
-            # 충분한 무음이 감지되면 음성 종료로 판단
-            if self.silence_counter >= SILENCE_THRESHOLD:
-                logger.info("무음 감지. 음성 종료됨.")
-                return True
+            # 정규화
+            audio_float = audio_frame.astype(np.float32) / 32767.0
+            
+            # 에너지 계산 (음성 감지용)
+            energy = np.mean(np.abs(audio_float))
+            max_amplitude = np.max(np.abs(audio_float))
+            
+            # 디버깅 - 주기적으로 오디오 품질 정보 로깅
+            if self.total_frames % 8000 == 0:  # 약 0.5초마다
+                logger.debug(f"오디오 처리 중: 총 프레임 {self.total_frames}, 최근 최대진폭: {max_amplitude:.4f}, 에너지: {energy:.4f}")
+            
+            # 음성 감지 로직
+            if not self.is_speaking and max_amplitude > ENERGY_THRESHOLD:
+                self.is_speaking = True
+                self.silence_counter = 0
+                logger.info(f"음성 감지됨. 오디오 캡처 중... (진폭: {max_amplitude:.4f})")
+            
+            # 현재 말하고 있는 상태면 버퍼에 추가
+            self.audio_buffer.append(audio_float)
+            
+            # 무음 감지
+            if self.is_speaking:
+                if max_amplitude <= ENERGY_THRESHOLD:
+                    self.silence_counter += 1
+                    if self.silence_counter % 10 == 0:
+                        logger.debug(f"무음 카운터: {self.silence_counter}/{SILENCE_THRESHOLD}")
+                else:
+                    self.silence_counter = 0
+                
+                # 충분한 무음이 감지되면 음성 종료로 판단
+                if self.silence_counter >= SILENCE_THRESHOLD:
+                    logger.info(f"무음 감지. 음성 종료됨. 총 처리된 프레임: {self.total_frames}, 총 수신 바이트: {self.received_bytes}")
+                    return True
+        
+        except Exception as e:
+            logger.error(f"오디오 프레임 처리 오류: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
         
         return False
     
@@ -172,28 +189,29 @@ class AudioProcessor:
             return np.array([], dtype=np.float32)
         
         audio_data = np.concatenate(self.audio_buffer)
+        logger.info(f"최종 오디오 데이터 길이: {len(audio_data)} 샘플, 길이: {len(audio_data)/self.sample_rate:.2f}초")
         
-        # 노이즈 제거 및 음질 개선
+        # 최소한의 노이즈 제거 및 음질 개선
         if len(audio_data) > 0:
-            # 노이즈 게이팅 (낮은 레벨의 노이즈 제거)
-            noise_gate_threshold = 0.01
+            # 매우 낮은 임계값의 노이즈 게이팅 
+            noise_gate_threshold = 0.005
             audio_data = np.where(
                 np.abs(audio_data) < noise_gate_threshold, 
                 0, 
                 audio_data
             )
             
-            # 정규화
+            # 정규화 (볼륨 조정)
             max_value = np.max(np.abs(audio_data))
             if max_value > 0:
-                audio_data = audio_data / max_value * 0.9  # 작은 헤드룸 확보
+                audio_data = audio_data / max_value * 0.9
         
         return audio_data
     
     def get_duration(self) -> float:
         """녹음된 오디오의 길이(초)"""
         return self.total_frames / self.sample_rate
-
+    
 async def transcribe_audio(audio_data: np.ndarray, metadata: Dict[str, Any]) -> str:
     """
     오디오 데이터를 텍스트로 변환 (Google Cloud Speech-to-Text 사용)
@@ -360,7 +378,10 @@ contents.data는 유형에 따라 다르게 설정합니다:
         
         result = response.choices[0].message.content.strip()
         json_result = json.loads(result)
-        json_result["result"] = "네 알겠습니다"
+        if json_result["type"] == "none":
+            json_result["result"] = "-1"
+        else:
+            json_result["result"] = "네 알겠습니다"
         result = json.dumps(json_result)
         process_time = time.time() - start_time
         
@@ -478,13 +499,16 @@ async def websocket_endpoint(websocket: WebSocket):
                 """
                 type = json_obj['type']
                 contents = json_obj["contents"]
-                if access_token:
+                if app.state.access_token:
                     if type == "news" and contents["data"]:
-                        news_result = data_processor.getNews(access_token, int(contents["data"]))
+                        news_result, new_tokens = data_processor.getNews(app.state.access_token, app.state.refresh_token, int(contents["data"]))
                         if news_result:
                             json_obj["result"] = news_result
                         else:
                             json_obj["result"] = "-1"
+                        if new_tokens:
+                            app.state.access_token = new_tokens["access_token"]
+                            app.state.refresh_token = new_tokens["refresh_token"]
                 json_result = json.dumps(json_obj)
                 # JSON 결과 전송
                 logger.info(f"JSON 변환 결과: {json_result}")
@@ -530,9 +554,12 @@ async def root():
 if __name__ == "__main__":
     import uvicorn
     tokens = data_processor.login()
+    iot_ws = WebSocketServer()
+    iot_ws_thread = threading.Thread(target=iot_ws.start, daemon=True)
+    iot_ws_thread.start()
     if tokens:
-        access_token = tokens["access_token"]
-        refresh_token = tokens['refresh_token']
+        app.state.access_token = tokens["access_token"]
+        app.state.refresh_token = tokens['refresh_token']
     else:
         access_token = None
         refresh_token = None
