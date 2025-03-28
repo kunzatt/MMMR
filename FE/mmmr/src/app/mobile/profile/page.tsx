@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AiOutlineEdit, AiOutlinePlus } from "react-icons/ai";
 import { API_ROUTES } from "@/config/apiRoutes";
+import { getTokens } from "@/config/getToken";
 
 export default function ProfilePage() {
     interface Profile {
@@ -22,19 +23,8 @@ export default function ProfilePage() {
     const [editCallSigns, setEditCallSigns] = useState<string[]>([]);
     const router = useRouter();
 
-    const getTokens = () => {
-        const accessToken = localStorage.getItem("accessToken");
-
-        if (!accessToken) {
-            alert("로그인이 필요합니다.");
-            router.push("/mobile/login");
-            return;
-        }
-        return accessToken;
-    };
-
     const fetchProfiles = async () => {
-        const accessToken = getTokens();
+        const accessToken = await getTokens();
         if (!accessToken) return;
         try {
             const response = await fetch(API_ROUTES.profiles.list, {
@@ -57,7 +47,7 @@ export default function ProfilePage() {
     };
 
     const fetchCallSigns = async () => {
-        const accessToken = getTokens();
+        const accessToken = await getTokens();
         if (!accessToken) return;
         try {
             const response = await fetch(API_ROUTES.profiles.availableCallsigns, {
@@ -80,11 +70,17 @@ export default function ProfilePage() {
     };
 
     useEffect(() => {
-        const accessToken = getTokens();
-        if (accessToken) {
-            fetchProfiles();
-            fetchCallSigns();
+        if (typeof window !== "undefined") {
+            const token = localStorage.getItem("accessToken"); // 'token' -> 'accessToken'으로 수정
+            if (!token) {
+                router.push("/mobile/login"); // 로그인되어 있지 않으면 로그인 페이지로 리다이렉트
+            }
         }
+    }, []);
+
+    useEffect(() => {
+        fetchProfiles();
+        fetchCallSigns();
     }, [router]);
 
     useEffect(() => {
@@ -99,7 +95,7 @@ export default function ProfilePage() {
     }, [showAddModal]);
 
     const handleAddProfile = async () => {
-        const accessToken = getTokens();
+        const accessToken = await getTokens();
 
         try {
             const response = await fetch(API_ROUTES.profiles.add, {
@@ -125,7 +121,7 @@ export default function ProfilePage() {
         }
     };
     const handleEditProfile = async () => {
-        const accessToken = getTokens();
+        const accessToken = await getTokens();
 
         try {
             const response = await fetch(API_ROUTES.profiles.update(currentProfile.id), {
@@ -152,7 +148,7 @@ export default function ProfilePage() {
     };
 
     const handleDeleteProfile = async () => {
-        const accessToken = getTokens();
+        const accessToken = await getTokens();
 
         try {
             const response = await fetch(API_ROUTES.profiles.delete(currentProfile.id), {

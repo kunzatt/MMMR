@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { getTokens } from "@/config/getToken";
 
 interface DeleteAccountProps {
     onClose: () => void;
@@ -17,7 +18,8 @@ export default function DeleteAccount({ onClose }: DeleteAccountProps) {
             alert("비밀번호를 입력해주세요.");
             return;
         }
-
+        const accessToken = await getTokens();
+        if (!accessToken) return;
         // 여기서 API 호출로 회원 탈퇴 요청을 보냅니다.
         try {
             const response = await fetch("/api/accounts/delete", {
@@ -25,7 +27,7 @@ export default function DeleteAccount({ onClose }: DeleteAccountProps) {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+                    "Authorization": `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify({ password }),
             });

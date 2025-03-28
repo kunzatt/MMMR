@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { API_ROUTES } from "@/config/apiRoutes";
+import { getTokens } from "@/config/getToken";
 
 interface ChangePasswordProps {
     onClose: () => void;
@@ -19,12 +20,8 @@ export default function ChangePassword({ onClose }: ChangePasswordProps) {
             return;
         }
 
-        const accessToken = localStorage.getItem("accessToken");
-
-        if (!accessToken) {
-            alert("로그인이 필요합니다.");
-            return;
-        }
+        const accessToken = await getTokens();
+        if (!accessToken) return;
 
         try {
             const response = await fetch(API_ROUTES.accounts.changePassword, {
