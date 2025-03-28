@@ -1,4 +1,4 @@
-# /home/ubuntu/jenkins-data/workspace/mmmr-backend-develop?
+# /var/.../workspace/mmmr-backend-develop
 version: '3.8'
 
 services:
@@ -7,5 +7,7 @@ services:
     build:
       context: ./BE
       dockerfile: Dockerfile
+    env_file:
+      - ./BE/.env
     expose:
       - "8088"
