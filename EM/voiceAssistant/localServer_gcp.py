@@ -496,11 +496,14 @@ async def websocket_endpoint(websocket: WebSocket):
                 contents = json_obj["contents"]
                 if access_token:
                     if type == "news" and contents["data"]:
-                        news_result = data_processor.getNews(access_token, int(contents["data"]))
+                        news_result, new_tokens = data_processor.getNews(access_token, refresh_token, int(contents["data"]))
                         if news_result:
                             json_obj["result"] = news_result
                         else:
                             json_obj["result"] = "-1"
+                        if new_tokens:
+                            access_token = new_tokens["access_token"]
+                            refresh_token = new_tokens["refresh_token"]
                 json_result = json.dumps(json_obj)
                 # JSON 결과 전송
                 logger.info(f"JSON 변환 결과: {json_result}")
