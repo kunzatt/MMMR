@@ -24,7 +24,6 @@ spring:
       path: ${FILE_STORAGE_PATH}
     storage:
       path: ${FILE_STORAGE_PATH}
-#      default-image: ${FILE_STORAGE_PATH}/default-profile.png
     csv:
       upload-dir: ${FILE_STORAGE_PATH}/csv
 
@@ -64,6 +63,13 @@ spring:
           starttls:
             enable: true
 
+  # 캐시 설정
+  cache:
+    type: redis
+    cache-names: weatherCache,forecastCache
+    redis:
+      time-to-live: ${REDIS_TTL:3600000}
+
 jwt:
   secret: ${JWT_SECRET}
   issuer: mmmr-auth
@@ -71,7 +77,6 @@ jwt:
   accessTokenExpiration: ${JWT_ACCESS_TOKEN_EXPIRATION}
   refreshTokenExpiration: ${JWT_REFRESH_TOKEN_EXPIRATION}
   temporaryTokenExpiration: ${JWT_TEMPORARY_TOKEN_EXPIRATION}
-
 
 cookie:
   secure-flag: false
@@ -100,6 +105,19 @@ springdoc:
   swagger-ui:
     path: /api/swagger-ui.html
     operations-sorter: method
+
+openweather:
+  api:
+    key: ${OPENWEATHER_API_KEY}
+    url: ${OPENWEATHER_API_URL}
+    cache:
+      ttl: 1800000  # 30분
+
+vworld:
+  api:
+    key: ${VWORLD_API_KEY}
+    geocoder:
+      url: ${VWORLD_GEOCODER_URL}
 
 cache:
   type: redis
