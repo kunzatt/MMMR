@@ -54,6 +54,10 @@ public enum ErrorCode {
 	FAIL_GETTING_URGENT_WEATHER(400, "기상특보 정보를 가져오는데 실패했습니다."),
 	FAIL_GETTING_TYPHOON(400, "태풍 정보를 가져오는데 실패했습니다."),
 
+	// Schedule
+	INVALID_END_DATE(400, "시작일은 종료일보다 이전이어야 합니다."),
+	SCHEDULE_NOT_FOUND(400, "일정을 찾을 수 없습니다."),
+
 	// News
 	NEWS_FETCH_FAILED(500, "뉴스 조회에 실패했습니다. 다시 시도해주세요."),
 	NEWS_CRAWLING_FAILED(500, "뉴스 크롤링 중 오류가 발생했습니다. 나중에 다시 시도해주세요.");

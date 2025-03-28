@@ -22,6 +22,21 @@ configurations.all {
 	exclude group: 'commons-logging', module: 'commons-logging'
 }
 
+// QueryDSL Q클래스 생성 경로 설정
+def querydslDir = "$buildDir/generated/querydsl"
+
+sourceSets {
+	main.java.srcDirs += [ querydslDir ]
+}
+
+tasks.withType(JavaCompile) {
+	options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+}
+
+clean.doLast {
+	file(querydslDir).deleteDir()
+}
+
 dependencies {
 	// Spring Boot 기본
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -29,7 +44,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	// Security
-
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.3.RELEASE'
 	testImplementation 'org.springframework.security:spring-security-test:6.4.2'
@@ -102,6 +116,12 @@ dependencies {
 
 	// Thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	// QueryDSL 의존성
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
 }
 
 tasks.named('test') {
