@@ -1,9 +1,10 @@
 import asyncio
 import json
 import websockets
-import logging
-#from localServer_gcp import logger
+from localServer_gcp import logger
 from websockets.server import serve
+"""
+import logging
 
 logging.basicConfig(
     level=logging.INFO,
@@ -11,22 +12,21 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger('websocket_server')
-
+"""
 class WebSocketServer:
     def __init__(self, host='0.0.0.0', port=12345):
-
         self.host = host
         self.port = port
         self.clients = set()
+        
+        # 클라이언트 정보 저장 (유형별로 관리)
+        self.navigation_clients = set()  # 주행 클라이언트 목록
+        self.iot_clients = set()         # IoT 클라이언트 목록
+        
+        # 클라이언트 정보 매핑 (websocket -> info)
         self.client_info = {}  # 클라이언트 정보 저장
-        self.devices = {
-            "airConditioner": "OFF",
-            "curtain": "OFF",
-            "TV": "OFF"
-        }
     
     async def handle_connection(self, websocket):
-
         # 클라이언트 추가
         self.clients.add(websocket)
         client_ip = websocket.remote_address[0]
@@ -34,7 +34,10 @@ class WebSocketServer:
         
         try:
             async for message in websocket:
-                await self.process_message(websocket, message)
+                # 메시지 처리 결과 반환
+                response = await self.process_message(websocket, message)
+                if response:
+                    await websocket.send(response)
         except websockets.exceptions.ConnectionClosed as e:
             logger.info(f"Client disconnected: {client_ip}, code: {e.code}, reason: {e.reason}")
         except json.JSONDecodeError:
@@ -44,99 +47,137 @@ class WebSocketServer:
         finally:
             # 연결 종료 시 클라이언트 제거
             self.clients.remove(websocket)
+            
+            # 클라이언트 유형별 목록에서도 제거
+            if websocket in self.navigation_clients:
+                self.navigation_clients.remove(websocket)
+            if websocket in self.iot_clients:
+                self.iot_clients.remove(websocket)
+                
             if websocket in self.client_info:
                 del self.client_info[websocket]
+                
             logger.info(f"Connection closed: {client_ip}")
     
     async def process_message(self, websocket, message):
-
         client_ip = websocket.remote_address[0]
         logger.info(f"Received from {client_ip}: {message}")
         
-        data = json.loads(message)
-        
-        if "type" not in data:
-            logger.error(f"Missing 'type' field in message from {client_ip}")
+        try:
+            data = json.loads(message)
+            
+            if "type" in data and data["type"] == "register":
+                if "client_type" in data:
+                    client_type = data["client_type"]
+                    
+                    # 클라이언트 정보 저장
+                    self.client_info[websocket] = {
+                        "type": client_type,
+                        "ip": client_ip
+                    }
+                    
+                    # 클라이언트 유형별 목록에 추가
+                    if client_type == "navigation":
+                        self.navigation_clients.add(websocket)
+                        logger.info(f"Registered navigation client: {client_ip}")
+                    elif client_type == "iot":
+                        self.iot_clients.add(websocket)
+                        logger.info(f"Registered IoT client: {client_ip}")
+                    else:
+                        logger.warning(f"Unknown client type: {client_type} from {client_ip}")
+                    
+                    # 등록 성공 응답
+                    return json.dumps({
+                        "type": "register_response",
+                        "status": "success",
+                        "client_type": client_type
+                    })
+                else:
+                    logger.error(f"Missing client_type in register message from {client_ip}")
+                    return json.dumps({
+                        "type": "register_response",
+                        "status": "error",
+                        "message": "Missing client_type field"
+                    })
+            
+            # 그 외 모든 메시지는 원본 그대로 반환 (에코)
+            return message
+            
+        except json.JSONDecodeError:
+            logger.error(f"Invalid JSON format from {client_ip}")
+            return json.dumps({
+                "type": "error",
+                "message": "Invalid JSON format"
+            })
+        except Exception as e:
+            logger.error(f"Error processing message: {str(e)}")
+            return json.dumps({
+                "type": "error",
+                "message": f"Server error: {str(e)}"
+            })
+    
+    async def send_to_navigation(self, message):
+        if not self.navigation_clients:
+            logger.warning("No navigation clients connected")
             return
         
-        msg_type = data["type"]
+        # dict를 JSON 문자열로 변환
+        if isinstance(message, dict):
+            message = json.dumps(message)
         
-        if msg_type == "sender":
-            if "message" in data:
-                self.client_info[websocket] = {"type": "sender", "ip": client_ip}
-                logger.info(f"Sender registered: {client_ip}")
-            else:
-                logger.error(f"Missing 'message' field for sender type from {client_ip}")
+        logger.info(f"Sending to {len(self.navigation_clients)} navigation clients: {message}")
         
-        elif msg_type == "control":
-            if "device" not in data or "state" not in data:
-                logger.error(f"Missing 'device' or 'state' field for control type from {client_ip}")
-                return
-            
-            device = data["device"]
-            state = data["state"]
-            
-            if device not in self.devices:
-                logger.error(f"Unknown device: {device} from {client_ip}")
-                return
-                
-            if state not in ["ON", "OFF"]:
-                logger.error(f"Invalid state: {state} from {client_ip}")
-                return
-            
-            # 장치 상태 업데이트
-            self.devices[device] = state
-            logger.info(f"Device {device} set to {state}")
-        
-        else:
-            logger.error(f"Unknown message type: {msg_type} from {client_ip}")
-        
-    async def broadcast(self, message):
-        if not self.clients:
-            return
-        
-        logger.info(f"Broadcasting to {len(self.clients)} clients: {message}")
-        
-        # 모든 클라이언트에게 메시지 전송
+        # 비동기로 모든 주행 클라이언트에 메시지 전송
         await asyncio.gather(
-            *[client.send(message) for client in self.clients],
+            *[client.send(message) for client in self.navigation_clients],
             return_exceptions=True
         )
+    
+    async def send_to_iot(self, message):
+        if not self.iot_clients:
+            logger.warning("No IoT clients connected")
+            return
         
-    def iotControl(self, device, state):
-        # 유효한 장치와 상태인지 확인
-        if device not in ["airConditioner", "curtain", "TV"]:
-            logger.error(f"Invalid device: {device}")
-            return False
-            
-        if state not in ["ON", "OFF"]:
-            logger.error(f"Invalid state: {state}")
-            return False
-            
-        # 장치 상태 업데이트
-        self.devices[device] = state
+        # dict를 JSON 문자열로 변환
+        if isinstance(message, dict):
+            message = json.dumps(message)
         
-        # JSON 메시지 생성
-        message = {
-            "type": "control",
-            "device": device,
-            "state": state
-        }
+        logger.info(f"Sending to {len(self.iot_clients)} IoT clients: {message}")
         
-        # 메시지를 문자열로 변환
-        json_message = json.dumps(message)
-        
-        # 비동기 함수를 동기적으로 실행하기 위한 설정
+        # 비동기로 모든 IoT 클라이언트에 메시지 전송
+        await asyncio.gather(
+            *[client.send(message) for client in self.iot_clients],
+            return_exceptions=True
+        )
+    
+    def send_navigation_message(self, message):
+
         loop = asyncio.get_event_loop()
         if loop.is_running():
             # 이미 실행 중인 이벤트 루프가 있다면 새 태스크로 추가
-            asyncio.create_task(self.broadcast(json_message))
+            asyncio.create_task(self.send_to_navigation(message))
         else:
             # 이벤트 루프가 실행 중이 아니라면 새로 실행
-            loop.run_until_complete(self.broadcast(json_message))
-            
-        logger.info(f"IoT control message sent: {device} set to {state}")
-        return True
+            loop.run_until_complete(self.send_to_navigation(message))
+        
+        if isinstance(message, str):
+            logger.info(f"Navigation message sent: {message}")
+        else:
+            logger.info(f"Navigation message sent: {json.dumps(message)}")
+    
+    def send_iot_message(self, message):
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            # 이미 실행 중인 이벤트 루프가 있다면 새 태스크로 추가
+            asyncio.create_task(self.send_to_iot(message))
+        else:
+            # 이벤트 루프가 실행 중이 아니라면 새로 실행
+            loop.run_until_complete(self.send_to_iot(message))
+        
+        if isinstance(message, str):
+            logger.info(f"IoT message sent: {message}")
+        else:
+            logger.info(f"IoT message sent: {json.dumps(message)}")
     
     async def start_server(self):
         self.server = await serve(
@@ -146,8 +187,6 @@ class WebSocketServer:
         )
         
         logger.info(f"WebSocket server started on {self.host}:{self.port}")
-        
-        # 서버가 종료될 때까지 대기
         return self.server
     
     def start(self):
@@ -166,14 +205,14 @@ class WebSocketServer:
     
     def stop(self):
         if hasattr(self, 'server'):
-            asyncio.get_event_loop().run_until_complete(self.server.close())
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(self.stop_server())
             logger.info("WebSocket server stopped")
         else:
             logger.warning("No server instance to stop")
 
 
 if __name__ == "__main__":
-    # 기본 호스트와 포트로 서버 인스턴스 생성
     server = WebSocketServer()
     
     try:
@@ -183,7 +222,18 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Server stopped by user")
     
-    # IoT 제어 예제
-    # server.iotControl("airConditioner", "ON")
-    # server.iotControl("curtain", "OFF")
-    # server.iotControl("TV", "ON")
+    # 사용 예제:
+    # 주행 클라이언트에 메시지 전송
+    # server.send_navigation_message({
+    #     "type": "command",
+    #     "action": "move",
+    #     "direction": "forward",
+    #     "speed": 5
+    # })
+    
+    # IoT 클라이언트에 메시지 전송
+    # server.send_iot_message({
+    #     "type": "control",
+    #     "device": "airConditioner",
+    #     "state": "ON"
+    # })
