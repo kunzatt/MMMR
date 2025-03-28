@@ -109,50 +109,45 @@ public class WeatherService {
 	private String extractWeatherStatus(JsonNode weatherJson) {
 		try {
 			JsonNode weatherArray = weatherJson.path("weather");
-			if (weatherArray.isArray() && weatherArray.size() > 0) {
-				JsonNode firstWeather = weatherArray.get(0);
-				String description = firstWeather.path("description").asText().toLowerCase();
-				String main = firstWeather.path("main").asText().toLowerCase();
+			JsonNode firstWeather = weatherArray.get(0);
+			String description = firstWeather.path("description").asText().toLowerCase();
+			String main = firstWeather.path("main").asText().toLowerCase();
 
-				// OpenWeatherMap 날씨 상태를 7가지 기본 상태로 매핑
-
-				// 날씨 타입 판별
-				if (main.contains("thunderstorm") || description.contains("thunderstorm") ||
-					description.contains("tornado") || description.contains("hurricane") ||
-					description.contains("storm")) {
-					return "태풍";
-				}
-
-				if (main.contains("rain") || main.contains("drizzle") ||
-					description.contains("rain") || description.contains("drizzle") ||
-					description.contains("shower")) {
-					return "비";
-				}
-
-				if (main.contains("snow") || description.contains("snow") ||
-					description.contains("sleet")) {
-					return "눈";
-				}
-
-				if (description.contains("wind") || description.contains("breeze") ||
-					description.contains("gale") || description.contains("squall")) {
-					return "바람";
-				}
-
-				if (description.contains("overcast") || main.contains("fog") ||
-					main.contains("mist") || main.contains("smoke") ||
-					main.contains("haze") || description.contains("fog")) {
-					return "흐림";
-				}
-
-				if (main.contains("clouds") || description.contains("clouds") ||
-					description.contains("few clouds") || description.contains("scattered clouds") ||
-					description.contains("broken clouds")) {
-					return "약간 흐림";
-				}
-
-				return "맑음";
+			// OpenWeatherMap 날씨 상태를 7가지 기본 상태로 매핑
+			if (main.contains("thunderstorm") || description.contains("thunderstorm") ||
+				description.contains("tornado") || description.contains("hurricane") ||
+				description.contains("storm")) {
+				return "태풍";
 			}
+
+			if (main.contains("rain") || main.contains("drizzle") ||
+				description.contains("rain") || description.contains("drizzle") ||
+				description.contains("shower")) {
+				return "비";
+			}
+
+			if (main.contains("snow") || description.contains("snow") ||
+				description.contains("sleet")) {
+				return "눈";
+			}
+
+			if (description.contains("wind") || description.contains("breeze") ||
+				description.contains("gale") || description.contains("squall")) {
+				return "바람";
+			}
+
+			if (description.contains("overcast") || main.contains("fog") ||
+				main.contains("mist") || main.contains("smoke") ||
+				main.contains("haze") || description.contains("fog")) {
+				return "흐림";
+			}
+
+			if (main.contains("clouds") || description.contains("clouds") ||
+				description.contains("few clouds") || description.contains("scattered clouds") ||
+				description.contains("broken clouds")) {
+				return "약간 흐림";
+			}
+
 			return "맑음"; // 기본값
 		} catch (Exception e) {
 			log.warn("날씨 상태 추출 실패", e);
