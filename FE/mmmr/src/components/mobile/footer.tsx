@@ -16,27 +16,31 @@ export default function Footer() {
     ];
 
     return (
-        <div className="flex justify-between items-center p-0 bg-white shadow-inner">
-            {menuItems.map((item) => {
-                const isActive = pathname === item.path; // 현재 경로와 메뉴 경로 비교
+        <div>
+            {pathname !== "/mobile/profile" && (
+                <div className="flex justify-between items-center p-0 bg-white shadow-inner">
+                    {menuItems.map((item) => {
+                        const isActive = pathname === item.path; // 현재 경로와 메뉴 경로 비교
 
-                return (
-                    <Link href={item.path} key={item.name} className="w-full">
-                        <div
-                            className={`flex flex-col items-center justify-center py-3 w-full ${
-                                isActive ? "bg-blue-100" : ""
-                            }`}
-                        >
-                            <div className={`text-2xl ${isActive ? "text-blue-300" : "text-gray-500"}`}>
-                                {item.icon}
-                            </div>
-                            <span className={`text-sm ${isActive ? "text-blue-300" : "text-gray-500"}`}>
-                                {item.name}
-                            </span>
-                        </div>
-                    </Link>
-                );
-            })}
+                        return (
+                            <Link href={item.path} key={item.name} className="w-full">
+                                <div
+                                    className={`flex flex-col items-center justify-center py-3 w-full ${
+                                        isActive ? "bg-blue-100" : ""
+                                    }`}
+                                >
+                                    <div className={`text-2xl ${isActive ? "text-blue-300" : "text-gray-500"}`}>
+                                        {item.icon}
+                                    </div>
+                                    <span className={`text-sm ${isActive ? "text-blue-300" : "text-gray-500"}`}>
+                                        {item.name}
+                                    </span>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 }
