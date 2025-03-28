@@ -192,7 +192,8 @@ export default function ProfilePage() {
                         <span className="text-white text-lg">{profile.nickname}</span>
                         <AiOutlineEdit
                             className="absolute top-1 right-1 text-white"
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.stopPropagation();
                                 setCurrentProfile(profile);
                                 setNickname(profile.nickname);
                                 setEditCallSigns(() => [profile.callSign, ...availableCallSigns]);
