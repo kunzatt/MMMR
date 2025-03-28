@@ -17,6 +17,11 @@ export default function Home() {
                 router.push("/mobile/login"); // 로그인되어 있지 않으면 로그인 페이지로 리다이렉트
             }
         }
+
+        if (sessionStorage.getItem("hasReloaded") === "true") {
+            sessionStorage.removeItem("hasReloaded"); // 플래그 삭제 (다시 새로고침 되지 않게 하기)
+            window.location.reload(); // 새로고침 실행
+        }
     }, []);
 
     return (

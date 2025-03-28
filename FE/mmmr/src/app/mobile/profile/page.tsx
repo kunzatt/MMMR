@@ -179,6 +179,7 @@ export default function ProfilePage() {
                         className="relative flex items-center justify-center w-24 h-24 bg-blue-300 rounded-2xl cursor-pointer"
                         onClick={() => {
                             localStorage.setItem("currentProfile", JSON.stringify(profile));
+                            sessionStorage.setItem("hasReloaded", "true");
                             router.push("/mobile/home");
                         }}
                     >
