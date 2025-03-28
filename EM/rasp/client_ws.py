@@ -194,54 +194,50 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
     try:
         print(f"서버 연결 시도 중: {SERVER_URL}")
         async with websockets.connect(SERVER_URL) as websocket:
-            # 초기 메타데이터 전송 - 샘플레이트와 오디오 형식 정보 추가
-            await websocket.send(f"METADATA:sample_rate={sample_rate},keyword={detected_keyword},encoding=PCM_16BIT,channels=1")
-            print(f"서버에 연결되었습니다. 오디오 스트리밍 시작...")
-
+            # 초기 메타데이터 전송 - 명확한 샘플레이트와 오디오 형식 정보 추가
+            metadata_msg = f"METADATA:sample_rate={sample_rate},keyword={detected_keyword},encoding=PCM_16BIT,channels=1"
+            await websocket.send(metadata_msg)
+            print(f"메타데이터 전송: {metadata_msg}")
+            
             # 오디오 품질 관련 변수 설정
-            CHUNK_SIZE = frame_length * 2  # 더 큰 청크 크기로 설정하여 전송 안정성 향상
+            CHUNK_SIZE = frame_length  # 정확히 한 프레임씩 전송
             buffer = bytearray()
+            total_bytes_sent = 0
             
             # 스트리밍 시작 시간
             start_time = time.time()
             streaming = True
 
+            # 진행 정보 출력 타이머
+            last_report_time = time.time()
+            
             while streaming and running:
                 try:
-                    # 오디오 데이터 읽기
+                    # 오디오 데이터 읽기 (정확히 한 프레임씩)
                     pcm = audio_stream.read(frame_length, exception_on_overflow=False)
                     
-                    # 버퍼에 추가
-                    buffer.extend(pcm)
+                    # 바로 전송 (버퍼링 하지 않음)
+                    await websocket.send(pcm)
+                    total_bytes_sent += len(pcm)
                     
-                    # 버퍼가 충분히 차면 전송
-                    if len(buffer) >= CHUNK_SIZE:
-                        # 데이터 전송
-                        await websocket.send(bytes(buffer[:CHUNK_SIZE]))
-                        # 버퍼 비우기
-                        buffer = buffer[CHUNK_SIZE:]
+                    # 5초마다 진행 상황 출력
+                    current_time = time.time()
+                    if current_time - last_report_time > 5:
+                        duration = current_time - start_time
+                        print(f"오디오 스트리밍 진행 중: {duration:.1f}초, 전송된 데이터: {total_bytes_sent/1024:.1f}KB")
+                        last_report_time = current_time
 
                     # 최대 10초간 스트리밍
                     if time.time() - start_time > 10:
-                        # 남은 버퍼 데이터 전송
-                        if buffer:
-                            await websocket.send(bytes(buffer))
-                            buffer = bytearray()
-                        
                         # 종료 알림 전송
                         await websocket.send("STREAMING_END")
                         streaming = False
-                        print("스트리밍 시간 종료.")
+                        print(f"스트리밍 시간 종료 (10초). 총 전송된 바이트: {total_bytes_sent}")
 
                     # 서버로부터 응답 체크 (비동기로 처리)
                     try:
                         response = await asyncio.wait_for(websocket.recv(), timeout=0.01)
                         if response == "STREAMING_END":
-                            # 남은 버퍼 데이터 전송
-                            if buffer:
-                                await websocket.send(bytes(buffer))
-                                buffer = bytearray()
-                            
                             streaming = False
                             print("서버에서 스트리밍 종료 요청.")
                     except asyncio.TimeoutError:
@@ -251,14 +247,12 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
                 except Exception as e:
                     print(f"스트리밍 중 오류: {e}")
                     break
-
-            # 남은 버퍼 데이터 전송
-            if buffer:
-                await websocket.send(bytes(buffer))
             
             # 스트리밍 종료 메시지 전송
-            await websocket.send("STREAMING_END")
-            print("오디오 스트리밍 완료.")
+            if streaming:  # 아직 종료되지 않았다면
+                await websocket.send("STREAMING_END")
+            
+            print(f"오디오 스트리밍 완료. 총 {total_bytes_sent} 바이트 전송됨.")
 
             # 서버의 STT 결과 대기
             try:
@@ -276,10 +270,13 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
                     # 웹 클라이언트에 명령 결과 전송
                     if contents_type:
                         # 웹 클라이언트에 메시지 전달
-                        await broadcast_message(json_result)
+                        try:
+                            await broadcast_message(json_result)
+                        except Exception as e:
+                            print(f"웹 클라이언트 메시지 전송 오류: {e}")
                     
                     # 뉴스 타입 및 유효한 결과인지 확인
-                    if contents_type == "news" and "result" in json_result:
+                    if "result" in json_result:
                         if json_result["result"] not in ["-1", "0"]:
                             # 유효한 뉴스 결과가 있으면 TTS로 읽어주기
                             print("뉴스 결과를 TTS로 읽어줍니다.")
@@ -297,13 +294,16 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
                 
                 except json.JSONDecodeError:
                     print("JSON 파싱 오류")
+
                 
             except asyncio.TimeoutError:
                 print("STT 결과를 받지 못했습니다.")
 
     except Exception as e:
         print(f"웹소켓 연결 오류: {e}")
-  
+        import traceback
+        print(traceback.format_exc())
+
 async def async_wake_word_detection():
     global running
     porcupine = None

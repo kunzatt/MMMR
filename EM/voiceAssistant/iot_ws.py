@@ -2,8 +2,15 @@ import asyncio
 import json
 import websockets
 import logging
-from localServer_gcp import logger
+#from localServer_gcp import logger
 from websockets.server import serve
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+)
+
+logger = logging.getLogger('websocket_server')
 
 class WebSocketServer:
     def __init__(self, host='0.0.0.0', port=12345):
@@ -17,15 +24,6 @@ class WebSocketServer:
             "curtain": "OFF",
             "TV": "OFF"
         }
-        
-        # 로깅 설정
-        logging.basicConfig(
-            level=logging.INFO,
-            format='%(asctime)s - %(levelname)s - %(message)s',
-        )
-        logger = logging.getLogger('websocket_server')
-        
-        self.server = None
     
     async def handle_connection(self, websocket):
 
