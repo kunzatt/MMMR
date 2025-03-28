@@ -25,16 +25,17 @@ export default function LoginPage() {
             const data = await response.json();
 
             if (response.ok) {
-                alert("로그인 성공!");
+                console.log("로그인 성공!");
                 localStorage.setItem("accessToken", data.data.accessToken);
                 localStorage.setItem("refreshToken", data.data.refreshToken);
+                sessionStorage.setItem("hasReloaded", "true");
                 router.push("/mobile/profile");
             } else {
-                alert(data.message || "로그인에 실패했습니다. 다시 시도하세요.");
+                console.log(data.message || "로그인에 실패했습니다. 다시 시도하세요.");
                 console.log("로그인 실패:", data.message);
             }
         } catch (error) {
-            alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+            console.log("서버 오류가 발생했습니다. 다시 시도해주세요.");
             console.log("로그인 오류:", error);
         }
     };
@@ -54,7 +55,7 @@ export default function LoginPage() {
                 </div>
 
                 <div>
-                    <label className="block text-sm mb-1 text-gray-500">PASSWORD</label>
+                    <label className="block text-sm mb-1 text-gray-500">password</label>
                     <div className="flex items-center border rounded-md">
                         <input
                             className="w-full p-2"

@@ -38,22 +38,22 @@ export default function SignupPage() {
             if (response.ok && !data.data.exists) {
                 alert("사용 가능한 이메일입니다.");
                 setEmailVerified(true);
-                try {
-                    const response = await fetch(API_ROUTES.accounts.sendCodes, {
-                        method: "POST",
-                        body: JSON.stringify({ email: email }),
-                    });
-                    const data = await response.json();
-                    if (response.ok) {
-                        alert(data.message || "인증 코드가 전송되었습니다.");
-                        setShowConfirmEmail(true);
-                    } else {
-                        alert(data.message || "인증 코드 전송에 실패했습니다.");
-                    }
-                } catch (error) {
-                    alert("인증 코드 전송 오류가 발생했습니다. 다시 시도해주세요.");
-                    console.error("인증 코드 전송 오류:", error);
-                }
+                // try {
+                //     const response = await fetch(API_ROUTES.accounts.sendCodes, {
+                //         method: "POST",
+                //         body: JSON.stringify({ email: email }),
+                //     });
+                //     const data = await response.json();
+                //     if (response.ok) {
+                //         alert(data.message || "인증 코드가 전송되었습니다.");
+                //         setShowConfirmEmail(true);
+                //     } else {
+                //         alert(data.message || "인증 코드 전송에 실패했습니다.");
+                //     }
+                // } catch (error) {
+                //     alert("인증 코드 전송 오류가 발생했습니다. 다시 시도해주세요.");
+                //     console.error("인증 코드 전송 오류:", error);
+                // }
             } else {
                 setEmailError(data.message || "이미 존재하는 이메일입니다.");
             }
@@ -137,13 +137,14 @@ export default function SignupPage() {
         <div className="flex flex-col items-center justify-center h-full w-full">
             <div className="w-11/12 bg-white rounded-xl p-6 shadow-md space-y-4">
                 <div className="flex flex-col">
+                    <label className="block text-sm mb-1 text-gray-500">email</label>
                     <div className="flex">
                         <input
                             className={`w-full p-2 border rounded-md h-10 ${emailError ? "border-red-500" : ""}`}
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="email"
+                            placeholder="login@email.com"
                         />
                         <button
                             onClick={handleEmailCheck}
@@ -175,46 +176,54 @@ export default function SignupPage() {
                         {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
                     </div>
                 )}
-
-                <div className="relative">
-                    <input
-                        className="w-full p-2 pl-3 border rounded-md h-10"
-                        type={showPassword ? "text" : "password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="비밀번호"
-                    />
-                    <div
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                        onClick={() => setShowPassword(!showPassword)}
-                    >
-                        {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                <div>
+                    <label className="block text-sm mb-1 text-gray-500">password</label>
+                    <div className="relative">
+                        <input
+                            className="w-full p-2 pl-3 border rounded-md h-10"
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="********"
+                        />
+                        <div
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                        </div>
                     </div>
                 </div>
-
-                <div className="relative mt-4">
-                    <input
-                        className="w-full p-2 pl-3 border rounded-md h-10"
-                        type={showConfirmPassword ? "text" : "password"}
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="비밀번호 확인"
-                    />
-                    <div
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    >
-                        {showConfirmPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                <div>
+                    <label className="block text-sm mb-1 text-gray-500">password verification</label>
+                    <div className="relative">
+                        <input
+                            className="w-full p-2 pl-3 border rounded-md h-10"
+                            type={showConfirmPassword ? "text" : "password"}
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            placeholder="********"
+                        />
+                        <div
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        >
+                            {showConfirmPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                        </div>
                     </div>
                 </div>
-
-                <input
-                    className="w-full p-2 border rounded-md h-10"
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    placeholder="주소"
-                />
+                <div>
+                    <label className="block text-sm mb-1 text-gray-500">address</label>
+                    <div className="relative">
+                        <input
+                            className="w-full p-2 border rounded-md h-10"
+                            type="text"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            placeholder="주소"
+                        />
+                    </div>
+                </div>
 
                 <button onClick={handleSignup} className="w-full bg-blue-300 text-white py-2 rounded-md mt-4 h-10">
                     Sign up

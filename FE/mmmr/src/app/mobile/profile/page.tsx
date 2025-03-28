@@ -88,6 +88,13 @@ export default function ProfilePage() {
     }, [router]);
 
     useEffect(() => {
+        if (sessionStorage.getItem("hasReloaded") === "true") {
+            sessionStorage.removeItem("hasReloaded"); // 플래그 삭제 (다시 새로고침 되지 않게 하기)
+            window.location.reload(); // 새로고침 실행
+        }
+    }, []);
+
+    useEffect(() => {
         fetchCallSigns();
     }, [showAddModal]);
 
@@ -179,7 +186,6 @@ export default function ProfilePage() {
                         className="relative flex items-center justify-center w-24 h-24 bg-blue-300 rounded-2xl cursor-pointer"
                         onClick={() => {
                             localStorage.setItem("currentProfile", JSON.stringify(profile));
-                            sessionStorage.setItem("hasReloaded", "true");
                             router.push("/mobile/home");
                         }}
                     >
