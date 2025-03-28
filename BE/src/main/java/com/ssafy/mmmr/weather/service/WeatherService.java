@@ -155,12 +155,12 @@ public class WeatherService {
 		}
 	}
 
-	private double extractCurrentTemperature(JsonNode weatherJson) {
+	private int extractCurrentTemperature(JsonNode weatherJson) {
 		try {
-			return weatherJson.path("main").path("temp").asDouble();
+			return weatherJson.path("main").path("temp").asInt();
 		} catch (Exception e) {
 			log.warn("현재 온도 추출 실패", e);
-			return 0.0;
+			return 0;
 		}
 	}
 
@@ -190,13 +190,13 @@ public class WeatherService {
 			// 예보 데이터에서 강수 확률 확인 (3시간 이내의 데이터만 고려)
 			JsonNode forecastList = forecastJson.path("list");
 			if (forecastList.isArray() && forecastList.size() > 0) {
-				double maxPop = 0.0;
+				int maxPop = 0;
 
 				// 첫 2개 항목(약 6시간)에서 최대 강수 확률 찾기
 				int count = Math.min(2, forecastList.size());
 				for (int i = 0; i < count; i++) {
 					JsonNode forecast = forecastList.get(i);
-					double pop = forecast.path("pop").asDouble();
+					int pop = forecast.path("pop").asInt();
 					if (pop > maxPop) {
 						maxPop = pop;
 					}
@@ -213,12 +213,9 @@ public class WeatherService {
 		}
 	}
 
-	/**
-	 * OpenWeatherMap API 예보 응답에서 당일 최저 온도를 추출합니다.
-	 */
-	private double extractMinTemperature(JsonNode forecastJson) {
+	private int extractMinTemperature(JsonNode forecastJson) {
 		try {
-			double minTemp = 100.0; // 초기값을 높은 값으로 설정
+			int minTemp = 100; // 초기값을 높은 값으로 설정
 
 			JsonNode forecastList = forecastJson.path("list");
 			if (forecastList.isArray()) {
@@ -226,23 +223,23 @@ public class WeatherService {
 				int count = Math.min(8, forecastList.size());
 				for (int i = 0; i < count; i++) {
 					JsonNode forecast = forecastList.get(i);
-					double temp = forecast.path("main").path("temp_min").asDouble();
+					int temp = forecast.path("main").path("temp_min").asInt();
 					if (temp < minTemp) {
 						minTemp = temp;
 					}
 				}
 			}
 
-			return minTemp == 100.0 ? 0.0 : minTemp;
+			return minTemp == 100 ? 0 : minTemp;
 		} catch (Exception e) {
 			log.warn("최저 온도 추출 실패", e);
-			return 0.0;
+			return 0;
 		}
 	}
 
-	private double extractMaxTemperature(JsonNode forecastJson) {
+	private int extractMaxTemperature(JsonNode forecastJson) {
 		try {
-			double maxTemp = -100.0; // 초기값을 낮은 값으로 설정
+			int maxTemp = -100; // 초기값을 낮은 값으로 설정
 
 			JsonNode forecastList = forecastJson.path("list");
 			if (forecastList.isArray()) {
@@ -250,17 +247,17 @@ public class WeatherService {
 				int count = Math.min(8, forecastList.size());
 				for (int i = 0; i < count; i++) {
 					JsonNode forecast = forecastList.get(i);
-					double temp = forecast.path("main").path("temp_max").asDouble();
+					int temp = forecast.path("main").path("temp_max").asInt();
 					if (temp > maxTemp) {
 						maxTemp = temp;
 					}
 				}
 			}
 
-			return maxTemp == -100.0 ? 0.0 : maxTemp;
+			return maxTemp == -100 ? 0 : maxTemp;
 		} catch (Exception e) {
 			log.warn("최고 온도 추출 실패", e);
-			return 0.0;
+			return 0;
 		}
 	}
 
