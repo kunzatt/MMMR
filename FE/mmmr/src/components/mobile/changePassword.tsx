@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { API_ROUTES } from "@/config/apiRoutes";
 
 interface ChangePasswordProps {
     onClose: () => void;
@@ -12,15 +13,45 @@ export default function ChangePassword({ onClose }: ChangePasswordProps) {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (newPassword !== confirmPassword) {
             alert("비밀번호가 일치하지 않습니다.");
             return;
         }
 
-        // 비밀번호 변경 API 호출 로직 추가
-        alert("비밀번호가 성공적으로 변경되었습니다.");
-        onClose();
+        const accessToken = localStorage.getItem("accessToken");
+
+        if (!accessToken) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+        try {
+            const response = await fetch(API_ROUTES.accounts.changePassword, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify({
+                    currentPassword: currentPassword,
+                    newPassword: newPassword,
+                    newPasswordConfirm: confirmPassword,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.message || "비밀번호가 성공적으로 변경되었습니다.");
+                onClose();
+            } else {
+                alert(data.message || "비밀번호 변경에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("비밀번호 변경 오류:", error);
+            alert("비밀번호 변경 중 오류가 발생했습니다.");
+        }
     };
 
     return (
@@ -29,11 +60,9 @@ export default function ChangePassword({ onClose }: ChangePasswordProps) {
                 <h2 className="text-xl text-blue-300 text-center font-bold mb-6">비밀번호 변경</h2>
 
                 {["현재 비밀번호", "비밀번호", "비밀번호 확인"].map((label, index) => (
-                    <div>
-                        <label key={index} className="block text-sm mb-1 text-gray-500">
-                            {label}
-                        </label>
-                        <div key={index} className="relative mb-4">
+                    <div key={index}>
+                        <label className="block text-sm mb-1 text-gray-500">{label}</label>
+                        <div className="relative mb-4">
                             <input
                                 type={showPassword ? "text" : "password"}
                                 placeholder="********"
