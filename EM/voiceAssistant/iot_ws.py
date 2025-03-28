@@ -1,9 +1,7 @@
 import asyncio
 import json
 import websockets
-from localServer_gcp import logger
 from websockets.server import serve
-"""
 import logging
 
 logging.basicConfig(
@@ -12,7 +10,6 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger('websocket_server')
-"""
 class WebSocketServer:
     def __init__(self, host='0.0.0.0', port=12345):
         self.host = host

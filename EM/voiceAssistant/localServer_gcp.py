@@ -12,6 +12,9 @@ from typing import Dict, List, Any
 import openai
 import data_processor
 from google.cloud import speech
+from iot_ws import WebSocketServer
+import threading
+
 
 # 로깅 설정
 logging.basicConfig(
@@ -37,6 +40,8 @@ SILENCE_THRESHOLD = int(os.getenv("SILENCE_THRESHOLD", "25"))
 MIN_AUDIO_LENGTH = float(os.getenv("MIN_AUDIO_LENGTH", "0.5"))
 
 app = FastAPI(title="Speech-to-Text WebSocket Server")
+app.state.access_token = None
+app.state.refresh_token = None
 
 # CORS 설정
 app.add_middleware(
@@ -494,16 +499,16 @@ async def websocket_endpoint(websocket: WebSocket):
                 """
                 type = json_obj['type']
                 contents = json_obj["contents"]
-                if access_token:
+                if app.state.access_token:
                     if type == "news" and contents["data"]:
-                        news_result, new_tokens = data_processor.getNews(access_token, refresh_token, int(contents["data"]))
+                        news_result, new_tokens = data_processor.getNews(app.state.access_token, app.state.refresh_token, int(contents["data"]))
                         if news_result:
                             json_obj["result"] = news_result
                         else:
                             json_obj["result"] = "-1"
                         if new_tokens:
-                            access_token = new_tokens["access_token"]
-                            refresh_token = new_tokens["refresh_token"]
+                            app.state.access_token = new_tokens["access_token"]
+                            app.state.refresh_token = new_tokens["refresh_token"]
                 json_result = json.dumps(json_obj)
                 # JSON 결과 전송
                 logger.info(f"JSON 변환 결과: {json_result}")
@@ -549,9 +554,12 @@ async def root():
 if __name__ == "__main__":
     import uvicorn
     tokens = data_processor.login()
+    iot_ws = WebSocketServer()
+    iot_ws_thread = threading.Thread(target=iot_ws.start, daemon=True)
+    iot_ws_thread.start()
     if tokens:
-        access_token = tokens["access_token"]
-        refresh_token = tokens['refresh_token']
+        app.state.access_token = tokens["access_token"]
+        app.state.refresh_token = tokens['refresh_token']
     else:
         access_token = None
         refresh_token = None
