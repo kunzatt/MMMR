@@ -41,8 +41,9 @@ public class NewsService {
     public void newsCrawler() {
         try{
             String pageUrl = "https://www.yna.co.kr/";
-
-            Document document = Jsoup.connect(pageUrl).timeout(5000).get();
+            log.info(pageUrl);
+            Document document = Jsoup.connect(pageUrl).userAgent("Mozilla/5.0").timeout(20000).get();
+            log.info(document.toString());
             // 메인 기사 : 총 5개
             Elements elements = document.select(".top-main-news001");
             Elements mainArticles = elements.select(".news-con");
@@ -55,9 +56,10 @@ public class NewsService {
                 String articleUrl = article.selectFirst("a.tit-news").attr("href");
 
                 // 기사 내용
-                Document contentDocument = Jsoup.connect(articleUrl).timeout(5000).get();
+                Document contentDocument = Jsoup.connect(articleUrl).timeout(20000).get();
                 String content = contentDocument.select(".story-news.article").text();
                 //DB에 저장하는 로직
+                log.info(title);
                 NewsEntity newsEntity = NewsEntity.builder()
                         .id((long)mainArticles.indexOf(article)+1)
                         .title(title)

@@ -13,7 +13,7 @@ public class NewsScheduler {
 
     private final NewsService newsService;
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void scheduleNews() {
         newsService.newsCrawler();
     }
