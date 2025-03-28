@@ -17,7 +17,6 @@ import java.net.URI;
 import com.ssafy.mmmr.global.error.code.ErrorCode;
 import com.ssafy.mmmr.global.error.exception.GeocoderException;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class GeocoderClient {
@@ -51,13 +50,9 @@ public class GeocoderClient {
 				.encode() // URL 인코딩 적용
 				.toUri();
 
-			log.debug("Geocoder API 요청 URL: {}", uri);
-
 			HttpHeaders headers = new HttpHeaders();
 			HttpEntity<String> entity = new HttpEntity<>(headers);
 			ResponseEntity<String> response = weatherRestTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
-
-			log.debug("Geocoder API 응답 상태 코드: {}", response.getStatusCode());
 
 			if (response.getBody() == null) {
 				throw new GeocoderException(ErrorCode.FAIL_TO_CONVERT);
@@ -65,7 +60,6 @@ public class GeocoderClient {
 
 			return response.getBody();
 		} catch (Exception e) {
-			log.error("주소 변환 실패 - 주소: {}, 오류: {}", address, e.getMessage());
 			throw new GeocoderException(ErrorCode.FAIL_TO_CONVERT);
 		}
 	}

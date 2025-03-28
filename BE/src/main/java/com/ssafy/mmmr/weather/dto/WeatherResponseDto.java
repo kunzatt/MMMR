@@ -7,15 +7,11 @@ import lombok.Getter;
 @Builder
 public class WeatherResponseDto {
 	private String currentWeather;
-	private double currentTemperature;
-	private double minTemperature;
-	private double maxTemperature;
+	private int currentTemperature;
+	private int minTemperature;
+	private int maxTemperature;
 	private int humidity;
 	private int precipitation;
 	private String clothingAdvice;
 	private String umbrellaAdvice;
-	private boolean hasAlert;
-	private String alertMessage;
-	private boolean hasTyphoon;
-	private String typhoonMessage;
 }

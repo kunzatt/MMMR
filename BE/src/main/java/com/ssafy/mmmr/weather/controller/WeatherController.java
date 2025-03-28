@@ -13,22 +13,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/weather")
 @RequiredArgsConstructor
-@Tag(name = "날씨 API", description = "날씨 정보, 옷차림 추천 및 우산 필요 여부 관련 API")
+@Tag(name = "날씨 API", description = "OpenWeatherMap API를 사용한 날씨 정보, 옷차림 추천 및 우산 필요 여부 관련 API")
 public class WeatherController {
 
 	private final WeatherService weatherService;
 
 	@Operation(
 		summary = "종합 날씨 정보 조회",
-		description = "주소를 기반으로 현재 날씨, 기온, 습도, 옷차림 추천, 우산 필요 여부, 특보 및 태풍 정보를 제공합니다."
+		description = "주소를 기반으로 OpenWeatherMap API를 사용하여 현재 날씨, 기온, 습도, 옷차림 추천, 우산 필요 여부 정보를 제공합니다."
 	)
 	@PostMapping
-	public ResponseEntity<WeatherResponseDto> getComprehensiveWeather(@RequestBody WeatherRequestDto request) {
-		log.info("종합 날씨 정보 요청: {}", request.getAddress());
+	public ResponseEntity<WeatherResponseDto> getWeather(@RequestBody WeatherRequestDto request) {
 		WeatherResponseDto response = weatherService.getComprehensiveWeather(request.getAddress());
 		return ResponseEntity.ok(response);
 	}
