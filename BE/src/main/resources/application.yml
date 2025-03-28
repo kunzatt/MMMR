@@ -101,6 +101,24 @@ springdoc:
     path: /api/swagger-ui.html
     operations-sorter: method
 
+weather:
+  api:
+    key: ${WEATHER_API_KEY}
+    forecast:
+      url: ${WEATHER_FORECAST_URL}
+    alert:
+      url: ${WEATHER_ALERT_URL}
+    typhoon:
+      url: ${WEATHER_TYPHOON_URL}
+    cache:
+      ttl: 1800000  # 30분
+
+vworld:
+  api:
+    key: ${VWORLD_API_KEY}
+    geocoder:
+      url: ${VWORLD_GEOCODER_URL}
+
 cache:
   type: redis
   redis:
