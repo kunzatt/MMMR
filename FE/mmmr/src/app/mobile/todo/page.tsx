@@ -1,9 +1,8 @@
 "use client";
-
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-export default function Page() {
+export default function Todo() {
     const router = useRouter();
 
     useEffect(() => {
@@ -11,9 +10,7 @@ export default function Page() {
             const token = localStorage.getItem("accessToken"); // 'token' -> 'accessToken'으로 수정
             if (token) {
                 const profile = localStorage.getItem("currentProfile"); // 'profile' -> 'currentProfile'으로 수정
-                if (profile) {
-                    router.push("/mobile/home"); // 프로필이 있으면 홈 페이지로 리다이렉트
-                } else {
+                if (!profile) {
                     router.push("/mobile/profile"); // 프로필이 없으면 프로필 페이지로 리다이렉트
                 }
             } else {
@@ -22,5 +19,9 @@ export default function Page() {
         }
     }, []);
 
-    return null;
+    return (
+        <div className="flex-1 w-full flex items-center justify-center">
+            <h1 className="text-2xl">Todo List</h1>
+        </div>
+    );
 }

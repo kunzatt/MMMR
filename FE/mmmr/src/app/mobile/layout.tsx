@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("accessToken");
             setIsAuthenticated(!!token); // 토큰이 있으면 true, 없으면 false
         }
     }, []); // 빈 배열을 의존성으로 지정하여 처음 로드될 때 한 번만 실행
