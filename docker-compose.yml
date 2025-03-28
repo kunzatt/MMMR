@@ -1,0 +1,33 @@
+# /home/ubuntu/jenkins-data/workspace/mmmr-backend-develop?
+version: '3.8'
+
+services:
+  # backend
+  backend:
+    build:
+      context: ./BE
+      dockerfile: Dockerfile
+    expose:
+      - "8088"
+    depends_on:
+      - redis
+
+  # redis 
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  # jenkins
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    user: root
+    ports:
+      - "8081:8080"
+    volumes:
+      - /home/ubuntu/jenkins-data:/var/jenkins_home
+      - /home/ubuntu/.ssh:/root/.ssh
+      - /var/run/docker.sock:/var/run/docker.sock
