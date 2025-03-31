@@ -50,30 +50,30 @@ Window {
         webSocket.active = true;  // 프로그램 실행 시 자동 연결
     }
 
-    function controlDevices(devName, devState) {
-        if(devState !== "ON" && devState !== "OFF") {
+    function controlDevices(devName, devData) {
+        if(devData["turned"] !== "ON" && devData["turned"] !== "OFF") {
             jsonOutput.text = "Error: Invalid device state"
         }
         else {
             if (devName === "livingroomLight") {
-                livingLight.imgId.visible = devState === "ON" ? true : false;
-                sw_livingroomLight.checked = devState === "ON" ? true : false;
+                livingLight.imgId.visible = devData["turned"] === "ON" ? true : false;
+                sw_livingroomLight.checked = devData["turned"] === "ON" ? true : false;
             }
             else if (devName === "airConditioner") {
-                livingAirCon.imgId.visible = devState === "ON" ? true : false;
-                sw_airConditioner.checked = devState === "ON" ? true : false;
+                livingAirCon.imgId.visible = devData["turned"] === "ON" ? true : false;
+                sw_airConditioner.checked = devData["turned"] === "ON" ? true : false;
             }
             else if (devName === "airPurifier") {
-                livingAirPurifier.imgId.visible = devState === "ON" ? true : false;
-                sw_airPurifier.checked = devState === "ON" ? true : false;
+                livingAirPurifier.imgId.visible = devData["turned"] === "ON" ? true : false;
+                sw_airPurifier.checked = devData["turned"] === "ON" ? true : false;
             }
             else if (devName === "TV") {
-                livingTV.imgId.visible = devState === "ON" ? true : false;
-                sw_TV.checked = devState === "ON" ? true : false;
+                livingTV.imgId.visible = devData["turned"] === "ON" ? true : false;
+                sw_TV.checked = devData["turned"] === "ON" ? true : false;
             }
             else if (devName === "curtain") {
-                livingCurtain.imgId.visible = devState === "ON" ? true : false;
-                sw_curtain.checked = devState === "ON" ? true : false;
+                livingCurtain.imgId.visible = devData["turned"] === "ON" ? true : false;
+                sw_curtain.checked = devData["turned"] === "ON" ? true : false;
             }
             else {
                 jsonOutput.text = "Error: Can't find " + devName
@@ -201,9 +201,9 @@ Window {
                     if (result.error) {
                         jsonOutput.text = "Error: " + result.error;
                     } else {
-                        jsonOutput.text = result.device + ", " + result.state
+                        jsonOutput.text = result.device + ", " + result.data
 
-                        controlDevices(result.device, result.state)
+                        controlDevices(result.device, result.data)
                     }
                 }
             }

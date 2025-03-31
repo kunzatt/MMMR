@@ -15,7 +15,6 @@ class JsonProcessor(QObject):
             parsed_data = json.loads(jsonString)
             print(parsed_data["data"])
 
-
             return parsed_data  # QML에서 접근 가능하도록 반환
         except json.JSONDecodeError:
             print("JSON parsing failed")
