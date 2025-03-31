@@ -443,6 +443,19 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                 if new_tokens:
                     app.state.access_token = new_tokens["access_token"]
                     app.state.refresh_token = new_tokens["refresh_token"]
+            elif type == "weather":
+                weather_result, new_tokens = data_processor.getWeather(
+                    app.state.access_token, 
+                    app.state.refresh_token
+                )
+                if weather_result:
+                    json_obj["result"] = weather_result
+                else:
+                    json_obj["result"] = "-1"
+                    
+                if new_tokens:
+                    app.state.access_token = new_tokens["access_token"]
+                    app.state.refresh_token = new_tokens["refresh_token"]
         
         json_result = json.dumps(json_obj)
         logger.info(f"JSON 변환 결과: {json_result}")
