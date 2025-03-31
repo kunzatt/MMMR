@@ -182,7 +182,7 @@ export default function ProfilePage() {
                         className="relative flex items-center justify-center w-24 h-24 bg-blue-300 rounded-2xl cursor-pointer"
                         onClick={() => {
                             localStorage.setItem("currentProfile", JSON.stringify(profile));
-                            router.push("/mobile/todo");
+                            router.push("/mobile/home");
                         }}
                     >
                         <span className="text-white text-lg">{profile.nickname}</span>

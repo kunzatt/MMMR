@@ -8,6 +8,7 @@ export default function Footer() {
     const pathname = usePathname(); // 현재 경로를 가져옴
 
     const menuItems = [
+        { name: "Home", path: "/mobile/home", icon: <AiFillHome /> },
         { name: "Todo", path: "/mobile/todo", icon: <AiOutlineCheckSquare /> },
         { name: "Schedule", path: "/mobile/schedule", icon: <AiFillCalendar /> },
         { name: "Trans", path: "/mobile/trans", icon: <AiOutlineCompass /> },
