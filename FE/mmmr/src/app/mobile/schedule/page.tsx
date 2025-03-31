@@ -1,4 +1,5 @@
 "use client";
+import AddSchedule from "@/components/mobile/addSchedule";
 import API_ROUTES from "@/config/apiRoutes";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
@@ -20,6 +21,7 @@ interface Schedule {
 export default function Schedule() {
     const router = useRouter();
     const [schedules, setSchedules] = useState<Schedule[]>([]);
+    const [showAddScheduleModal, setShowAddScheduleModal] = useState(false);
 
     const getTokens = async () => {
         let accessToken = localStorage.getItem("accessToken");
@@ -153,6 +155,11 @@ export default function Schedule() {
             }
         }
     }, []);
+
+    useEffect(() => {
+        fetchSchedules();
+    }, [showAddScheduleModal]);
+
     return (
         <div className="flex-1 w-full flex h-full items-center justify-center relative">
             <div className="h-full w-full flex flex-col items-center justify-center p-6">
@@ -161,7 +168,7 @@ export default function Schedule() {
                         <h1 className="pl-2 pb-1 text-xl text-blue-300 font-bold">Schedule</h1>
                         <button
                             className="bg-blue-300 rounded-xl text-white px-2 font-bold"
-                            onClick={() => alert("일정 추가 모달 열기")}
+                            onClick={() => setShowAddScheduleModal(true)}
                         >
                             +
                         </button>
@@ -188,6 +195,7 @@ export default function Schedule() {
                     ))}
                 </div>
             </div>
+            {showAddScheduleModal && <AddSchedule onClose={() => setShowAddScheduleModal(false)} />}
         </div>
     );
 }
