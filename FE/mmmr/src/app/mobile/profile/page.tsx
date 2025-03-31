@@ -37,7 +37,7 @@ export default function ProfilePage() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${refreshToken}`,
+                    "Authorization": `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify({ token: accessToken }),
             });
@@ -56,7 +56,7 @@ export default function ProfilePage() {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${refreshToken}`,
+                        "Authorization": `Bearer ${accessToken}`,
                     },
                     body: JSON.stringify({ token: refreshToken }),
                 });
@@ -129,7 +129,7 @@ export default function ProfilePage() {
             const data = await response.json();
             if (response.ok) {
                 setAvailableCallSigns(data.data.map((item: { name: any }) => item.name));
-                if (data.data.length > 0) setCallSign(data.data[0].name); // 첫 번째 값을 기본값으로 설정
+                if (showAddModal && data.data.length > 0) setCallSign(data.data[0].name); // 첫 번째 값을 기본값으로 설정
             } else {
                 console.error("콜사인 목록 조회 실패:", data.message);
             }

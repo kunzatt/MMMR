@@ -19,7 +19,7 @@ export default function Todo() {
     const [showAddTodoModal, setShowAddTodoModal] = useState(false); // Todo 추가 모달 상태
     const [showEditTodoModal, setShowEditTodoModal] = useState(false); // Todo 추가 모달 상태
     const [todos, setTodos] = useState<Todo[]>([]);
-    const [selectedTodo, setSelectedTodo] = useState<Todo>();
+    const [selectedTodo, setSelectedTodo] = useState<Todo>(todos[0]);
 
     const getTokens = async () => {
         let accessToken = localStorage.getItem("accessToken");
@@ -181,7 +181,7 @@ export default function Todo() {
                         {todos.map((todo) => (
                             <div
                                 key={todo.id}
-                                className="flex items-center justify-between px-4 py-2 text-gray-600 bg-blue-100 rounded-xl"
+                                className="flex items-center justify-between px-4 py-2 text-gray-600 bg-blue-100 rounded-full"
                             >
                                 <span className={`text-md ${todo.isDone ? "line-through text-gray-400" : ""}`}>
                                     • {todo.content}

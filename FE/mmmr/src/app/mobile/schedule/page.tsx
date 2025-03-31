@@ -163,20 +163,18 @@ export default function Schedule() {
                             className="bg-blue-300 rounded-xl text-white px-2 font-bold"
                             onClick={() => alert("일정 추가 모달 열기")}
                         >
-                            +new
+                            +
                         </button>
                     </div>
 
                     {/* 날짜별 그룹핑 */}
                     {Object.entries(groupedSchedules).map(([date, items]) => (
                         <div key={date}>
-                            <h2 className="text-md text-blue-300 font-semibold border-b border-blue-200 mb-2">
-                                {date}
-                            </h2>
+                            <h2 className="text-md text-blue-300 font-semibold pl-2 mb-2">{date}</h2>
                             {items.map((schedule) => (
                                 <div
                                     key={schedule.id}
-                                    className="flex items-center justify-between px-4 py-2 text-white bg-blue-200 rounded-full mb-2"
+                                    className="flex items-center justify-between px-4 py-2 text-gray-600 bg-blue-100 rounded-full mb-2"
                                 >
                                     <span>{schedule.title}</span>
                                     <div className="flex gap-2">
