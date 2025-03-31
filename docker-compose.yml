@@ -4,7 +4,7 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./FE
+      context: ./FE/mmmr
       dockerfile: Dockerfile
     network_mode: host
     expose: 
