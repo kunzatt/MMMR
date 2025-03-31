@@ -3,6 +3,7 @@ import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Basic
+import QtQuick.Shapes
 import QtWebSockets
 import RoomLight
 import TV
@@ -11,10 +12,67 @@ import AirPurifier
 import Curtain
 
 Window {
-    width: 800
-    height: 480
+    id: main_window
+    width: 1280
+    height: 720
     visible: true
     title: qsTr("IoT Control Simulator")
+
+    flags: Qt.FramelessWindowHint  // 기본 제목 표시줄 숨기기
+
+        Rectangle {
+            id: titleBar
+            width: parent.width
+            height: 30
+            color: "#333"  // 제목 표시줄 배경색
+
+            MouseArea {
+                id: dragArea
+                anchors.fill: parent
+                property point clickPos
+
+                onPressed: (mouse) => {
+                    clickPos = Qt.point(mouse.x, mouse.y)
+                }
+
+                onPositionChanged: (mouse) => {
+                    if (mouse.buttons & Qt.LeftButton) {
+                        main_window.setX(mouse.x + main_window.x - clickPos.x)
+                        main_window.setY(mouse.y + main_window.y - clickPos.y)
+                    }
+                }
+            }
+
+            RowLayout {
+                anchors.fill: parent
+                spacing: 10
+
+                Label {
+                    text: "IoT Control Simulator"
+                    color: "white"
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.leftMargin: 10
+                    font.pixelSize: 12
+                }
+            }
+
+            Button {
+                text: "❌"
+                x: main_window.width - 35
+                background: Rectangle {
+                    color: "transparent"
+                }
+                onClicked: Qt.quit()
+                z: 2
+            }
+        }
+
+        Rectangle {
+            anchors.top: titleBar.bottom
+            width: parent.width
+            height: parent.height - titleBar.height
+            color: "#f0f0f0"
+        }
 
     WebSocket {
         id: webSocket
@@ -81,129 +139,192 @@ Window {
         }
     }
 
-    GridLayout {
-        anchors.fill: parent
-        anchors.margins: 20
-        rowSpacing: 20
-        columnSpacing: 10
-        columns: 3
+    /* GUI Layout */
+    ColumnLayout {
+        Layout.alignment: Qt.AlignCenter
+        implicitWidth: parent.width
+        implicitHeight: parent.height
+        spacing: 10
 
-        Item {
-            id: map_wrapper
-            Layout.leftMargin: 30
-            width: 460
-            height: 320
+        GridLayout {
+            Layout.leftMargin: 50
 
-            TV {
-                id: livingTV
-                width: 460
-                height: 320
-                imgId.source: "qrc:/images/TV.png"
-            }
+            Item {
+                id: map_wrapper
+                width: 600
+                height: 400
 
-            RoomLight {
-                id: livingLight
-                imgId.width: 460
-                imgId.height: 320
-                imgId.source: "qrc:/images/livingroomLight.png"
-            }
+                TV {
+                    id: livingTV
+                    width: parent.width
+                    height: parent.height
+                    imgId.source: "qrc:/images/TV.png"
+                }
 
-            AirConditioner {
-                id: livingAirCon
-                imgId.width: 460
-                imgId.height: 320
-                imgId.source: "qrc:/images/airconditioner.png"
-            }
+                RoomLight {
+                    id: livingLight
+                    width: parent.width
+                    height: parent.height
+                    imgId.source: "qrc:/images/livingroomLight.png"
+                }
 
-            AirPurifier {
-                id: livingAirPurifier
-                imgId.width: 460
-                imgId.height: 320
-                imgId.source: "qrc:/images/airpurifier.png"
-            }
+                AirConditioner {
+                    id: livingAirCon
+                    width: parent.width
+                    height: parent.height
+                    imgId.source: "qrc:/images/airconditioner.png"
+                }
 
-            Curtain {
-                id: livingCurtain
-                imgId.width: 460
-                imgId.height: 320
-                imgId.source: "qrc:/images/curtain.png"
-            }
+                AirPurifier {
+                    id: livingAirPurifier
+                    width: parent.width
+                    height: parent.height
+                    imgId.source: "qrc:/images/airpurifier.png"
+                }
 
-            Image {
-                id: map_home
-                fillMode: Image.PreserveAspectFit
-                width: parent.width
-                source: "qrc:/images/map.png"
-            }
-        }
+                Curtain {
+                    id: livingCurtain
+                    width: parent.width
+                    height: parent.height
+                    imgId.source: "qrc:/images/curtain.png"
+                }
 
-        ColumnLayout {
-            Layout.alignment: Qt.AlignTop
-            id: sw_wrapper
-            spacing: 7
-
-            Switch {
-                id: sw_livingroomLight
-                text: qsTr("LivingRoom Light")
-                checked: false
-                onClicked: livingLight.imgId.visible = checked
-            }
-
-            Switch {
-                id: sw_TV
-                text: qsTr("TV")
-                checked: false
-                onClicked: livingTV.imgId.visible = checked
-            }
-
-            Switch {
-                id: sw_airConditioner
-                text: qsTr("Air Conditioner")
-                checked: false
-                onClicked: livingAirCon.imgId.visible = checked
-            }
-
-            Switch {
-                id: sw_airPurifier
-                text: qsTr("Air Purifier")
-                checked: false
-                onClicked: livingAirPurifier.imgId.visible = checked
-            }
-
-            Switch {
-                id: sw_curtain
-                text: qsTr("LivingRoom Curtain")
-                checked: false
-                onClicked: livingCurtain.imgId.visible = checked
-            }
-
-            TextArea {
-                id: jsonInput
-                placeholderText: qsTr("Enter json format")
-                Layout.topMargin: 20
-                wrapMode: TextArea.WordWrap
-                width: 200
-
-                background: Rectangle {
-                    implicitWidth: 200
-                    implicitHeight: 70
-                    border.color: jsonInput.enabled ? "#21be2b" : "transparent"
+                Image {
+                    id: map_home
+                    fillMode: Image.PreserveAspectFit
+                    width: parent.width
+                    source: "qrc:/images/map.png"
                 }
             }
 
-            Button {
-                Layout.alignment: Qt.AlignRight
-                text: "Ok"
-                implicitWidth: 100
-                onClicked: {
-                    var jsonText = jsonInput.text;
-                    var result = jsonProcessor.processJson(jsonText);
-                    if (result.error) {
-                        jsonOutput.text = "Error: " + result.error;
-                    } else {
-                        jsonOutput.text = result.device + ", " + result.data
+            ColumnLayout {
+                Layout.leftMargin: 50
+                spacing: 50
 
-                        controlDevices(result.device, result.data)
+                Label {
+                    Text {
+                        text: Qt.formatDate(new Date(), "yyyy.MM.dd (ddd)");
+                        font.pointSize: 36
+                        font.bold: true
+                    }
+                }
+
+                Label {
+                    Text {
+                        text: "☀️ Sunny";
+                        font.pointSize: 24
+                        font.bold: true
+                    }
+                }
+            }
+
+
+
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
+            spacing: 10
+            width: main_window.width - 100
+
+            Label {
+                text: "IoT Control Test"
+                Layout.leftMargin: 50 // 왼쪽에서 50 떨어진 위치
+                Layout.preferredWidth: implicitWidth
+            }
+
+            Shape {
+                Layout.fillWidth: true // 남은 공간을 자동으로 차지
+                Layout.leftMargin: 20 // Label의 맨 오른쪽 위치 + 20 만큼 띄움
+
+                ShapePath {
+                    strokeWidth: 2
+                    strokeColor: "lightgray"
+
+                    startX: 0
+                    startY: 0
+                    PathLine {
+                        x: main_window.width - 150 - 50 // 화면의 오른쪽에서 50만큼 떨어진 위치
+                        y: 0
+                    }
+                }
+            }
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
+            id: sw_wrapper
+            spacing: 7
+
+            GridLayout {
+                columns: 3
+
+
+                Switch {
+                    id: sw_livingroomLight
+                    text: qsTr("LivingRoom Light")
+                    checked: false
+                    onClicked: livingLight.imgId.visible = checked
+                }
+
+                Switch {
+                    id: sw_TV
+                    text: qsTr("TV")
+                    checked: false
+                    onClicked: livingTV.imgId.visible = checked
+                }
+
+                Switch {
+                    id: sw_airConditioner
+                    text: qsTr("Air Conditioner")
+                    checked: false
+                    onClicked: livingAirCon.imgId.visible = checked
+                }
+
+                Switch {
+                    id: sw_airPurifier
+                    text: qsTr("Air Purifier")
+                    checked: false
+                    onClicked: livingAirPurifier.imgId.visible = checked
+                }
+
+                Switch {
+                    id: sw_curtain
+                    text: qsTr("LivingRoom Curtain")
+                    checked: false
+                    onClicked: livingCurtain.imgId.visible = checked
+                }
+            }
+
+            ColumnLayout {
+                TextArea {
+                    id: jsonInput
+                    placeholderText: qsTr("Enter json format")
+                    Layout.topMargin: 20
+                    wrapMode: TextArea.WordWrap
+                    width: 200
+
+                    background: Rectangle {
+                        implicitWidth: 200
+                        implicitHeight: 70
+                        border.color: jsonInput.enabled ? "#21be2b" : "transparent"
+                    }
+                }
+
+                Button {
+                    Layout.alignment: Qt.AlignRight
+                    text: "Ok"
+                    implicitWidth: 100
+                    onClicked: {
+                        var jsonText = jsonInput.text;
+                        var result = jsonProcessor.processJson(jsonText);
+                        if (result.error) {
+                            jsonOutput.text = "Error: " + result.error;
+                        } else {
+                            jsonOutput.text = result.device + ", " + result.data
+
+                            controlDevices(result.device, result.data)
+                        }
                     }
                 }
             }
@@ -217,4 +338,6 @@ Window {
             }
         }
     }
+
+
 }
