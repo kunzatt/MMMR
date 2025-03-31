@@ -2,11 +2,13 @@ package com.ssafy.mmmr.account.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.mmmr.account.dto.AuthUser;
 import com.ssafy.mmmr.account.dto.SignUpReqeustDto;
 import com.ssafy.mmmr.account.entity.AccountEntity;
 import com.ssafy.mmmr.account.repository.AccountRepository;
@@ -81,4 +83,27 @@ public class AccountService {
 		accountEntity.changePassword(passwordEncoder.encode(newPassword));
 		accountRepository.save(accountEntity);
 	}
+
+	@Transactional
+	public void deleteAccount(AuthUser authUser, String password) {
+		Optional.ofNullable(authUser)
+			.orElseThrow(() -> new AccountException(ErrorCode.UNAUTHORIZED));
+
+		String email = Optional.ofNullable(authUser.getEmail())
+			.orElseThrow(() -> new AccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+		Optional.ofNullable(password)
+			.filter(pwd -> !pwd.isEmpty())
+			.orElseThrow(() -> new AccountException(ErrorCode.INVALID_PASSWORD));
+
+		AccountEntity accountEntity = accountRepository.findByEmail(email)
+			.orElseThrow(() -> new AccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+		if (!passwordEncoder.matches(password, accountEntity.getPassword())) {
+			throw new AccountException(ErrorCode.INVALID_PASSWORD);
+		}
+
+		accountRepository.delete(accountEntity);
+	}
+
 }
