@@ -4,7 +4,7 @@ import os
 
 def install_requirements():
     print("필요한 패키지 설치 중...")
-    
+
     with open('requirements.txt', 'w') as f:
         f.write('pvporcupine\n')
         f.write('pyaudio\n')
@@ -12,11 +12,14 @@ def install_requirements():
         f.write('numpy\n')
         f.write('python-dotenv\n')
         f.write('websockets\n')
-        
-    try:    
+        f.write('google-cloud-speech\n')
+        f.write('google-cloud-texttospeech\n')
+        f.write('openai\n')
+
+    try:
         # 필요한 패키지 설치
         subprocess.check_call([sys.executable, '-m', 'pip', 'install', '-r', 'requirements.txt'])
-        
+
         print("설치 완료!")
     except subprocess.CalledProcessError:
         print("패키지 설치 중 오류가 발생했습니다.")
