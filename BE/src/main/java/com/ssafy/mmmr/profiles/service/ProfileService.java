@@ -29,12 +29,25 @@ public class ProfileService {
 	private final ProfileRepository profileRepository;
 	private final AccountRepository accountRepository;
 
+	@Transactional
 	public Long addProfile(Long accountId, ProfileRequestDto profileRequestDto) {
 		AccountEntity account = accountRepository.findById(accountId)
 			.orElseThrow(() -> new AccountException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-		if (profileRepository.existsByNicknameAndDeletedFalse(profileRequestDto.getNickname())) {
+		boolean nicknameExistsInAccount = profileRepository.findByAccountIdAndDeletedFalse(accountId)
+			.stream()
+			.anyMatch(profile -> profile.getNickname().equals(profileRequestDto.getNickname()));
+
+		if (nicknameExistsInAccount) {
 			throw new ProfileException(ErrorCode.NICKNAME_EXISTS);
+		}
+
+		boolean callSignInUse = profileRepository.findByAccountIdAndDeletedFalse(accountId)
+			.stream()
+			.anyMatch(profile -> profile.getCallSign() == profileRequestDto.getCallSign());
+
+		if (callSignInUse) {
+			throw new ProfileException(ErrorCode.CALLSIGN_EXISTS);
 		}
 
 		ProfileEntity profile = ProfileEntity.builder()
@@ -46,6 +59,7 @@ public class ProfileService {
 		account.addProfile(profile);
 
 		ProfileEntity savedProfile = profileRepository.save(profile);
+
 		return savedProfile.getId();
 	}
 
@@ -65,13 +79,27 @@ public class ProfileService {
 			.orElseThrow(() -> new ProfileException(ErrorCode.PROFILE_NOT_FOUND));
 
 		if (updateDto.getNickname() != null && !updateDto.getNickname().equals(profile.getNickname())) {
-			if (profileRepository.existsByNicknameAndDeletedFalse(updateDto.getNickname())) {
+			boolean nicknameExistsInAccount = profileRepository.findByAccountIdAndDeletedFalse(accountId)
+				.stream()
+				.filter(p -> !p.getId().equals(profileId)) // 현재 프로필 제외
+				.anyMatch(p -> p.getNickname().equals(updateDto.getNickname()));
+
+			if (nicknameExistsInAccount) {
 				throw new ProfileException(ErrorCode.NICKNAME_EXISTS);
 			}
 			profile.changeNickname(updateDto.getNickname());
 		}
 
 		if (updateDto.getCallSign() != null && !updateDto.getCallSign().equals(profile.getCallSign())) {
+			boolean callSignInUse = profileRepository.findByAccountIdAndDeletedFalse(accountId)
+				.stream()
+				.filter(p -> !p.getId().equals(profileId))
+				.anyMatch(p -> p.getCallSign() == updateDto.getCallSign());
+
+			if (callSignInUse) {
+				throw new ProfileException(ErrorCode.CALLSIGN_EXISTS);
+			}
+
 			profile.changeCallSign(updateDto.getCallSign());
 		}
 	}
@@ -82,6 +110,10 @@ public class ProfileService {
 			.orElseThrow(() -> new ProfileException(ErrorCode.PROFILE_NOT_FOUND));
 
 		profile.delete();
+
+		profileRepository.save(profile);
+
+		profileRepository.flush();
 	}
 
 	@Transactional(readOnly = true)
@@ -105,5 +137,4 @@ public class ProfileService {
 			.callSign(profile.getCallSign())
 			.build();
 	}
-
 }
