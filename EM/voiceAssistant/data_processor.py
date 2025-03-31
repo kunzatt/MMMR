@@ -7,12 +7,10 @@ import openai
 
 load_dotenv()
 
-login_url = os.getenv("LOGIN_URL")
-refresh_token_url = os.getenv("REFRESH_TOKEN_URL")  # .env 파일에 리프레시 토큰 URL 추가 필요
-getNews_url = os.getenv("GETNEWS_URL")
-getProfiles_url = os.getenv("GETPROFILES_URL")
+server_url = os.getenv("SERVER_URL")
 email = os.getenv("EMAIL")
 password = os.getenv("PASSWORD") 
+address = os.getenv("ADDRESS")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 openai.api_key = OPENAI_API_KEY
 
@@ -23,7 +21,7 @@ def login():
         "password": password
     }
     try:
-        response = requests.post(login_url, data=json.dumps(login_data), headers={"Content-Type": "application/json"})
+        response = requests.post(server_url+"auth/login", data=json.dumps(login_data), headers={"Content-Type": "application/json"})
         if response.status_code == 200:
             data = response.json()
             logger.info(f"로그인 성공: {data}")
@@ -45,7 +43,7 @@ def refresh_access_token(refresh_token):
             "refreshToken": refresh_token
         }
         response = requests.post(
-            refresh_token_url, 
+            server_url+"auth/refresh", 
             data=json.dumps(refresh_data), 
             headers={"Content-Type": "application/json"}
         )
@@ -123,11 +121,10 @@ def make_authenticated_request(url, method="GET", headers=None, data=None, acces
         logger.error(f"API 요청 중 오류: {e}")
         return None
 
-
-def getProfiles(access_token, refresh_token=None):
+def getProfiles(callSign, access_token, refresh_token=None):
     try:
         result = make_authenticated_request(
-            getProfiles_url, 
+            server_url+"user/profiles/callsigns/" + callSign, 
             access_token=access_token, 
             refresh_token=refresh_token
         )
@@ -141,7 +138,6 @@ def getProfiles(access_token, refresh_token=None):
         data = response.json()
         logger.info(f"프로필 데이터: {data}")
         
-        # 토큰이 갱신되었으면 새 토큰 반환, 아니면 None 반환
         if new_tokens:
             return data, new_tokens
         else:
@@ -151,11 +147,42 @@ def getProfiles(access_token, refresh_token=None):
         logger.error(f"프로필 처리 중 오류: {e}")
         return None, None
 
+def getWeather(access_token, refresh_token=None):
+    try:
+        result = make_authenticated_request(
+            server_url+"weather", 
+            "POST",
+            headers={"Content-Type": "application/json"},
+            data=address,
+            access_token=access_token, 
+            refresh_token=refresh_token
+        )
+        
+        if not result:
+            return None, None
+            
+        response = result["response"]
+        new_tokens = result["new_tokens"]
+        
+        data = response.json()
+        ret = data["data"]["clothingAdvice"] + "\n" + data["data"]["umbrellaAdvice"]
+
+        logger.info(f"날씨 데이터: {data}")
+        
+        if new_tokens:
+            return ret, new_tokens
+        else:
+            return ret, None
+        
+    except Exception as e:
+        logger.error(f"날씨 처리 중 오류: {e}")
+        return None, None
+
 
 def getNews(access_token, refresh_token=None, id=0):
     try:
         result = make_authenticated_request(
-            getNews_url, 
+            server_url+"news", 
             access_token=access_token, 
             refresh_token=refresh_token
         )
