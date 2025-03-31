@@ -35,6 +35,9 @@ public enum ErrorCode {
 	FILE_UPLOAD_ERROR(500, "파일 업로드 중 오류가 발생했습니다"),
 	BATCH_PROCESSING_ERROR(500, "배치 작업 실행 중 오류가 발생했습니다"),
 
+	// Home Device
+	DEVICE_NOT_FOUND(400, "제어 가능한 기기를 찾을 수 없습니다"),
+
 	// Todo List
 	TODO_NOT_FOUND(404, "투두리스트가 없습니다."),
 	TODO_DELETED(410, "삭제된 할 일 입니다."),
