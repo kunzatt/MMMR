@@ -1,10 +1,25 @@
 "use client";
 import API_ROUTES from "@/config/apiRoutes";
+import dayjs from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+
+dayjs.extend(isSameOrAfter);
+
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { AiOutlineEdit } from "react-icons/ai";
+
+interface Schedule {
+    id: number;
+    title: string;
+    profileId: number;
+    startDate: string; // ISO 날짜 문자열
+    endDate: string;
+}
 
 export default function Schedule() {
     const router = useRouter();
+    const [schedules, setSchedules] = useState<Schedule[]>([]);
 
     const getTokens = async () => {
         let accessToken = localStorage.getItem("accessToken");
@@ -21,7 +36,7 @@ export default function Schedule() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${refreshToken}`,
+                    "Authorization": `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify({ token: accessToken }),
             });
@@ -40,7 +55,7 @@ export default function Schedule() {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${refreshToken}`,
+                        "Authorization": `Bearer ${accessToken}`,
                     },
                     body: JSON.stringify({ token: refreshToken }),
                 });
@@ -55,6 +70,7 @@ export default function Schedule() {
 
                 if (refreshResponse.ok && refreshData.data?.accessToken) {
                     accessToken = refreshData.data.accessToken;
+                    localStorage.removeItem("accessToken");
                     if (accessToken) {
                         localStorage.setItem("accessToken", accessToken);
                     }
@@ -76,7 +92,55 @@ export default function Schedule() {
         }
     };
 
+    const fetchSchedules = async () => {
+        const accessToken = await getTokens();
+        const profile = JSON.parse(localStorage.getItem("currentProfile") || "{}");
+        const profileId = profile?.id;
+        if (!accessToken || !profileId) return;
+
+        try {
+            const response = await fetch(`${API_ROUTES.schedule.listByProfile}?profileId=${profileId}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setSchedules(data.data || []);
+            } else {
+                console.error("일정 조회 실패");
+            }
+        } catch (error) {
+            console.error("일정 요청 오류:", error);
+        }
+    };
+
+    const sortedGroupByDate = (items: Schedule[]) => {
+        const today = dayjs().startOf("day"); // 오늘 날짜 00:00
+
+        const filtered = items.filter((item) => dayjs(item.startDate).isSameOrAfter(today));
+
+        const grouped = filtered.reduce((acc: Record<string, Schedule[]>, item) => {
+            const dateKey = dayjs(item.startDate).format("MMM D");
+            acc[dateKey] = acc[dateKey] || [];
+            acc[dateKey].push(item);
+            return acc;
+        }, {});
+
+        return Object.entries(grouped)
+            .sort((a, b) => dayjs(a[1][0].startDate).unix() - dayjs(b[1][0].startDate).unix())
+            .reduce((acc: Record<string, Schedule[]>, [key, val]) => {
+                acc[key] = val;
+                return acc;
+            }, {});
+    };
+
+    const groupedSchedules = sortedGroupByDate(schedules);
+
     useEffect(() => {
+        fetchSchedules();
         if (typeof window !== "undefined") {
             const token = localStorage.getItem("accessToken"); // 'token' -> 'accessToken'으로 수정
             if (token) {
@@ -89,12 +153,41 @@ export default function Schedule() {
             }
         }
     }, []);
-
     return (
         <div className="flex-1 w-full flex h-full items-center justify-center relative">
             <div className="h-full w-full flex flex-col items-center justify-center p-6">
-                <div className="flex flex-col h-full items-center space-y-4 p-4 bg-white shadow-md rounded-xl w-full max-w-md">
-                    <h1 className="text-xl text-blue-300 font-bold">Schedule</h1>
+                <div className="flex flex-col h-full space-y-4 p-4 bg-white shadow-md rounded-xl w-full max-w-md overflow-y-auto">
+                    <div className="flex justify-between items-center w-full border-b-2 border-blue-300">
+                        <h1 className="pl-2 pb-1 text-xl text-blue-300 font-bold">Schedule</h1>
+                        <button
+                            className="bg-blue-300 rounded-xl text-white px-2 font-bold"
+                            onClick={() => alert("일정 추가 모달 열기")}
+                        >
+                            +new
+                        </button>
+                    </div>
+
+                    {/* 날짜별 그룹핑 */}
+                    {Object.entries(groupedSchedules).map(([date, items]) => (
+                        <div key={date}>
+                            <h2 className="text-md text-blue-300 font-semibold border-b border-blue-200 mb-2">
+                                {date}
+                            </h2>
+                            {items.map((schedule) => (
+                                <div
+                                    key={schedule.id}
+                                    className="flex items-center justify-between px-4 py-2 text-white bg-blue-200 rounded-full mb-2"
+                                >
+                                    <span>{schedule.title}</span>
+                                    <div className="flex gap-2">
+                                        <button onClick={() => alert("수정 모달 열기")}>
+                                            <AiOutlineEdit />
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

@@ -43,6 +43,15 @@ export const API_ROUTES = {
         delete: (todoId: number) => `${BASE_URL}/api/todos/${todoId}`,
         toggle: (todoId: number) => `${BASE_URL}/api/todos/${todoId}/toggle`,
     },
+
+    // Schedule 리스트 관련 API
+    schedule: {
+        listByProfile: `${BASE_URL}/api/schedules/profile`,
+        detail: (id: number) => `${BASE_URL}/api/schedules/${id}`,
+        add: `${BASE_URL}/api/schedules`,
+        update: (id: number) => `${BASE_URL}/api/schedules/${id}`,
+        delete: (id: number) => `${BASE_URL}/api/schedules/${id}`,
+    },
 };
 
 export default API_ROUTES;
