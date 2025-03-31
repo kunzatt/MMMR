@@ -34,7 +34,11 @@ public class ProfileService {
 		AccountEntity account = accountRepository.findById(accountId)
 			.orElseThrow(() -> new AccountException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-		if (profileRepository.existsByNicknameAndDeletedFalse(profileRequestDto.getNickname())) {
+		boolean nicknameExistsInAccount = profileRepository.findByAccountIdAndDeletedFalse(accountId)
+			.stream()
+			.anyMatch(profile -> profile.getNickname().equals(profileRequestDto.getNickname()));
+
+		if (nicknameExistsInAccount) {
 			throw new ProfileException(ErrorCode.NICKNAME_EXISTS);
 		}
 
@@ -75,7 +79,12 @@ public class ProfileService {
 			.orElseThrow(() -> new ProfileException(ErrorCode.PROFILE_NOT_FOUND));
 
 		if (updateDto.getNickname() != null && !updateDto.getNickname().equals(profile.getNickname())) {
-			if (profileRepository.existsByNicknameAndDeletedFalse(updateDto.getNickname())) {
+			boolean nicknameExistsInAccount = profileRepository.findByAccountIdAndDeletedFalse(accountId)
+				.stream()
+				.filter(p -> !p.getId().equals(profileId)) // 현재 프로필 제외
+				.anyMatch(p -> p.getNickname().equals(updateDto.getNickname()));
+
+			if (nicknameExistsInAccount) {
 				throw new ProfileException(ErrorCode.NICKNAME_EXISTS);
 			}
 			profile.changeNickname(updateDto.getNickname());
