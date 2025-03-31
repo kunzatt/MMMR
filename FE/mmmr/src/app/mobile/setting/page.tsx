@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Footer from "@/components/mobile/footer";
 import ChangePassword from "@/components/mobile/changePassword";
 import DeleteAccount from "@/components/mobile/deleteAccount";
 

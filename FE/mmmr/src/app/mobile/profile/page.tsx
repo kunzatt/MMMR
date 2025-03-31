@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AiOutlineEdit, AiOutlinePlus } from "react-icons/ai";
 import { API_ROUTES } from "@/config/apiRoutes";
-import { getTokens } from "@/config/getToken";
 
 export default function ProfilePage() {
     interface Profile {
@@ -22,6 +21,76 @@ export default function ProfilePage() {
     const [availableCallSigns, setAvailableCallSigns] = useState<string[]>([]);
     const [editCallSigns, setEditCallSigns] = useState<string[]>([]);
     const router = useRouter();
+
+    const getTokens = async () => {
+        let accessToken = localStorage.getItem("accessToken");
+        const refreshToken = localStorage.getItem("refreshToken");
+
+        if (!accessToken) {
+            router.push("/mobile/login");
+            return null;
+        }
+
+        try {
+            // 1. 액세스 토큰 유효성 확인
+            const validateResponse = await fetch(API_ROUTES.auth.validate, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${refreshToken}`,
+                },
+                body: JSON.stringify({ token: accessToken }),
+            });
+
+            let validateData = null;
+            if (validateResponse.ok) {
+                const contentType = validateResponse.headers.get("Content-Type");
+                if (contentType && contentType.includes("application/json")) {
+                    validateData = await validateResponse.json();
+                }
+            }
+
+            // 2. 토큰이 만료되었거나 유효하지 않은 경우, 리프레시 토큰으로 새 액세스 토큰 발급
+            if (refreshToken) {
+                const refreshResponse = await fetch(API_ROUTES.auth.refresh, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${refreshToken}`,
+                    },
+                    body: JSON.stringify({ token: refreshToken }),
+                });
+
+                let refreshData = null;
+                if (refreshResponse.ok) {
+                    const contentType = refreshResponse.headers.get("Content-Type");
+                    if (contentType && contentType.includes("application/json")) {
+                        refreshData = await refreshResponse.json();
+                    }
+                }
+
+                if (refreshResponse.ok && refreshData.data?.accessToken) {
+                    accessToken = refreshData.data.accessToken;
+                    if (accessToken) {
+                        localStorage.setItem("accessToken", accessToken);
+                    }
+                    return accessToken;
+                } else {
+                    localStorage.removeItem("accessToken");
+                    localStorage.removeItem("refreshToken");
+                    router.push("/mobile/login");
+                    return null;
+                }
+            } else {
+                localStorage.removeItem("accessToken");
+                router.push("/mobile/login");
+                return null;
+            }
+        } catch (error) {
+            console.error("토큰 검증 오류:", error);
+            return null;
+        }
+    };
 
     const fetchProfiles = async () => {
         const accessToken = await getTokens();
@@ -50,7 +119,7 @@ export default function ProfilePage() {
         const accessToken = await getTokens();
         if (!accessToken) return;
         try {
-            const response = await fetch(API_ROUTES.profiles.availableCallsigns, {
+            const response = await fetch(API_ROUTES.profiles.callsigns, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -60,7 +129,7 @@ export default function ProfilePage() {
             const data = await response.json();
             if (response.ok) {
                 setAvailableCallSigns(data.data.map((item: { name: any }) => item.name));
-                if (data.data.length > 0) setCallSign(data.data[0].callSign); // 첫 번째 값을 기본값으로 설정
+                if (data.data.length > 0) setCallSign(data.data[0].name); // 첫 번째 값을 기본값으로 설정
             } else {
                 console.error("콜사인 목록 조회 실패:", data.message);
             }

@@ -2,8 +2,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImCross } from "react-icons/im";
-import { getTokens } from "@/config/getToken";
-
 interface AddTodoProps {
     onClose: () => void;
 }

@@ -8,7 +8,7 @@ export const API_ROUTES = {
     // 프로필 관련 API
     profiles: {
         list: `${BASE_URL}/api/profiles`,
-        availableCallsigns: `${BASE_URL}/api/profiles/available-callsigns`,
+        callsigns: `${BASE_URL}/api/profiles/callsigns`,
         add: `${BASE_URL}/api/profiles`,
         update: (profileId: number) => `${BASE_URL}/api/profiles/${profileId}`,
         delete: (profileId: number) => `${BASE_URL}/api/profiles/${profileId}`,
