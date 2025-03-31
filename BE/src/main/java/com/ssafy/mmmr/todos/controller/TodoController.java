@@ -418,7 +418,7 @@ public class TodoController {
 		return ResponseEntity.ok(new ApiResponse("투두가 성공적으로 수정되었습니다.", updatedTodo));
 	}
 
-	@PatchMapping("/{todoId}/toggle")
+	@PutMapping("/{todoId}/toggle")
 	@Operation(summary = "투두 완료 상태 토글", description = "특정 투두의 완료 상태를 변경합니다.")
 	@ApiResponses({
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
