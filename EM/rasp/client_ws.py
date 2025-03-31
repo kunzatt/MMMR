@@ -198,28 +198,28 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
             metadata_msg = f"METADATA:sample_rate={sample_rate},keyword={detected_keyword},encoding=PCM_16BIT,channels=1"
             await websocket.send(metadata_msg)
             print(f"메타데이터 전송: {metadata_msg}")
-            
+
             # 오디오 품질 관련 변수 설정
             CHUNK_SIZE = frame_length  # 정확히 한 프레임씩 전송
             buffer = bytearray()
             total_bytes_sent = 0
-            
+
             # 스트리밍 시작 시간
             start_time = time.time()
             streaming = True
 
             # 진행 정보 출력 타이머
             last_report_time = time.time()
-            
+
             while streaming and running:
                 try:
                     # 오디오 데이터 읽기 (정확히 한 프레임씩)
                     pcm = audio_stream.read(frame_length, exception_on_overflow=False)
-                    
+
                     # 바로 전송 (버퍼링 하지 않음)
                     await websocket.send(pcm)
                     total_bytes_sent += len(pcm)
-                    
+
                     # 5초마다 진행 상황 출력
                     current_time = time.time()
                     if current_time - last_report_time > 5:
@@ -247,26 +247,26 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
                 except Exception as e:
                     print(f"스트리밍 중 오류: {e}")
                     break
-            
+
             # 스트리밍 종료 메시지 전송
             if streaming:  # 아직 종료되지 않았다면
                 await websocket.send("STREAMING_END")
-            
+
             print(f"오디오 스트리밍 완료. 총 {total_bytes_sent} 바이트 전송됨.")
 
             # 서버의 STT 결과 대기
             try:
                 result = await asyncio.wait_for(websocket.recv(), timeout=5.0)
                 print(f"STT 결과: {result}")
-                
+
                 # 결과 JSON 파싱
                 try:
                     json_result = json.loads(result)
-                    
+
                     # 결과 처리 및 웹 클라이언트 메시지 전송
                     contents_type = json_result.get("type")
                     contents = json_result.get("contents", {})
-                    
+
                     # 웹 클라이언트에 명령 결과 전송
                     if contents_type:
                         # 웹 클라이언트에 메시지 전달
@@ -274,7 +274,7 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
                             await broadcast_message(json_result)
                         except Exception as e:
                             print(f"웹 클라이언트 메시지 전송 오류: {e}")
-                    
+
                     # 뉴스 타입 및 유효한 결과인지 확인
                     if "result" in json_result:
                         if json_result["result"] not in ["-1", "0"]:
@@ -291,11 +291,11 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
                         # 다른 타입의 명령에서 결과가 -1인 경우 기본 TTS 파일 재생
                         print(f"결과가 -1입니다. '{detected_keyword}'에 해당하는 TTS 파일을 재생합니다.")
                         play_tts_file(detected_keyword)
-                
+
                 except json.JSONDecodeError:
                     print("JSON 파싱 오류")
 
-                
+
             except asyncio.TimeoutError:
                 print("STT 결과를 받지 못했습니다.")
 
