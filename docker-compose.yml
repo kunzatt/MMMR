@@ -1,0 +1,10 @@
+# /var/.../workspace/mmmr-frontend-develop
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./FE
+      dockerfile: Dockerfile
+    network_mode: host
+    expose: "5173"
