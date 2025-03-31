@@ -24,4 +24,5 @@ public class AuthUser {
 			.address(accountEntity.getAddress())
 			.build();
 	}
+
 }
