@@ -7,4 +7,5 @@ services:
       context: ./FE
       dockerfile: Dockerfile
     network_mode: host
-    expose: "5173"
+    expose: 
+      - 5173
