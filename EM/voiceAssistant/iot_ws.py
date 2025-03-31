@@ -118,11 +118,24 @@ class WebSocketServer:
             logger.warning("연결된 주행 클라이언트가 없습니다")
             return
         
+        if isinstance(message, dict) and message.get("type") == "homecam" and "contents" in message:
+            transformed_message = {
+                "type": "message",
+                "client_type": "navigation",
+                "data": message["contents"].get("data", "")
+            }
+            message = transformed_message
+    
         # dict를 JSON 문자열로 변환
         if isinstance(message, dict):
             message = json.dumps(message)
         
         logger.info(f"{len(self.navigation_clients)}개의 주행 클라이언트에 전송: {message}")
+
+        for client in self.navigation_clients:
+            client_ip = client.remote_address[0] if hasattr(client, 'remote_address') else "알 수 없음"
+            client_info = self.client_info.get(client, {})
+            logger.info(f"클라이언트에 전송: IP={client_ip}, 타입={client_info.get('type', '알 수 없음')}")
         
         # 비동기로 모든 주행 클라이언트에 메시지 전송
         await asyncio.gather(

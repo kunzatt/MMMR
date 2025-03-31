@@ -90,7 +90,11 @@ important_phrases = [
     
     # transportation 관련
     "버스", "지하철", "운행", "도착", "출발", "역", "정류장",
-    "언제", "몇 분", "지연", "배차"
+    "언제", "몇 분", "지연", "배차",
+
+    # 이동형 홈 카메라 관련
+    "홈 카메라", "홈 캠", "이동", "주방", "거실", "입구", "방1", "방2", "방3", "방4",
+    "이동해줘", "이동해", "이동시켜줘", "이동시켜", "움직여줘", "움직여"
 ]
 
 # 서버 시작 시 Google Cloud Speech 클라이언트 초기화
@@ -362,17 +366,19 @@ type은 다음 중 하나여야 합니다: "iot", "weather", "news", "youtube", 
 - schedule: 일정 관련 요청 (예: "내일 회의 일정 추가해줘", "이번 주 일정 알려줘")
 - time: 시간 관련 요청 (예: "지금 몇 시야?", "시계 보여줘")
 - transportation: 교통 정보 요청 (예: "버스 언제 와?", "지하철 운행 정보")
+- homecam : 이동형 홈 카메라 제어 요청 (예: "홈 카메라 켜줘", "홈 카메라 꺼줘", "홈 캠 켜줘", "홈 캠 꺼줘", "홈 캠 주방으로 이동해줘", "홈 캠 거실로 이동해줘")
 - none: 위 분류에 해당하지 않는 경우
 
 contents.default는 기능을 켜는 명령의 경우 "ON", 끄는 명령인 경우 "OFF"로 설정합니다.
 
-contents.data는 유형에 따라 다르게 설정합니다:
+contents.data는 type에 따라 다르게 설정합니다:
 - iot: "light ON" 또는 "light OFF"와 같은 형태
 - news: "1"부터 "5" 사이의 숫자 (뉴스 번호) 혹은 빈 문자열
 - timer: "00H05M00S"와 같은 형태 (시간, 분, 초)
 - youtube : "남자 요가 영상"와 같은 검색어
+- homecam :  "living_room", "kitchen", "entrance", "room1", "room2", "room3", "room4"(이동 관련) 혹은은 빈 문자열(카메라 제어 관련)
 - 다른 유형: 빈 문자열
-
+contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문자열로 설정합니다. 또한, 정의된 내용으로만 설정해야 합니다.
 응답은 유효한 JSON 형식이어야 하며, 추가 설명이나 주석 없이 JSON만 반환합니다."""
 
         # OpenAI API 호출
@@ -456,6 +462,9 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                 if new_tokens:
                     app.state.access_token = new_tokens["access_token"]
                     app.state.refresh_token = new_tokens["refresh_token"]
+            elif type == "homecam":
+                if contents["data"]:
+                    await iot_ws.send_to_navigation(json_obj)
         
         json_result = json.dumps(json_obj)
         logger.info(f"JSON 변환 결과: {json_result}")
