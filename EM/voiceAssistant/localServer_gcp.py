@@ -142,15 +142,6 @@ class AudioProcessor:
         self.received_bytes = 0
     
     def process_frame(self, frame_data: bytes) -> bool:
-        """
-        오디오 프레임 처리
-        
-        Args:
-            frame_data: 바이너리 오디오 데이터
-            
-        Returns:
-            bool: 음성 종료 감지 여부
-        """
         # 수신된 데이터 크기 기록 (디버깅용)
         self.received_bytes += len(frame_data)
         
@@ -251,16 +242,6 @@ class AudioProcessor:
         return self.total_frames / self.sample_rate
     
 async def transcribe_audio(audio_data: np.ndarray, metadata: Dict[str, Any]) -> str:
-    """
-    오디오 데이터를 텍스트로 변환 (Google Cloud Speech-to-Text 사용)
-    
-    Args:
-        audio_data: 처리할 오디오 데이터
-        metadata: 메타데이터 (키워드 등)
-        
-    Returns:
-        str: 인식된 텍스트
-    """
     global speech_client
     
     if speech_client is None:
@@ -305,7 +286,7 @@ async def transcribe_audio(audio_data: np.ndarray, metadata: Dict[str, Any]) -> 
             speech_contexts=[
                 speech.SpeechContext(
                     phrases=important_phrases,
-                    boost=15.0  # 가중치 추가
+                    boost=20.0  # 가중치 추가
                 )
             ],
             # 추가: 명령어 인식에 최적화된 설정
@@ -346,15 +327,6 @@ async def transcribe_audio(audio_data: np.ndarray, metadata: Dict[str, Any]) -> 
         return ""
 
 async def text_to_json(text: str) -> str:
-    """
-    인식된 텍스트를 JSON 형식으로 변환
-    
-    Args:
-        text: 변환할 텍스트
-        
-    Returns:
-        str: JSON 형식 문자열
-    """
     if not text:
         logger.warning("변환할 텍스트가 없습니다.")
         return json.dumps({
@@ -444,6 +416,52 @@ contents.data는 유형에 따라 다르게 설정합니다:
             },
             "result": "-1"
         })
+    
+async def process_and_send_json_result(websocket: WebSocket, transcription: str = None):
+    if transcription:
+        # STT 결과를 JSON으로 변환
+        json_result = await text_to_json(transcription)
+        json_obj = json.loads(json_result)
+        
+        # 추가 처리 (뉴스 등)
+        type = json_obj['type']
+        contents = json_obj["contents"]
+        
+        # 토큰이 있는 경우 추가 처리
+        if app.state.access_token:
+            if type == "news" and contents["data"]:
+                news_result, new_tokens = data_processor.getNews(
+                    app.state.access_token, 
+                    app.state.refresh_token, 
+                    int(contents["data"])
+                )
+                if news_result:
+                    json_obj["result"] = news_result
+                else:
+                    json_obj["result"] = "-1"
+                    
+                if new_tokens:
+                    app.state.access_token = new_tokens["access_token"]
+                    app.state.refresh_token = new_tokens["refresh_token"]
+        
+        json_result = json.dumps(json_obj)
+        logger.info(f"JSON 변환 결과: {json_result}")
+    else:
+        # 빈 결과이거나 오디오가 너무 짧은 경우 기본 JSON 전송
+        json_result = json.dumps({
+            "type": "none",
+            "contents": {
+                "default": "OFF",
+                "data": ""
+            },
+            "result": "-1"
+        })
+        reason = "빈 STT 결과" if transcription is None else "오디오가 너무 짧음"
+        logger.info(f"{reason}에 대한 기본 JSON 전송")
+    
+    # 결과 전송
+    await websocket.send_text(json_result)
+    logger.info("JSON 결과 전송 완료")
 
 @app.websocket("/listen")
 async def websocket_endpoint(websocket: WebSocket):
@@ -452,14 +470,7 @@ async def websocket_endpoint(websocket: WebSocket):
     
     processor = AudioProcessor()
     streaming = True
-    
-    # 웹소켓 수신 버퍼 최적화 설정
-    # 참고: FastAPI/Starlette에서 지원하는 경우 아래 코드 적용
-    # websocket.client.transport.get_extra_info('socket').setsockopt(
-    #     socket.SOL_SOCKET, socket.SO_RCVBUF, 65536)
-    
-    pending_bytes = bytearray()
-    
+        
     try:
         while streaming:
             try:
@@ -524,46 +535,8 @@ async def websocket_endpoint(websocket: WebSocket):
         if duration >= MIN_AUDIO_LENGTH:
             # STT 처리
             transcription = await transcribe_audio(audio_data, processor.metadata)
-            
-            if transcription:
-                # STT 결과를 JSON으로 변환
-                json_result = await text_to_json(transcription)
-                json_obj = json.loads(json_result)
-                
-                """ 
-                이 부분에 json 데이터 처리 
-                json에 결과 추가 필요
-                
-                """
-                type = json_obj['type']
-                contents = json_obj["contents"]
-                if app.state.access_token:
-                    if type == "news" and contents["data"]:
-                        news_result, new_tokens = data_processor.getNews(app.state.access_token, app.state.refresh_token, int(contents["data"]))
-                        if news_result:
-                            json_obj["result"] = news_result
-                        else:
-                            json_obj["result"] = "-1"
-                        if new_tokens:
-                            app.state.access_token = new_tokens["access_token"]
-                            app.state.refresh_token = new_tokens["refresh_token"]
-                json_result = json.dumps(json_obj)
-                # JSON 결과 전송
-                logger.info(f"JSON 변환 결과: {json_result}")
-                await websocket.send_text(json_result)
-                logger.info("JSON 변환 결과 전송 완료")
-            else:
-                # 빈 결과 전송
-                default_json = json.dumps({
-                    "type": "none",
-                    "contents": {
-                        "default": "OFF",
-                        "data": ""
-                    },
-                    "result" : "-1"
-                })
-                await websocket.send_text(default_json)
-                logger.info("빈 STT 결과에 대한 기본 JSON 전송")
+            await process_and_send_json_result(websocket, transcription)
+           
         else:
             logger.warning("오디오가 너무 짧아 처리하지 않습니다.")
             default_json = json.dumps({
