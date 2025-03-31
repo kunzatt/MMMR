@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { ImCross } from "react-icons/im";
 import { getTokens } from "@/config/getToken";
 
 interface DeleteAccountProps {
@@ -75,7 +76,7 @@ export default function DeleteAccount({ onClose }: DeleteAccountProps) {
                         탈퇴
                     </button>
                     <button className="absolute top-2 right-2 text-gray-500" onClick={onClose}>
-                        ✖️
+                        <ImCross />
                     </button>
                 </div>
             </div>

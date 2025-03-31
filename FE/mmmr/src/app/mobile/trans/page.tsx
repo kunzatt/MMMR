@@ -20,8 +20,12 @@ export default function Trans() {
     }, []);
 
     return (
-        <div className="flex-1 w-full flex items-center justify-center">
-            <h1 className="text-2xl">Transportion</h1>
+        <div className="flex-1 w-full flex h-full items-center justify-center relative">
+            <div className="h-full w-full flex flex-col items-center justify-center p-6">
+                <div className="flex flex-col h-full items-center space-y-4 p-4 bg-white shadow-md rounded-xl w-full max-w-md">
+                    <h1 className="text-xl text-blue-300 font-bold">Transportation</h1>
+                </div>
+            </div>
         </div>
     );
 }

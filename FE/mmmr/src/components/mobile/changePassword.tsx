@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { ImCross } from "react-icons/im";
 import { API_ROUTES } from "@/config/apiRoutes";
 import { getTokens } from "@/config/getToken";
 
@@ -85,7 +86,7 @@ export default function ChangePassword({ onClose }: ChangePasswordProps) {
                     Change
                 </button>
                 <button className="absolute top-2 right-2 text-gray-500" onClick={onClose}>
-                    ✖️
+                    <ImCross />
                 </button>
             </div>
         </div>

@@ -27,8 +27,8 @@ export default function Setting() {
     return (
         <div className="flex-1 w-full flex h-full items-center justify-center relative">
             <div className="h-full w-full flex flex-col items-center justify-center p-6">
-                <div className="flex flex-col h-full items-center space-y-4 p-4 bg-white shadow-md rounded-xl w-full max-w-md">
-                    <h1 className="text-xl text-blue-300 font-bold">Setting</h1>
+                <div className="flex flex-col h-full space-y-4 p-4 bg-white shadow-md rounded-xl w-full max-w-md">
+                    <h1 className="pl-2 pb-1 text-xl text-blue-300 font-bold border-b-2 border-blue-300">Setting</h1>
                     <button
                         className="w-full bg-blue-300 text-white py-2 px-4 rounded-full"
                         onClick={() => setShowChangePasswordModal(true)}
