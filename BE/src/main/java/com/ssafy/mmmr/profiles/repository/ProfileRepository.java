@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.mmmr.profiles.entity.CallSign;
 import com.ssafy.mmmr.profiles.entity.ProfileEntity;
 
 @Repository
@@ -19,6 +20,6 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {
 
 	Optional<ProfileEntity> findByIdAndAccountIdAndDeletedFalse(Long id, Long accountId);
 
-
+	Optional<ProfileEntity> findByAccountIdAndCallSignAndDeletedFalse(Long accountId, CallSign callSign);
 
 }

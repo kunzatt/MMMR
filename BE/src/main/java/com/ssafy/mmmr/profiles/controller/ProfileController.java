@@ -21,6 +21,7 @@ import com.ssafy.mmmr.profiles.dto.CallSignResponseDto;
 import com.ssafy.mmmr.profiles.dto.ProfileRequestDto;
 import com.ssafy.mmmr.profiles.dto.ProfileResponseDto;
 import com.ssafy.mmmr.profiles.dto.ProfileUpdateRequestDto;
+import com.ssafy.mmmr.profiles.entity.CallSign;
 import com.ssafy.mmmr.profiles.service.ProfileService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -311,7 +312,7 @@ public class ProfileController {
 		return ResponseEntity.ok(new ApiResponse(("프로필이 성공적으로 삭제되었습니다."), null));
 	}
 
-	@GetMapping("/available-callsigns")
+	@GetMapping("/callsigns")
 	@Operation(summary = "사용 가능한 콜사인 목록 조회", description = "사용자가 사용할 수 있는 콜사인 목록을 조회합니다.")
 	@ApiResponses({
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -362,5 +363,62 @@ public class ProfileController {
 		@CurrentUser AuthUser authUser) {
 		List<CallSignResponseDto> availableCallSigns = profileService.getAvailableCallSigns(authUser.getId());
 		return ResponseEntity.ok(new ApiResponse("사용 가능한 콜사인 목록을 성공적으로 조회했습니다.", availableCallSigns));
+	}
+
+	@GetMapping("/callsigns/{callSign}")
+	@Operation(summary = "콜사인으로 프로필 ID 조회", description = "특정 콜사인에 해당하는 프로필 ID를 조회합니다.")
+	@ApiResponses({
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+			responseCode = "200",
+			description = "프로필 ID 조회 성공",
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(implementation = ApiResponse.class),
+				examples = @ExampleObject(value = """
+                {
+                    "message": "프로필 ID를 성공적으로 조회했습니다.",
+                    "data": 1
+                }
+                """)
+			)
+		),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+			responseCode = "401",
+			description = "인증 정보 없음",
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(implementation = ErrorResponse.class),
+				examples = @ExampleObject(value = """
+                {
+                    "timestamp": "2024-03-20T10:00:00",
+                    "status": 401,
+                    "message": "인증 정보가 없습니다",
+                    "errors": []
+                }
+                """)
+			)
+		),
+		@io.swagger.v3.oas.annotations.responses.ApiResponse(
+			responseCode = "404",
+			description = "프로필을 찾을 수 없음",
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(implementation = ErrorResponse.class),
+				examples = @ExampleObject(value = """
+                {
+                    "timestamp": "2024-03-20T10:00:00",
+                    "status": 404,
+                    "message": "프로필을 찾을 수 없습니다",
+                    "errors": []
+                }
+                """)
+			)
+		)
+	})
+	public ResponseEntity<ApiResponse> getProfileIdByCallSign(
+		@Parameter(description = "조회할 콜사인", required = true) @PathVariable CallSign callSign,
+		@CurrentUser AuthUser authUser) {
+		Long profileId = profileService.getProfileIdByCallSign(callSign, authUser.getId());
+		return ResponseEntity.ok(new ApiResponse("콜사인으로 프로필 ID를 성공적으로 조회했습니다.", profileId));
 	}
 }

@@ -137,4 +137,14 @@ public class ProfileService {
 			.callSign(profile.getCallSign())
 			.build();
 	}
+
+	@Transactional(readOnly = true)
+	public Long getProfileIdByCallSign(CallSign callSign, Long accountId) {
+		AccountEntity account = accountRepository.findById(accountId)
+			.orElseThrow(() -> new AccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+		return profileRepository.findByAccountIdAndCallSignAndDeletedFalse(accountId, callSign)
+			.orElseThrow(() -> new ProfileException(ErrorCode.PROFILE_NOT_FOUND))
+			.getId();
+	}
 }
