@@ -1,5 +1,6 @@
 "use client";
 import AddSchedule from "@/components/mobile/addSchedule";
+import EditSchedule from "@/components/mobile/editSchedule";
 import API_ROUTES from "@/config/apiRoutes";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
@@ -22,6 +23,8 @@ export default function Schedule() {
     const router = useRouter();
     const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [showAddScheduleModal, setShowAddScheduleModal] = useState(false);
+    const [showEditScheduleModal, setShowEditScheduleModal] = useState(false);
+    const [selectedSchedule, setSelectedSchedule] = useState<Schedule>(schedules[0]);
 
     const getTokens = async () => {
         let accessToken = localStorage.getItem("accessToken");
@@ -158,7 +161,7 @@ export default function Schedule() {
 
     useEffect(() => {
         fetchSchedules();
-    }, [showAddScheduleModal]);
+    }, [showAddScheduleModal, showEditScheduleModal]);
 
     return (
         <div className="flex-1 w-full flex h-full items-center justify-center relative">
@@ -185,7 +188,13 @@ export default function Schedule() {
                                 >
                                     <span>{schedule.title}</span>
                                     <div className="flex gap-2">
-                                        <button onClick={() => alert("수정 모달 열기")}>
+                                        <button
+                                            onClick={() => {
+                                                console.log(schedule);
+                                                setSelectedSchedule(schedule);
+                                                setShowEditScheduleModal(true);
+                                            }}
+                                        >
                                             <AiOutlineEdit />
                                         </button>
                                     </div>
@@ -196,6 +205,15 @@ export default function Schedule() {
                 </div>
             </div>
             {showAddScheduleModal && <AddSchedule onClose={() => setShowAddScheduleModal(false)} />}
+            {showEditScheduleModal && (
+                <EditSchedule
+                    onClose={() => setShowEditScheduleModal(false)}
+                    scheduleId={selectedSchedule.id}
+                    initialTitle={selectedSchedule.title}
+                    initialStartDate={selectedSchedule.startDate} // ISO 형식이어야 함 e.g., '2025-04-01T14:00'
+                    initialEndDate={selectedSchedule.endDate}
+                />
+            )}
         </div>
     );
 }
