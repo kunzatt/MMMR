@@ -16,5 +16,6 @@
         <file>devices/AirPurifier/qmldir</file>
         <file>devices/Curtain/Curtain.qml</file>
         <file>devices/Curtain/qmldir</file>
+        <file>images/map_white.png</file>
     </qresource>
 </RCC>

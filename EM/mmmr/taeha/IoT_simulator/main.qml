@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 import QtQuick.Shapes
+import QtQuick.Effects
 import QtWebSockets
 import RoomLight
 import TV
@@ -11,14 +12,20 @@ import AirConditioner
 import AirPurifier
 import Curtain
 
-Window {
+ApplicationWindow {
     id: main_window
     width: 1280
     height: 720
     visible: true
     title: qsTr("IoT Control Simulator")
+    font.family: "Titillium Web"
 
-    flags: Qt.FramelessWindowHint  // 기본 제목 표시줄 숨기기
+    flags: Qt.FramelessWindowHint | Qt.Window // 기본 제목 표시줄 숨기기
+
+    Text {
+        id: main_text
+        color: "#ddd"
+    }
 
         Rectangle {
             id: titleBar
@@ -53,17 +60,86 @@ Window {
                     Layout.alignment: Qt.AlignCenter
                     Layout.leftMargin: 10
                     font.pixelSize: 12
+                    font.family: "Titillium Web"
                 }
             }
 
-            Button {
-                text: "❌"
-                x: main_window.width - 35
-                background: Rectangle {
-                    color: "transparent"
+            Row {
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                rightPadding: 5
+                spacing: 5
+
+                // 최소화 버튼
+                MouseArea {
+                    width: 20
+                    height: 20
+                    onClicked: main_window.showMinimized()  // 최소화 기능
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        color: "#444"
+                        visible: false
+                    }
+
+                    Text {
+                        text: "_"
+                        anchors.centerIn: parent
+                        font.pixelSize: 20
+                        color: "white"
+                    }
                 }
-                onClicked: Qt.quit()
-                z: 2
+
+                // 최대화 버튼
+                MouseArea {
+                    width: 20
+                    height: 20
+                    onClicked: Qt.callLater(() => {
+                        if (main_window.visibility === Window.Maximized) {
+                            main_window.showNormal();
+                            maxwindow_text.text = "🗖";
+                        } else {
+                            main_window.showMaximized();
+                            maxwindow_text.text = "⿻";
+                        }
+                    })
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        color: "#444"
+                        visible: false
+                    }
+
+                    Text {
+                        id: maxwindow_text
+                        text: "🗖"
+                        anchors.centerIn: parent
+                        font.pixelSize: 15
+                        color: "white"
+                    }
+                }
+
+                // 닫기 버튼
+                MouseArea {
+                    width: 20
+                    height: 20
+                    onClicked: Qt.callLater(() => Qt.quit())  // 종료 기능
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        color: "red"
+                        visible: false
+
+                    }
+
+                    Text {
+                        text: "×"
+                        font.bold: true
+                        anchors.centerIn: parent
+                        font.pixelSize: 20
+                        color: "red"
+                    }
+                }
             }
         }
 
@@ -71,7 +147,7 @@ Window {
             anchors.top: titleBar.bottom
             width: parent.width
             height: parent.height - titleBar.height
-            color: "#f0f0f0"
+            color: "#1f2023"
         }
 
     WebSocket {
@@ -139,6 +215,8 @@ Window {
         }
     }
 
+
+
     /* GUI Layout */
     ColumnLayout {
         Layout.alignment: Qt.AlignCenter
@@ -163,6 +241,64 @@ Window {
 
                 RoomLight {
                     id: livingLight
+                    width: parent.width
+                    height: parent.height
+                    opacity: 0
+                    imgId.source: "qrc:/images/livingroomLight.png"
+                    imgId.visible: false
+
+                    Shape {
+                        width: 300
+                        height: 300
+                        x: 230
+                        y: -30
+
+                        ShapePath {
+                            strokeWidth: 2
+                            strokeColor: "transparent"
+                            fillGradient: RadialGradient {
+                                centerX: 50; centerY: 150
+                                centerRadius: 150
+                                focalX: centerX; focalY: centerY
+                                GradientStop { position: 0; color: "#efe4b0" }
+                                GradientStop { position: 0.8; color: "transparent" }
+                            }
+
+                            startX: 50; startY: 0
+                            PathArc {
+                                x: 50
+                                y: 300
+                                radiusX: 150
+                                radiusY: 150
+                            }
+                            PathArc {
+                                x: 50
+                                y: 0
+                                radiusX: 150
+                                radiusY: 150
+                            }
+                        }
+                    }
+                }
+
+                OpacityAnimator {
+                    id: fadeIn
+                    target: livingLight
+                    from: 0
+                    to: 1
+                    duration: 500
+                }
+
+                OpacityAnimator {
+                    id: fadeOut
+                    target: livingLight
+                    from: 1
+                    to: 0
+                    duration: 500
+                }
+
+                RoomLight {
+                    id: kitchenLight
                     width: parent.width
                     height: parent.height
                     imgId.source: "qrc:/images/livingroomLight.png"
@@ -193,7 +329,7 @@ Window {
                     id: map_home
                     fillMode: Image.PreserveAspectFit
                     width: parent.width
-                    source: "qrc:/images/map.png"
+                    source: "qrc:/images/map_white.png"
                 }
             }
 
@@ -206,6 +342,8 @@ Window {
                         text: Qt.formatDate(new Date(), "yyyy.MM.dd (ddd)");
                         font.pointSize: 36
                         font.bold: true
+                        font.family: parent.font.family
+                        color: "#ddd"
                     }
                 }
 
@@ -214,6 +352,8 @@ Window {
                         text: "☀️ Sunny";
                         font.pointSize: 24
                         font.bold: true
+                        font.family: parent.font.family
+                        color: "#ddd"
                     }
                 }
             }
@@ -231,6 +371,7 @@ Window {
                 text: "IoT Control Test"
                 Layout.leftMargin: 50 // 왼쪽에서 50 떨어진 위치
                 Layout.preferredWidth: implicitWidth
+                color: "lightgray"
             }
 
             Shape {
@@ -238,7 +379,7 @@ Window {
                 Layout.leftMargin: 20 // Label의 맨 오른쪽 위치 + 20 만큼 띄움
 
                 ShapePath {
-                    strokeWidth: 2
+                    strokeWidth: 1
                     strokeColor: "lightgray"
 
                     startX: 0
@@ -264,7 +405,37 @@ Window {
                     id: sw_livingroomLight
                     text: qsTr("LivingRoom Light")
                     checked: false
-                    onClicked: livingLight.imgId.visible = checked
+                    onClicked: {
+                        if(checked) {
+                            fadeIn.start()
+                        }
+                        else {
+                            fadeOut.start()
+                        }
+                    }
+
+                    contentItem: Text {
+                        text: sw_livingroomLight.text
+                        color: "#ddd"
+                        font.family: parent.font.family
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: sw_livingroomLight.indicator.width + sw_livingroomLight.spacing
+                    }
+                }
+
+                Switch {
+                    id: sw_kitchenLight
+                    text: qsTr("Kitchen Light")
+                    checked: false
+                    onClicked: kitchenLight.imgId.visible = checked
+
+                    contentItem: Text {
+                        text: sw_kitchenLight.text
+                        color: "#ddd"
+                        font.family: parent.font.family
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: sw_kitchenLight.indicator.width + sw_kitchenLight.spacing
+                    }
                 }
 
                 Switch {
@@ -272,6 +443,14 @@ Window {
                     text: qsTr("TV")
                     checked: false
                     onClicked: livingTV.imgId.visible = checked
+
+                    contentItem: Text {
+                        text: sw_TV.text
+                        color: "#ddd"
+                        font.family: parent.font.family
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: sw_TV.indicator.width + sw_TV.spacing
+                    }
                 }
 
                 Switch {
@@ -279,6 +458,14 @@ Window {
                     text: qsTr("Air Conditioner")
                     checked: false
                     onClicked: livingAirCon.imgId.visible = checked
+
+                    contentItem: Text {
+                        text: sw_airConditioner.text
+                        color: "#ddd"
+                        font.family: parent.font.family
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: sw_airConditioner.indicator.width + sw_airConditioner.spacing
+                    }
                 }
 
                 Switch {
@@ -286,6 +473,14 @@ Window {
                     text: qsTr("Air Purifier")
                     checked: false
                     onClicked: livingAirPurifier.imgId.visible = checked
+
+                    contentItem: Text {
+                        text: sw_airPurifier.text
+                        color: "#ddd"
+                        font.family: parent.font.family
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: sw_airPurifier.indicator.width + sw_airPurifier.spacing
+                    }
                 }
 
                 Switch {
@@ -293,6 +488,14 @@ Window {
                     text: qsTr("LivingRoom Curtain")
                     checked: false
                     onClicked: livingCurtain.imgId.visible = checked
+
+                    contentItem: Text {
+                        text: sw_curtain.text
+                        color: "#ddd"
+                        font.family: parent.font.family
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: sw_curtain.indicator.width + sw_curtain.spacing
+                    }
                 }
             }
 
@@ -329,12 +532,13 @@ Window {
                 }
             }
 
-            TextArea {
+            Label {
                 id: jsonOutput
                 width: parent.width * 0.8
                 height: 200
                 wrapMode: TextArea.Wrap
-                placeholderText: "Parsed JSON will appear here..."
+                text: "Parsed JSON will appear here..."
+                color: "#ddd"
             }
         }
     }
