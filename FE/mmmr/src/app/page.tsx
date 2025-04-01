@@ -72,57 +72,57 @@ export default function Page() {
     const [moduleData, setModuleData] = useState<Record<string, string>>({});
 
     // 웹소켓 연결 설정
-    useEffect(() => {
-        // 라즈베리파이 웹소켓 서버 주소 (실제 IP로 변경 필요)
-        const WEBSOCKET_SERVER = "ws://localhost:8765";
-        if (!isConnected) {
-            // 웹소켓 연결 함수
-            const connectWebSocket = () => {
-                const ws = new WebSocket(WEBSOCKET_SERVER);
+    // useEffect(() => {
+    //     // 라즈베리파이 웹소켓 서버 주소 (실제 IP로 변경 필요)
+    //     const WEBSOCKET_SERVER = "ws://localhost:8765";
+    //     if (!isConnected) {
+    //         // 웹소켓 연결 함수
+    //         const connectWebSocket = () => {
+    //             const ws = new WebSocket(WEBSOCKET_SERVER);
 
-                ws.onopen = () => {
-                    console.log("웹소켓 서버에 연결됨");
-                    setIsConnected(true);
+    //             ws.onopen = () => {
+    //                 console.log("웹소켓 서버에 연결됨");
+    //                 setIsConnected(true);
 
-                    // 현재 상태 요청
-                    ws.send(JSON.stringify({ command: "get_status" }));
-                };
+    //                 // 현재 상태 요청
+    //                 ws.send(JSON.stringify({ command: "get_status" }));
+    //             };
 
-                ws.onmessage = (event) => {
-                    try {
-                        const data: WebSocketMessage = JSON.parse(event.data);
-                        handleWebSocketMessage(data);
-                    } catch (error) {
-                        console.error("웹소켓 메시지 처리 중 오류:", error);
-                    }
-                };
+    //             ws.onmessage = (event) => {
+    //                 try {
+    //                     const data: WebSocketMessage = JSON.parse(event.data);
+    //                     handleWebSocketMessage(data);
+    //                 } catch (error) {
+    //                     console.error("웹소켓 메시지 처리 중 오류:", error);
+    //                 }
+    //             };
 
-                ws.onerror = (error) => {
-                    console.error("웹소켓 오류:", error);
-                };
+    //             ws.onerror = (error) => {
+    //                 console.error("웹소켓 오류:", error);
+    //             };
 
-                ws.onclose = () => {
-                    console.log("웹소켓 연결 종료. 재연결 예정...");
-                    setIsConnected(false);
+    //             ws.onclose = () => {
+    //                 console.log("웹소켓 연결 종료. 재연결 예정...");
+    //                 setIsConnected(false);
 
-                    // 5초 후 재연결 시도
-                    setTimeout(connectWebSocket, 5000);
-                };
+    //                 // 5초 후 재연결 시도
+    //                 setTimeout(connectWebSocket, 5000);
+    //             };
 
-                webSocketRef.current = ws;
-            };
+    //             webSocketRef.current = ws;
+    //         };
 
-            // 초기 연결
-            connectWebSocket();
+    //         // 초기 연결
+    //         connectWebSocket();
 
-            // 컴포넌트 언마운트 시 연결 종료
-            return () => {
-                if (webSocketRef.current) {
-                    webSocketRef.current.close();
-                }
-            };
-        }
-    }, []);
+    //         // 컴포넌트 언마운트 시 연결 종료
+    //         return () => {
+    //             if (webSocketRef.current) {
+    //                 webSocketRef.current.close();
+    //             }
+    //         };
+    //     }
+    // }, []);
 
     // 웹소켓 메시지 처리 함수
     const handleWebSocketMessage = (data: WebSocketMessage) => {
