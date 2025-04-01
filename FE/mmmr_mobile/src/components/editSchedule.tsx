@@ -61,7 +61,7 @@ export default function EditSchedule({
                 const refreshData = await refreshResponse.json();
                 if (refreshResponse.ok && refreshData.data?.accessToken) {
                     accessToken = refreshData.data.accessToken;
-                    localStorage.setItem("accessToken", accessToken);
+                    localStorage.setItem("accessToken", accessToken!);
                     return accessToken;
                 }
             }

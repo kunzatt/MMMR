@@ -7,7 +7,7 @@ import { API_ROUTES } from "@/config/apiRoutes";
 
 export default function ProfilePage() {
     interface Profile {
-        id: string;
+        id: number;
         nickname: string;
         callSign: string;
     }
@@ -32,7 +32,6 @@ export default function ProfilePage() {
         }
 
         try {
-            // 1. 액세스 토큰 유효성 확인
             const validateResponse = await fetch(API_ROUTES.auth.validate, {
                 method: "POST",
                 headers: {
@@ -42,16 +41,7 @@ export default function ProfilePage() {
                 body: JSON.stringify({ token: accessToken }),
             });
 
-            let validateData = null;
-            if (validateResponse.ok) {
-                const contentType = validateResponse.headers.get("Content-Type");
-                if (contentType && contentType.includes("application/json")) {
-                    validateData = await validateResponse.json();
-                }
-            }
-
-            // 2. 토큰이 만료되었거나 유효하지 않은 경우, 리프레시 토큰으로 새 액세스 토큰 발급
-            if (refreshToken) {
+            if (!validateResponse.ok && refreshToken) {
                 const refreshResponse = await fetch(API_ROUTES.auth.refresh, {
                     method: "POST",
                     headers: {
@@ -61,19 +51,10 @@ export default function ProfilePage() {
                     body: JSON.stringify({ token: refreshToken }),
                 });
 
-                let refreshData = null;
-                if (refreshResponse.ok) {
-                    const contentType = refreshResponse.headers.get("Content-Type");
-                    if (contentType && contentType.includes("application/json")) {
-                        refreshData = await refreshResponse.json();
-                    }
-                }
-
+                const refreshData = await refreshResponse.json();
                 if (refreshResponse.ok && refreshData.data?.accessToken) {
                     accessToken = refreshData.data.accessToken;
-                    if (accessToken) {
-                        localStorage.setItem("accessToken", accessToken);
-                    }
+                    localStorage.setItem("accessToken", accessToken!);
                     return accessToken;
                 } else {
                     localStorage.removeItem("accessToken");
@@ -81,11 +62,9 @@ export default function ProfilePage() {
                     router.push("/login");
                     return null;
                 }
-            } else {
-                localStorage.removeItem("accessToken");
-                router.push("/login");
-                return null;
             }
+
+            return accessToken;
         } catch (error) {
             console.error("토큰 검증 오류:", error);
             return null;
@@ -128,7 +107,7 @@ export default function ProfilePage() {
             });
             const data = await response.json();
             if (response.ok) {
-                setAvailableCallSigns(data.data.map((item: { name: any }) => item.name));
+                setAvailableCallSigns(data.data.map((item: { name: string }) => item.name));
                 if (showAddModal && data.data.length > 0) setCallSign(data.data[0].name); // 첫 번째 값을 기본값으로 설정
             } else {
                 console.error("콜사인 목록 조회 실패:", data.message);
@@ -145,19 +124,13 @@ export default function ProfilePage() {
                 router.push("/login"); // 로그인되어 있지 않으면 로그인 페이지로 리다이렉트
             }
         }
-    }, []);
-
-    useEffect(() => {
-        fetchProfiles();
-        fetchCallSigns();
-    }, [router]);
-
-    useEffect(() => {
         if (sessionStorage.getItem("hasReloaded") === "true") {
             sessionStorage.removeItem("hasReloaded"); // 플래그 삭제 (다시 새로고침 되지 않게 하기)
             window.location.reload(); // 새로고침 실행
         }
-    }, []);
+        fetchProfiles();
+        fetchCallSigns();
+    }, [router]);
 
     useEffect(() => {
         fetchCallSigns();
@@ -193,6 +166,9 @@ export default function ProfilePage() {
         const accessToken = await getTokens();
 
         try {
+            if (!currentProfile) {
+                throw new Error("currentProfile is null");
+            }
             const response = await fetch(API_ROUTES.profiles.update(currentProfile.id), {
                 method: "PUT",
                 headers: {
@@ -220,6 +196,9 @@ export default function ProfilePage() {
         const accessToken = await getTokens();
 
         try {
+            if (!currentProfile) {
+                throw new Error("currentProfile is null");
+            }
             const response = await fetch(API_ROUTES.profiles.delete(currentProfile.id), {
                 method: "DELETE",
                 headers: {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
@@ -20,7 +20,7 @@ export default function Page() {
                 router.push("/login"); // 로그인되어 있지 않으면 로그인 페이지로 리다이렉트
             }
         }
-    }, []);
+    }, [router]);
 
-    return null;
+    return <div>hi</div>;
 }

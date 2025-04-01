@@ -38,22 +38,22 @@ export default function SignupPage() {
             if (response.ok && !data.data.exists) {
                 alert("사용 가능한 이메일입니다.");
                 setEmailVerified(true);
-                // try {
-                //     const response = await fetch(API_ROUTES.accounts.sendCodes, {
-                //         method: "POST",
-                //         body: JSON.stringify({ email: email }),
-                //     });
-                //     const data = await response.json();
-                //     if (response.ok) {
-                //         alert(data.message || "인증 코드가 전송되었습니다.");
-                //         setShowConfirmEmail(true);
-                //     } else {
-                //         alert(data.message || "인증 코드 전송에 실패했습니다.");
-                //     }
-                // } catch (error) {
-                //     alert("인증 코드 전송 오류가 발생했습니다. 다시 시도해주세요.");
-                //     console.error("인증 코드 전송 오류:", error);
-                // }
+                try {
+                    const response = await fetch(API_ROUTES.accounts.sendCodes, {
+                        method: "POST",
+                        body: JSON.stringify({ email: email }),
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        alert(data.message || "인증 코드가 전송되었습니다.");
+                        setShowConfirmEmail(true);
+                    } else {
+                        alert(data.message || "인증 코드 전송에 실패했습니다.");
+                    }
+                } catch (error) {
+                    alert("인증 코드 전송 오류가 발생했습니다. 다시 시도해주세요.");
+                    console.error("인증 코드 전송 오류:", error);
+                }
             } else {
                 setEmailError(data.message || "이미 존재하는 이메일입니다.");
             }

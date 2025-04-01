@@ -47,7 +47,7 @@ export default function AddSchedule({ onClose }: AddScheduleProps) {
                 const refreshData = await refreshResponse.json();
                 if (refreshResponse.ok && refreshData.data?.accessToken) {
                     accessToken = refreshData.data.accessToken;
-                    localStorage.setItem("accessToken", accessToken);
+                    localStorage.setItem("accessToken", accessToken!);
                     return accessToken;
                 } else {
                     localStorage.removeItem("accessToken");

@@ -21,7 +21,7 @@ export default function Setting() {
                 router.push("/login");
             }
         }
-    }, []);
+    }, [router]);
 
     return (
         <div className="flex-1 w-full flex h-full items-center justify-center relative">

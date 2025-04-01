@@ -31,7 +31,6 @@ export default function Todo() {
         }
 
         try {
-            // 1. 액세스 토큰 유효성 확인
             const validateResponse = await fetch(API_ROUTES.auth.validate, {
                 method: "POST",
                 headers: {
@@ -41,16 +40,7 @@ export default function Todo() {
                 body: JSON.stringify({ token: accessToken }),
             });
 
-            let validateData = null;
-            if (validateResponse.ok) {
-                const contentType = validateResponse.headers.get("Content-Type");
-                if (contentType && contentType.includes("application/json")) {
-                    validateData = await validateResponse.json();
-                }
-            }
-
-            // 2. 토큰이 만료되었거나 유효하지 않은 경우, 리프레시 토큰으로 새 액세스 토큰 발급
-            if (refreshToken) {
+            if (!validateResponse.ok && refreshToken) {
                 const refreshResponse = await fetch(API_ROUTES.auth.refresh, {
                     method: "POST",
                     headers: {
@@ -60,19 +50,10 @@ export default function Todo() {
                     body: JSON.stringify({ token: refreshToken }),
                 });
 
-                let refreshData = null;
-                if (refreshResponse.ok) {
-                    const contentType = refreshResponse.headers.get("Content-Type");
-                    if (contentType && contentType.includes("application/json")) {
-                        refreshData = await refreshResponse.json();
-                    }
-                }
-
+                const refreshData = await refreshResponse.json();
                 if (refreshResponse.ok && refreshData.data?.accessToken) {
                     accessToken = refreshData.data.accessToken;
-                    if (accessToken) {
-                        localStorage.setItem("accessToken", accessToken);
-                    }
+                    localStorage.setItem("accessToken", accessToken!);
                     return accessToken;
                 } else {
                     localStorage.removeItem("accessToken");
@@ -80,11 +61,9 @@ export default function Todo() {
                     router.push("/login");
                     return null;
                 }
-            } else {
-                localStorage.removeItem("accessToken");
-                router.push("/login");
-                return null;
             }
+
+            return accessToken;
         } catch (error) {
             console.error("토큰 검증 오류:", error);
             return null;
@@ -158,7 +137,7 @@ export default function Todo() {
             }
         }
         fetchTodos();
-    }, []);
+    }, [router]);
 
     useEffect(() => {
         fetchTodos();
