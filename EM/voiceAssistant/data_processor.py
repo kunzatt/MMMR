@@ -76,6 +76,8 @@ def make_authenticated_request(url, method="GET", headers=None, data=None, param
             response = requests.get(url, headers=headers, params=params)
         elif method.upper() == "POST":
             response = requests.post(url, headers=headers, json=data if data else None, params=params)
+        elif method.upper() == "PUT":
+            response = requests.put(url, headers=headers, json=data if data else None, params=params)
         else:
             logger.error(f"지원하지 않는 HTTP 메서드: {method}")
             return None
@@ -94,6 +96,9 @@ def make_authenticated_request(url, method="GET", headers=None, data=None, param
                     response = requests.get(url, headers=headers, params=params)
                 elif method.upper() == "POST":
                     response = requests.post(url, headers=headers, json=data if data else None, params=params)
+                elif method.upper() == "PUT":
+                    response = requests.put(url, headers=headers, json=data if data else None, params=params)
+
                 
                 # 성공적인 응답이면 새 토큰과 함께 반환
                 if response.status_code == 200:
@@ -358,7 +363,67 @@ def getSchedules(callsign, access_token, refresh_token=None, day="today"):
         logger.error(f"일정 처리 중 오류: {e}")
         return None, None
     
-    
+def getDevices(access_token, refresh_token=None):
+    try:
+        result = make_authenticated_request(
+            server_url+"devices", 
+            access_token=access_token, 
+            refresh_token=refresh_token
+        )
+        
+        if not result:
+            return None, None
+            
+        response = result["response"]
+        new_tokens = result["new_tokens"]
+        
+        data = response.json()
+        logger.info(f"장치 데이터: {data}")
+        
+        if new_tokens:
+            return data, new_tokens
+        else:
+            return data, None
+        
+    except Exception as e:
+        logger.error(f"장치 처리 중 오류: {e}")
+        return None, None
+
+def deviceUpdate(deviceId, turned, access_token, refresh_token=None):
+    try:
+
+        params = {
+            "deviceId": deviceId,
+            "turned": turned
+        }
+        result = make_authenticated_request(
+            server_url+"devices/" + str(deviceId) + "/update", 
+            "PUT",
+            headers={"Content-Type": "application/json"},
+            params=params,
+            access_token=access_token, 
+            refresh_token=refresh_token
+        )
+        
+        if not result:
+            return None
+            
+        response = result["response"]
+        new_tokens = result["new_tokens"]
+        
+        data = response.json()
+        logger.info(f"장치 업데이트 데이터: {data}")
+        
+        if new_tokens:
+            return new_tokens
+        else:
+            return None
+        
+    except Exception as e:
+        logger.error(f"장치 업데이트 중 오류: {e}")
+        return None, None
+
+
 if __name__ == "__main__":
     # 초기 로그인으로 토큰 획득
     tokens = login()
