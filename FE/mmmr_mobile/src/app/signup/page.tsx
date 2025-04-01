@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import API_ROUTES from "@/config/apiRoutes";
+import SearchAd from "@/components/searchAd";
 
 export default function SignupPage() {
     const [email, setEmail] = useState("");
@@ -16,6 +17,7 @@ export default function SignupPage() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [emailVerified, setEmailVerified] = useState(false);
     const [emailError, setEmailError] = useState("");
+    const [showAddressModal, setShowAddressModal] = useState(false);
     const router = useRouter();
 
     const validateEmail = (email: string) => {
@@ -135,6 +137,13 @@ export default function SignupPage() {
 
     return (
         <div className="flex flex-col items-center justify-center h-full w-full">
+            {showAddressModal && (
+                <SearchAd
+                    onClose={() => setShowAddressModal(false)}
+                    onComplete={(selectedAddress) => setAddress(selectedAddress)}
+                />
+            )}
+
             <div className="w-11/12 bg-white rounded-xl p-6 shadow-md space-y-4">
                 <div className="flex flex-col">
                     <label className="block text-sm mb-1 text-gray-500">email</label>
@@ -221,7 +230,14 @@ export default function SignupPage() {
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                             placeholder="주소"
+                            readOnly
                         />
+                        <button
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-300 text-white px-2 py-1 rounded"
+                            onClick={() => setShowAddressModal(true)}
+                        >
+                            주소 검색
+                        </button>
                     </div>
                 </div>
 
