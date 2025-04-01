@@ -179,7 +179,6 @@ def getWeather(access_token, refresh_token=None):
         logger.error(f"날씨 처리 중 오류: {e}")
         return None, None
 
-
 def getNews(access_token, refresh_token=None, id=0):
     try:
         result = make_authenticated_request(
@@ -277,31 +276,49 @@ def getSchedules(callsign, access_token, refresh_token=None, day="today"):
         
         
         
+        today = datetime.now()
+        
         if day == "today":
-            target_date = datetime.now().strftime("%Y-%m-%d")
+            target_date_start = today.strftime("%Y-%m-%d")
+            target_date_end = target_date_start
         elif day == "tomorrow":
-            tomorrow = datetime.now() + timedelta(days=1)
-            target_date = tomorrow.strftime("%Y-%m-%d")
+            tomorrow = today + timedelta(days=1)
+            target_date_start = tomorrow.strftime("%Y-%m-%d")
+            target_date_end = target_date_start
+        elif day == "this_week":
+            days_until_sunday = 6 - today.weekday() if today.weekday() <= 6 else 0
+            sunday = today + timedelta(days=days_until_sunday)
+            target_date_start = today.strftime("%Y-%m-%d")
+            target_date_end = sunday.strftime("%Y-%m-%d")
+        elif day == "next_week":
+            days_until_next_monday = 7 - today.weekday() if today.weekday() < 7 else 1
+            next_monday = today + timedelta(days=days_until_next_monday)
+            next_sunday = next_monday + timedelta(days=6)
+            target_date_start = next_monday.strftime("%Y-%m-%d")
+            target_date_end = next_sunday.strftime("%Y-%m-%d")
         else:
             logger.error(f"지원하지 않는 day 값: {day}")
             return None, new_tokens
+        
+        target_date_start_obj = datetime.strptime(target_date_start, "%Y-%m-%d")
+        target_date_end_obj = datetime.strptime(target_date_end, "%Y-%m-%d")
+        
+        logger.info(f"필터링 기간: {target_date_start} ~ {target_date_end}")
         
         filtered_schedules = []
         for schedule in data["data"]:
             start_date = datetime.strptime(schedule["startDate"], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
             end_date = datetime.strptime(schedule["endDate"], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
             
-            # 시작일과 종료일 사이에 타겟 날짜가 포함되는지 확인
             start_date_obj = datetime.strptime(start_date, "%Y-%m-%d")
             end_date_obj = datetime.strptime(end_date, "%Y-%m-%d")
-            target_date_obj = datetime.strptime(target_date, "%Y-%m-%d")
             
-            if start_date_obj <= target_date_obj <= end_date_obj:
+            if (start_date_obj <= target_date_end_obj and end_date_obj >= target_date_start_obj):
                 filtered_schedules.append(schedule)
         
         if not filtered_schedules:
             logger.info(f"{day}에 해당하는 일정이 없습니다.")
-            return [], new_tokens
+            return "일정이 없습니다.", new_tokens
         
         # 필터링된 일정을 요약
         openai_api_key = os.getenv("OPENAI_API_KEY")

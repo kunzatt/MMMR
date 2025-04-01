@@ -395,10 +395,6 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
         
         result = response.choices[0].message.content.strip()
         json_result = json.loads(result)
-        if json_result["type"] == "none":
-            json_result["result"] = "-1"
-        else:
-            json_result["result"] = "네 알겠습니다"
         result = json.dumps(json_result)
         process_time = time.time() - start_time
         
@@ -482,6 +478,10 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                 if new_tokens:
                     app.state.access_token = new_tokens["access_token"]
                     app.state.refresh_token = new_tokens["refresh_token"]
+            elif type == "none":
+                json_obj["result"] = "-1"
+            else:
+                json_obj["result"] = "네 알겠습니다"
         
         json_result = json.dumps(json_obj)
         logger.info(f"JSON 변환 결과: {json_result}")
