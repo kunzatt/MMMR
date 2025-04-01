@@ -38,8 +38,8 @@ WS_PORT = int(os.getenv("WS_PORT", "8765"))
 
 # TTS 파일 경로
 TTS_DIR = "./tts_files"
-MIMI_TTS_FILE = "not_understand_f.wav"
-HAETAE_TTS_FILE = "not_understand_m.wav"
+MIMI_TTS_FILES = ["do_not_understand_female.wav", "success_female.wav", "iot_female.wav"]
+HAETAE_TTS_FILES = ["do_not_understand_male.wav", "success_male.wav", "iot_male.wav"]
 
 # 민감도 설정
 SENSITIVITIES = [0.7, 0.7]
@@ -125,11 +125,11 @@ def play_alert_sound():
     else:
         print(f"알림음 파일을 찾을 수 없습니다: {ALERT_SOUND_PATH}")
 
-def play_tts_file(keyword):
+def play_tts_file(keyword, tts_type):
     """호출어에 따른 TTS 파일 재생"""
     try:
-        tts_file = MIMI_TTS_FILE if keyword == "미미" else HAETAE_TTS_FILE
-        tts_path = os.path.join(TTS_DIR, tts_file)
+        tts_files = MIMI_TTS_FILES if keyword == "미미" else HAETAE_TTS_FILES
+        tts_path = os.path.join(TTS_DIR, tts_files[tts_type])
 
         if os.path.exists(tts_path):
             print(f"TTS 파일 재생 중: {tts_path}")
@@ -265,8 +265,9 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
 
                     # 결과 처리 및 웹 클라이언트 메시지 전송
                     contents_type = json_result.get("type")
-                    contents = json_result.get("contents", {})
-
+                    if contents_type == "exit":
+                        print("잘못 부른 경우")
+                        return True
                     # 웹 클라이언트에 명령 결과 전송
                     if contents_type:
                         # 웹 클라이언트에 메시지 전달
@@ -277,27 +278,30 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
 
                     # 뉴스 타입 및 유효한 결과인지 확인
                     if "result" in json_result:
-                        if json_result["result"] not in ["-1", "0"]:
-                            # 유효한 뉴스 결과가 있으면 TTS로 읽어주기
-                            print("뉴스 결과를 TTS로 읽어줍니다.")
-                            # 호출어에 따라 다른 음성으로 TTS 실행
+                        print("결과를 TTS로 읽어줍니다.")
+                        if json_result["result"] == "0":
+                            play_tts_file(detected_keyword, 0)
+                            return False
+                        if json_result["result"] in ["1", "2"]:
+                            play_tts_file(detected_keyword, int(json_result["result"]))
+                        else:
                             gender = "female" if detected_keyword == "미미" else "male"
                             speak_text(json_result["result"], gender)
-                        else:
-                            # 결과가 없는 경우 호출어에 맞는 기본 안내 음성 재생
-                            print(f"유효한 뉴스 결과가 없습니다. '{detected_keyword}'에 해당하는 TTS 파일을 재생합니다.")
-                            play_tts_file(detected_keyword)
-                    elif "result" in json_result and json_result["result"] == "-1":
-                        # 다른 타입의 명령에서 결과가 -1인 경우 기본 TTS 파일 재생
-                        print(f"결과가 -1입니다. '{detected_keyword}'에 해당하는 TTS 파일을 재생합니다.")
-                        play_tts_file(detected_keyword)
+                        return True
+                    else:
+                        play_tts_file(detected_keyword, 0)
+                        return False
 
                 except json.JSONDecodeError:
                     print("JSON 파싱 오류")
+                    play_tts_file(detected_keyword, 0)
+                    return False
 
 
             except asyncio.TimeoutError:
                 print("STT 결과를 받지 못했습니다.")
+                play_tts_file(detected_keyword, 0)
+                return False
 
     except Exception as e:
         print(f"웹소켓 연결 오류: {e}")
@@ -364,13 +368,22 @@ async def async_wake_word_detection():
                 detected_keyword = KEYWORD_NAMES[keyword_index]
                 print(f"'{detected_keyword}' 감지됨! 명령을 말씀해주세요...")
 
-                # 알림음 재생
-                play_alert_sound()
+                should_restart = True
+                while should_restart and running:
 
-                # 웹소켓을 통해 서버로 오디오 스트리밍
-                await stream_audio_to_server(stream, sample_rate, frame_length, detected_keyword)
+                    # 알림음 재생
+                    play_alert_sound()
 
-                print("명령 처리 완료. 다시 대기 중...")
+                    # 웹소켓을 통해 서버로 오디오 스트리밍
+                    result_success = await stream_audio_to_server(stream, sample_rate, frame_length, detected_keyword)                    
+
+                    should_restart = not result_success
+
+                    if should_restart:
+                        print("인식 실패로 자동 재시작합니다.")
+                        await asyncio.sleep(0.5)  # 잠시 대기 후 재시작
+                    else:
+                        print("명령 처리 완료. 다시 대기 중...")
 
             await asyncio.sleep(0.01)
 

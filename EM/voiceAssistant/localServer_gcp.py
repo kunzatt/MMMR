@@ -57,14 +57,14 @@ speech_client = None
 
 important_phrases = [
     # 공통 명령어 단어
-    "켜줘", "꺼줘", "켜", "꺼", "알려줘", "보여줘", "설정해줘", "추가해줘",
+    "켜줘", "꺼줘", "켜", "꺼", "알려줘", "보여줘",
     
     # iot 관련
-    "전등", "조명", "불", "불빛", "TV", "티비", "에어컨", "선풍기", "보일러", "가습기", "청소기",
-    "전원", "스위치", "밝기", "온도", "전자레인지", "냉장고", "세탁기",
+    "전등", "조명", "불", "불빛", "TV", "티비", "에어컨", "공기청정기", "IoT 현황", "IoT", "아이오티", "기기 목록", "기기 상태",
+    "전원", "아이오티 기기", "목록", "온도", "거실", "주방", "입구", "현황", "상태", "상태 확인", "커튼", "거실 조명", "주방 조명", "입구 조명",
     
     # weather 관련
-    "날씨", "기온", "온도", "습도", "미세먼지", "비", "눈", "우산", "맑음", "흐림", "더움", "추움",
+    "날씨", "기온", "온도", "비", "눈", "우산", "맑음", "흐림", "더움", "추움",
     "오늘 날씨", "내일 날씨", "주간 날씨", "예보",
     
     # news 관련
@@ -72,7 +72,7 @@ important_phrases = [
     "1번", "2번", "3번", "4번", "5번", "첫 번째", "두 번째", "세 번째",
     
     # youtube 관련
-    "유튜브", "영상", "동영상", "채널", "음악", "뮤직비디오", "트레일러", "예고편", "강의", "요가",
+    "유튜브", "영상", "동영상", "채널", "음악", "뮤직비디오", "강의", "요가",
     
     # timer 관련
     "타이머", "알람", "초", "분", "시간", "카운트다운", "스톱워치",
@@ -82,8 +82,8 @@ important_phrases = [
     "할 일", "투두리스트", "목록", "체크리스트", "할일", "태스크", "일정",
     
     # schedule 관련
-    "일정", "약속", "회의", "미팅", "스케줄", "캘린더", "알림",
-    "오늘", "내일", "모레", "다음 주", "이번 주", "월요일", "화요일", "수요일", "목요일", "금요일",
+    "일정", "약속", "스케줄",
+    "오늘", "내일", "다음 주", "이번 주",
     
     # time 관련
     "시간", "시계", "몇 시", "지금", "현재 시간", "현재",
@@ -94,7 +94,10 @@ important_phrases = [
 
     # 이동형 홈 카메라 관련
     "홈 카메라", "홈 캠", "이동", "주방", "거실", "입구", "방1", "방2", "방3", "방4",
-    "이동해줘", "이동해", "이동시켜줘", "이동시켜", "움직여줘", "움직여"
+    "이동해줘", "이동해", "이동시켜줘", "이동시켜", "움직여줘", "움직여",
+
+    # 잘못 부른 경우
+    "아니야", "잘못", "잘못 불렀어"
 ]
 
 # 서버 시작 시 Google Cloud Speech 클라이언트 초기화
@@ -355,26 +358,29 @@ async def text_to_json(text: str) -> str:
     }
 }
 
-type은 다음 중 하나여야 합니다: "iot", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "none"
+type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "exit", "none"
 
-- iot: 전등, 조명, 가전제품 등의 제어 명령 (예: "전등 켜줘", "불 꺼줘", "TV 켜줘")
+- iot: 집 안 기기 현황 확인 명령(예: "IoT 현황 알려줘", "IoT 목록 확인해줘", "IoT 장치 상태", "집 안 기기 상태", "기기 상태 알려줘", "기기 목록 알려줘)
+- control: 전등, 조명, 가전제품 등의 제어 명령 (예: "거실 전등 켜줘", "거실 불 꺼줘", "주방 불 켜줘", "커튼 쳐줘", "TV 켜줘")
 - weather: 날씨 정보 요청 (예: "오늘 날씨 어때?", "비 올 예정이야?")
 - news: 뉴스 정보 요청 (예: "오늘 뉴스 보여줘", "최신 뉴스 알려줘", "3번째 뉴스 알려줘")
 - youtube: 유튜브 관련 요청 (예: "유튜브 틀어줘", "음악 동영상 보여줘")
 - timer: 타이머 설정 요청 (예: "5분 타이머 설정해줘", "30초 타이머")
 - todo: 할 일 관련 요청 (예: "오늘 할 일 추가해줘", "할 일 목록 보여줘")
-- schedule: 일정 관련 요청 (예: "내일 회의 일정 추가해줘", "이번 주 일정 알려줘")
+- schedule: 일정 관련 요청 (예: "오늘 일정 알려줘", "내일 일정 알려줘", "이번 주 일정 알려줘")
 - time: 시간 관련 요청 (예: "지금 몇 시야?", "시계 보여줘")
 - transportation: 교통 정보 요청 (예: "버스 언제 와?", "지하철 운행 정보")
 - homecam : 이동형 홈 카메라 제어 요청 (예: "홈 카메라 켜줘", "홈 카메라 꺼줘", "홈 캠 켜줘", "홈 캠 꺼줘", "홈 캠 주방으로 이동해줘", "홈 캠 거실로 이동해줘")
+- eixt : 잘못 부른 경우 (예: "아니야", "잘못 불렀어")
 - none: 위 분류에 해당하지 않는 경우
 
-contents.default는 기능을 켜는 명령의 경우 "ON", 끄는 명령인 경우 "OFF"로 설정합니다.
+contents.default는 기능을 켜는 명령의 경우 "ON", 끄는 명령인 경우 "OFF", 그 외에는 빈 문자열로 설정합니다. "보여줘", "알려줘", "켜줘" 등의 명령은 "ON"으로 설정합니다. "꺼줘" 등의 명령은 "OFF"로 설정합니다. 단, control 타입에 경우엔 빈 문자열로 설정합니다.
 
 contents.data는 type에 따라 다르게 설정합니다:
-- iot: "light ON" 또는 "light OFF"와 같은 형태
+- control: 기기 + "ON" 또는 기기 + "OFF" (예: "거실 전등 ON", "TV OFF"), 기기 목록 ["livingroomLight", "TV", "airConditioner", "airPurfier", "curtain", "kitchenLight", "entranceLight"], 단 airConditioner에 경우엔 온도 설정도 함께 넣을 수 있습니다.(예: "airConditioner 25도", "airConditioner ON 20도")
 - news: "1"부터 "5" 사이의 숫자 (뉴스 번호) 혹은 빈 문자열
 - timer: "00H05M00S"와 같은 형태 (시간, 분, 초)
+- scehdule: "today", "tomorrow", "this_week", "next_week"
 - youtube : "남자 요가 영상"와 같은 검색어
 - homecam :  "living_room", "kitchen", "entrance", "room1", "room2", "room3", "room4"(이동 관련) 혹은은 빈 문자열(카메라 제어 관련)
 - 다른 유형: 빈 문자열
@@ -394,10 +400,6 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
         
         result = response.choices[0].message.content.strip()
         json_result = json.loads(result)
-        if json_result["type"] == "none":
-            json_result["result"] = "-1"
-        else:
-            json_result["result"] = "네 알겠습니다"
         result = json.dumps(json_result)
         process_time = time.time() - start_time
         
@@ -423,7 +425,7 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
             "result": "-1"
         })
     
-async def process_and_send_json_result(websocket: WebSocket, transcription: str = None):
+async def process_and_send_json_result(websocket: WebSocket, transcription: str = None, keyword: str = "미미"):
     if transcription:
         # STT 결과를 JSON으로 변환
         json_result = await text_to_json(transcription)
@@ -464,7 +466,36 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                     app.state.refresh_token = new_tokens["refresh_token"]
             elif type == "homecam":
                 if contents["data"]:
-                    await iot_ws.send_to_navigation(json_obj)
+                    logger.info(f"홈 카메라 이동 요청: {contents['data']}")
+                    iot_ws.send_navigation_message(json_obj)
+            elif type == "schedule":
+                schedule_result, new_tokens = data_processor.getSchedules(
+                    keyword,
+                    app.state.access_token, 
+                    app.state.refresh_token,
+                    contents["data"]
+                )
+                if schedule_result:
+                    json_obj["result"] = schedule_result
+                else:
+                    json_obj["result"] = "-1"
+                    
+                if new_tokens:
+                    app.state.access_token = new_tokens["access_token"]
+                    app.state.refresh_token = new_tokens["refresh_token"]
+            elif type == "control":
+                if contents["data"]:
+                    iot_ws.send_iot_message(json_obj, app.state.access_token, app.state.refresh_token)
+                    json_obj["result"] = "2"
+                else:
+                    logger.warning("제어 요청에 장치 정보가 없습니다.")
+                    json_obj["result"] = "0"
+            elif type == "exit":
+                json_obj["result"] = "-1"
+            elif type == "none":
+                json_obj["result"] = "0"
+            else:
+                json_obj["result"] = "1"
         
         json_result = json.dumps(json_obj)
         logger.info(f"JSON 변환 결과: {json_result}")
@@ -476,7 +507,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                 "default": "OFF",
                 "data": ""
             },
-            "result": "-1"
+            "result": "0"
         })
         reason = "빈 STT 결과" if transcription is None else "오디오가 너무 짧음"
         logger.info(f"{reason}에 대한 기본 JSON 전송")
@@ -557,7 +588,7 @@ async def websocket_endpoint(websocket: WebSocket):
         if duration >= MIN_AUDIO_LENGTH:
             # STT 처리
             transcription = await transcribe_audio(audio_data, processor.metadata)
-            await process_and_send_json_result(websocket, transcription)
+            await process_and_send_json_result(websocket, transcription, processor.metadata["keyword"])
            
         else:
             logger.warning("오디오가 너무 짧아 처리하지 않습니다.")

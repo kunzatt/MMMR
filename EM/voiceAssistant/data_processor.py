@@ -4,13 +4,13 @@ from dotenv import load_dotenv
 import os
 from localServer_gcp import logger
 import openai
+from datetime import datetime, timedelta
 
 load_dotenv()
 
 server_url = os.getenv("SERVER_URL")
 email = os.getenv("EMAIL")
 password = os.getenv("PASSWORD") 
-address = os.getenv("ADDRESS")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 openai.api_key = OPENAI_API_KEY
 
@@ -36,11 +36,10 @@ def login():
         logger.error(f"로그인 요청 중 오류: {e}")
         return None
 
-
 def refresh_access_token(refresh_token):
     try:
         refresh_data = {
-            "refreshToken": refresh_token
+            "token": refresh_token
         }
         response = requests.post(
             server_url+"auth/refresh", 
@@ -62,8 +61,7 @@ def refresh_access_token(refresh_token):
         logger.error(f"토큰 갱신 요청 중 오류: {e}")
         return None
 
-
-def make_authenticated_request(url, method="GET", headers=None, data=None, access_token=None, refresh_token=None):
+def make_authenticated_request(url, method="GET", headers=None, data=None, params=None, access_token=None, refresh_token=None):
     if headers is None:
         headers = {}
     
@@ -72,9 +70,11 @@ def make_authenticated_request(url, method="GET", headers=None, data=None, acces
     
     try:
         if method.upper() == "GET":
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, params=params)
         elif method.upper() == "POST":
-            response = requests.post(url, headers=headers, data=json.dumps(data) if data else None)
+            response = requests.post(url, headers=headers, json=data if data else None, params=params)
+        elif method.upper() == "PUT":
+            response = requests.put(url, headers=headers, json=data if data else None, params=params)
         else:
             logger.error(f"지원하지 않는 HTTP 메서드: {method}")
             return None
@@ -90,9 +90,12 @@ def make_authenticated_request(url, method="GET", headers=None, data=None, acces
                 
                 # 요청 재시도
                 if method.upper() == "GET":
-                    response = requests.get(url, headers=headers)
+                    response = requests.get(url, headers=headers, params=params)
                 elif method.upper() == "POST":
-                    response = requests.post(url, headers=headers, data=json.dumps(data) if data else None)
+                    response = requests.post(url, headers=headers, json=data if data else None, params=params)
+                elif method.upper() == "PUT":
+                    response = requests.put(url, headers=headers, json=data if data else None, params=params)
+
                 
                 # 성공적인 응답이면 새 토큰과 함께 반환
                 if response.status_code == 200:
@@ -120,11 +123,11 @@ def make_authenticated_request(url, method="GET", headers=None, data=None, acces
     except requests.exceptions.RequestException as e:
         logger.error(f"API 요청 중 오류: {e}")
         return None
-
-def getProfiles(callSign, access_token, refresh_token=None):
+    
+def getProfileId(callSign, access_token, refresh_token=None):
     try:
         result = make_authenticated_request(
-            server_url+"user/profiles/callsigns/" + callSign, 
+            server_url+"profiles/callsigns/" + callSign, 
             access_token=access_token, 
             refresh_token=refresh_token
         )
@@ -151,9 +154,7 @@ def getWeather(access_token, refresh_token=None):
     try:
         result = make_authenticated_request(
             server_url+"weather", 
-            "POST",
             headers={"Content-Type": "application/json"},
-            data=address,
             access_token=access_token, 
             refresh_token=refresh_token
         )
@@ -177,7 +178,6 @@ def getWeather(access_token, refresh_token=None):
     except Exception as e:
         logger.error(f"날씨 처리 중 오류: {e}")
         return None, None
-
 
 def getNews(access_token, refresh_token=None, id=0):
     try:
@@ -244,7 +244,181 @@ def getNews(access_token, refresh_token=None, id=0):
         logger.error(f"뉴스 처리 중 오류: {e}")
         return None, None
     
+def getSchedules(callsign, access_token, refresh_token=None, day="today"):
+    try:
+        logger.info(f"일정 요청: {callsign}, {day}")
+        profileId_data, new_tokens = getProfileId(callsign, access_token, refresh_token)
+        profileId = profileId_data["data"]
+        logger.info(f"프로필 ID: {profileId}")
+        if new_tokens:
+            access_token = new_tokens["access_token"]
+            refresh_token = new_tokens["refresh_token"]
+
+        params = {
+            "profileId": profileId
+        }
+        result = make_authenticated_request(
+            server_url+"schedules/profile", 
+            params=params,
+            access_token=access_token, 
+            refresh_token=refresh_token
+        )
+        
+        if not result:
+            return None, None
+            
+        response = result["response"]
+        if not new_tokens:
+            new_tokens = result["new_tokens"]
+        
+        data = response.json()
+        logger.info(f"일정 데이터: {data}")
+        
+        
+        
+        today = datetime.now()
+        
+        if day == "today":
+            target_date_start = today.strftime("%Y-%m-%d")
+            target_date_end = target_date_start
+        elif day == "tomorrow":
+            tomorrow = today + timedelta(days=1)
+            target_date_start = tomorrow.strftime("%Y-%m-%d")
+            target_date_end = target_date_start
+        elif day == "this_week":
+            days_until_sunday = 6 - today.weekday() if today.weekday() <= 6 else 0
+            sunday = today + timedelta(days=days_until_sunday)
+            target_date_start = today.strftime("%Y-%m-%d")
+            target_date_end = sunday.strftime("%Y-%m-%d")
+        elif day == "next_week":
+            days_until_next_monday = 7 - today.weekday() if today.weekday() < 7 else 1
+            next_monday = today + timedelta(days=days_until_next_monday)
+            next_sunday = next_monday + timedelta(days=6)
+            target_date_start = next_monday.strftime("%Y-%m-%d")
+            target_date_end = next_sunday.strftime("%Y-%m-%d")
+        else:
+            logger.error(f"지원하지 않는 day 값: {day}")
+            return None, new_tokens
+        
+        target_date_start_obj = datetime.strptime(target_date_start, "%Y-%m-%d")
+        target_date_end_obj = datetime.strptime(target_date_end, "%Y-%m-%d")
+        
+        logger.info(f"필터링 기간: {target_date_start} ~ {target_date_end}")
+        
+        filtered_schedules = []
+        for schedule in data["data"]:
+            start_date = datetime.strptime(schedule["startDate"], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
+            end_date = datetime.strptime(schedule["endDate"], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
+            
+            start_date_obj = datetime.strptime(start_date, "%Y-%m-%d")
+            end_date_obj = datetime.strptime(end_date, "%Y-%m-%d")
+            
+            if (start_date_obj <= target_date_end_obj and end_date_obj >= target_date_start_obj):
+                filtered_schedules.append(schedule)
+        
+        if not filtered_schedules:
+            logger.info(f"{day}에 해당하는 일정이 없습니다.")
+            return "일정이 없습니다.", new_tokens
+        
+        # 필터링된 일정을 요약
+        openai_api_key = os.getenv("OPENAI_API_KEY")
+        if not openai_api_key:
+            logger.error("OpenAI API 키가 설정되지 않음")
+            return filtered_schedules, new_tokens  # 요약 없이 원본 일정만 반환
+
+        openai_url = "https://api.openai.com/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {openai_api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        # 모든 일정을 하나의 문자열로 결합
+        schedules_text = "\n".join([f"{schedule['title']} ({schedule['startDate']} ~ {schedule['endDate']})" for schedule in filtered_schedules])
+        
+        payload = {
+            "model": "gpt-3.5-turbo",
+            "messages": [
+                {"role": "system", "content": f"{day}의 일정을 2-3줄로 간결하게 요약해주세요."},
+                {"role": "user", "content": schedules_text}
+            ],
+            "temperature": 0.7,
+            "max_tokens": 100
+        }
+        
+        openai_response = requests.post(openai_url, headers=headers, json=payload)
+        if openai_response.status_code == 200:
+            summary = openai_response.json()["choices"][0]["message"]["content"].strip()
+            logger.info(f"{day} 일정 요약: {summary}")
+            return summary, new_tokens
+        else:
+            logger.error(f"OpenAI API 요청 실패: {openai_response.status_code}, {openai_response.text}")
+            return filtered_schedules, new_tokens  # 요약 실패 시 원본 일정만 반환
+        
+    except Exception as e:
+        logger.error(f"일정 처리 중 오류: {e}")
+        return None, None
     
+def getDevices(access_token, refresh_token=None):
+    try:
+        result = make_authenticated_request(
+            server_url+"devices", 
+            access_token=access_token, 
+            refresh_token=refresh_token
+        )
+        
+        if not result:
+            return None, None
+            
+        response = result["response"]
+        new_tokens = result["new_tokens"]
+        
+        data = response.json()
+        logger.info(f"장치 데이터: {data}")
+        
+        if new_tokens:
+            return data, new_tokens
+        else:
+            return data, None
+        
+    except Exception as e:
+        logger.error(f"장치 처리 중 오류: {e}")
+        return None, None
+
+def deviceUpdate(deviceId, turned, access_token, refresh_token=None):
+    try:
+
+        params = {
+            "deviceId": deviceId,
+            "turned": turned
+        }
+        result = make_authenticated_request(
+            server_url+"devices/" + str(deviceId) + "/update", 
+            "PUT",
+            headers={"Content-Type": "application/json"},
+            params=params,
+            access_token=access_token, 
+            refresh_token=refresh_token
+        )
+        
+        if not result:
+            return None
+            
+        response = result["response"]
+        new_tokens = result["new_tokens"]
+        
+        data = response.json()
+        logger.info(f"장치 업데이트 데이터: {data}")
+        
+        if new_tokens:
+            return new_tokens
+        else:
+            return None
+        
+    except Exception as e:
+        logger.error(f"장치 업데이트 중 오류: {e}")
+        return None, None
+
+
 if __name__ == "__main__":
     # 초기 로그인으로 토큰 획득
     tokens = login()
@@ -256,7 +430,7 @@ if __name__ == "__main__":
     refresh_token = tokens["refresh_token"]
     
     # 프로필 가져오기 (토큰 갱신 포함)
-    profiles, new_tokens = getProfiles(access_token, refresh_token)
+    profiles, new_tokens = getProfileId(access_token, refresh_token)
     
     # 토큰이 갱신되었으면 업데이트
     if new_tokens:
