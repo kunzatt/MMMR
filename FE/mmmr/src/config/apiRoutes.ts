@@ -1,7 +1,7 @@
 // src/config/apiRoutes.ts
 
 // 서버 주소 설정
-const BASE_URL = "http://70.12.246.168:8088";
+const BASE_URL = "https://j12a703.p.ssafy.io/";
 
 // API 경로 설정
 export const API_ROUTES = {
@@ -54,6 +54,7 @@ export const API_ROUTES = {
 
     youtube: `${BASE_URL}/api/video`,
     news: `${BASE_URL}/api/news`,
+    weather: `${BASE_URL}/api/weather`,
 };
 
 export default API_ROUTES;
