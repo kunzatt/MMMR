@@ -265,7 +265,9 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
 
                     # 결과 처리 및 웹 클라이언트 메시지 전송
                     contents_type = json_result.get("type")
-
+                    if contents_type == "exit":
+                        print("잘못 부른 경우")
+                        return
                     # 웹 클라이언트에 명령 결과 전송
                     if contents_type:
                         # 웹 클라이언트에 메시지 전달

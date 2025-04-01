@@ -94,7 +94,10 @@ important_phrases = [
 
     # 이동형 홈 카메라 관련
     "홈 카메라", "홈 캠", "이동", "주방", "거실", "입구", "방1", "방2", "방3", "방4",
-    "이동해줘", "이동해", "이동시켜줘", "이동시켜", "움직여줘", "움직여"
+    "이동해줘", "이동해", "이동시켜줘", "이동시켜", "움직여줘", "움직여",
+
+    # 잘못 부른 경우
+    "아니야", "잘못", "잘못 불렀어"
 ]
 
 # 서버 시작 시 Google Cloud Speech 클라이언트 초기화
@@ -355,7 +358,7 @@ async def text_to_json(text: str) -> str:
     }
 }
 
-type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "none"
+type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "exit", "none"
 
 - iot: 집 안 기기 현황 확인 명령(예: "IoT 현황 알려줘", "IoT 목록 확인해줘", "IoT 장치 상태", "집 안 기기 상태", "기기 상태 알려줘", "기기 목록 알려줘)
 - control: 전등, 조명, 가전제품 등의 제어 명령 (예: "거실 전등 켜줘", "거실 불 꺼줘", "주방 불 켜줘", "커튼 쳐줘", "TV 켜줘")
@@ -368,6 +371,7 @@ type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", 
 - time: 시간 관련 요청 (예: "지금 몇 시야?", "시계 보여줘")
 - transportation: 교통 정보 요청 (예: "버스 언제 와?", "지하철 운행 정보")
 - homecam : 이동형 홈 카메라 제어 요청 (예: "홈 카메라 켜줘", "홈 카메라 꺼줘", "홈 캠 켜줘", "홈 캠 꺼줘", "홈 캠 주방으로 이동해줘", "홈 캠 거실로 이동해줘")
+- eixt : 잘못 부른 경우 (예: "아니야", "잘못 불렀어")
 - none: 위 분류에 해당하지 않는 경우
 
 contents.default는 기능을 켜는 명령의 경우 "ON", 끄는 명령인 경우 "OFF", 그 외에는 빈 문자열로 설정합니다. "보여줘", "알려줘", "켜줘" 등의 명령은 "ON"으로 설정합니다. "꺼줘" 등의 명령은 "OFF"로 설정합니다. 단, control 타입에 경우엔 빈 문자열로 설정합니다.
@@ -486,6 +490,8 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                 else:
                     logger.warning("제어 요청에 장치 정보가 없습니다.")
                     json_obj["result"] = "0"
+            elif type == "exit":
+                json_obj["result"] = "-1"
             elif type == "none":
                 json_obj["result"] = "0"
             else:
