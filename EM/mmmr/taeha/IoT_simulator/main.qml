@@ -154,6 +154,7 @@ ApplicationWindow {
             color: "#1f2023"
         }
 
+    /* WebSocket connection */
     WebSocket {
         id: webSocket
         url: "ws://127.0.0.1:12345"
@@ -171,24 +172,25 @@ ApplicationWindow {
         }
 
         onTextMessageReceived: (message) => {
-            console.log("Received: " + message)
-
             var json = JSON.parse(message)
             if (json.type === "ack") {
-                console.log("receiver " + json.message)
+                console.log("Received: " + json.message);
+                status_message.text = "WebSocket successfully connected";
             }
             else if(json.type === "control") {
-                controlDevices(json.device, json.state)
+                status_message.text = "Received: " + message;
+                controlDevices(json.device, json.data)
             }
         }
     }
 
     Component.onCompleted: {
-        console.log("Attempting to connect WebSocket...");
+        status_message.text = "Attempting to connect WebSocket...";
         webSocket.active = true;  // 프로그램 실행 시 자동 연결
     }
 
     function controlDevices(devName, devData) {
+        console.log(devData)
         if(devData["turned"] !== "ON" && devData["turned"] !== "OFF") {
             jsonOutput.text = "Error: Invalid device state"
         }
@@ -222,6 +224,17 @@ ApplicationWindow {
 
 
     /* GUI Layout */
+
+    Label {
+        id: status_message
+        width: 200
+        height: 20
+        x: 720
+        y: 500
+        text: "status"
+        color: main_text.color
+    }
+
     ColumnLayout {
         Layout.alignment: Qt.AlignCenter
         implicitWidth: parent.width
