@@ -35,8 +35,7 @@ export const API_ROUTES = {
     // Todo 리스트 관련 API
     todos: {
         listByProfile: (profileId: number) => `${BASE_URL}/api/todos/profile/${profileId}`,
-        listByStatus: (profileId: number, status: string) =>
-            `${BASE_URL}/api/todos/profile/${profileId}/status?status=${status}`,
+        listByStatus: (profileId: number) => `${BASE_URL}/api/todos/profile/${profileId}/status`,
         detail: (todoId: number) => `${BASE_URL}/api/todos/${todoId}`,
         add: `${BASE_URL}/api/todos`,
         update: (todoId: number) => `${BASE_URL}/api/todos/${todoId}`,
