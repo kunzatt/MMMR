@@ -464,6 +464,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                     app.state.refresh_token = new_tokens["refresh_token"]
             elif type == "homecam":
                 if contents["data"]:
+                    logger.info(f"홈 카메라 이동 요청: {contents['data']}")
                     await iot_ws.send_to_navigation(json_obj)
         
         json_result = json.dumps(json_obj)
