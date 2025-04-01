@@ -18,6 +18,9 @@ class FollowTheCarrot(Node):
         self.status_sub = self.create_subscription(TurtlebotStatus, '/turtlebot_status', self.status_callback, 10)
         self.path_sub = self.create_subscription(Path, '/local_path', self.path_callback, 10)
         
+        #도착 후 목표 방향 전송
+        self.rotate_pub = self.create_publisher(PoseStamped,'/rotation',10)
+        
         # 새로운 목표 지점 구독자 추가
         self.goal_sub = self.create_subscription(PoseStamped, '/goal', self.goal_callback, 10)
 
@@ -30,6 +33,7 @@ class FollowTheCarrot(Node):
         self.is_path = False
         self.is_status = False
         self.is_goal = False
+        self.is_rotated = False
         self.tracking_enabled = True
 
         # 메시지 초기화
@@ -38,6 +42,7 @@ class FollowTheCarrot(Node):
         self.path_msg = Path()
         self.cmd_msg = Twist()
         self.goal_pose = None
+        self.rotate_msg = PoseStamped()
 
         # 파라미터 설정
         self.lfd = 0.1  # 전방 주시 거리 (look forward distance)
@@ -54,6 +59,7 @@ class FollowTheCarrot(Node):
     def goal_callback(self, msg):
         """목표 지점 콜백"""
         self.goal_pose = msg.pose
+        self.rotate_msg = msg
         print(self.goal_pose)
         self.is_goal = True
         self.tracking_enabled = True
@@ -88,6 +94,9 @@ class FollowTheCarrot(Node):
     def timer_callback(self):
         # 목표 지점 도달 확인
         if self.check_goal_reached():
+            # 목표 지점 도달 후 회전 msg publish
+            self.rotate_pub.publish(self.rotate_msg)
+            self.get_logger().info(f"Published rotate_pub")
             # 로봇 정지
             self.cmd_msg.linear.x = 0.0
             self.cmd_msg.angular.z = 0.0
