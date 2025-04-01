@@ -451,23 +451,14 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter
 
                 Text {
-                    text: Qt.formatDate(new Date(), "yyyy.MM.dd (ddd)");
-                    font.pointSize: 36
-                    font.bold: true
-                    font.family: main_text.font.family
-                    color: "#ddd"
-                }
-
-                Text {
-                    text: "☀️ Sunny";
-                    font.pointSize: 24
+                    text: Qt.formatDate(new Date(), "☀️ yyyy.MM.dd (ddd)");
+                    font.pointSize: 30
                     font.bold: true
                     font.family: main_text.font.family
                     color: "#ddd"
                 }
 
                 ColumnLayout {
-
                     Text {
                         text: "Smarthome Info"
                         color: main_text.color
@@ -496,26 +487,6 @@ ApplicationWindow {
                         font.family: main_text.font.family
                     }
 
-                    Text {
-                        text: main_layout.width
-                        color: main_text.color
-                        font.pointSize: 13
-                        font.family: main_text.font.family
-                    }
-
-                    Text {
-                        text: sub_layout.width
-                        color: main_text.color
-                        font.pointSize: 13
-                        font.family: main_text.font.family
-                    }
-
-                    Text {
-                        text: sw_wrapper.width
-                        color: main_text.color
-                        font.pointSize: 13
-                        font.family: main_text.font.family
-                    }
                 }
             }
         }

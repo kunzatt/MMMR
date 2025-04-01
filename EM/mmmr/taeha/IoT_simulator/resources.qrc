@@ -18,5 +18,6 @@
         <file>devices/Curtain/qmldir</file>
         <file>images/map_white.png</file>
         <file>UIs/ControlSwitch/ControlSwitch.qml</file>
+        <file>UIs/ControlSwitch/qmldir</file>
     </qresource>
 </RCC>
