@@ -265,7 +265,6 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
 
                     # 결과 처리 및 웹 클라이언트 메시지 전송
                     contents_type = json_result.get("type")
-                    contents = json_result.get("contents", {})
 
                     # 웹 클라이언트에 명령 결과 전송
                     if contents_type:
@@ -279,13 +278,14 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
                     if "result" in json_result:
                         if json_result["result"] not in ["-1", "0"]:
                             # 유효한 뉴스 결과가 있으면 TTS로 읽어주기
-                            print("뉴스 결과를 TTS로 읽어줍니다.")
+                            print("결과를 TTS로 읽어줍니다.")
                             # 호출어에 따라 다른 음성으로 TTS 실행
                             gender = "female" if detected_keyword == "미미" else "male"
                             speak_text(json_result["result"], gender)
+
                         else:
                             # 결과가 없는 경우 호출어에 맞는 기본 안내 음성 재생
-                            print(f"유효한 뉴스 결과가 없습니다. '{detected_keyword}'에 해당하는 TTS 파일을 재생합니다.")
+                            print(f"유효한 결과가 없습니다. '{detected_keyword}'에 해당하는 TTS 파일을 재생합니다.")
                             play_tts_file(detected_keyword)
                     elif "result" in json_result and json_result["result"] == "-1":
                         # 다른 타입의 명령에서 결과가 -1인 경우 기본 TTS 파일 재생

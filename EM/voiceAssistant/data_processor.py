@@ -11,7 +11,6 @@ load_dotenv()
 server_url = os.getenv("SERVER_URL")
 email = os.getenv("EMAIL")
 password = os.getenv("PASSWORD") 
-address = os.getenv("ADDRESS")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 openai.api_key = OPENAI_API_KEY
 
@@ -37,7 +36,6 @@ def login():
         logger.error(f"로그인 요청 중 오류: {e}")
         return None
 
-
 def refresh_access_token(refresh_token):
     try:
         refresh_data = {
@@ -62,7 +60,6 @@ def refresh_access_token(refresh_token):
     except requests.exceptions.RequestException as e:
         logger.error(f"토큰 갱신 요청 중 오류: {e}")
         return None
-
 
 def make_authenticated_request(url, method="GET", headers=None, data=None, params=None, access_token=None, refresh_token=None):
     if headers is None:
@@ -157,9 +154,7 @@ def getWeather(access_token, refresh_token=None):
     try:
         result = make_authenticated_request(
             server_url+"weather", 
-            "POST",
             headers={"Content-Type": "application/json"},
-            data=address,
             access_token=access_token, 
             refresh_token=refresh_token
         )
