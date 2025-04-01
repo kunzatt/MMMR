@@ -52,6 +52,9 @@ export const API_ROUTES = {
         update: (id: number) => `${BASE_URL}/api/schedules/${id}`,
         delete: (id: number) => `${BASE_URL}/api/schedules/${id}`,
     },
+
+    youtube: `${BASE_URL}/api/video`,
+    news: `${BASE_URL}/api/news`,
 };
 
 export default API_ROUTES;

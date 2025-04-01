@@ -1,54 +1,59 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from "react";
+import API_ROUTES from "@/config/apiRoutes";
+import { getToken } from "@/config/getToken";
 
-export default function Hyoutube() {
-    const [url, setUrl] = useState('');
-    const [videoId, setVideoId] = useState('');
+export default function YoutubeByKeyword() {
+    const [videoId, setVideoId] = useState<string | null>(null);
 
-    // 유튜브 URL에서 videoId 추출하는 함수
-    const extractVideoId = (url: string) => {
-        const regex =
-            /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-        const match = url.match(regex);
-        return match ? match[1] : '';
-    };
+    const keyword = "엔믹스"; //
 
-    const handleSubmit = () => {
-        const id = extractVideoId(url);
-        setVideoId(id);
-    };
+    useEffect(() => {
+        const fetchYoutubeVideos = async () => {
+            try {
+                const accessToken = await getToken();
+
+                const response = await fetch(`${API_ROUTES.youtube}?keyword=${encodeURIComponent(keyword)}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${accessToken}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const firstVideo = data.data?.[0]?.videoId;
+                    if (firstVideo) {
+                        setVideoId(firstVideo);
+                    } else {
+                        console.warn("영상이 없습니다.");
+                    }
+                } else {
+                    console.error("API 응답 오류:", response.status);
+                }
+            } catch (error) {
+                console.error("영상 불러오기 실패:", error);
+            }
+        };
+
+        fetchYoutubeVideos();
+    }, [keyword]); // ✅ 키워드가 변경될 경우 재요청
 
     return (
         <div className="py-3 px-5 w-auto h-44 text-center">
-            {!videoId && (
-                <div>
-                    <h2 className="text-lg font-semibold mb-3">YouTube Player</h2>
-                    <input
-                        type="text"
-                        placeholder="Enter YouTube URL"
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        className="w-full p-2 border rounded-md"
-                    />
-                    <button onClick={handleSubmit} className="mt-2 px-3 py-1 bg-blue-600 text-white rounded-md">
-                        Play
-                    </button>
+            <div className="relative w-full h-full flex items-center justify-center">
+                <div className="w-[100%] h-[100%] max-w-[560px] aspect-[16/9] overflow-hidden">
+                    <iframe
+                        className="w-full h-full rounded-md object-cover"
+                        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&showinfo=0`}
+                        title="YouTube video player"
+                        allow="autoplay; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                    ></iframe>
                 </div>
-            )}
-            {videoId && (
-                <div className="relative w-full h-full flex items-center justify-center">
-                    <div className="w-[100%] h-[100%] max-w-[560px] aspect-[16/9] overflow-hidden">
-                        <iframe
-                            className="w-full h-full rounded-md object-cover"
-                            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&rel=0&showinfo=0`}
-                            title="YouTube video player"
-                            allow="autoplay; encrypted-media; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
-                </div>
-            )}
+            </div>
         </div>
     );
 }
