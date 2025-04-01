@@ -133,6 +133,11 @@ cache:
   type: redis
   redis:
     time-to-live: ${REDIS_TTL:3600000}
+
+video:
+  api:
+    key: ${YOUTUBE_API_KEY}
+    url: ${YOUTUBE_API_URL}
 ---
 # test 프로필
 spring:

@@ -26,4 +26,12 @@ public class RestTemplateConfig {
 			.setReadTimeout(Duration.ofMillis(5000))
 			.build();
 	}
+
+	@Bean
+	public RestTemplate videoRestTemplate(RestTemplateBuilder builder) {
+		return builder
+				.setConnectTimeout(Duration.ofMillis(5000))
+				.setReadTimeout(Duration.ofMillis(5000))
+				.build();
+	}
 }
