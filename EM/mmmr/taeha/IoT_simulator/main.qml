@@ -18,161 +18,161 @@ ApplicationWindow {
     height: 720
     visible: true
     title: qsTr("IoT Control Simulator")
-    font.family: "Titillium Web"
-
-    flags: Qt.FramelessWindowHint | Qt.Window // 기본 제목 표시줄 숨기기
 
     Text {
         id: main_text
         color: "#ddd"
+        font.family: "Titillium Web"
     }
 
-        Rectangle {
-            id: titleBar
-            width: parent.width
-            height: 30
-            color: "#3f3f3f"  // 제목 표시줄 배경색
+    flags: Qt.FramelessWindowHint | Qt.Window // 기본 제목 표시줄 숨기기
 
-            gradient: Gradient {
-                GradientStop { position: 0.9; color: "#3f3f3f" }   // 위쪽 색상
-                GradientStop { position: 1.0; color: "#4a4a4a" }    // 아래쪽 색상
+    Rectangle {
+        id: titleBar
+        width: parent.width
+        height: 30
+        color: "#3f3f3f"  // 제목 표시줄 배경색
+
+        gradient: Gradient {
+            GradientStop { position: 0.9; color: "#3f3f3f" }   // 위쪽 색상
+            GradientStop { position: 1.0; color: "#4a4a4a" }    // 아래쪽 색상
+        }
+
+        MouseArea {
+            id: dragArea
+            anchors.fill: parent
+            property point clickPos
+
+            onPressed: (mouse) => {
+                clickPos = Qt.point(mouse.x, mouse.y)
             }
 
+            onPositionChanged: (mouse) => {
+                if (mouse.buttons & Qt.LeftButton) {
+                    main_window.setX(mouse.x + main_window.x - clickPos.x)
+                    main_window.setY(mouse.y + main_window.y - clickPos.y)
+                }
+            }
+
+            onDoubleClicked: {
+                if (main_window.visibility === Window.Maximized) {
+                    main_window.visibility = Window.Windowed  // 창 크기 복원
+                    maxwindow_text.text = "🗖";
+                } else {
+                    main_window.visibility = Window.Maximized  // 최대화
+                    maxwindow_text.text = "⿻";
+                }
+            }
+        }
+
+        RowLayout {
+            anchors.fill: parent
+            spacing: 10
+
+            Label {
+                text: "IoT Control Simulator"
+                color: "white"
+                Layout.alignment: Qt.AlignCenter
+                Layout.leftMargin: 10
+                font.pixelSize: 12
+                font.family: "Titillium Web"
+            }
+        }
+
+        Row {
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            rightPadding: 5
+            spacing: 5
+
+            // 최소화 버튼
             MouseArea {
-                id: dragArea
-                anchors.fill: parent
-                property point clickPos
+                width: 20
+                height: 20
+                onClicked: main_window.showMinimized()  // 최소화 기능
 
-                onPressed: (mouse) => {
-                    clickPos = Qt.point(mouse.x, mouse.y)
+                Rectangle {
+                    width: parent.width
+                    height: parent.height
+                    color: "#1d1d1d"
+                    visible: parent.containsMouse ? true : false
                 }
 
-                onPositionChanged: (mouse) => {
-                    if (mouse.buttons & Qt.LeftButton) {
-                        main_window.setX(mouse.x + main_window.x - clickPos.x)
-                        main_window.setY(mouse.y + main_window.y - clickPos.y)
-                    }
+                Text {
+                    text: "_"
+                    anchors.centerIn: parent
+                    font.pixelSize: 20
+                    color: "white"
                 }
+            }
 
-                onDoubleClicked: {
+            // 최대화 버튼
+            MouseArea {
+                width: 20
+                height: 20
+
+                onClicked: Qt.callLater(() => {
                     if (main_window.visibility === Window.Maximized) {
-                        main_window.visibility = Window.Windowed  // 창 크기 복원
+                        main_window.showNormal();
                         maxwindow_text.text = "🗖";
                     } else {
-                        main_window.visibility = Window.Maximized  // 최대화
+                        main_window.showMaximized();
                         maxwindow_text.text = "⿻";
                     }
+                })
+
+                Rectangle {
+                    width: parent.width
+                    height: parent.height
+                    color: "#1d1d1d"
+                    visible: parent.containsMouse ? true : false
                 }
-            }
 
-            RowLayout {
-                anchors.fill: parent
-                spacing: 10
-
-                Label {
-                    text: "IoT Control Simulator"
+                Text {
+                    id: maxwindow_text
+                    text: "🗖"
+                    anchors.centerIn: parent
+                    font.pixelSize: 15
                     color: "white"
-                    Layout.alignment: Qt.AlignCenter
-                    Layout.leftMargin: 10
-                    font.pixelSize: 12
-                    font.family: "Titillium Web"
                 }
             }
 
-            Row {
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                rightPadding: 5
-                spacing: 5
+            // 닫기 버튼
+            MouseArea {
+                width: 20
+                height: 20
+                onClicked: Qt.callLater(() => Qt.quit())  // 종료 기능
 
-                // 최소화 버튼
-                MouseArea {
-                    width: 20
-                    height: 20
-                    onClicked: main_window.showMinimized()  // 최소화 기능
+                Rectangle {
+                    width: parent.width
+                    height: parent.height
+                    color: "#1d1d1d"
+                    visible: parent.containsMouse ? true : false
 
-                    Rectangle {
-                        width: parent.width
-                        height: parent.height
-                        color: "#1d1d1d"
-                        visible: parent.containsMouse ? true : false
-                    }
-
-                    Text {
-                        text: "_"
-                        anchors.centerIn: parent
-                        font.pixelSize: 20
-                        color: "white"
-                    }
                 }
 
-                // 최대화 버튼
-                MouseArea {
-                    width: 20
-                    height: 20
-
-                    onClicked: Qt.callLater(() => {
-                        if (main_window.visibility === Window.Maximized) {
-                            main_window.showNormal();
-                            maxwindow_text.text = "🗖";
-                        } else {
-                            main_window.showMaximized();
-                            maxwindow_text.text = "⿻";
-                        }
-                    })
-
-                    Rectangle {
-                        width: parent.width
-                        height: parent.height
-                        color: "#1d1d1d"
-                        visible: parent.containsMouse ? true : false
-                    }
-
-                    Text {
-                        id: maxwindow_text
-                        text: "🗖"
-                        anchors.centerIn: parent
-                        font.pixelSize: 15
-                        color: "white"
-                    }
-                }
-
-                // 닫기 버튼
-                MouseArea {
-                    width: 20
-                    height: 20
-                    onClicked: Qt.callLater(() => Qt.quit())  // 종료 기능
-
-                    Rectangle {
-                        width: parent.width
-                        height: parent.height
-                        color: "#1d1d1d"
-                        visible: parent.containsMouse ? true : false
-
-                    }
-
-                    Text {
-                        text: "×"
-                        font.bold: true
-                        anchors.centerIn: parent
-                        font.pixelSize: 23
-                        color: "red"
-                    }
+                Text {
+                    text: "×"
+                    font.bold: true
+                    anchors.centerIn: parent
+                    font.pixelSize: 23
+                    color: "red"
                 }
             }
         }
+    }
 
-        Rectangle {
-            anchors.top: titleBar.bottom
-            width: parent.width
-            height: parent.height - titleBar.height
-            color: "#1f2023"
-        }
+    Rectangle {
+        anchors.top: titleBar.bottom
+        width: parent.width
+        height: parent.height - titleBar.height
+        color: "#1f2023"
+    }
 
     /* WebSocket connection */
     WebSocket {
         id: webSocket
-        url: "ws://127.0.0.1:12345"
+        url: "ws://70.12.246.31:12345"
         active: false
 
         onStatusChanged: {
@@ -180,7 +180,7 @@ ApplicationWindow {
                 console.log("WebSocket connected!");
 
                 // 연결 완료 후 메시지 전송
-                var jsonMessage = JSON.stringify({ type: "register", client_type: "receiver" });
+                var jsonMessage = JSON.stringify({ type: "register", client_type: "iot" });
                 webSocket.sendTextMessage(jsonMessage);
                 console.log("Sent: " + jsonMessage);
             }
@@ -212,7 +212,7 @@ ApplicationWindow {
         else {
             if (devName === "livingroomLight") {
                 livingLight.imgId.visible = devData["turned"] === "ON" ? true : false;
-                sw_livingroomLight.checked = devData["turned"] === "ON" ? true : false;
+                sw_livingLight.checked = devData["turned"] === "ON" ? true : false;
             }
             else if (devName === "airConditioner") {
                 livingAirCon.imgId.visible = devData["turned"] === "ON" ? true : false;
@@ -236,8 +236,6 @@ ApplicationWindow {
         }
     }
 
-
-
     /* GUI Layout */
 
     Label {
@@ -251,13 +249,17 @@ ApplicationWindow {
     }
 
     ColumnLayout {
-        Layout.alignment: Qt.AlignCenter
-        implicitWidth: parent.width
-        implicitHeight: parent.height
+        id: main_layout
+        Layout.alignment: Qt.AlignHCenter
+        width: parent.width
+        height: parent.height
         spacing: 10
 
-        GridLayout {
-            Layout.leftMargin: 50
+        RowLayout {
+            id: sub_layout
+            width: parent.width
+            Layout.alignment: Qt.AlignHCenter
+            spacing: 30
 
             Item {
                 id: map_wrapper
@@ -278,6 +280,7 @@ ApplicationWindow {
                     opacity: 0
                     imgId.source: "qrc:/images/livingroomLight.png"
                     imgId.visible: false
+                    visible: false
 
                     Shape {
                         width: 300
@@ -334,6 +337,83 @@ ApplicationWindow {
                     width: parent.width
                     height: parent.height
                     imgId.source: "qrc:/images/livingroomLight.png"
+                    imgId.visible: false
+                    visible: false
+
+                    Shape {
+                        width: 300
+                        height: 300
+                        x: 250
+                        y: 250
+
+                        ShapePath {
+                            strokeWidth: 2
+                            strokeColor: "transparent"
+                            fillGradient: RadialGradient {
+                                centerX: 50; centerY: 100
+                                centerRadius: 100
+                                focalX: centerX; focalY: centerY
+                                GradientStop { position: 0; color: "#efe4b0" }
+                                GradientStop { position: 0.8; color: "transparent" }
+                            }
+
+                            startX: 50; startY: 0
+                            PathArc {
+                                x: 50
+                                y: 200
+                                radiusX: 100
+                                radiusY: 100
+                            }
+                            PathArc {
+                                x: 50
+                                y: 0
+                                radiusX: 100
+                                radiusY: 100
+                            }
+                        }
+                    }
+                }
+
+                RoomLight {
+                    id: entranceLight
+                    width: parent.width
+                    height: parent.height
+                    imgId.source: "qrc:/images/livingroomLight.png"
+                    imgId.visible: false
+                    visible: false
+
+                    Shape {
+                        width: 300
+                        height: 300
+                        x: 380
+                        y: 230
+
+                        ShapePath {
+                            strokeWidth: 2
+                            strokeColor: "transparent"
+                            fillGradient: RadialGradient {
+                                centerX: 50; centerY: 100
+                                centerRadius: 70
+                                focalX: centerX; focalY: centerY
+                                GradientStop { position: 0; color: "#efe4b0" }
+                                GradientStop { position: 0.8; color: "transparent" }
+                            }
+
+                            startX: 50; startY: 0
+                            PathArc {
+                                x: 50
+                                y: 200
+                                radiusX: 100
+                                radiusY: 100
+                            }
+                            PathArc {
+                                x: 50
+                                y: 0
+                                radiusX: 100
+                                radiusY: 100
+                            }
+                        }
+                    }
                 }
 
                 AirConditioner {
@@ -366,92 +446,126 @@ ApplicationWindow {
             }
 
             ColumnLayout {
-                Layout.leftMargin: 50
-                spacing: 50
+                spacing: 30
+                width: 500
+                Layout.alignment: Qt.AlignHCenter
 
-                Label {
-                    Text {
-                        text: Qt.formatDate(new Date(), "yyyy.MM.dd (ddd)");
-                        font.pointSize: 36
-                        font.bold: true
-                        font.family: parent.font.family
-                        color: "#ddd"
-                    }
+                Text {
+                    text: Qt.formatDate(new Date(), "yyyy.MM.dd (ddd)");
+                    font.pointSize: 36
+                    font.bold: true
+                    font.family: main_text.font.family
+                    color: "#ddd"
                 }
 
-                Label {
+                Text {
+                    text: "☀️ Sunny";
+                    font.pointSize: 24
+                    font.bold: true
+                    font.family: main_text.font.family
+                    color: "#ddd"
+                }
+
+                ColumnLayout {
+
                     Text {
-                        text: "☀️ Sunny";
-                        font.pointSize: 24
-                        font.bold: true
-                        font.family: parent.font.family
-                        color: "#ddd"
+                        text: "Smarthome Info"
+                        color: main_text.color
+                        font.pointSize: 18
+                        font.family: main_text.font.family
+                    }
+
+                    Text {
+                        text: "Livingroom Light: " + (livingLight.visible ? "ON" : "OFF")
+                        color: main_text.color
+                        font.pointSize: 13
+                        font.family: main_text.font.family
+                    }
+
+                    Text {
+                        text: "Kitchen Light: " + (kitchenLight.visible ? "ON" : "OFF")
+                        color: main_text.color
+                        font.pointSize: 13
+                        font.family: main_text.font.family
+                    }
+
+                    Text {
+                        text: "Entrance Light: " + (entranceLight.visible ? "ON" : "OFF")
+                        color: main_text.color
+                        font.pointSize: 13
+                        font.family: main_text.font.family
+                    }
+
+                    Text {
+                        text: main_layout.width
+                        color: main_text.color
+                        font.pointSize: 13
+                        font.family: main_text.font.family
+                    }
+
+                    Text {
+                        text: sub_layout.width
+                        color: main_text.color
+                        font.pointSize: 13
+                        font.family: main_text.font.family
+                    }
+
+                    Text {
+                        text: sw_wrapper.width
+                        color: main_text.color
+                        font.pointSize: 13
+                        font.family: main_text.font.family
                     }
                 }
             }
+        }
 
 
+        Shape {
 
+            ShapePath {
+                strokeWidth: 1
+                strokeColor: "lightgray"
+
+                startX: 50
+                startY: 0
+                PathLine {
+                    x: main_window.width - 50 // 화면의 오른쪽에서 50만큼 떨어진 위치
+                    y: 0
+                }
+            }
         }
 
         RowLayout {
             Layout.alignment: Qt.AlignHCenter
-            spacing: 10
-            width: main_window.width - 100
-
-            Label {
-                text: "IoT Control Test"
-                Layout.leftMargin: 50 // 왼쪽에서 50 떨어진 위치
-                Layout.preferredWidth: implicitWidth
-                color: "lightgray"
-            }
-
-            Shape {
-                Layout.fillWidth: true // 남은 공간을 자동으로 차지
-                Layout.leftMargin: 20 // Label의 맨 오른쪽 위치 + 20 만큼 띄움
-
-                ShapePath {
-                    strokeWidth: 1
-                    strokeColor: "lightgray"
-
-                    startX: 0
-                    startY: 0
-                    PathLine {
-                        x: main_window.width - 150 - 50 // 화면의 오른쪽에서 50만큼 떨어진 위치
-                        y: 0
-                    }
-                }
-            }
-        }
-
-        RowLayout {
-            Layout.alignment: Qt.AlignHCenter
+            width: parent.width
             id: sw_wrapper
             spacing: 7
 
             GridLayout {
-                columns: 3
-
+                columns: 4
 
                 Switch {
-                    id: sw_livingroomLight
+                    id: sw_livingLight
                     text: qsTr("LivingRoom Light")
                     checked: false
                     onClicked: {
                         if(checked) {
+                            livingLight.visible = checked
                             fadeIn.start()
                         }
                         else {
                             fadeOut.start()
+                            livingLight.visible = checked
                         }
                     }
 
                     contentItem: Text {
-                        text: sw_livingroomLight.text
+                        text: sw_livingLight.text
                         color: "#ddd"
-                        font.family: parent.font.family
+                        font.family: main_text.font.family
                         verticalAlignment: Text.AlignVCenter
-                        leftPadding: sw_livingroomLight.indicator.width + sw_livingroomLight.spacing
+                        leftPadding: sw_livingLight.indicator.width + sw_livingLight.spacing
                     }
                 }
 
@@ -459,14 +573,29 @@ ApplicationWindow {
                     id: sw_kitchenLight
                     text: qsTr("Kitchen Light")
                     checked: false
-                    onClicked: kitchenLight.imgId.visible = checked
+                    onClicked: kitchenLight.visible = checked
 
                     contentItem: Text {
                         text: sw_kitchenLight.text
                         color: "#ddd"
-                        font.family: parent.font.family
+                        font.family: main_text.font.family
                         verticalAlignment: Text.AlignVCenter
                         leftPadding: sw_kitchenLight.indicator.width + sw_kitchenLight.spacing
+                    }
+                }
+
+                Switch {
+                    id: sw_entranceLight
+                    text: qsTr("Entrance Light")
+                    checked: false
+                    onClicked: entranceLight.visible = checked
+
+                    contentItem: Text {
+                        text: sw_entranceLight.text
+                        color: "#ddd"
+                        font.family: main_text.font.family
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: sw_entranceLight.indicator.width + sw_entranceLight.spacing
                     }
                 }
 
@@ -479,7 +608,7 @@ ApplicationWindow {
                     contentItem: Text {
                         text: sw_TV.text
                         color: "#ddd"
-                        font.family: parent.font.family
+                        font.family: main_text.font.family
                         verticalAlignment: Text.AlignVCenter
                         leftPadding: sw_TV.indicator.width + sw_TV.spacing
                     }
@@ -494,7 +623,7 @@ ApplicationWindow {
                     contentItem: Text {
                         text: sw_airConditioner.text
                         color: "#ddd"
-                        font.family: parent.font.family
+                        font.family: main_text.font.family
                         verticalAlignment: Text.AlignVCenter
                         leftPadding: sw_airConditioner.indicator.width + sw_airConditioner.spacing
                     }
@@ -509,7 +638,7 @@ ApplicationWindow {
                     contentItem: Text {
                         text: sw_airPurifier.text
                         color: "#ddd"
-                        font.family: parent.font.family
+                        font.family: main_text.font.family
                         verticalAlignment: Text.AlignVCenter
                         leftPadding: sw_airPurifier.indicator.width + sw_airPurifier.spacing
                     }
@@ -524,7 +653,7 @@ ApplicationWindow {
                     contentItem: Text {
                         text: sw_curtain.text
                         color: "#ddd"
-                        font.family: parent.font.family
+                        font.family: main_text.font.family
                         verticalAlignment: Text.AlignVCenter
                         leftPadding: sw_curtain.indicator.width + sw_curtain.spacing
                     }
@@ -567,7 +696,7 @@ ApplicationWindow {
             Label {
                 id: jsonOutput
                 width: parent.width * 0.8
-                height: 200
+                height: 300
                 wrapMode: TextArea.Wrap
                 text: "Parsed JSON will appear here..."
                 color: "#ddd"
