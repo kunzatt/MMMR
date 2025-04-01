@@ -82,8 +82,8 @@ important_phrases = [
     "할 일", "투두리스트", "목록", "체크리스트", "할일", "태스크", "일정",
     
     # schedule 관련
-    "일정", "약속", "회의", "미팅", "스케줄", "캘린더", "알림",
-    "오늘", "내일", "모레", "다음 주", "이번 주", "월요일", "화요일", "수요일", "목요일", "금요일",
+    "일정", "약속", "스케줄",
+    "오늘", "내일", "다음 주", "이번 주",
     
     # time 관련
     "시간", "시계", "몇 시", "지금", "현재 시간", "현재",
@@ -363,7 +363,7 @@ type은 다음 중 하나여야 합니다: "iot", "weather", "news", "youtube", 
 - youtube: 유튜브 관련 요청 (예: "유튜브 틀어줘", "음악 동영상 보여줘")
 - timer: 타이머 설정 요청 (예: "5분 타이머 설정해줘", "30초 타이머")
 - todo: 할 일 관련 요청 (예: "오늘 할 일 추가해줘", "할 일 목록 보여줘")
-- schedule: 일정 관련 요청 (예: "내일 회의 일정 추가해줘", "이번 주 일정 알려줘")
+- schedule: 일정 관련 요청 (예: "오늘 일정 알려줘", "내일 일정 알려줘", "이번 주 일정 알려줘")
 - time: 시간 관련 요청 (예: "지금 몇 시야?", "시계 보여줘")
 - transportation: 교통 정보 요청 (예: "버스 언제 와?", "지하철 운행 정보")
 - homecam : 이동형 홈 카메라 제어 요청 (예: "홈 카메라 켜줘", "홈 카메라 꺼줘", "홈 캠 켜줘", "홈 캠 꺼줘", "홈 캠 주방으로 이동해줘", "홈 캠 거실로 이동해줘")
@@ -375,6 +375,7 @@ contents.data는 type에 따라 다르게 설정합니다:
 - iot: "light ON" 또는 "light OFF"와 같은 형태
 - news: "1"부터 "5" 사이의 숫자 (뉴스 번호) 혹은 빈 문자열
 - timer: "00H05M00S"와 같은 형태 (시간, 분, 초)
+- scehdule: "today", "tomorrow", "this_week", "next_week"
 - youtube : "남자 요가 영상"와 같은 검색어
 - homecam :  "living_room", "kitchen", "entrance", "room1", "room2", "room3", "room4"(이동 관련) 혹은은 빈 문자열(카메라 제어 관련)
 - 다른 유형: 빈 문자열
@@ -423,7 +424,7 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
             "result": "-1"
         })
     
-async def process_and_send_json_result(websocket: WebSocket, transcription: str = None):
+async def process_and_send_json_result(websocket: WebSocket, transcription: str = None, keyword: str = "미미"):
     if transcription:
         # STT 결과를 JSON으로 변환
         json_result = await text_to_json(transcription)
@@ -466,6 +467,21 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                 if contents["data"]:
                     logger.info(f"홈 카메라 이동 요청: {contents['data']}")
                     await iot_ws.send_to_navigation(json_obj)
+            elif type == "schedule":
+                schedule_result, new_tokens = data_processor.getSchedules(
+                    keyword,
+                    app.state.access_token, 
+                    app.state.refresh_token,
+                    contents["data"]
+                )
+                if schedule_result:
+                    json_obj["result"] = schedule_result
+                else:
+                    json_obj["result"] = "-1"
+                    
+                if new_tokens:
+                    app.state.access_token = new_tokens["access_token"]
+                    app.state.refresh_token = new_tokens["refresh_token"]
         
         json_result = json.dumps(json_obj)
         logger.info(f"JSON 변환 결과: {json_result}")
@@ -558,7 +574,7 @@ async def websocket_endpoint(websocket: WebSocket):
         if duration >= MIN_AUDIO_LENGTH:
             # STT 처리
             transcription = await transcribe_audio(audio_data, processor.metadata)
-            await process_and_send_json_result(websocket, transcription)
+            await process_and_send_json_result(websocket, transcription, processor.metadata["keyword"])
            
         else:
             logger.warning("오디오가 너무 짧아 처리하지 않습니다.")
