@@ -33,6 +33,11 @@ ApplicationWindow {
             height: 30
             color: "#3f3f3f"  // 제목 표시줄 배경색
 
+            gradient: Gradient {
+                GradientStop { position: 0.9; color: "#3f3f3f" }   // 위쪽 색상
+                GradientStop { position: 1.0; color: "#4a4a4a" }    // 아래쪽 색상
+            }
+
             MouseArea {
                 id: dragArea
                 anchors.fill: parent
@@ -46,6 +51,16 @@ ApplicationWindow {
                     if (mouse.buttons & Qt.LeftButton) {
                         main_window.setX(mouse.x + main_window.x - clickPos.x)
                         main_window.setY(mouse.y + main_window.y - clickPos.y)
+                    }
+                }
+
+                onDoubleClicked: {
+                    if (main_window.visibility === Window.Maximized) {
+                        main_window.visibility = Window.Windowed  // 창 크기 복원
+                        maxwindow_text.text = "🗖";
+                    } else {
+                        main_window.visibility = Window.Maximized  // 최대화
+                        maxwindow_text.text = "⿻";
                     }
                 }
             }
