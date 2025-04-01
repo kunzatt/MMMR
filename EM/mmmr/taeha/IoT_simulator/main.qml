@@ -31,7 +31,7 @@ ApplicationWindow {
             id: titleBar
             width: parent.width
             height: 30
-            color: "#333"  // 제목 표시줄 배경색
+            color: "#3f3f3f"  // 제목 표시줄 배경색
 
             MouseArea {
                 id: dragArea
@@ -75,11 +75,12 @@ ApplicationWindow {
                     width: 20
                     height: 20
                     onClicked: main_window.showMinimized()  // 최소화 기능
+
                     Rectangle {
                         width: parent.width
                         height: parent.height
-                        color: "#444"
-                        visible: false
+                        color: "#1d1d1d"
+                        visible: parent.containsMouse ? true : false
                     }
 
                     Text {
@@ -94,6 +95,7 @@ ApplicationWindow {
                 MouseArea {
                     width: 20
                     height: 20
+
                     onClicked: Qt.callLater(() => {
                         if (main_window.visibility === Window.Maximized) {
                             main_window.showNormal();
@@ -103,11 +105,12 @@ ApplicationWindow {
                             maxwindow_text.text = "⿻";
                         }
                     })
+
                     Rectangle {
                         width: parent.width
                         height: parent.height
-                        color: "#444"
-                        visible: false
+                        color: "#1d1d1d"
+                        visible: parent.containsMouse ? true : false
                     }
 
                     Text {
@@ -124,11 +127,12 @@ ApplicationWindow {
                     width: 20
                     height: 20
                     onClicked: Qt.callLater(() => Qt.quit())  // 종료 기능
+
                     Rectangle {
                         width: parent.width
                         height: parent.height
-                        color: "red"
-                        visible: false
+                        color: "#1d1d1d"
+                        visible: parent.containsMouse ? true : false
 
                     }
 
@@ -136,7 +140,7 @@ ApplicationWindow {
                         text: "×"
                         font.bold: true
                         anchors.centerIn: parent
-                        font.pixelSize: 20
+                        font.pixelSize: 23
                         color: "red"
                     }
                 }
