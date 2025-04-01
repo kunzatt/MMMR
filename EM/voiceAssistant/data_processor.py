@@ -41,7 +41,7 @@ def login():
 def refresh_access_token(refresh_token):
     try:
         refresh_data = {
-            "refreshToken": refresh_token
+            "token": refresh_token
         }
         response = requests.post(
             server_url+"auth/refresh", 
