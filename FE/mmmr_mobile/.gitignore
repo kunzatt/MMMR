@@ -20,6 +20,10 @@
 # production
 /build
 
+# PWA 서비스워커 빌드 결과물
+/public/sw.js
+/public/workbox-*.js
+
 # misc
 .DS_Store
 *.pem
