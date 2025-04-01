@@ -482,14 +482,14 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
             elif type == "control":
                 if contents["data"]:
                     iot_ws.send_iot_message(json_obj, app.state.access_token, app.state.refresh_token)
-                    json_obj["result"] = "제어 요청이 전송되었습니다."
+                    json_obj["result"] = "2"
                 else:
                     logger.warning("제어 요청에 장치 정보가 없습니다.")
-                    json_obj["result"] = "-1"
+                    json_obj["result"] = "0"
             elif type == "none":
-                json_obj["result"] = "-1"
+                json_obj["result"] = "0"
             else:
-                json_obj["result"] = "네 알겠습니다"
+                json_obj["result"] = "1"
         
         json_result = json.dumps(json_obj)
         logger.info(f"JSON 변환 결과: {json_result}")
@@ -501,7 +501,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                 "default": "OFF",
                 "data": ""
             },
-            "result": "-1"
+            "result": "0"
         })
         reason = "빈 STT 결과" if transcription is None else "오디오가 너무 짧음"
         logger.info(f"{reason}에 대한 기본 JSON 전송")

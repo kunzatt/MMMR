@@ -38,8 +38,8 @@ WS_PORT = int(os.getenv("WS_PORT", "8765"))
 
 # TTS 파일 경로
 TTS_DIR = "./tts_files"
-MIMI_TTS_FILE = "not_understand_f.wav"
-HAETAE_TTS_FILE = "not_understand_m.wav"
+MIMI_TTS_FILES = ["do_not_understand_female.wav", "success_female.wav", "iot_female.wav"]
+HAETAE_TTS_FILES = ["do_not_understand_male.wav", "success_male.wav", "iot_male.wav"]
 
 # 민감도 설정
 SENSITIVITIES = [0.7, 0.7]
@@ -125,11 +125,11 @@ def play_alert_sound():
     else:
         print(f"알림음 파일을 찾을 수 없습니다: {ALERT_SOUND_PATH}")
 
-def play_tts_file(keyword):
+def play_tts_file(keyword, tts_type):
     """호출어에 따른 TTS 파일 재생"""
     try:
-        tts_file = MIMI_TTS_FILE if keyword == "미미" else HAETAE_TTS_FILE
-        tts_path = os.path.join(TTS_DIR, tts_file)
+        tts_files = MIMI_TTS_FILES if keyword == "미미" else HAETAE_TTS_FILES
+        tts_path = os.path.join(TTS_DIR, tts_files[tts_type])
 
         if os.path.exists(tts_path):
             print(f"TTS 파일 재생 중: {tts_path}")
@@ -276,21 +276,14 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
 
                     # 뉴스 타입 및 유효한 결과인지 확인
                     if "result" in json_result:
-                        if json_result["result"] not in ["-1", "0"]:
-                            # 유효한 뉴스 결과가 있으면 TTS로 읽어주기
-                            print("결과를 TTS로 읽어줍니다.")
-                            # 호출어에 따라 다른 음성으로 TTS 실행
+                        print("결과를 TTS로 읽어줍니다.")
+                        if json_result["result"] in ["0", "1", "2"]:
+                            play_tts_file(detected_keyword, int(json_result["result"]))
+                        else:
                             gender = "female" if detected_keyword == "미미" else "male"
                             speak_text(json_result["result"], gender)
-
-                        else:
-                            # 결과가 없는 경우 호출어에 맞는 기본 안내 음성 재생
-                            print(f"유효한 결과가 없습니다. '{detected_keyword}'에 해당하는 TTS 파일을 재생합니다.")
-                            play_tts_file(detected_keyword)
-                    elif "result" in json_result and json_result["result"] == "-1":
-                        # 다른 타입의 명령에서 결과가 -1인 경우 기본 TTS 파일 재생
-                        print(f"결과가 -1입니다. '{detected_keyword}'에 해당하는 TTS 파일을 재생합니다.")
-                        play_tts_file(detected_keyword)
+                    else:
+                        play_tts_file(detected_keyword, 0)
 
                 except json.JSONDecodeError:
                     print("JSON 파싱 오류")
