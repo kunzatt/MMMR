@@ -33,7 +33,7 @@ public class VideoClient {
        URI uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
 			.queryParam("key", apiKey)
 			.queryParam("q", keyword)
-			.queryParam("maxResults", 5)
+			.queryParam("maxResults", 10)
 			.queryParam("type", "video")
 			.build()
 			.toUri();
