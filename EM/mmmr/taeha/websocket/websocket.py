@@ -18,7 +18,7 @@ async def handle_client(websocket, path):
                 response = json.dumps({"type": "ack", "message": "registered"})
                 await websocket.send(response)
             elif data.get("type") == "send":
-                response = json.dumps({"type": "control", "device": data.get("device"), "state": data.get("state")})
+                response = json.dumps({"type": "control", "device": data.get("device"), "data": data.get("data")})
                 for client_type in clients.keys():
                     if client_type == "receiver":
                         await clients[client_type].send(response)
