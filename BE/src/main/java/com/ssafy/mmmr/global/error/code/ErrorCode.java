@@ -64,8 +64,11 @@ public enum ErrorCode {
 
 	// News
 	NEWS_FETCH_FAILED(500, "뉴스 조회에 실패했습니다. 다시 시도해주세요."),
-	NEWS_CRAWLING_FAILED(500, "뉴스 크롤링 중 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+	NEWS_CRAWLING_FAILED(500, "뉴스 크롤링 중 오류가 발생했습니다. 나중에 다시 시도해주세요."),
 
+	// Video
+	VIDEO_NOT_FOUND(204, "해당 키워드로 조회되는 동영상이 존재하지 않습니다."),
+	VIDEO_FETCH_FAILED(500, "동영상 정보를 가져오는 중 오류가 발생했습니다.");
 
 	private final int status;
 	private final String message;
