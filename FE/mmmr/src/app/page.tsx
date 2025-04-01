@@ -47,13 +47,13 @@ const horizontalModules: Module[] = [
 ];
 
 // 웹소켓 메시지 타입 정의
-interface WebSocketMessage {
-    type: string;
-    contents: {
-        default: "ON" | "OFF";
-        data: string;
-    };
-}
+// interface WebSocketMessage {
+//     type: string;
+//     contents: {
+//         default: "ON" | "OFF";
+//         data: string;
+//     };
+// }
 
 export default function Page() {
     const [activeModules, setActiveModules] = useState<Record<string, boolean>>({});
@@ -66,10 +66,10 @@ export default function Page() {
     const webSocketRef = useRef<WebSocket | null>(null);
 
     // 웹소켓 연결 상태
-    const [isConnected, setIsConnected] = useState(false);
+    //const [isConnected, setIsConnected] = useState(false);
 
     // 모듈 데이터 저장
-    const [moduleData, setModuleData] = useState<Record<string, string>>({});
+    //const [moduleData, setModuleData] = useState<Record<string, string>>({});
 
     // 웹소켓 연결 설정
     // useEffect(() => {
@@ -125,64 +125,64 @@ export default function Page() {
     // }, []);
 
     // 웹소켓 메시지 처리 함수
-    const handleWebSocketMessage = (data: WebSocketMessage) => {
-        console.log("수신된 메시지:", data);
+    // const handleWebSocketMessage = (data: WebSocketMessage) => {
+    //     console.log("수신된 메시지:", data);
 
-        // type 확인 후 해당하는 모듈 매핑
-        const moduleType = data.type;
-        const moduleName = moduleTypeMapping[moduleType];
+    //     // type 확인 후 해당하는 모듈 매핑
+    //     const moduleType = data.type;
+    //     const moduleName = moduleTypeMapping[moduleType];
 
-        if (!moduleName) {
-            console.log(`지원되지 않는 모듈 타입: ${moduleType}`);
-            return;
-        }
+    //     if (!moduleName) {
+    //         console.log(`지원되지 않는 모듈 타입: ${moduleType}`);
+    //         return;
+    //     }
 
-        // ON/OFF 상태에 따라 모듈 활성화/비활성화
-        if (data.contents.default === "ON") {
-            // 모듈 데이터 업데이트
-            setModuleData((prev) => ({
-                ...prev,
-                [moduleName]: data.contents.data,
-            }));
+    //     // ON/OFF 상태에 따라 모듈 활성화/비활성화
+    //     if (data.contents.default === "ON") {
+    //         // 모듈 데이터 업데이트
+    //         setModuleData((prev) => ({
+    //             ...prev,
+    //             [moduleName]: data.contents.data,
+    //         }));
 
-            // 이미 활성화되어 있지 않으면 활성화
-            setActiveModules((prev) => {
-                if (!prev[moduleName]) {
-                    // 활성화 전에 화면 공간 확인 (세로형 모듈인 경우)
-                    if (verticalModules.some((m) => m.name === moduleName)) {
-                        const newModules = { ...prev, [moduleName]: true };
-                        setPrevActiveModules(prev);
-                        return newModules;
-                    }
-                }
-                return { ...prev, [moduleName]: true };
-            });
+    //         // 이미 활성화되어 있지 않으면 활성화
+    //         setActiveModules((prev) => {
+    //             if (!prev[moduleName]) {
+    //                 // 활성화 전에 화면 공간 확인 (세로형 모듈인 경우)
+    //                 if (verticalModules.some((m) => m.name === moduleName)) {
+    //                     const newModules = { ...prev, [moduleName]: true };
+    //                     setPrevActiveModules(prev);
+    //                     return newModules;
+    //                 }
+    //             }
+    //             return { ...prev, [moduleName]: true };
+    //         });
 
-            // IoT 모듈 특별 처리 - 데이터에 따라 상태 변경
-            if (moduleType === "iot" && data.contents.data) {
-                console.log(`IoT 모듈 활성화: ${data.contents.data}`);
-                // IoT 특정 데이터 처리 (필요한 경우)
-            }
+    //         // IoT 모듈 특별 처리 - 데이터에 따라 상태 변경
+    //         if (moduleType === "iot" && data.contents.data) {
+    //             console.log(`IoT 모듈 활성화: ${data.contents.data}`);
+    //             // IoT 특정 데이터 처리 (필요한 경우)
+    //         }
 
-            // youtube 타입인 경우 데이터에 따라 세로/가로형 결정
-            if (moduleType === "youtube" && data.contents.data) {
-                // 예: 데이터 형식에 따라 세로/가로형 결정 로직
-                // 여기서는 간단하게 구현
-            }
-        } else {
-            // 모듈 비활성화
-            setActiveModules((prev) => {
-                const newModules = { ...prev };
-                delete newModules[moduleName];
-                return newModules;
-            });
+    //         // youtube 타입인 경우 데이터에 따라 세로/가로형 결정
+    //         if (moduleType === "youtube" && data.contents.data) {
+    //             // 예: 데이터 형식에 따라 세로/가로형 결정 로직
+    //             // 여기서는 간단하게 구현
+    //         }
+    //     } else {
+    //         // 모듈 비활성화
+    //         setActiveModules((prev) => {
+    //             const newModules = { ...prev };
+    //             delete newModules[moduleName];
+    //             return newModules;
+    //         });
 
-            // IoT 모듈 특별 처리 - 비활성화 시
-            if (moduleType === "iot") {
-                console.log("IoT 모듈 비활성화");
-            }
-        }
-    };
+    //         // IoT 모듈 특별 처리 - 비활성화 시
+    //         if (moduleType === "iot") {
+    //             console.log("IoT 모듈 비활성화");
+    //         }
+    //     }
+    // };
 
     // 화면 높이 계산 (버튼 높이 포함)
     useEffect(() => {
@@ -221,31 +221,31 @@ export default function Page() {
         setPrevActiveModules(activeModules);
 
         // 모듈 토글 시 웹소켓 메시지 전송
-        if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
-            // 모듈 이름을 type으로 변환
-            let messageType = name;
-            for (const [type, moduleName] of Object.entries(moduleTypeMapping)) {
-                if (moduleName === name) {
-                    messageType = type;
-                    break;
-                }
-            }
+        // if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
+        //     // 모듈 이름을 type으로 변환
+        //     let messageType = name;
+        //     for (const [type, moduleName] of Object.entries(moduleTypeMapping)) {
+        //         if (moduleName === name) {
+        //             messageType = type;
+        //             break;
+        //         }
+        //     }
 
-            // 웹소켓 메시지 생성
-            const message = {
-                command: "process_data",
-                data: {
-                    type: messageType,
-                    contents: {
-                        default: activeModules[name] ? "OFF" : "ON",
-                        data: moduleData[name] || "",
-                    },
-                },
-            };
+        //     // 웹소켓 메시지 생성
+        //     const message = {
+        //         command: "process_data",
+        //         data: {
+        //             type: messageType,
+        //             contents: {
+        //                 default: activeModules[name] ? "OFF" : "ON",
+        //                 data: moduleData[name] || "",
+        //             },
+        //         },
+        //     };
 
-            // 메시지 전송
-            webSocketRef.current.send(JSON.stringify(message));
-        }
+        //     // 메시지 전송
+        //     webSocketRef.current.send(JSON.stringify(message));
+        // }
 
         // UI 상태 업데이트
         setActiveModules((prev) => ({ ...prev, [name]: !prev[name] }));
