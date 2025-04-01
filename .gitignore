@@ -225,10 +225,10 @@ temp/
 HELP.md
 
 ### Docker ###
-docker-compose.yml
-dockerfile
-backend-dockerfile
-frontend-dockerfile
+#docker-compose.yml
+#dockerfile
+#backend-dockerfile
+#frontend-dockerfile
 
 ### Nginx ###
 nginx.conf

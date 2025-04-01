@@ -1,0 +1,36 @@
+# /var/.../workspace/mmmr-backend-develop
+version: '3.8'
+
+services:
+  backend:
+    container_name: mmmr-backend
+    build:
+      context: ./BE
+      dockerfile: Dockerfile
+    env_file:
+      - ./BE/.env
+    network_mode: host
+    expose:
+      - "8088"
+
+  frontend:
+    container_name: mmmr-frontend
+    build:
+      context: ./FE/mmmr
+      dockerfile: Dockerfile
+    network_mode: host
+    expose: 
+      - "5173"
+    depends_on:
+      - backend
+
+  frontend_mobile:
+    container_name: mmmr-frontend-mobile
+    build:
+      context: ./FE/mmmr_mobile
+      dockerfile: Dockerfile
+    network_mode: host
+    expose: 
+      - "3000"
+    depends_on:
+      - backend
