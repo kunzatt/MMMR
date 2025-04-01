@@ -10,11 +10,7 @@ const devices = [
     { id: 4, name: "TV", x: "80%", y: "60%" },
 ];
 
-interface IotProps {
-    isDarkMode: boolean;
-}
-
-export default function Iot({ isDarkMode }: IotProps) {
+export default function Iot() {
     const [activeDevices, setActiveDevices] = useState<number[]>([]);
 
     const toggleDevice = (id: number) => {
@@ -26,7 +22,7 @@ export default function Iot({ isDarkMode }: IotProps) {
             <div className="relative w-full h-full flex items-center justify-center">
                 <div className="relative w-48 h-36">
                     <Image
-                        src={isDarkMode ? "/images/iot_map_dark.png" : "/images/iot_map.png"}
+                        src="/images/iot_map_dark.png"
                         alt="IoT Map"
                         fill
                         style={{ objectFit: "contain" }}

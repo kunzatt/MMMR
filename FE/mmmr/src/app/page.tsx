@@ -14,7 +14,7 @@ import News from "@/components/news";
 
 interface Module {
     name: string;
-    component: React.ComponentType<any>;
+    component: React.ComponentType;
 }
 
 // type과 모듈 이름 사이의 매핑 정의
@@ -57,7 +57,6 @@ interface WebSocketMessage {
 
 export default function Page() {
     const [activeModules, setActiveModules] = useState<Record<string, boolean>>({});
-    const [isDarkMode, setIsDarkMode] = useState(true);
     const verticalContainerRef = useRef<HTMLDivElement>(null);
     const buttonContainerRef = useRef<HTMLDivElement>(null);
     const [availableHeight, setAvailableHeight] = useState<number>(0);
@@ -76,52 +75,53 @@ export default function Page() {
     useEffect(() => {
         // 라즈베리파이 웹소켓 서버 주소 (실제 IP로 변경 필요)
         const WEBSOCKET_SERVER = "ws://localhost:8765";
+        if (!isConnected) {
+            // 웹소켓 연결 함수
+            const connectWebSocket = () => {
+                const ws = new WebSocket(WEBSOCKET_SERVER);
 
-        // 웹소켓 연결 함수
-        const connectWebSocket = () => {
-            const ws = new WebSocket(WEBSOCKET_SERVER);
+                ws.onopen = () => {
+                    console.log("웹소켓 서버에 연결됨");
+                    setIsConnected(true);
 
-            ws.onopen = () => {
-                console.log("웹소켓 서버에 연결됨");
-                setIsConnected(true);
+                    // 현재 상태 요청
+                    ws.send(JSON.stringify({ command: "get_status" }));
+                };
 
-                // 현재 상태 요청
-                ws.send(JSON.stringify({ command: "get_status" }));
+                ws.onmessage = (event) => {
+                    try {
+                        const data: WebSocketMessage = JSON.parse(event.data);
+                        handleWebSocketMessage(data);
+                    } catch (error) {
+                        console.error("웹소켓 메시지 처리 중 오류:", error);
+                    }
+                };
+
+                ws.onerror = (error) => {
+                    console.error("웹소켓 오류:", error);
+                };
+
+                ws.onclose = () => {
+                    console.log("웹소켓 연결 종료. 재연결 예정...");
+                    setIsConnected(false);
+
+                    // 5초 후 재연결 시도
+                    setTimeout(connectWebSocket, 5000);
+                };
+
+                webSocketRef.current = ws;
             };
 
-            ws.onmessage = (event) => {
-                try {
-                    const data: WebSocketMessage = JSON.parse(event.data);
-                    handleWebSocketMessage(data);
-                } catch (error) {
-                    console.error("웹소켓 메시지 처리 중 오류:", error);
+            // 초기 연결
+            connectWebSocket();
+
+            // 컴포넌트 언마운트 시 연결 종료
+            return () => {
+                if (webSocketRef.current) {
+                    webSocketRef.current.close();
                 }
             };
-
-            ws.onerror = (error) => {
-                console.error("웹소켓 오류:", error);
-            };
-
-            ws.onclose = () => {
-                console.log("웹소켓 연결 종료. 재연결 예정...");
-                setIsConnected(false);
-
-                // 5초 후 재연결 시도
-                setTimeout(connectWebSocket, 5000);
-            };
-
-            webSocketRef.current = ws;
-        };
-
-        // 초기 연결
-        connectWebSocket();
-
-        // 컴포넌트 언마운트 시 연결 종료
-        return () => {
-            if (webSocketRef.current) {
-                webSocketRef.current.close();
-            }
-        };
+        }
     }, []);
 
     // 웹소켓 메시지 처리 함수
@@ -287,26 +287,8 @@ export default function Page() {
         });
     };
 
-    const toggleDarkMode = () => {
-        setIsDarkMode(!isDarkMode);
-    };
-
     return (
-        <div
-            className={`${
-                isDarkMode ? "bg-black text-white" : "bg-white text-black"
-            } font-sans flex flex-col items-center min-h-screen`}
-        >
-            {/* 다크 모드 토글 버튼 */}
-            <button
-                onClick={toggleDarkMode}
-                className={`px-4 py-2 rounded-md mb-4 ${
-                    isDarkMode ? "bg-gray-600 text-white" : "bg-gray-300 text-black"
-                }`}
-            >
-                {isDarkMode ? "Light Mode" : "Dark Mode"}
-            </button>
-
+        <div className="bg-black text-white font-sans flex flex-col items-center min-h-screen">
             {/* 버튼 UI */}
             <div ref={buttonContainerRef} className="flex flex-wrap gap-2 mb-6">
                 {[...verticalModules, ...horizontalModules].map(({ name }) => (
@@ -326,16 +308,14 @@ export default function Page() {
                 {/* 세로 스택 */}
                 <div
                     ref={verticalContainerRef}
-                    className={`flex flex-col w-56 items-center overflow-hidden ${
-                        isDarkMode ? "border-white" : "border-black"
-                    }`}
+                    className="flex flex-col w-56 items-center overflow-hidden border-white"
                     style={{ maxHeight: `${availableHeight}px` }}
                 >
                     {verticalModules
                         .filter(({ name }) => activeModules[name])
                         .map(({ name, component: Component }) => (
                             <div key={name} id={`module-${name}`}>
-                                <Component isDarkMode={isDarkMode} />
+                                <Component />
                             </div>
                         ))}
                 </div>
@@ -344,11 +324,7 @@ export default function Page() {
                     {horizontalModules.map(({ name, component: Component }) =>
                         activeModules[name] ? (
                             <div key={name} className="w-auto">
-                                {name === "timer" ? (
-                                    <Timer onExpire={() => removeModule("timer")} />
-                                ) : (
-                                    <Component isDarkMode={isDarkMode} />
-                                )}
+                                {name === "timer" ? <Timer onExpire={() => removeModule("timer")} /> : <Component />}
                             </div>
                         ) : null
                     )}
