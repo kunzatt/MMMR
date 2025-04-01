@@ -38,3 +38,7 @@ out/
 
 ### ENV ###
 *.env
+
+###SSH TUNNEL###
+src/main/java/com/ssafy/mmmr/SshTunnel.java
+src/main/java/com/ssafy/mmmr/SshTunnel.class

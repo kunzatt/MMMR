@@ -8,6 +8,12 @@ spring:
   jackson:
     time-zone: Asia/Seoul
 
+  batch:
+    job:
+      enabled: true
+    jdbc:
+      initialize-schema: embedded
+
   servlet:
     multipart:
       max-file-size: 20MB
@@ -18,7 +24,8 @@ spring:
       path: ${FILE_STORAGE_PATH}
     storage:
       path: ${FILE_STORAGE_PATH}
-#      default-image: ${FILE_STORAGE_PATH}/default-profile.png
+    csv:
+      upload-dir: ${FILE_STORAGE_PATH}/csv
 
   datasource:
     url: ${DB_URL}
@@ -43,6 +50,34 @@ spring:
         jdbc:
           time_zone: Asia/Seoul
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 1000
+          starttls:
+            enable: true
+
+  # 캐시 설정
+  cache:
+    type: redis
+    cache-names: weatherCache,forecastCache
+    redis:
+      time-to-live: ${REDIS_TTL:3600000}
+
+jwt:
+  secret: ${JWT_SECRET}
+  issuer: mmmr-auth
+  subject-prefix: mmmr
+  accessTokenExpiration: ${JWT_ACCESS_TOKEN_EXPIRATION}
+  refreshTokenExpiration: ${JWT_REFRESH_TOKEN_EXPIRATION}
+  temporaryTokenExpiration: ${JWT_TEMPORARY_TOKEN_EXPIRATION}
+
 cookie:
   secure-flag: false
 
@@ -59,8 +94,7 @@ logging:
     root: ${LOG_LEVEL_ROOT:INFO}
     org.springframework.web: ${LOG_LEVEL_SPRING_WEB:DEBUG}
     org.hibernate.SQL: ${LOG_LEVEL_HIBERNATE:DEBUG}
-    com.corp: ${LOG_LEVEL_APP:DEBUG}
-    org.mybatis: ${LOG_LEVEL_MYBATIS:TRACE}
+    com.ssafy: ${LOG_LEVEL_APP:DEBUG}
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
@@ -72,10 +106,28 @@ springdoc:
     path: /api/swagger-ui.html
     operations-sorter: method
 
+openweather:
+  api:
+    key: ${OPENWEATHER_API_KEY}
+    url: ${OPENWEATHER_API_URL}
+    cache:
+      ttl: 1800000  # 30분
+
+vworld:
+  api:
+    key: ${VWORLD_API_KEY}
+    geocoder:
+      url: ${VWORLD_GEOCODER_URL}
+
 cache:
   type: redis
   redis:
     time-to-live: ${REDIS_TTL:3600000}
+
+video:
+  api:
+    key: ${YOUTUBE_API_KEY}
+    url: ${YOUTUBE_API_URL}
 ---
 # test 프로필
 spring:
@@ -86,7 +138,7 @@ spring:
     scheduling:
       pool:
         size: 1
-      thread-name-prefix: bookiki-scheduler-test-
+      thread-name-prefix: mmmr-scheduler-test-
   datasource:
     url: jdbc:h2:mem:testdb;MODE=MySQL
     username: sa
@@ -102,7 +154,7 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
 logging:
   level:
-    com.corp.bookiki: DEBUG
+    com.ssafy.mmmr: DEBUG
     org.hibernate.SQL: DEBUG
     org.springframework.security: DEBUG
     org.hibernate.type.descriptor.sql: TRACE

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>이메일 인증</title>
+    <style>
+        body {
+            font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+        .logo img {
+            max-width: 150px;
+        }
+        .content {
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .code-box {
+            background-color: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 25px auto;
+            max-width: 250px;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #4a86e8;
+        }
+        .info {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+        }
+        .warning {
+            color: #ff6b6b;
+            font-size: 13px;
+            margin-top: 15px;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #eeeeee;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <img src="cid:logo" alt="MMMR 로고" th:if="${logo != null}">
+            <h2 th:if="${logo == null}">MMMR</h2>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="title">이메일 인증 안내</div>
+        <p>안녕하세요! MMMR 서비스 이용을 위한 이메일 인증번호입니다.</p>
+        <p>아래 인증번호를 입력하여 이메일 인증을 완료해 주세요.</p>
+
+        <div class="code-box" th:text="${code}">123456</div>
+
+        <p class="info">인증번호는 <span th:text="${expirationMinutes}">5</span>분 동안만 유효합니다.</p>
+        <p class="warning">본 이메일은 발신전용이며, 회신되지 않습니다.</p>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 MMMR. All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>
