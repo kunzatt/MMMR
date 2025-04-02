@@ -187,16 +187,18 @@ public class WeatherService {
 				}
 			}
 
+			log.info("Forecast JSON: {}", forecastJson.toString());
+
 			// 예보 데이터에서 강수 확률 확인 (3시간 이내의 데이터만 고려)
 			JsonNode forecastList = forecastJson.path("list");
 			if (forecastList.isArray() && forecastList.size() > 0) {
-				int maxPop = 0;
+				double maxPop = 0;
 
-				// 첫 2개 항목(약 6시간)에서 최대 강수 확률 찾기
-				int count = Math.min(2, forecastList.size());
+				int count = Math.min(5, forecastList.size());
 				for (int i = 0; i < count; i++) {
 					JsonNode forecast = forecastList.get(i);
-					int pop = forecast.path("pop").asInt();
+					double pop = forecast.path("pop").asDouble();
+					log.info("Index {}: pop value = {}", i, pop);
 					if (pop > maxPop) {
 						maxPop = pop;
 					}
@@ -320,11 +322,9 @@ public class WeatherService {
 			default -> {
 				String advice;
 				if (precipitation >= 70) {
-					advice = "강수 확률이 " + precipitation + "%로 매우 높습니다. 우산을 반드시 챙기고, 방수가 되는 신발을 착용하는 것이 좋습니다.";
+					advice = "강수 확률이 " + precipitation + "%로 매우 높습니다. 우산을 반드시 챙기세요.";
 				} else if (precipitation >= 50) {
 					advice = "강수 확률이 " + precipitation + "%로 높은 편입니다. 우산을 챙기는 것이 좋겠습니다.";
-				} else if (precipitation >= 30) {
-					advice = "강수 확률이 " + precipitation + "%입니다. 접이식 우산을 가방에 넣어두는 것을 권장합니다.";
 				} else if (precipitation >= 20 && (weatherStatus.equals("흐림") || weatherStatus.equals("약간 흐림"))) {
 					advice = "하늘이 흐리고 약간의 비 가능성이 있습니다. 혹시 모르니 작은 우산을 준비해두세요.";
 				} else {
