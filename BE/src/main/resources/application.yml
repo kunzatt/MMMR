@@ -119,6 +119,16 @@ vworld:
     geocoder:
       url: ${VWORLD_GEOCODER_URL}
 
+seoul:
+  metro:
+    api:
+      key: ${METRO_API_KEY}
+      url: ${METRO_API_URL}
+  bus:
+    api:
+      key: ${BUS_API_KEY}
+      url: ${BUS_API_URL}
+
 cache:
   type: redis
   redis:

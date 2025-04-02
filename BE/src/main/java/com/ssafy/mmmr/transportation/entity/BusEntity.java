@@ -1,4 +1,4 @@
-package com.ssafy.mmmr.profiles.entity;
+package com.ssafy.mmmr.transportation.entity;
 
 import java.time.LocalDateTime;
 
@@ -6,14 +6,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.mmmr.account.entity.AccountEntity;
+import com.ssafy.mmmr.profiles.entity.ProfileEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,33 +24,37 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "profiles")
+@Table(name = "buses")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class ProfileEntity {
+public class BusEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "account_id", nullable = false)
-	@JsonIgnore
-	private AccountEntity account;
+	@JoinColumn(name = "profile_id", nullable = false)
+	private ProfileEntity profile;
 
-	@Column(name = "nickname", nullable = false, length = 20)
-	private String nickname;
+	@Column(name = "route_id", nullable = false)
+	private Integer routeId;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "callsign", nullable = false)
-	private CallSign callSign;
+	@Column(name = "route", nullable = false, length = 10)
+	private String route;
 
-	@Column(name = "deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+	@Column(name = "station_id", nullable = false)
+	private Integer stationId;
+
+	@Column(name = "station", nullable = false, length = 20)
+	private String station;
+
+	@Column(name = "direction", length = 20)
+	private String direction;
+
+	@Column(name = "deleted", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
 	private Boolean deleted = false;
-
-	@Column(name = "count", nullable = false)
-	private Integer count;
 
 	@CreatedDate
 	@Column(name = "created_at", nullable = false, updatable = false)
@@ -64,29 +65,21 @@ public class ProfileEntity {
 	private LocalDateTime updatedAt;
 
 	@Builder
-	public ProfileEntity(AccountEntity account, String nickname, CallSign callSign) {
-		this.account = account;
-		this.nickname = nickname;
-		this.callSign = callSign;
-		this.count = 0;
+	public BusEntity(ProfileEntity profile, Integer routeId, String route, Integer stationId, String station, String direction) {
+		this.profile = profile;
+		this.routeId = routeId;
+		this.route = route;
+		this.stationId = stationId;
+		this.station = station;
+		this.direction = direction;
+		this.deleted = false;
 	}
 
 	public void delete() {
 		this.deleted = true;
 	}
 
-	public void changeNickname(String nickname) {
-		this.nickname = nickname;
+	public void restore() {
+		this.deleted = false;
 	}
-
-	public void changeCallSign(CallSign callSign) {
-		this.callSign = callSign;
-	}
-
-	public void decreaseTransportationCount() {
-		if (this.count > 0) {
-			this.count--;
-		}
-	}
-
 }
