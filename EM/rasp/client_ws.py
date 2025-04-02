@@ -227,8 +227,8 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
                         print(f"오디오 스트리밍 진행 중: {duration:.1f}초, 전송된 데이터: {total_bytes_sent/1024:.1f}KB")
                         last_report_time = current_time
 
-                    # 최대 10초간 스트리밍
-                    if time.time() - start_time > 10:
+                    # 최대 20초간 스트리밍
+                    if time.time() - start_time > 20:
                         # 종료 알림 전송
                         await websocket.send("STREAMING_END")
                         streaming = False
