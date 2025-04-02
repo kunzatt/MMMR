@@ -38,8 +38,8 @@ WS_PORT = int(os.getenv("WS_PORT", "8765"))
 
 # TTS 파일 경로
 TTS_DIR = "./tts_files"
-MIMI_TTS_FILES = ["do_not_understand_female.wav", "success_female.wav", "iot_female.wav", "fault_female.wav"]
-HAETAE_TTS_FILES = ["do_not_understand_male.wav", "success_male.wav", "iot_male.wav", "fault_male.wav"]
+MIMI_TTS_FILES = ["do_not_understand_female.wav", "success_female.wav", "iot_female.wav", "fault_female.wav", "process_fault_female.wav"]
+HAETAE_TTS_FILES = ["do_not_understand_male.wav", "success_male.wav", "iot_male.wav", "fault_male.wav", "process_fault_male.wav"]
 
 # 민감도 설정
 SENSITIVITIES = [0.7, 0.7]
@@ -287,7 +287,7 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
                                 print("인식을 실패하였습니다.")
                                 play_tts_file(detected_keyword, 3)
                                 return True
-                        if json_result["result"] in ["1", "2"]:
+                        if json_result["result"] in ["1", "2", "4"]:
                             play_tts_file(detected_keyword, int(json_result["result"]))
                         else:
                             gender = "female" if detected_keyword == "미미" else "male"
