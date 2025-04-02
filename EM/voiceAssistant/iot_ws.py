@@ -5,6 +5,9 @@ from websockets.server import serve
 import logging
 import data_processor
 import re
+import queue
+
+message_queue = queue.Queue()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -24,6 +27,15 @@ class WebSocketServer:
         
         # 클라이언트 정보 매핑 (websocket -> info)
         self.client_info = {}  # 클라이언트 정보 저장
+        self.access_token = None
+        self.refresh_token = None
+
+        self.message_queue = message_queue
+    
+    def update_tokens(self, access_token, refresh_token):
+        self.access_token = access_token
+        self.refresh_token = refresh_token
+        logger.info(f"토큰 업데이트: access_token={access_token}, refresh_token={refresh_token}")
     
     async def handle_connection(self, websocket):
         # 클라이언트 추가
@@ -58,6 +70,7 @@ class WebSocketServer:
                 
             logger.info(f"연결 종료: {client_ip}")
     
+
     async def process_message(self, websocket, message):
         client_ip = websocket.remote_address[0]
         logger.info(f"{client_ip}로부터 수신: {message}")
@@ -98,8 +111,15 @@ class WebSocketServer:
                         "status": "error",
                         "message": "client_type 필드가 없습니다"
                     })
-            
-            # 그 외 모든 메시지는 원본 그대로 반환 (에코)
+            elif "type" in data and data["type"] == "message":
+                # 메시지 처리 (주행 클라이언트에 전송)
+                if websocket in self.navigation_clients:
+                    
+                    return json.dumps({
+                        "type": "message_response",
+                        "status": "success",
+                        "message": "주행 클라이언트에 메시지 전송됨"
+                    })            
             return message
             
         except json.JSONDecodeError:
@@ -145,7 +165,7 @@ class WebSocketServer:
             return_exceptions=True
         )
     
-    async def send_to_iot(self, message, access_token, refresh_token):
+    async def send_to_iot(self, message):
         if not self.iot_clients:
             logger.warning("연결된 IoT 클라이언트가 없습니다")
             return
@@ -163,7 +183,7 @@ class WebSocketServer:
             data = message.get("contents", {}).get("data", "")
             if data:
                 # 지원하는 기기 목록
-                devices_response, new_tokens = data_processor.getDevices(access_token, refresh_token)
+                devices_response, new_tokens = data_processor.getDevices(self.access_token, self.refresh_token)
                 supported_devices = []
                 device_id_map = {}
                 if devices_response and "data" in devices_response:
@@ -245,11 +265,11 @@ class WebSocketServer:
         else:
             logger.info(f"주행 메시지 전송됨: {json.dumps(message)}")
     
-    def send_iot_message(self, message, access_token, refresh_token):
+    def send_iot_message(self, message):
         loop = asyncio.get_event_loop()
         if loop.is_running():
             # 이미 실행 중인 이벤트 루프가 있다면 새 태스크로 추가
-            asyncio.create_task(self.send_to_iot(message, access_token, refresh_token))
+            asyncio.create_task(self.send_to_iot(message))
         else:
             # 이벤트 루프가 실행 중이 아니라면 새로 실행
             loop.run_until_complete(self.send_to_iot(message))

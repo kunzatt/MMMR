@@ -14,8 +14,11 @@ import data_processor
 from google.cloud import speech
 from iot_ws import WebSocketServer
 import threading
+import queue
 
 process_semaphore = asyncio.Semaphore(5)
+
+message_queue = queue.Queue()
 
 # 로깅 설정
 logging.basicConfig(
@@ -600,6 +603,8 @@ async def websocket_endpoint(websocket: WebSocket):
             if new_tokens:
                 app.state.access_token = new_tokens["access_token"]
                 app.state.refresh_token = new_tokens["refresh_token"]
+                iot_ws.update_tokens(new_tokens["access_token"], new_tokens["refresh_token"])
+            processor.reset()
            
         else:
             logger.warning("오디오가 너무 짧아 처리하지 않습니다.")
@@ -628,13 +633,15 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    tokens = data_processor.login()
-    iot_ws = WebSocketServer()
+    tokens = data_processor.login()    
+    iot_ws = WebSocketServer(message_queue=message_queue)
     iot_ws_thread = threading.Thread(target=iot_ws.start, daemon=True)
     iot_ws_thread.start()
+    
     if tokens:
         app.state.access_token = tokens["access_token"]
         app.state.refresh_token = tokens['refresh_token']
+        iot_ws.update_tokens(tokens["access_token"], tokens["refresh_token"])
     else:
         access_token = None
         refresh_token = None
