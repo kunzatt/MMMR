@@ -171,202 +171,202 @@ ApplicationWindow {
     }
 
     // 🔹 창 크기 조절 핫존 설정 🔹
-        // 상단
-        Rectangle {
-            width: parent.width - 20
-            height: 10
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            opacity: 0
-            z: 3
+    // 상단
+    Rectangle {
+        width: parent.width - 20
+        height: 10
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        opacity: 0
+        z: 3
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.SizeVerCursor
-                onPressed: main_window.startSystemResize(Qt.TopEdge)
-            }
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.SizeVerCursor
+            onPressed: main_window.startSystemResize(Qt.TopEdge)
         }
+    }
 
-        // 하단
-        Rectangle {
-            width: parent.width - 20
-            height: 5
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            opacity: 0
-            z: 3
+    // 하단
+    Rectangle {
+        width: parent.width - 20
+        height: 5
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        opacity: 0
+        z: 3
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.SizeVerCursor
-                onPressed: main_window.startSystemResize(Qt.BottomEdge)
-            }
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.SizeVerCursor
+            onPressed: main_window.startSystemResize(Qt.BottomEdge)
         }
+    }
 
-        // 좌측
-        Rectangle {
-            width: 5
-            height: parent.height - 20
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            opacity: 0
-            z: 3
+    // 좌측
+    Rectangle {
+        width: 5
+        height: parent.height - 20
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        opacity: 0
+        z: 3
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.SizeHorCursor
-                onPressed: main_window.startSystemResize(Qt.LeftEdge)
-            }
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.SizeHorCursor
+            onPressed: main_window.startSystemResize(Qt.LeftEdge)
         }
+    }
 
-        // 우측
-        Rectangle {
-            width: 5
-            height: parent.height - 20
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            opacity: 0
-            z: 3
+    // 우측
+    Rectangle {
+        width: 5
+        height: parent.height - 20
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        opacity: 0
+        z: 3
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.SizeHorCursor
-                onPressed: main_window.startSystemResize(Qt.RightEdge)
-            }
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.SizeHorCursor
+            onPressed: main_window.startSystemResize(Qt.RightEdge)
         }
+    }
 
-        // 🔹 모서리 크기 조절 (커스텀 처리)
-        Rectangle {
-            width: 5; height: 5; anchors.bottom: parent.bottom; anchors.right: parent.right; opacity: 0; z: 3;
-            MouseArea {
-                id: bottomRightCorner
-                anchors.fill: parent
-                cursorShape: Qt.SizeFDiagCursor
+    // 🔹 모서리 크기 조절 (커스텀 처리)
+    Rectangle {
+        width: 5; height: 5; anchors.bottom: parent.bottom; anchors.right: parent.right; opacity: 0; z: 3;
+        MouseArea {
+            id: bottomRightCorner
+            anchors.fill: parent
+            cursorShape: Qt.SizeFDiagCursor
 
-                property bool resizing: false
-                property real startX
-                property real startY
+            property bool resizing: false
+            property real startX
+            property real startY
 
-                onPressed: {
-                    resizing = true
-                    startX = mouseX
-                    startY = mouseY
-                }
-
-                onReleased: {
-                    resizing = false
-                }
-
-                onPositionChanged: {
-                    if (resizing) {
-                        let dx = mouseX - startX
-                        let dy = mouseY - startY
-                        main_window.width += dx
-                        main_window.height += dy
-                    }
-                }
+            onPressed: {
+                resizing = true
+                startX = mouseX
+                startY = mouseY
             }
-        }
 
-        Rectangle {
-            width: 5; height: 5; anchors.top: parent.top; anchors.right: parent.right; opacity: 0; z: 3;
-            MouseArea {
-                id: topRightCorner
-                anchors.fill: parent
-                cursorShape: Qt.SizeBDiagCursor
+            onReleased: {
+                resizing = false
+            }
 
-                property bool resizing: false
-                property real startX
-                property real startY
-
-                onPressed: {
-                    resizing = true
-                    startX = mouseX
-                    startY = mouseY
-                }
-
-                onReleased: {
-                    resizing = false
-                }
-
-                onPositionChanged: {
-                    if (resizing) {
-                        let dx = mouseX - startX
-                        let dy = mouseY - startY
-                        main_window.width += dx
-                        main_window.y += dy
-                        main_window.height -= dy
-                    }
+            onPositionChanged: {
+                if (resizing) {
+                    let dx = mouseX - startX
+                    let dy = mouseY - startY
+                    main_window.width += dx
+                    main_window.height += dy
                 }
             }
         }
+    }
 
-        Rectangle {
-            width: 5; height: 5; anchors.bottom: parent.bottom; anchors.left: parent.left; opacity: 0; z: 3;
-            MouseArea {
-                id: bottomLeftCorner
-                anchors.fill: parent
-                cursorShape: Qt.SizeBDiagCursor
+    Rectangle {
+        width: 5; height: 5; anchors.top: parent.top; anchors.right: parent.right; opacity: 0; z: 3;
+        MouseArea {
+            id: topRightCorner
+            anchors.fill: parent
+            cursorShape: Qt.SizeBDiagCursor
 
-                property bool resizing: false
-                property real startX
-                property real startY
+            property bool resizing: false
+            property real startX
+            property real startY
 
-                onPressed: {
-                    resizing = true
-                    startX = mouseX
-                    startY = mouseY
-                }
+            onPressed: {
+                resizing = true
+                startX = mouseX
+                startY = mouseY
+            }
 
-                onReleased: {
-                    resizing = false
-                }
+            onReleased: {
+                resizing = false
+            }
 
-                onPositionChanged: {
-                    if (resizing) {
-                        let dx = mouseX - startX
-                        let dy = mouseY - startY
-                        main_window.x += dx
-                        main_window.width -= dx
-                        main_window.height += dy
-                    }
+            onPositionChanged: {
+                if (resizing) {
+                    let dx = mouseX - startX
+                    let dy = mouseY - startY
+                    main_window.width += dx
+                    main_window.y += dy
+                    main_window.height -= dy
                 }
             }
         }
+    }
 
-        Rectangle {
-            width: 5; height: 5; anchors.top: parent.top; anchors.left: parent.left; opacity: 0; z: 3;
-            MouseArea {
-                id: topLeftCorner
-                anchors.fill: parent
-                cursorShape: Qt.SizeFDiagCursor
+    Rectangle {
+        width: 5; height: 5; anchors.bottom: parent.bottom; anchors.left: parent.left; opacity: 0; z: 3;
+        MouseArea {
+            id: bottomLeftCorner
+            anchors.fill: parent
+            cursorShape: Qt.SizeBDiagCursor
 
-                property bool resizing: false
-                property real startX
-                property real startY
+            property bool resizing: false
+            property real startX
+            property real startY
 
-                onPressed: {
-                    resizing = true
-                    startX = mouseX
-                    startY = mouseY
-                }
+            onPressed: {
+                resizing = true
+                startX = mouseX
+                startY = mouseY
+            }
 
-                onReleased: {
-                    resizing = false
-                }
+            onReleased: {
+                resizing = false
+            }
 
-                onPositionChanged: {
-                    if (resizing) {
-                        let dx = mouseX - startX
-                        let dy = mouseY - startY
-                        main_window.x += dx
-                        main_window.width -= dx
-                        main_window.y += dy
-                        main_window.height -= dy
-                    }
+            onPositionChanged: {
+                if (resizing) {
+                    let dx = mouseX - startX
+                    let dy = mouseY - startY
+                    main_window.x += dx
+                    main_window.width -= dx
+                    main_window.height += dy
                 }
             }
         }
+    }
+
+    Rectangle {
+        width: 5; height: 5; anchors.top: parent.top; anchors.left: parent.left; opacity: 0; z: 3;
+        MouseArea {
+            id: topLeftCorner
+            anchors.fill: parent
+            cursorShape: Qt.SizeFDiagCursor
+
+            property bool resizing: false
+            property real startX
+            property real startY
+
+            onPressed: {
+                resizing = true
+                startX = mouseX
+                startY = mouseY
+            }
+
+            onReleased: {
+                resizing = false
+            }
+
+            onPositionChanged: {
+                if (resizing) {
+                    let dx = mouseX - startX
+                    let dy = mouseY - startY
+                    main_window.x += dx
+                    main_window.width -= dx
+                    main_window.y += dy
+                    main_window.height -= dy
+                }
+            }
+        }
+    }
 
     /* WebSocket connection */
     WebSocket {
@@ -646,18 +646,20 @@ ApplicationWindow {
 
             ColumnLayout {
                 spacing: 30
-                width: 500
                 Layout.alignment: Qt.AlignHCenter
-
-                Text {
-                    text: Qt.formatDate(new Date(), "☀️ yyyy.MM.dd (ddd)");
-                    font.pointSize: 30
-                    font.bold: true
-                    font.family: main_text.font.family
-                    color: "#ddd"
-                }
+                Layout.maximumWidth: 450
+                Layout.maximumHeight: 300
+                Layout.leftMargin: 40
 
                 ColumnLayout {
+                    Text {
+                        text: Qt.formatDate(new Date(), "☀️ yyyy.MM.dd (ddd)");
+                        font.pointSize: 30
+                        font.bold: true
+                        font.family: main_text.font.family
+                        color: "#ddd"
+                    }
+
                     Text {
                         text: "Smarthome Info"
                         color: main_text.color
@@ -686,6 +688,114 @@ ApplicationWindow {
                         font.family: main_text.font.family
                     }
 
+                    TabBar {
+                        id: bar
+                        width: parent.width
+                        Layout.maximumHeight: 40
+                        Layout.topMargin: 20
+                        font.family: main_text.font.family
+
+                        TabButton {
+                            width: 100
+                            height: parent.height
+                            text: qsTr("Air Conditioner")
+                            font.pointSize: 10
+                        }
+
+                        TabButton {
+                            width: 100
+                            height: parent.height
+                            text: qsTr("Air Purifier")
+                            font.pointSize: 10
+                        }
+
+                        TabButton {
+                            width: 100
+                            height: parent.height
+                            text: qsTr("TV")
+                            font.pointSize: 10
+                        }
+                    }
+
+                    StackLayout {
+                        width: parent.width
+                        Layout.topMargin: 10
+                        Layout.maximumHeight: 150
+                        currentIndex: bar.currentIndex
+
+                        Item {
+                            id: homeTab
+
+                            ColumnLayout {
+                                spacing: 3
+
+                                Label {
+                                    text: "🟢 ON"
+                                    color: main_text.color
+                                    font.pointSize: 12
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    text: "🌡️ 27℃   →   ❄️ 24℃"
+                                    color: main_text.color
+                                    font.pointSize: 12
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    text: "⏰ 1H"
+                                    color: main_text.color
+                                    font.pointSize: 12
+                                    font.family: main_text.font.family
+                                }
+                            }
+
+
+                        }
+                        Item {
+                            id: discoverTab
+
+                            ColumnLayout {
+                                spacing: 3
+
+                                Label {
+                                    text: "🟢 ON"
+                                    color: main_text.color
+                                    font.pointSize: 12
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    text: "⏰ 1H"
+                                    color: main_text.color
+                                    font.pointSize: 12
+                                    font.family: main_text.font.family
+                                }
+                            }
+                        }
+                        Item {
+                            id: activityTab
+
+                            ColumnLayout {
+                                spacing: 3
+
+                                Label {
+                                    text: "● ON"
+                                    color: main_text.color
+                                    font.pointSize: 12
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    text: "🔉 50"
+                                    color: main_text.color
+                                    font.pointSize: 12
+                                    font.family: main_text.font.family
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
