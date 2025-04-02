@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ChangePassword from "@/components/changePassword";
 import DeleteAccount from "@/components/deleteAccount";
+import API_ROUTES from "@/config/apiRoutes";
 
 export default function Setting() {
     const router = useRouter();
@@ -22,6 +23,94 @@ export default function Setting() {
             }
         }
     }, [router]);
+
+    const getTokens = async () => {
+        let accessToken = localStorage.getItem("accessToken");
+        const refreshToken = localStorage.getItem("refreshToken");
+
+        if (!accessToken) {
+            router.push("/login");
+            return null;
+        }
+
+        try {
+            const validateResponse = await fetch(API_ROUTES.auth.validate, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify({ token: accessToken }),
+            });
+
+            if (!validateResponse.ok && refreshToken) {
+                const refreshResponse = await fetch(API_ROUTES.auth.refresh, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${accessToken}`,
+                    },
+                    body: JSON.stringify({ token: refreshToken }),
+                });
+
+                const refreshData = await refreshResponse.json();
+                if (refreshResponse.ok && refreshData.data?.accessToken) {
+                    accessToken = refreshData.data.accessToken;
+                    localStorage.setItem("accessToken", accessToken!);
+                    return accessToken;
+                } else {
+                    localStorage.removeItem("accessToken");
+                    localStorage.removeItem("refreshToken");
+                    router.push("/login");
+                    return null;
+                }
+            }
+
+            return accessToken;
+        } catch (error) {
+            console.error("토큰 검증 오류:", error);
+            return null;
+        }
+    };
+
+    const logout = async () => {
+        const accessToken = await getTokens();
+
+        if (!accessToken) {
+            alert("이미 로그아웃된 상태입니다.");
+            router.push("/login");
+            return;
+        }
+
+        try {
+            const response = await fetch(API_ROUTES.auth.logout, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify({ token: accessToken }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.message || "로그아웃 성공");
+
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                localStorage.removeItem("currentProfile");
+
+                router.push("/login");
+            } else {
+                alert(data.message || "로그아웃 실패");
+                console.error("로그아웃 실패:", data);
+            }
+        } catch (err) {
+            console.error("로그아웃 오류:", err);
+            alert("서버 오류가 발생했습니다.");
+        }
+    };
 
     return (
         <div className="flex-1 w-full flex h-full items-center justify-center relative">
@@ -45,6 +134,9 @@ export default function Setting() {
                         onClick={() => setShowDeleteAccountModal(true)}
                     >
                         회원 탈퇴
+                    </button>
+                    <button className="w-full bg-blue-100 text-gray-600 py-2 px-4 rounded-full" onClick={logout}>
+                        로그아웃
                     </button>
                 </div>
             </div>

@@ -72,12 +72,12 @@ export default function DeleteAccount({ onClose }: DeleteAccountProps) {
         if (!accessToken) return;
         // 여기서 API 호출로 회원 탈퇴 요청을 보냅니다.
         try {
-            const response = await fetch("/api/accounts/delete", {
+            const response = await fetch(API_ROUTES.accounts.signUp, {
                 // API 경로 확인 필요
                 method: "DELETE",
                 headers: {
-                    "Content-Type": "application/json",
                     "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ password }),
             });
