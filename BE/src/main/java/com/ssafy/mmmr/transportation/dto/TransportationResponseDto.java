@@ -9,7 +9,7 @@ public class TransportationResponseDto {
 
 	private String station;
 
-	private String sequence;
+	private String direction;
 
 	private String number;
 

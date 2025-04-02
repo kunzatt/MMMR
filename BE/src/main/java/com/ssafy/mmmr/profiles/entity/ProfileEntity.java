@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.mmmr.account.entity.AccountEntity;
 
 import jakarta.persistence.Column;
@@ -38,6 +39,7 @@ public class ProfileEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id", nullable = false)
+	@JsonIgnore
 	private AccountEntity account;
 
 	@Column(name = "nickname", nullable = false, length = 20)
@@ -79,6 +81,12 @@ public class ProfileEntity {
 
 	public void changeCallSign(CallSign callSign) {
 		this.callSign = callSign;
+	}
+
+	public void decreaseTransportationCount() {
+		if (this.count > 0) {
+			this.count--;
+		}
 	}
 
 }

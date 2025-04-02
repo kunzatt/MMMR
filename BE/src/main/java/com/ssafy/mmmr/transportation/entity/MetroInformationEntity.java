@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "metro_information")
+@Table(name = "metro_informations")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MetroInformationEntity {
@@ -23,6 +23,6 @@ public class MetroInformationEntity {
 	@Column(name = "line_number", nullable = false)
 	private String lineNumber;
 
-	@Column(name = "station_number", nullable = false)
+	@Column(name = "station_name", nullable = false)
 	private String stationName;
 }

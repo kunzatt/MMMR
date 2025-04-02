@@ -67,6 +67,9 @@ public enum ErrorCode {
 	METRO_NOT_FOUND(400, "해당 지하철 노선을 찾을 수 없습니다."),
 	INVALID_STATION_NAME(400, "적절한 역 혹은 정거장 이름이 아닙니다"),
 	INVALID_LINE_NUMBER(400, "잘못된 호선 입력값입니다."),
+	INVALID_TRANSPORTATION_TYPE(400, "유효하지 않은 대중교통 유형입니다."),
+	INVALID_BUS_INFORMATION(400, "유효하지 않은 버스 정보입니다."),
+	INVALID_METRO_INFORMATION(400, "유효하지 않은 지하철 정보입니다."),
 
 	// News
 	NEWS_FETCH_FAILED(500, "뉴스 조회에 실패했습니다. 다시 시도해주세요."),
