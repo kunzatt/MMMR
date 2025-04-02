@@ -18,6 +18,9 @@ class FollowTheCarrot(Node):
         self.status_sub = self.create_subscription(TurtlebotStatus, '/turtlebot_status', self.status_callback, 10)
         self.path_sub = self.create_subscription(Path, '/local_path', self.path_callback, 10)
         
+        #도착 후 좌표 값 전송
+        self.coordinate_pub = self.create_publisher(Point,'/navigation_coordinates',10)
+        
         #도착 후 목표 방향 전송
         self.rotate_pub = self.create_publisher(PoseStamped,'/rotation',10)
         
@@ -43,6 +46,15 @@ class FollowTheCarrot(Node):
         self.cmd_msg = Twist()
         self.goal_pose = None
         self.rotate_msg = PoseStamped()
+        self.point_msg = Point()
+
+        #좌표 변환을 위한 맵 정보
+        self.map_size_x=350
+        self.map_size_y=350
+        self.map_resolution=0.05
+        self.map_offset_x=-8-8.75
+        self.map_offset_y=-4-8.75
+        self.GRIDSIZE=350 
 
         # 파라미터 설정
         self.lfd = 0.1  # 전방 주시 거리 (look forward distance)
@@ -50,7 +62,7 @@ class FollowTheCarrot(Node):
         self.max_lfd = 1.0
         
         # 목표 도달 허용 오차 (미터)
-        self.goal_tolerance = 0.2
+        self.goal_tolerance = 0.1
 
         # 로봇 위치 변수 초기화 (오류 방지)
         self.robot_pose_x = 0.0
@@ -65,8 +77,14 @@ class FollowTheCarrot(Node):
         self.tracking_enabled = True
         self.get_logger().info('New goal received')
 
+    #odometry 값을 grid 좌표 값으로 변환 함수수
+    def pose_to_grid_cell(self,x,y):
+        map_point_x = int((x - self.map_offset_x) / self.map_resolution)
+        map_point_y = int((y - self.map_offset_y) / self.map_resolution)
+        return map_point_x,map_point_y
+
+    #목표 지점 도달 여부 확인
     def check_goal_reached(self):
-        """목표 지점 도달 여부 확인"""
         if not self.is_goal or self.goal_pose is None:
             return False
         
@@ -94,6 +112,10 @@ class FollowTheCarrot(Node):
     def timer_callback(self):
         # 목표 지점 도달 확인
         if self.check_goal_reached():
+            # 로봇 정지
+            self.cmd_msg.linear.x = 0.0
+            self.cmd_msg.angular.z = 0.0
+            self.goal_pose = None
             # 목표 지점 도달 후 회전 msg publish
             self.rotate_pub.publish(self.rotate_msg)
             self.get_logger().info(f"Published rotate_pub")
@@ -101,6 +123,14 @@ class FollowTheCarrot(Node):
             self.cmd_msg.linear.x = 0.0
             self.cmd_msg.angular.z = 0.0
             self.cmd_pub.publish(self.cmd_msg)
+
+            #도착한 현재 좌표 변환환
+            now_cell = self.pose_to_grid_cell(self.robot_pose_x, self.robot_pose_y)
+            self.point_msg.x = float(now_cell[0]) #point 메세지에는 float 형식의 값이 들어가야함
+            self.point_msg.y = float(350-now_cell[1])
+            print(self.point_msg)
+            self.coordinate_pub.publish(self.point_msg)
+            self.get_logger().info(f"Published goal coordinate")
             return
 
         # 기존의 데이터 수신 및 추적 로직 
@@ -196,13 +226,13 @@ class FollowTheCarrot(Node):
         )
         _, _, self.robot_yaw = q.to_euler()
 
+    #경로 메시지 업데이트
     def path_callback(self, msg):
-        """경로 메시지 업데이트"""
         self.is_path = True
         self.path_msg = msg
 
+    #로봇 상태 메시지 업데이트
     def status_callback(self, msg):
-        """로봇 상태 메시지 업데이트"""
         self.is_status = True
         self.status_msg = msg
 
