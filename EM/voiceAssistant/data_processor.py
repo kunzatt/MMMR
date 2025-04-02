@@ -205,9 +205,9 @@ def getWeather(access_token, refresh_token=None):
         logger.error(f"날씨 처리 중 오류: {e}")
         return None, None
 
-def getNews(access_token, refresh_token=None, id=0):
+def getNews(id, access_token, refresh_token=None):
     try:
-        if id > 5 or id < 0:
+        if id > 5 or id <= 0:
             logger.error(f"지원하지 않는 뉴스 ID: {id}")
             return None, None
         result = make_authenticated_request(

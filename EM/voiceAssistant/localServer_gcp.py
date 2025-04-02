@@ -452,17 +452,17 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                     if greet_result:
                         json_obj["result"] = greet_result
                     else:
-                        json_obj["result"] = "-1"
+                        json_obj["result"] = "4"
                 elif type == "news" and contents["data"]:
                     news_result, new_tokens = data_processor.getNews(
+                        int(contents["data"]),
                         access_token, 
-                        refresh_token, 
-                        int(contents["data"])
+                        refresh_token
                     )
                     if news_result:
                         json_obj["result"] = news_result
                     else:
-                        json_obj["result"] = "-1"
+                        json_obj["result"] = "4"
                         
                 elif type == "weather":
                     weather_result, new_tokens = data_processor.getWeather(
@@ -472,7 +472,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                     if weather_result:
                         json_obj["result"] = weather_result
                     else:
-                        json_obj["result"] = "-1"
+                        json_obj["result"] = "4"
 
                 elif type == "homecam":
                     if contents["data"]:
@@ -488,7 +488,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                     if schedule_result:
                         json_obj["result"] = schedule_result
                     else:
-                        json_obj["result"] = "-1"
+                        json_obj["result"] = "4"
 
                 elif type == "control":
                     if contents["data"]:
