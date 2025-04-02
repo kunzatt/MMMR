@@ -1,8 +1,8 @@
 // src/config/apiRoutes.ts
 
 // 서버 주소 설정
-//const BASE_URL = "https://j12a703.p.ssafy.io";
-const BASE_URL = "http://70.12.246.80:8088";
+const BASE_URL = "https://j12a703.p.ssafy.io";
+//const BASE_URL = "http://70.12.246.80:8088";
 
 // API 경로 설정
 export const API_ROUTES = {
