@@ -6,6 +6,7 @@ import lombok.Getter;
 public class TransportationSearchRequestDto {
 
 	private String type;
+
 	private String keyword;
 
 }

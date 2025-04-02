@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import com.ssafy.mmmr.account.dto.AuthUser;
 import com.ssafy.mmmr.businformations.entity.BusInformationEntity;
@@ -16,11 +15,11 @@ import com.ssafy.mmmr.global.error.exception.ProfileException;
 import com.ssafy.mmmr.global.error.exception.TransportationException;
 import com.ssafy.mmmr.profiles.entity.ProfileEntity;
 import com.ssafy.mmmr.profiles.repository.ProfileRepository;
+import com.ssafy.mmmr.transportation.client.BusClient;
 import com.ssafy.mmmr.transportation.client.MetroClient;
-import com.ssafy.mmmr.transportation.dto.MetroRequestDto;
+import com.ssafy.mmmr.transportation.dto.TransportationProfileResponseDto;
 import com.ssafy.mmmr.transportation.dto.TransportationRequestDto;
 import com.ssafy.mmmr.transportation.dto.TransportationResponseDto;
-import com.ssafy.mmmr.transportation.dto.TransportationSearchRequestDto;
 import com.ssafy.mmmr.transportation.dto.TransportationSearchResponseDto;
 import com.ssafy.mmmr.transportation.entity.BusEntity;
 import com.ssafy.mmmr.transportation.entity.MetroEntity;
@@ -40,12 +39,12 @@ public class TransportationService {
 	private final ProfileRepository profileRepository;
 	private final MetroInformationRepository metroInformationRepository;
 	private final BusInformationRepository busInformationRepository;
-	private final RestTemplate restTemplate;
+	private final MetroClient metroClient;
+	private final BusClient busClient;
 
 	public List<TransportationSearchResponseDto> searchTransportation(String type, String keyword) {
 		List<TransportationSearchResponseDto> results = new ArrayList<>();
 
-		// type이 ALL 또는 BUS인 경우 버스 정보 검색
 		if ("ALL".equalsIgnoreCase(type) || "BUS".equalsIgnoreCase(type)) {
 			List<BusInformationEntity> busResults = busInformationRepository.searchByKeyword(keyword);
 
@@ -55,19 +54,18 @@ public class TransportationService {
 					.station(bus.getStation())
 					.sequence(String.valueOf(bus.getSequence()))
 					.number(bus.getRoute())
-					.information("정류장ID: " + bus.getStationId() + ", 노선ID: " + bus.getRouteId())
+					.information("stationId: " + bus.getStationId() + ", routeId: " + bus.getRouteId())
 					.build())
 				.collect(Collectors.toList()));
 		}
 
-		// type이 ALL 또는 METRO인 경우 지하철 정보 검색
 		if ("ALL".equalsIgnoreCase(type) || "METRO".equalsIgnoreCase(type)) {
 			List<MetroInformationEntity> metroResults = metroInformationRepository.searchByKeyword(keyword);
 
 			results.addAll(metroResults.stream()
 				.map(metro -> TransportationSearchResponseDto.builder()
 					.type("METRO")
-					.station(metro.getStationName())
+					.station(metro.getStationName() + "역")
 					.sequence("")
 					.number(metro.getLineNumber())
 					.information("지하철 " + metro.getLineNumber())
@@ -80,21 +78,17 @@ public class TransportationService {
 
 	@Transactional
 	public Object addTransportation(TransportationRequestDto requestDto, AuthUser authUser) {
-		// 1. 요청된 프로필 조회
 		ProfileEntity profile = profileRepository.findById(requestDto.getProfileId())
 			.orElseThrow(() -> new ProfileException(ErrorCode.PROFILE_NOT_FOUND));
 
-		// 2. 해당 프로필이 현재 사용자의 계정에 속하는지 검증
 		if (!profile.getAccount().getEmail().equals(authUser.getEmail())) {
 			throw new ProfileException(ErrorCode.UNAUTHORIZED);
 		}
 
-		// 3. 프로필당 최대 3개의 대중교통 정보만 허용
 		if (profile.getCount() >= 3) {
 			throw new TransportationException(ErrorCode.MORE_THAN_THREE_TRANSPORTATION);
 		}
 
-		// 4. 타입에 따라 버스 또는 지하철 정보 추가
 		if ("BUS".equalsIgnoreCase(requestDto.getType())) {
 			return addBus(profile, requestDto);
 		} else if ("METRO".equalsIgnoreCase(requestDto.getType())) {
@@ -105,27 +99,23 @@ public class TransportationService {
 	}
 
 	private BusEntity addBus(ProfileEntity profile, TransportationRequestDto requestDto) {
-		// 버스 정보 유효성 검사
 		if (requestDto.getNumber() == null || requestDto.getStation() == null ||
 			requestDto.getRouteId() == null || requestDto.getStationId() == null) {
 			throw new TransportationException(ErrorCode.INVALID_BUS_INFORMATION);
 		}
 
-		// 현재 버스 정보 조회 - routeId와 stationId로 명확하게 식별
 		BusInformationEntity currentBusInfo = busInformationRepository
 			.findByRouteIdAndStationId(
 				requestDto.getRouteId(),
 				requestDto.getStationId())
 			.orElseThrow(() -> new TransportationException(ErrorCode.INVALID_BUS_INFORMATION));
 
-		// 다음 정거장 정보 조회 - 현재 정거장의 sequence + 1인 정거장 찾기
 		BusInformationEntity nextBusInfo = busInformationRepository
 			.findByRouteIdAndSequence(
 				requestDto.getRouteId(),
 				currentBusInfo.getSequence() + 1)
 			.orElse(null);
 
-		// direction 자동 설정
 		String direction = nextBusInfo != null ? nextBusInfo.getStation() : "종점";
 
 		BusEntity busEntity = BusEntity.builder()
@@ -145,7 +135,8 @@ public class TransportationService {
 			throw new TransportationException(ErrorCode.INVALID_METRO_INFORMATION);
 		}
 
-		// QueryDsl을 사용한 유연한 검색
+		String stationName = requestDto.getStation() + "역";
+
 		MetroInformationEntity metroInfo = metroInformationRepository
 			.findByFlexibleLineNumberAndStationName(requestDto.getNumber(), requestDto.getStation())
 			.orElseThrow(() -> new TransportationException(ErrorCode.INVALID_STATION_NAME));
@@ -157,7 +148,7 @@ public class TransportationService {
 		MetroEntity metroEntity = MetroEntity.builder()
 			.profile(profile)
 			.line(lineNumber)
-			.station(requestDto.getStation())
+			.station(stationName)
 			.build();
 
 		return metroRepository.save(metroEntity);
@@ -178,16 +169,13 @@ public class TransportationService {
 		BusEntity bus = busRepository.findByIdAndDeletedFalse(busId)
 			.orElseThrow(() -> new TransportationException(ErrorCode.INVALID_BUS_INFORMATION));
 
-		// 해당 프로필이 현재 사용자의 계정에 속하는지 검증
 		if (!bus.getProfile().getAccount().getEmail().equals(authUser.getEmail())) {
 			throw new ProfileException(ErrorCode.UNAUTHORIZED);
 		}
 
-		// 버스 삭제
 		bus.delete();
 		busRepository.save(bus);
 
-		// 프로필의 대중교통 count 감소
 		ProfileEntity profile = bus.getProfile();
 		profile.decreaseTransportationCount();
 		profileRepository.save(profile);
@@ -197,18 +185,156 @@ public class TransportationService {
 		MetroEntity metro = metroRepository.findByIdAndDeletedFalse(metroId)
 			.orElseThrow(() -> new TransportationException(ErrorCode.METRO_NOT_FOUND));
 
-		// 해당 프로필이 현재 사용자의 계정에 속하는지 검증
 		if (!metro.getProfile().getAccount().getEmail().equals(authUser.getEmail())) {
 			throw new ProfileException(ErrorCode.UNAUTHORIZED);
 		}
 
-		// 지하철 삭제
 		metro.delete();
 		metroRepository.save(metro);
 
-		// 프로필의 대중교통 count 감소
 		ProfileEntity profile = metro.getProfile();
 		profile.decreaseTransportationCount();
 		profileRepository.save(profile);
+	}
+
+	@Transactional(readOnly = true)
+	public TransportationProfileResponseDto getTransportationsByProfile(Long profileId, AuthUser authUser) {
+		ProfileEntity profile = profileRepository.findById(profileId)
+			.orElseThrow(() -> new ProfileException(ErrorCode.PROFILE_NOT_FOUND));
+
+		if (!profile.getAccount().getEmail().equals(authUser.getEmail())) {
+			throw new ProfileException(ErrorCode.UNAUTHORIZED);
+		}
+
+		List<BusEntity> buses = busRepository.findByProfileIdAndDeletedFalse(profileId);
+
+		List<MetroEntity> metros = metroRepository.findByProfileIdAndDeletedFalse(profileId);
+
+		List<TransportationProfileResponseDto.BusInfo> busInfoList = buses.stream()
+			.map(bus -> TransportationProfileResponseDto.BusInfo.builder()
+				.id(bus.getId())
+				.type("BUS")
+				.route(bus.getRoute())
+				.station(bus.getStation())
+				.routeId(String.valueOf(bus.getRouteId()))
+				.stationId(String.valueOf(bus.getStationId()))
+				.direction(bus.getDirection())
+				.build())
+			.collect(Collectors.toList());
+
+		List<TransportationProfileResponseDto.MetroInfo> metroInfoList = metros.stream()
+			.map(metro -> TransportationProfileResponseDto.MetroInfo.builder()
+				.id(metro.getId())
+				.type("METRO")
+				.line(metro.getLine())
+				.station(metro.getStation())
+				.build())
+			.collect(Collectors.toList());
+
+		return TransportationProfileResponseDto.builder()
+			.buses(busInfoList)
+			.metros(metroInfoList)
+			.totalCount(buses.size() + metros.size())
+			.build();
+	}
+
+	@Transactional(readOnly = true)
+	public List<TransportationResponseDto> getMetroArrivalsByProfile(Long profileId) {
+		List<MetroEntity> savedMetros = metroRepository.findByProfileIdAndDeletedFalse(profileId);
+
+		List<TransportationResponseDto> allArrivals = new ArrayList<>();
+
+		for (MetroEntity metro : savedMetros) {
+			String stationName = metro.getStation();
+			if (stationName.endsWith("역")) {
+				stationName = stationName.substring(0, stationName.length() - 1);
+			}
+
+			List<TransportationResponseDto> stationArrivals = metroClient.getMetroArrivals(stationName, metro.getId());
+
+			String targetLineNumber = metro.getLine() + "호선";
+
+			String mappedLine = mapLineNumber(metro.getLine());
+
+			List<TransportationResponseDto> filteredArrivals = stationArrivals.stream()
+				.filter(arrival -> {
+					return arrival.getNumber().equals(targetLineNumber) ||
+						arrival.getNumber().contains(mappedLine);
+				})
+				.collect(Collectors.toList());
+
+			if (filteredArrivals.isEmpty() && !stationArrivals.isEmpty()) {
+				TransportationResponseDto defaultArrival = TransportationResponseDto.builder()
+					.id(metro.getId())
+					.type("METRO")
+					.number(targetLineNumber)
+					.station(metro.getStation())
+					.direction("정보 없음")
+					.information("현재 도착 정보가 없습니다.")
+					.build();
+
+				allArrivals.add(defaultArrival);
+			} else {
+				allArrivals.addAll(filteredArrivals);
+			}
+		}
+
+		return allArrivals;
+	}
+
+	@Transactional(readOnly = true)
+	public List<TransportationResponseDto> getBusArrivalsByProfile(Long profileId) {
+		List<BusEntity> savedBuses = busRepository.findByProfileIdAndDeletedFalse(profileId);
+
+		List<TransportationResponseDto> allArrivals = new ArrayList<>();
+
+		for (BusEntity bus : savedBuses) {
+			String routeId = String.valueOf(bus.getRouteId());
+			String stationId = String.valueOf(bus.getStationId());
+			String busNumber = bus.getRoute();
+			String stationName = bus.getStation();
+			String direction = bus.getDirection();
+
+			List<TransportationResponseDto> busArrivals = busClient.getBusArrivals(
+				routeId, stationId, busNumber, stationName, direction, bus.getId());
+
+			allArrivals.addAll(busArrivals);
+		}
+
+		return allArrivals;
+	}
+
+	@Transactional(readOnly = true)
+	public List<TransportationResponseDto> getTransportationArrivalsByProfile(Long profileId) {
+		List<TransportationResponseDto> allArrivals = new ArrayList<>();
+
+		List<TransportationResponseDto> metroArrivals = getMetroArrivalsByProfile(profileId);
+		allArrivals.addAll(metroArrivals);
+
+		List<TransportationResponseDto> busArrivals = getBusArrivalsByProfile(profileId);
+		allArrivals.addAll(busArrivals);
+
+		return allArrivals;
+	}
+
+	private String mapLineNumber(Integer lineNumber) {
+		switch (lineNumber) {
+			case 1: return "1호선";
+			case 2: return "2호선";
+			case 3: return "3호선";
+			case 4: return "4호선";
+			case 5: return "5호선";
+			case 6: return "6호선";
+			case 7: return "7호선";
+			case 8: return "8호선";
+			case 9: return "9호선";
+			case 10: return "경의중앙선";
+			case 11: return "공항철도";
+			case 12: return "경춘선";
+			case 13: return "수인분당선";
+			case 14: return "신분당선";
+			case 15: return "우이신설선";
+			default: return lineNumber + "호선";
+		}
 	}
 }

@@ -9,5 +9,9 @@ import com.ssafy.mmmr.profiles.entity.ProfileEntity;
 import com.ssafy.mmmr.transportation.entity.MetroEntity;
 
 public interface MetroRepository extends JpaRepository<MetroEntity, Long> {
+
 	Optional<MetroEntity> findByIdAndDeletedFalse(Long id);
+
+	List<MetroEntity> findByProfileIdAndDeletedFalse(Long profileId);
+
 }
