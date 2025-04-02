@@ -3,6 +3,7 @@ import AddTrans from "@/components/addTrans";
 import API_ROUTES from "@/config/apiRoutes";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { HiOutlineTrash } from "react-icons/hi2";
 
 interface Transportation {
     id: number;
@@ -118,6 +119,27 @@ export default function Trans() {
         }
     };
 
+    const deleteTransportation = async (id: number, type: string) => {
+        const accessToken = await getTokens();
+        if (!accessToken) return;
+
+        try {
+            const res = await fetch(`${API_ROUTES.trans.delete(id)}?type=${type}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${accessToken}` },
+            });
+
+            if (res.ok) {
+                setTransportations((prev) => prev.filter((t) => t.id !== id));
+            } else {
+                const err = await res.json();
+                console.error("삭제 실패:", err);
+            }
+        } catch (err) {
+            console.error("삭제 오류:", err);
+        }
+    };
+
     useEffect(() => {
         if (typeof window !== "undefined") {
             const token = localStorage.getItem("accessToken"); // 'token' -> 'accessToken'으로 수정
@@ -158,14 +180,20 @@ export default function Trans() {
                                 .map((bus) => (
                                     <div
                                         key={bus.id}
-                                        className="flex items-center justify-between px-4 py-2 text-gray-600 bg-blue-100 rounded-2xl mt-2 mb-2"
+                                        className="flex items-center justify-between px-4 py-2 text-gray-600 bg-blue-100 rounded-3xl mt-2 mb-2"
                                     >
                                         <div className="text-xl font-bold ">{bus.route}번</div>
-                                        <div className="flex">
+                                        <div className="flex gap-4">
                                             <div className="flex flex-col items-end">
                                                 <div className="text-md font-semibold">{bus.station}</div>
                                                 <div className="text-xs ">{bus.direction} 방향</div>
                                             </div>
+                                            <button
+                                                onClick={() => deleteTransportation(bus.id, bus.type)}
+                                                className="text-gray-500"
+                                            >
+                                                <HiOutlineTrash size={20} />
+                                            </button>
                                         </div>
                                     </div>
                                 ))}
@@ -177,11 +205,21 @@ export default function Trans() {
                                 .map((metro) => (
                                     <div
                                         key={metro.id}
-                                        className="items-center justify-between px-4 py-2 text-gray-600 bg-blue-100 rounded-2xl mt-2 mb-2"
+                                        className="items-center justify-between px-4 py-2 text-gray-600 bg-blue-100 rounded-3xl mt-2 mb-2"
                                     >
-                                        <div className="text-lg font-bold ">{metro.route}</div>
-                                        <div className="text-sm ">{metro.direction}행</div>
-                                        <div className="text-md ">{metro.station}</div>
+                                        <div className="text-xl font-bold ">{metro.station}</div>
+                                        <div className="flex gap-4">
+                                            <div className="flex flex-col items-end">
+                                                <div className="text-md font-semibold">{metro.route}</div>
+                                                <div className="text-xs ">{metro.direction}행</div>
+                                            </div>
+                                            <button
+                                                onClick={() => deleteTransportation(metro.id, metro.type)}
+                                                className="text-gray-500"
+                                            >
+                                                <HiOutlineTrash size={20} />
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                         </>
