@@ -35,7 +35,7 @@ ApplicationWindow {
         z: 2
 
         gradient: Gradient {
-            GradientStop { position: 0.9; color: "#3f3f3f" }   // 위쪽 색상
+            GradientStop { position: 0.8; color: "#3f3f3f" }   // 위쪽 색상
             GradientStop { position: 1.0; color: "#4a4a4a" }    // 아래쪽 색상
         }
 
@@ -371,8 +371,8 @@ ApplicationWindow {
     /* WebSocket connection */
     WebSocket {
         id: webSocket
-        // url: "ws://70.12.246.31:12345"
-        url: "ws://127.0.0.1:12345"
+        url: "ws://70.12.246.31:12345"
+        //url: "ws://127.0.0.1:12345"
         active: false
 
         onStatusChanged: {
@@ -417,14 +417,22 @@ ApplicationWindow {
             else if (devName === "airConditioner") {
                 livingAirCon.imgId.visible = devData["turned"] === "ON" ? true : false;
                 sw_airConditioner.checked = devData["turned"] === "ON" ? true : false;
+
+                power_airCon.text = devData["turned"] === "ON" ? "🟢 ON" : "🔴 OFF";
+                temp_airCon.text = "🌡️ " + devData["value"] + "℃ → ❄️ 24℃";
             }
             else if (devName === "airPurifier") {
                 livingAirPurifier.imgId.visible = devData["turned"] === "ON" ? true : false;
                 sw_airPurifier.checked = devData["turned"] === "ON" ? true : false;
+
+                power_airPurifier.text = devData["turned"] === "ON" ? "🟢 ON" : "🔴 OFF";
             }
             else if (devName === "TV") {
                 livingTV.imgId.visible = devData["turned"] === "ON" ? true : false;
                 sw_TV.checked = devData["turned"] === "ON" ? true : false;
+
+                power_TV.text = devData["turned"] === "ON" ? "🟢 ON" : "🔴 OFF";
+                volume_TV.text = "🔉 " + devData["value"]
             }
             else if (devName === "curtain") {
                 livingCurtain.imgId.visible = devData["turned"] === "ON" ? true : false;
@@ -717,12 +725,11 @@ ApplicationWindow {
                         currentIndex: bar.currentIndex
 
                         Item {
-                            id: homeTab
-
                             ColumnLayout {
                                 spacing: 3
 
                                 Label {
+                                    id: power_airCon
                                     text: "🟢 ON"
                                     color: main_text.color
                                     font.pointSize: 12
@@ -730,14 +737,8 @@ ApplicationWindow {
                                 }
 
                                 Text {
-                                    text: "🌡️ 27℃   →   ❄️ 24℃"
-                                    color: main_text.color
-                                    font.pointSize: 12
-                                    font.family: main_text.font.family
-                                }
-
-                                Text {
-                                    text: "⏰ 1H"
+                                    id: temp_airCon
+                                    text: "🌡️ 27℃ → ❄️ 24℃"
                                     color: main_text.color
                                     font.pointSize: 12
                                     font.family: main_text.font.family
@@ -747,20 +748,12 @@ ApplicationWindow {
 
                         }
                         Item {
-                            id: discoverTab
-
                             ColumnLayout {
                                 spacing: 3
 
                                 Label {
+                                    id: power_airPurifier
                                     text: "🟢 ON"
-                                    color: main_text.color
-                                    font.pointSize: 12
-                                    font.family: main_text.font.family
-                                }
-
-                                Text {
-                                    text: "⏰ 1H"
                                     color: main_text.color
                                     font.pointSize: 12
                                     font.family: main_text.font.family
@@ -768,12 +761,11 @@ ApplicationWindow {
                             }
                         }
                         Item {
-                            id: activityTab
-
                             ColumnLayout {
                                 spacing: 3
 
                                 Label {
+                                    id: power_TV
                                     text: "🟢 ON"
                                     color: main_text.color
                                     font.pointSize: 12
@@ -781,6 +773,7 @@ ApplicationWindow {
                                 }
 
                                 Text {
+                                    id: volume_TV
                                     text: "🔉 50"
                                     color: main_text.color
                                     font.pointSize: 12
