@@ -34,7 +34,8 @@ export default function SignupPage() {
         setEmailError(""); // 오류 메시지 초기화
 
         try {
-            const response = await fetch(`${API_ROUTES.accounts.emailExists}?email=${email}`);
+            const encodeEmail = encodeURIComponent(email);
+            const response = await fetch(`${API_ROUTES.accounts.emailExists}?email=${encodeEmail}`);
             const data = await response.json();
 
             if (response.ok && !data.data.exists) {
@@ -71,7 +72,6 @@ export default function SignupPage() {
     const handleEmailVerification = async () => {
         try {
             const encodeEmail = encodeURIComponent(email);
-            console.log(encodeEmail);
             const response = await fetch(API_ROUTES.accounts.codeVerification(encodeEmail), {
                 method: "POST",
                 headers: {
