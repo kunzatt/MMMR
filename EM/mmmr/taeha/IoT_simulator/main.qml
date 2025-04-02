@@ -371,8 +371,8 @@ ApplicationWindow {
     /* WebSocket connection */
     WebSocket {
         id: webSocket
-        url: "ws://70.12.246.31:12345"
-        //url: "ws://127.0.0.1:12345"
+        //url: "ws://70.12.246.31:12345"
+        url: "ws://127.0.0.1:12345"
         active: false
 
         onStatusChanged: {
@@ -440,9 +440,6 @@ ApplicationWindow {
     }
 
     /* GUI Layout */
-
-
-
     ColumnLayout {
         id: main_layout
         Layout.alignment: Qt.AlignHCenter
@@ -725,7 +722,7 @@ ApplicationWindow {
 
                                 Label {
                                     id: power_airCon
-                                    text: "🟢 ON"
+                                    text: "🔴 OFF"
                                     color: main_text.color
                                     font.pointSize: 12
                                     font.family: main_text.font.family
@@ -748,7 +745,7 @@ ApplicationWindow {
 
                                 Label {
                                     id: power_airPurifier
-                                    text: "🟢 ON"
+                                    text: "🔴 OFF"
                                     color: main_text.color
                                     font.pointSize: 12
                                     font.family: main_text.font.family
@@ -761,7 +758,7 @@ ApplicationWindow {
 
                                 Label {
                                     id: power_TV
-                                    text: "🟢 ON"
+                                    text: "🔴 OFF"
                                     color: main_text.color
                                     font.pointSize: 12
                                     font.family: main_text.font.family
@@ -982,5 +979,4 @@ ApplicationWindow {
             anchors.centerIn: parent
         }
     }
-
 }
