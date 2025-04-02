@@ -11,6 +11,7 @@ interface Transportation {
     route: string;
     station: string;
     direction?: string;
+    line?: number;
     routeId: string;
     stationId: string;
 }
@@ -30,48 +31,29 @@ export default function Trans() {
         }
 
         try {
-            // 1. 액세스 토큰 유효성 확인
             const validateResponse = await fetch(API_ROUTES.auth.validate, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${refreshToken}`,
+                    "Authorization": `Bearer ${accessToken}`
                 },
-                body: JSON.stringify({ token: accessToken }),
+                body: JSON.stringify({ token: accessToken })
             });
 
-            let validateData = null;
-            if (validateResponse.ok) {
-                const contentType = validateResponse.headers.get("Content-Type");
-                if (contentType && contentType.includes("application/json")) {
-                    validateData = await validateResponse.json();
-                }
-            }
-
-            // 2. 토큰이 만료되었거나 유효하지 않은 경우, 리프레시 토큰으로 새 액세스 토큰 발급
-            if (refreshToken) {
+            if (!validateResponse.ok && refreshToken) {
                 const refreshResponse = await fetch(API_ROUTES.auth.refresh, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${refreshToken}`,
+                        "Authorization": `Bearer ${accessToken}`
                     },
-                    body: JSON.stringify({ token: refreshToken }),
+                    body: JSON.stringify({ token: refreshToken })
                 });
 
-                let refreshData = null;
-                if (refreshResponse.ok) {
-                    const contentType = refreshResponse.headers.get("Content-Type");
-                    if (contentType && contentType.includes("application/json")) {
-                        refreshData = await refreshResponse.json();
-                    }
-                }
-
+                const refreshData = await refreshResponse.json();
                 if (refreshResponse.ok && refreshData.data?.accessToken) {
                     accessToken = refreshData.data.accessToken;
-                    if (accessToken) {
-                        localStorage.setItem("accessToken", accessToken);
-                    }
+                    localStorage.setItem("accessToken", accessToken!);
                     return accessToken;
                 } else {
                     localStorage.removeItem("accessToken");
@@ -79,11 +61,9 @@ export default function Trans() {
                     router.push("/login");
                     return null;
                 }
-            } else {
-                localStorage.removeItem("accessToken");
-                router.push("/login");
-                return null;
             }
+
+            return accessToken;
         } catch (error) {
             console.error("토큰 검증 오류:", error);
             return null;
@@ -103,8 +83,8 @@ export default function Trans() {
         try {
             const res = await fetch(API_ROUTES.trans.listByProfile(profile.id), {
                 headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
+                    Authorization: `Bearer ${accessToken}`
+                }
             });
 
             if (res.ok) {
@@ -126,7 +106,7 @@ export default function Trans() {
         try {
             const res = await fetch(`${API_ROUTES.trans.delete(id)}?type=${type}`, {
                 method: "DELETE",
-                headers: { Authorization: `Bearer ${accessToken}` },
+                headers: { Authorization: `Bearer ${accessToken}` }
             });
 
             if (res.ok) {
@@ -154,6 +134,11 @@ export default function Trans() {
         }
         fetchTransports();
     }, [router]);
+
+    useEffect(() => {
+        fetchTransports();
+        console.log(transportations);
+    }, [showAddTransModal]);
 
     return (
         <div className="flex-1 w-full flex h-full items-center justify-center relative">
@@ -199,20 +184,17 @@ export default function Trans() {
                                 ))}
 
                             {/* 지하철 */}
-                            <h2 className="text-md text-blue-300 font-bold pl-2">지하철</h2>
+                            <h2 className="text-md text-blue-300 font-bold pl-2 mt-4">지하철</h2>
                             {transportations
                                 .filter((item) => item.type === "METRO")
                                 .map((metro) => (
                                     <div
                                         key={metro.id}
-                                        className="items-center justify-between px-4 py-2 text-gray-600 bg-blue-100 rounded-3xl mt-2 mb-2"
+                                        className="flex items-center justify-between px-4 py-3 text-gray-600 bg-blue-100 rounded-3xl mt-2 mb-2"
                                     >
                                         <div className="text-xl font-bold ">{metro.station}</div>
                                         <div className="flex gap-4">
-                                            <div className="flex flex-col items-end">
-                                                <div className="text-md font-semibold">{metro.route}</div>
-                                                <div className="text-xs ">{metro.direction}행</div>
-                                            </div>
+                                            <div className="text-md font-semibold">{metro.line}</div>
                                             <button
                                                 onClick={() => deleteTransportation(metro.id, metro.type)}
                                                 className="text-gray-500"

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImCross } from "react-icons/im";
 import { FiSearch } from "react-icons/fi";
@@ -9,11 +9,11 @@ interface AddTransProps {
     onClose: () => void;
 }
 
-interface Bus {
-    type: string;
+interface Trans {
+    type: "METRO";
     station: string;
     sequence: number;
-    number: number;
+    number: string; // METRO일 때는 string
     information: string;
 }
 
@@ -21,14 +21,14 @@ export default function AddTrans({ onClose }: AddTransProps) {
     const router = useRouter();
 
     const [type, setType] = useState<"BUS" | "METRO">("BUS");
-    const [searchResults, setSearchResults] = useState<Bus[]>([]);
-    const [selectedStation, setSelectedStation] = useState<Bus>(); // 선택된 정류장
 
-    const [busNumbers, setBusNumbers] = useState<Bus[]>([]);
-    const [selectedNumber, setSelectedNumber] = useState<Bus | null>();
+    const [searchResults, setSearchResults] = useState<Trans[]>([]);
+    const [selectedStation, setSelectedStation] = useState<Trans>(); // 선택된 정류장
 
-    const [subwayLines, setSubwayLines] = useState<string[]>(["2호선", "수인분당선"]);
-    const [selectedLine, setSelectedLine] = useState("2호선");
+    const [subwayLines, setSubwayLines] = useState<Trans[]>([]);
+    const [busNumbers, setBusNumbers] = useState<Trans[]>([]);
+    const [selectedNumber, setSelectedNumber] = useState<Trans | null>();
+
     const [searchType, setSearchType] = useState("number"); // 'number' or 'station'
     const [searchKeyword, setSearchKeyword] = useState("");
 
@@ -46,9 +46,9 @@ export default function AddTrans({ onClose }: AddTransProps) {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${accessToken}`,
+                    "Authorization": `Bearer ${accessToken}`
                 },
-                body: JSON.stringify({ token: accessToken }),
+                body: JSON.stringify({ token: accessToken })
             });
 
             if (!validateResponse.ok && refreshToken) {
@@ -56,9 +56,9 @@ export default function AddTrans({ onClose }: AddTransProps) {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${accessToken}`,
+                        "Authorization": `Bearer ${accessToken}`
                     },
-                    body: JSON.stringify({ token: refreshToken }),
+                    body: JSON.stringify({ token: refreshToken })
                 });
 
                 const refreshData = await refreshResponse.json();
@@ -84,6 +84,7 @@ export default function AddTrans({ onClose }: AddTransProps) {
     const handleSearch = async () => {
         setSearchResults([]);
         setBusNumbers([]);
+        setSubwayLines([]);
         const accessToken = await getTokens();
         if (type == "BUS") {
             if (searchType == "number") {
@@ -94,14 +95,14 @@ export default function AddTrans({ onClose }: AddTransProps) {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
-                                "Authorization": `Bearer ${accessToken}`,
-                            },
+                                "Authorization": `Bearer ${accessToken}`
+                            }
                         }
                     );
                     if (response.ok) {
                         const data = await response.json();
-                        const filtered = data.data.filter((item: any) => item.number === searchKeyword);
-                        setSearchResults(filtered.map((item: any) => item));
+                        const filtered = data.data.filter((item: Trans) => item.number === searchKeyword);
+                        setSearchResults(filtered.map((item: Trans) => item));
                     } else {
                         const errorData = await response.json();
                         console.error("추가 실패:", errorData);
@@ -120,15 +121,15 @@ export default function AddTrans({ onClose }: AddTransProps) {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
-                                "Authorization": `Bearer ${accessToken}`,
-                            },
+                                "Authorization": `Bearer ${accessToken}`
+                            }
                         }
                     );
                     if (response.ok) {
                         const data = await response.json();
-                        const filtered = data.data.filter((item: any) => item.station.includes(searchKeyword));
+                        const filtered = data.data.filter((item: Trans) => item.station.includes(searchKeyword));
                         const seen = new Set();
-                        const uniqueStations = filtered.filter((item: any) => {
+                        const uniqueStations = filtered.filter((item: Trans) => {
                             const normalized = item.station.normalize("NFKC").replace(/\s+/g, "").replace(/[․.]/g, "");
                             if (seen.has(normalized)) return false;
                             seen.add(normalized);
@@ -147,7 +148,38 @@ export default function AddTrans({ onClose }: AddTransProps) {
                 }
             }
         } else {
-            // 지하철역 검색 시에도 라인 고정 가능 (필요시 역 조회 API)
+            try {
+                const response = await fetch(
+                    `${API_ROUTES.trans.search}?type=${type}&keyword=${encodeURIComponent(searchKeyword)}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${accessToken}`
+                        }
+                    }
+                );
+                if (response.ok) {
+                    const data = await response.json();
+                    const filtered = data.data.filter((item: Trans) => item.station.includes(searchKeyword));
+                    const seen = new Set();
+                    const uniqueStations = filtered.filter((item: Trans) => {
+                        const normalizedStation = item.station.normalize("NFKC").replace(/\s+/g, "");
+                        if (seen.has(normalizedStation)) return false;
+                        seen.add(normalizedStation);
+                        return true;
+                    });
+
+                    setSearchResults(uniqueStations);
+                } else {
+                    const errorData = await response.json();
+                    console.error("검색 실패:", errorData);
+                    alert("검색에 실패했습니다.");
+                }
+            } catch (error) {
+                console.error("검색 중 오류:", error);
+                alert("네트워크 오류가 발생했습니다.");
+            }
         }
     };
 
@@ -162,8 +194,8 @@ export default function AddTrans({ onClose }: AddTransProps) {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${accessToken}`,
-                    },
+                        "Authorization": `Bearer ${accessToken}`
+                    }
                 }
             );
 
@@ -175,6 +207,34 @@ export default function AddTrans({ onClose }: AddTransProps) {
             }
         } catch (error) {
             console.error("버스 번호 불러오기 오류:", error);
+        }
+    };
+
+    const fetchMetroLine = async (stationName: string) => {
+        const accessToken = await getTokens();
+        if (!accessToken) return;
+
+        try {
+            const response = await fetch(
+                `${API_ROUTES.trans.search}?type=METRO&keyword=${encodeURIComponent(stationName.slice(0, -1))}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            );
+
+            if (response.ok) {
+                const data = await response.json();
+                const filtered = data.data.filter((item: Trans) => item.station === stationName);
+                setSubwayLines(filtered);
+            } else {
+                console.error("지하철 호선 조회 실패");
+            }
+        } catch (error) {
+            console.error("지하철 호선 불러오기 오류:", error);
         }
     };
 
@@ -197,7 +257,6 @@ export default function AddTrans({ onClose }: AddTransProps) {
                 return;
             }
 
-            console.log(selectedStation);
             const accessToken = await getTokens();
             if (!accessToken) return;
 
@@ -216,16 +275,59 @@ export default function AddTrans({ onClose }: AddTransProps) {
                 number: selectedStation.number.toString(),
                 station: selectedStation.station,
                 routeId: parsed.routeId,
-                stationId: parsed.stationId,
+                stationId: parsed.stationId
             };
             try {
                 const response = await fetch(API_ROUTES.trans.add, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${accessToken}`,
+                        Authorization: `Bearer ${accessToken}`
                     },
-                    body: JSON.stringify(payload),
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert("교통 정보가 추가되었습니다.");
+                    onClose();
+                } else {
+                    const error = await response.json();
+                    console.error("추가 실패:", error);
+                    alert("추가에 실패했습니다.");
+                }
+            } catch (error) {
+                console.error("추가 중 오류:", error);
+                alert("네트워크 오류가 발생했습니다.");
+            }
+        } else {
+            if (!selectedNumber) {
+                alert("역을 선택해주세요.");
+                return;
+            }
+            const accessToken = await getTokens();
+            if (!accessToken) return;
+
+            const profile = JSON.parse(localStorage.getItem("currentProfile") || "{}");
+            const profileId = profile?.id;
+            if (!profileId) {
+                alert("프로필 정보가 없습니다.");
+                return;
+            }
+
+            const payload = {
+                profileId,
+                type: selectedNumber.type,
+                number: selectedNumber.number,
+                station: selectedNumber.station.slice(0, -1)
+            };
+            try {
+                const response = await fetch(API_ROUTES.trans.add, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${accessToken}`
+                    },
+                    body: JSON.stringify(payload)
                 });
 
                 if (response.ok) {
@@ -242,6 +344,13 @@ export default function AddTrans({ onClose }: AddTransProps) {
             }
         }
     };
+
+    useEffect(() => {
+        if (selectedStation) {
+            if (type == "METRO") fetchMetroLine(selectedStation.station);
+            if (type == "BUS" && searchType == "station") fetchBusNumbersAtStation(selectedStation.station);
+        }
+    }, [selectedStation]);
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
@@ -317,12 +426,7 @@ export default function AddTrans({ onClose }: AddTransProps) {
                                         {searchResults.map((result, i) => (
                                             <div
                                                 key={i}
-                                                onClick={() => {
-                                                    setSelectedStation(result);
-                                                    if (searchType == "station")
-                                                        selectedStation?.station &&
-                                                            fetchBusNumbersAtStation(selectedStation.station);
-                                                }}
+                                                onClick={() => setSelectedStation(result)}
                                                 className={`cursor-pointer px-2 py-1 rounded-md ${
                                                     selectedStation === result
                                                         ? "bg-blue-100 font-semibold text-blue-700"
@@ -357,19 +461,64 @@ export default function AddTrans({ onClose }: AddTransProps) {
                             )}
                         </div>
                     ) : (
-                        <div className="mt-2">
-                            <label className="block text-sm text-gray-500 mb-1">호선</label>
-                            <select
-                                className="w-full border p-2 rounded-md"
-                                value={selectedLine}
-                                onChange={(e) => setSelectedLine(e.target.value)}
-                            >
-                                {subwayLines.map((line, i) => (
-                                    <option key={i} value={line}>
-                                        {line}
-                                    </option>
-                                ))}
-                            </select>
+                        <div>
+                            <div className="mb-4">
+                                <div className="flex items-center border rounded-md px-2">
+                                    {/* 검색어 입력 */}
+                                    <input
+                                        type="text"
+                                        value={searchKeyword}
+                                        onChange={(e) => setSearchKeyword(e.target.value)}
+                                        className="flex-1 p-2 focus:outline-none"
+                                        placeholder={"역 이름 입력"}
+                                    />
+
+                                    {/* 검색 버튼 */}
+                                    <button onClick={handleSearch} className="ml-2 text-gray-600 hover:text-black">
+                                        <FiSearch size={20} />
+                                    </button>
+                                </div>
+                            </div>
+                            {searchResults.length > 0 && (
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">역 선택</label>
+                                    <div className="border rounded-md p-2 h-24 overflow-y-auto text-sm space-y-1">
+                                        {searchResults.map((result, i) => (
+                                            <div
+                                                key={i}
+                                                onClick={() => setSelectedStation(result)}
+                                                className={`cursor-pointer px-2 py-1 rounded-md ${
+                                                    selectedStation === result
+                                                        ? "bg-blue-100 font-semibold text-blue-700"
+                                                        : "hover:bg-gray-100"
+                                                }`}
+                                            >
+                                                {result.station}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                            {searchResults.length > 0 && subwayLines.length > 0 && (
+                                <div className="mt-3">
+                                    <label className="block text-sm text-gray-500 mb-1">호선 선택</label>
+                                    <div className="border rounded-md p-2 h-24 overflow-y-auto text-sm space-y-1">
+                                        {subwayLines.map((num, idx) => (
+                                            <div
+                                                key={idx}
+                                                onClick={() => setSelectedNumber(num)}
+                                                className={`cursor-pointer px-2 py-1 rounded-md ${
+                                                    selectedNumber === num
+                                                        ? "bg-blue-100 font-semibold text-blue-700"
+                                                        : "hover:bg-gray-100"
+                                                }`}
+                                            >
+                                                {num.number}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
