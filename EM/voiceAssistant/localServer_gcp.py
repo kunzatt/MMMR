@@ -97,6 +97,9 @@ important_phrases = [
     "홈 카메라", "홈 캠", "이동", "주방", "거실", "입구", "방1", "방2", "방3", "방4",
     "이동해줘", "이동해", "이동시켜줘", "이동시켜", "움직여줘", "움직여",
 
+    # 인사말
+    "안녕", "안녕하세요", "하이", "반가워", "헬로",
+
     # 잘못 부른 경우
     "아니야", "잘못", "잘못 불렀어"
 ]
@@ -359,7 +362,7 @@ async def text_to_json(text: str) -> str:
     }
 }
 
-type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "exit", "none"
+type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "exit", "greet", "none"
 
 - iot: 집 안 기기 현황 확인 명령(예: "IoT 현황 알려줘", "IoT 목록 확인해줘", "IoT 장치 상태", "집 안 기기 상태", "기기 상태 알려줘", "기기 목록 알려줘)
 - control: 전등, 조명, 가전제품 등의 제어 명령 (예: "거실 전등 켜줘", "거실 불 꺼줘", "주방 불 켜줘", "커튼 쳐줘", "TV 켜줘")
@@ -372,6 +375,7 @@ type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", 
 - time: 시간 관련 요청 (예: "지금 몇 시야?", "시계 보여줘")
 - transportation: 교통 정보 요청 (예: "버스 언제 와?", "지하철 운행 정보")
 - homecam : 이동형 홈 카메라 제어 요청 (예: "홈 카메라 켜줘", "홈 카메라 꺼줘", "홈 캠 켜줘", "홈 캠 꺼줘", "홈 캠 주방으로 이동해줘", "홈 캠 거실로 이동해줘")
+- greet : 인사말(예: "안녕", "안녕하세요", "하이", "반가워", "헬로")
 - eixt : 잘못 부른 경우 (예: "아니야", "잘못 불렀어")
 - none: 위 분류에 해당하지 않는 경우
 
@@ -439,7 +443,17 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
 
             # 토큰이 있는 경우 추가 처리
             if access_token:
-                if type == "news" and contents["data"]:
+                if type == "greet":
+                    greet_result, new_tokens = data_processor.getGreeting(
+                        keyword,
+                        access_token, 
+                        refresh_token
+                    )
+                    if greet_result:
+                        json_obj["result"] = greet_result
+                    else:
+                        json_obj["result"] = "-1"
+                elif type == "news" and contents["data"]:
                     news_result, new_tokens = data_processor.getNews(
                         access_token, 
                         refresh_token, 
