@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import API_ROUTES from "@/config/apiRoutes";
 import { getToken } from "@/config/getToken";
 
-export default function YoutubeByKeyword() {
+export default function Youtube() {
     const [videoId, setVideoId] = useState<string | null>(null);
 
     const keyword = "엔믹스"; //
