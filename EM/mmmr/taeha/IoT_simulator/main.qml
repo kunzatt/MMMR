@@ -406,41 +406,36 @@ ApplicationWindow {
 
     function controlDevices(devName, devData) {
         console.log(devData)
-        if(devData["turned"] !== "ON" && devData["turned"] !== "OFF") {
-            jsonOutput.text = "Error: Invalid device state"
+        if (devName === "livingroomLight") {
+            livingLight.imgId.visible = devData["turned"]
+            sw_livingLight.checked = devData["turned"]
+        }
+        else if (devName === "airConditioner") {
+            livingAirCon.imgId.visible = devData["turned"]
+            sw_airConditioner.checked = devData["turned"]
+
+            power_airCon.text = devData["turned"] ? "🟢 ON" : "🔴 OFF";
+            temp_airCon.text = "🌡️ " + qsTr(devData["value"]) + "℃ → ❄️ 24℃";
+        }
+        else if (devName === "airPurifier") {
+            livingAirPurifier.imgId.visible = devData["turned"]
+            sw_airPurifier.checked = devData["turned"]
+
+            power_airPurifier.text = devData["turned"] ? "🟢 ON" : "🔴 OFF";
+        }
+        else if (devName === "TV") {
+            livingTV.imgId.visible = devData["turned"]
+            sw_TV.checked = devData["turned"]
+
+            power_TV.text = devData["turned"] ? "🟢 ON" : "🔴 OFF";
+            volume_TV.text = "🔉 " + qsTr(devData["value"])
+        }
+        else if (devName === "curtain") {
+            livingCurtain.imgId.visible = devData["turned"]
+            sw_curtain.checked = devData["turned"]
         }
         else {
-            if (devName === "livingroomLight") {
-                livingLight.imgId.visible = devData["turned"] === "ON" ? true : false;
-                sw_livingLight.checked = devData["turned"] === "ON" ? true : false;
-            }
-            else if (devName === "airConditioner") {
-                livingAirCon.imgId.visible = devData["turned"] === "ON" ? true : false;
-                sw_airConditioner.checked = devData["turned"] === "ON" ? true : false;
-
-                power_airCon.text = devData["turned"] === "ON" ? "🟢 ON" : "🔴 OFF";
-                temp_airCon.text = "🌡️ " + devData["value"] + "℃ → ❄️ 24℃";
-            }
-            else if (devName === "airPurifier") {
-                livingAirPurifier.imgId.visible = devData["turned"] === "ON" ? true : false;
-                sw_airPurifier.checked = devData["turned"] === "ON" ? true : false;
-
-                power_airPurifier.text = devData["turned"] === "ON" ? "🟢 ON" : "🔴 OFF";
-            }
-            else if (devName === "TV") {
-                livingTV.imgId.visible = devData["turned"] === "ON" ? true : false;
-                sw_TV.checked = devData["turned"] === "ON" ? true : false;
-
-                power_TV.text = devData["turned"] === "ON" ? "🟢 ON" : "🔴 OFF";
-                volume_TV.text = "🔉 " + devData["value"]
-            }
-            else if (devName === "curtain") {
-                livingCurtain.imgId.visible = devData["turned"] === "ON" ? true : false;
-                sw_curtain.checked = devData["turned"] === "ON" ? true : false;
-            }
-            else {
-                jsonOutput.text = "Error: Can't find " + devName
-            }
+            jsonOutput.text = "Error: Can't find " + devName
         }
     }
 
