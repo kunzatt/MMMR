@@ -425,22 +425,22 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
             "result": "-1"
         })
     
-async def process_and_send_json_result(websocket: WebSocket, transcription: str = None, keyword: str = "미미"):
+async def process_and_send_json_result(websocket: WebSocket, transcription: str = None, keyword: str = "미미", access_token: str = None, refresh_token: str = None):
+    new_tokens = None
     if transcription:
         # STT 결과를 JSON으로 변환
         json_result = await text_to_json(transcription)
         json_obj = json.loads(json_result)
         
-        # 추가 처리 (뉴스 등)
         type = json_obj['type']
-        contents = json_obj["contents"]
-        
+        contents = json_obj["contents"]    
+
         # 토큰이 있는 경우 추가 처리
-        if app.state.access_token:
+        if access_token:
             if type == "news" and contents["data"]:
                 news_result, new_tokens = data_processor.getNews(
-                    app.state.access_token, 
-                    app.state.refresh_token, 
+                    access_token, 
+                    refresh_token, 
                     int(contents["data"])
                 )
                 if news_result:
@@ -448,22 +448,16 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                 else:
                     json_obj["result"] = "-1"
                     
-                if new_tokens:
-                    app.state.access_token = new_tokens["access_token"]
-                    app.state.refresh_token = new_tokens["refresh_token"]
             elif type == "weather":
                 weather_result, new_tokens = data_processor.getWeather(
-                    app.state.access_token, 
-                    app.state.refresh_token
+                    access_token, 
+                    refresh_token
                 )
                 if weather_result:
                     json_obj["result"] = weather_result
                 else:
                     json_obj["result"] = "-1"
-                    
-                if new_tokens:
-                    app.state.access_token = new_tokens["access_token"]
-                    app.state.refresh_token = new_tokens["refresh_token"]
+
             elif type == "homecam":
                 if contents["data"]:
                     logger.info(f"홈 카메라 이동 요청: {contents['data']}")
@@ -471,21 +465,18 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
             elif type == "schedule":
                 schedule_result, new_tokens = data_processor.getSchedules(
                     keyword,
-                    app.state.access_token, 
-                    app.state.refresh_token,
+                    access_token, 
+                    refresh_token,
                     contents["data"]
                 )
                 if schedule_result:
                     json_obj["result"] = schedule_result
                 else:
                     json_obj["result"] = "-1"
-                    
-                if new_tokens:
-                    app.state.access_token = new_tokens["access_token"]
-                    app.state.refresh_token = new_tokens["refresh_token"]
+
             elif type == "control":
                 if contents["data"]:
-                    iot_ws.send_iot_message(json_obj, app.state.access_token, app.state.refresh_token)
+                    iot_ws.send_iot_message(json_obj, access_token, refresh_token)
                     json_obj["result"] = "2"
                 else:
                     logger.warning("제어 요청에 장치 정보가 없습니다.")
@@ -515,6 +506,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
     # 결과 전송
     await websocket.send_text(json_result)
     logger.info("JSON 결과 전송 완료")
+    return new_tokens
 
 @app.websocket("/listen")
 async def websocket_endpoint(websocket: WebSocket):
@@ -588,7 +580,10 @@ async def websocket_endpoint(websocket: WebSocket):
         if duration >= MIN_AUDIO_LENGTH:
             # STT 처리
             transcription = await transcribe_audio(audio_data, processor.metadata)
-            await process_and_send_json_result(websocket, transcription, processor.metadata["keyword"])
+            new_tokens = await process_and_send_json_result(websocket, transcription, processor.metadata["keyword"], app.state.access_token, app.state.refresh_token)
+            if new_tokens:
+                app.state.access_token = new_tokens["access_token"]
+                app.state.refresh_token = new_tokens["refresh_token"]
            
         else:
             logger.warning("오디오가 너무 짧아 처리하지 않습니다.")
