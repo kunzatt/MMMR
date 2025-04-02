@@ -15,6 +15,7 @@ from google.cloud import speech
 from iot_ws import WebSocketServer
 import threading
 
+process_semaphore = asyncio.Semaphore(5)
 
 # 로깅 설정
 logging.basicConfig(
@@ -426,87 +427,88 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
         })
     
 async def process_and_send_json_result(websocket: WebSocket, transcription: str = None, keyword: str = "미미", access_token: str = None, refresh_token: str = None):
-    new_tokens = None
-    if transcription:
-        # STT 결과를 JSON으로 변환
-        json_result = await text_to_json(transcription)
-        json_obj = json.loads(json_result)
-        
-        type = json_obj['type']
-        contents = json_obj["contents"]    
+    async with process_semaphore:
+        new_tokens = None
+        if transcription:
+            # STT 결과를 JSON으로 변환
+            json_result = await text_to_json(transcription)
+            json_obj = json.loads(json_result)
+            
+            type = json_obj['type']
+            contents = json_obj["contents"]    
 
-        # 토큰이 있는 경우 추가 처리
-        if access_token:
-            if type == "news" and contents["data"]:
-                news_result, new_tokens = data_processor.getNews(
-                    access_token, 
-                    refresh_token, 
-                    int(contents["data"])
-                )
-                if news_result:
-                    json_obj["result"] = news_result
-                else:
-                    json_obj["result"] = "-1"
-                    
-            elif type == "weather":
-                weather_result, new_tokens = data_processor.getWeather(
-                    access_token, 
-                    refresh_token
-                )
-                if weather_result:
-                    json_obj["result"] = weather_result
-                else:
-                    json_obj["result"] = "-1"
+            # 토큰이 있는 경우 추가 처리
+            if access_token:
+                if type == "news" and contents["data"]:
+                    news_result, new_tokens = data_processor.getNews(
+                        access_token, 
+                        refresh_token, 
+                        int(contents["data"])
+                    )
+                    if news_result:
+                        json_obj["result"] = news_result
+                    else:
+                        json_obj["result"] = "-1"
+                        
+                elif type == "weather":
+                    weather_result, new_tokens = data_processor.getWeather(
+                        access_token, 
+                        refresh_token
+                    )
+                    if weather_result:
+                        json_obj["result"] = weather_result
+                    else:
+                        json_obj["result"] = "-1"
 
-            elif type == "homecam":
-                if contents["data"]:
-                    logger.info(f"홈 카메라 이동 요청: {contents['data']}")
-                    iot_ws.send_navigation_message(json_obj)
-            elif type == "schedule":
-                schedule_result, new_tokens = data_processor.getSchedules(
-                    keyword,
-                    access_token, 
-                    refresh_token,
-                    contents["data"]
-                )
-                if schedule_result:
-                    json_obj["result"] = schedule_result
-                else:
-                    json_obj["result"] = "-1"
+                elif type == "homecam":
+                    if contents["data"]:
+                        logger.info(f"홈 카메라 이동 요청: {contents['data']}")
+                        iot_ws.send_navigation_message(json_obj)
+                elif type == "schedule":
+                    schedule_result, new_tokens = data_processor.getSchedules(
+                        keyword,
+                        access_token, 
+                        refresh_token,
+                        contents["data"]
+                    )
+                    if schedule_result:
+                        json_obj["result"] = schedule_result
+                    else:
+                        json_obj["result"] = "-1"
 
-            elif type == "control":
-                if contents["data"]:
-                    iot_ws.send_iot_message(json_obj, access_token, refresh_token)
-                    json_obj["result"] = "2"
-                else:
-                    logger.warning("제어 요청에 장치 정보가 없습니다.")
+                elif type == "control":
+                    if contents["data"]:
+                        iot_ws.send_iot_message(json_obj, access_token, refresh_token)
+                        json_obj["result"] = "2"
+                    else:
+                        logger.warning("제어 요청에 장치 정보가 없습니다.")
+                        json_obj["result"] = "0"
+                elif type == "exit":
+                    json_obj["result"] = "-1"
+                elif type == "none":
                     json_obj["result"] = "0"
-            elif type == "exit":
-                json_obj["result"] = "-1"
-            elif type == "none":
-                json_obj["result"] = "0"
-            else:
-                json_obj["result"] = "1"
+                else:
+                    json_obj["result"] = "1"
+            
+            json_result = json.dumps(json_obj)
+            logger.info(f"JSON 변환 결과: {json_result}")
+        else:
+            # 빈 결과이거나 오디오가 너무 짧은 경우 기본 JSON 전송
+            json_result = json.dumps({
+                "type": "none",
+                "contents": {
+                    "default": "OFF",
+                    "data": ""
+                },
+                "result": "0"
+            })
+            reason = "빈 STT 결과" if transcription is None else "오디오가 너무 짧음"
+            logger.info(f"{reason}에 대한 기본 JSON 전송")
         
-        json_result = json.dumps(json_obj)
-        logger.info(f"JSON 변환 결과: {json_result}")
-    else:
-        # 빈 결과이거나 오디오가 너무 짧은 경우 기본 JSON 전송
-        json_result = json.dumps({
-            "type": "none",
-            "contents": {
-                "default": "OFF",
-                "data": ""
-            },
-            "result": "0"
-        })
-        reason = "빈 STT 결과" if transcription is None else "오디오가 너무 짧음"
-        logger.info(f"{reason}에 대한 기본 JSON 전송")
-    
-    # 결과 전송
-    await websocket.send_text(json_result)
-    logger.info("JSON 결과 전송 완료")
-    return new_tokens
+        # 결과 전송
+        await websocket.send_text(json_result)
+        logger.info("JSON 결과 전송 완료")
+        return new_tokens
 
 @app.websocket("/listen")
 async def websocket_endpoint(websocket: WebSocket):
