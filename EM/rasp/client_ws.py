@@ -368,8 +368,8 @@ async def async_wake_word_detection():
                 detected_keyword = KEYWORD_NAMES[keyword_index]
                 print(f"'{detected_keyword}' 감지됨! 명령을 말씀해주세요...")
 
-                should_restart = True
-                while should_restart and running:
+                should_restart = 0
+                while should_restart <= 2 and running:
 
                     # 알림음 재생
                     play_alert_sound()
@@ -377,10 +377,11 @@ async def async_wake_word_detection():
                     # 웹소켓을 통해 서버로 오디오 스트리밍
                     result_success = await stream_audio_to_server(stream, sample_rate, frame_length, detected_keyword)                    
 
-                    should_restart = not result_success
+                    if not result_success:
+                        should_restart += 1
 
-                    if should_restart:
-                        print("인식 실패로 자동 재시작합니다.")
+                    if should_restart <= 2:
+                        print(f"인식 실패로 자동 재시작합니다. {should_restart}회 시도 중...")
                         await asyncio.sleep(0.5)  # 잠시 대기 후 재시작
                     else:
                         print("명령 처리 완료. 다시 대기 중...")
