@@ -1,21 +1,54 @@
 "use client";
 
+import API_ROUTES from "@/config/apiRoutes";
+import { getToken } from "@/config/getToken";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { IoInformationCircleOutline } from "react-icons/io5";
 
-const devices = [
-    { id: 1, name: "전등", x: "20%", y: "30%" },
-    { id: 2, name: "에어컨", x: "50%", y: "50%" },
-    { id: 3, name: "스피커", x: "70%", y: "20%" },
-    { id: 4, name: "TV", x: "80%", y: "60%" },
+const devicesPos = [
+    { device: "livingroomLight", x: "43%", y: "20%" },
+    { device: "TV", x: "54%", y: "17%" },
+    { device: "airConditioner", x: "50%", y: "5%" },
+    { device: "airPurifier", x: "30%", y: "40%" },
+    { device: "curtain", x: "42%", y: "5%" },
+    { device: "kitchenLight", x: "46%", y: "75%" },
+    { device: "entranceLight", x: "68%", y: "70%" },
 ];
 
+interface Device {
+    id: number;
+    accountId: number;
+    device: string;
+    turned: string;
+}
 export default function Iot() {
-    const [activeDevices, setActiveDevices] = useState<number[]>([]);
+    const [devices, setDevices] = useState<Device[]>([]);
 
-    const toggleDevice = (id: number) => {
-        setActiveDevices((prev) => (prev.includes(id) ? prev.filter((deviceId) => deviceId !== id) : [...prev, id]));
-    };
+    useEffect(() => {
+        const fetchDevices = async () => {
+            const accessToken = await getToken();
+
+            try {
+                const response = await fetch(API_ROUTES.devices.list, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setDevices(data.data || []);
+                } else {
+                    console.error("기기 조회 실패");
+                }
+            } catch (error) {
+                console.error("기기 조회 오류:", error);
+            }
+        };
+        fetchDevices();
+    }, []);
 
     return (
         <div className="py-3 px-5 w-auto h-44 relative flex items-center justify-center overflow-hidden">
@@ -29,22 +62,22 @@ export default function Iot() {
                         className="rounded-md"
                     />
 
-                    {devices.map((device) => (
-                        <div
-                            key={device.id}
-                            style={{ position: "absolute", left: device.x, top: device.y }}
-                            onClick={() => toggleDevice(device.id)}
-                            className={`absolute text-xs px-1 py-1 rounded-full shadow-md whitespace-nowrap
-                                ${
-                                    activeDevices.includes(device.id)
-                                        ? "bg-green-500 text-white"
-                                        : "bg-gray-400 text-white"
-                                }
+                    {devices.map((device) => {
+                        const pos = devicesPos.find((p) => p.device === device.device);
+                        if (!pos) return null;
+                        const isActive = device.turned === "ON";
+                        return (
+                            <div
+                                key={device.id}
+                                style={{ position: "absolute", left: pos.x, top: pos.y }}
+                                className={`absolute text-md rounded-full shadow-md whitespace-nowrap
+                                ${isActive ? "bg-green-500 text-white" : "bg-gray-400 text-white"}
                             `}
-                        >
-                            {device.name}
-                        </div>
-                    ))}
+                            >
+                                <IoInformationCircleOutline />
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </div>
