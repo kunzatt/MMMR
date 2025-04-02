@@ -2,7 +2,7 @@
 
 // 서버 주소 설정
 //const BASE_URL = "https://j12a703.p.ssafy.io";
-const BASE_URL = "http://70.12.246.168:8088";
+const BASE_URL = "http://70.12.246.80:8088";
 
 // API 경로 설정
 export const API_ROUTES = {
@@ -59,6 +59,12 @@ export const API_ROUTES = {
         add: `${BASE_URL}/api/devices`, // 기기 추가 (POST)
         update: (deviceId: number) => `${BASE_URL}/api/devices/${deviceId}/update`, // 기기 상태 변경 (PUT)
         delete: (deviceId: number) => `${BASE_URL}/api/devices/${deviceId}`, // 기기 삭제 (DELETE)
+    },
+
+    trans: {
+        delete: (transportationId: number) => `${BASE_URL}/api/transportation/${transportationId}`,
+        search: `${BASE_URL}/api/transportation/search`,
+        add: `${BASE_URL}/api/transportation/add`,
     },
 };
 
