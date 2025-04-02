@@ -3,8 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Time from "@/components/time";
 import Weather from "@/components/weather";
-import Youtubeh from "@/components/youtubeh";
-import Youtubev from "@/components/youtubev";
+import Youtube from "@/components/youtube";
 import Schedule from "@/components/schedule";
 import Transportation from "@/components/transportation";
 import Iot from "@/components/iot";
@@ -24,7 +23,7 @@ const moduleTypeMapping: Record<string, string> = {
     "transportation": "transportation",
     "schedule": "schedule",
     "todo": "todo",
-    "youtube": "youtubev", // 기본적으로 세로형 유튜브 사용
+    "youtube": "youtube", // 기본적으로 세로형 유튜브 사용
     "timer": "timer",
     "news": "news",
     "iot": "iot",
@@ -36,24 +35,23 @@ const verticalModules: Module[] = [
     { name: "transportation", component: Transportation },
     { name: "schedule", component: Schedule },
     { name: "todo", component: Todo },
-    { name: "youtubev", component: Youtubev },
 ];
 
 const horizontalModules: Module[] = [
     { name: "news", component: News },
-    { name: "youtubeh", component: Youtubeh },
+    { name: "youtube", component: Youtube },
     { name: "timer", component: Timer },
     { name: "iot", component: Iot },
 ];
 
 // 웹소켓 메시지 타입 정의
-// interface WebSocketMessage {
-//     type: string;
-//     contents: {
-//         default: "ON" | "OFF";
-//         data: string;
-//     };
-// }
+interface WebSocketMessage {
+    type: string;
+    contents: {
+        default: "ON" | "OFF";
+        data: string;
+    };
+}
 
 export default function Page() {
     const [activeModules, setActiveModules] = useState<Record<string, boolean>>({});
@@ -66,123 +64,123 @@ export default function Page() {
     const webSocketRef = useRef<WebSocket | null>(null);
 
     // 웹소켓 연결 상태
-    //const [isConnected, setIsConnected] = useState(false);
+    const [isConnected, setIsConnected] = useState(false);
 
     // 모듈 데이터 저장
-    //const [moduleData, setModuleData] = useState<Record<string, string>>({});
+    const [moduleData, setModuleData] = useState<Record<string, string>>({});
 
     // 웹소켓 연결 설정
-    // useEffect(() => {
-    //     // 라즈베리파이 웹소켓 서버 주소 (실제 IP로 변경 필요)
-    //     const WEBSOCKET_SERVER = "ws://localhost:8765";
-    //     if (!isConnected) {
-    //         // 웹소켓 연결 함수
-    //         const connectWebSocket = () => {
-    //             const ws = new WebSocket(WEBSOCKET_SERVER);
+    useEffect(() => {
+        // 라즈베리파이 웹소켓 서버 주소 (실제 IP로 변경 필요)
+        const WEBSOCKET_SERVER = "ws://localhost:8765";
+        if (!isConnected) {
+            // 웹소켓 연결 함수
+            const connectWebSocket = () => {
+                const ws = new WebSocket(WEBSOCKET_SERVER);
 
-    //             ws.onopen = () => {
-    //                 console.log("웹소켓 서버에 연결됨");
-    //                 setIsConnected(true);
+                ws.onopen = () => {
+                    console.log("웹소켓 서버에 연결됨");
+                    setIsConnected(true);
 
-    //                 // 현재 상태 요청
-    //                 ws.send(JSON.stringify({ command: "get_status" }));
-    //             };
+                    // 현재 상태 요청
+                    ws.send(JSON.stringify({ command: "get_status" }));
+                };
 
-    //             ws.onmessage = (event) => {
-    //                 try {
-    //                     const data: WebSocketMessage = JSON.parse(event.data);
-    //                     handleWebSocketMessage(data);
-    //                 } catch (error) {
-    //                     console.error("웹소켓 메시지 처리 중 오류:", error);
-    //                 }
-    //             };
+                ws.onmessage = (event) => {
+                    try {
+                        const data: WebSocketMessage = JSON.parse(event.data);
+                        handleWebSocketMessage(data);
+                    } catch (error) {
+                        console.error("웹소켓 메시지 처리 중 오류:", error);
+                    }
+                };
 
-    //             ws.onerror = (error) => {
-    //                 console.error("웹소켓 오류:", error);
-    //             };
+                ws.onerror = (error) => {
+                    console.error("웹소켓 오류:", error);
+                };
 
-    //             ws.onclose = () => {
-    //                 console.log("웹소켓 연결 종료. 재연결 예정...");
-    //                 setIsConnected(false);
+                ws.onclose = () => {
+                    console.log("웹소켓 연결 종료. 재연결 예정...");
+                    setIsConnected(false);
 
-    //                 // 5초 후 재연결 시도
-    //                 setTimeout(connectWebSocket, 5000);
-    //             };
+                    // 5초 후 재연결 시도
+                    setTimeout(connectWebSocket, 5000);
+                };
 
-    //             webSocketRef.current = ws;
-    //         };
+                webSocketRef.current = ws;
+            };
 
-    //         // 초기 연결
-    //         connectWebSocket();
+            // 초기 연결
+            connectWebSocket();
 
-    //         // 컴포넌트 언마운트 시 연결 종료
-    //         return () => {
-    //             if (webSocketRef.current) {
-    //                 webSocketRef.current.close();
-    //             }
-    //         };
-    //     }
-    // }, []);
+            // 컴포넌트 언마운트 시 연결 종료
+            return () => {
+                if (webSocketRef.current) {
+                    webSocketRef.current.close();
+                }
+            };
+        }
+    }, []);
 
-    // 웹소켓 메시지 처리 함수
-    // const handleWebSocketMessage = (data: WebSocketMessage) => {
-    //     console.log("수신된 메시지:", data);
+    //웹소켓 메시지 처리 함수
+    const handleWebSocketMessage = (data: WebSocketMessage) => {
+        console.log("수신된 메시지:", data);
 
-    //     // type 확인 후 해당하는 모듈 매핑
-    //     const moduleType = data.type;
-    //     const moduleName = moduleTypeMapping[moduleType];
+        // type 확인 후 해당하는 모듈 매핑
+        const moduleType = data.type;
+        const moduleName = moduleTypeMapping[moduleType];
 
-    //     if (!moduleName) {
-    //         console.log(`지원되지 않는 모듈 타입: ${moduleType}`);
-    //         return;
-    //     }
+        if (!moduleName) {
+            console.log(`지원되지 않는 모듈 타입: ${moduleType}`);
+            return;
+        }
 
-    //     // ON/OFF 상태에 따라 모듈 활성화/비활성화
-    //     if (data.contents.default === "ON") {
-    //         // 모듈 데이터 업데이트
-    //         setModuleData((prev) => ({
-    //             ...prev,
-    //             [moduleName]: data.contents.data,
-    //         }));
+        // ON/OFF 상태에 따라 모듈 활성화/비활성화
+        if (data.contents.default === "ON") {
+            // 모듈 데이터 업데이트
+            setModuleData((prev) => ({
+                ...prev,
+                [moduleName]: data.contents.data,
+            }));
 
-    //         // 이미 활성화되어 있지 않으면 활성화
-    //         setActiveModules((prev) => {
-    //             if (!prev[moduleName]) {
-    //                 // 활성화 전에 화면 공간 확인 (세로형 모듈인 경우)
-    //                 if (verticalModules.some((m) => m.name === moduleName)) {
-    //                     const newModules = { ...prev, [moduleName]: true };
-    //                     setPrevActiveModules(prev);
-    //                     return newModules;
-    //                 }
-    //             }
-    //             return { ...prev, [moduleName]: true };
-    //         });
+            // 이미 활성화되어 있지 않으면 활성화
+            setActiveModules((prev) => {
+                if (!prev[moduleName]) {
+                    // 활성화 전에 화면 공간 확인 (세로형 모듈인 경우)
+                    if (verticalModules.some((m) => m.name === moduleName)) {
+                        const newModules = { ...prev, [moduleName]: true };
+                        setPrevActiveModules(prev);
+                        return newModules;
+                    }
+                }
+                return { ...prev, [moduleName]: true };
+            });
 
-    //         // IoT 모듈 특별 처리 - 데이터에 따라 상태 변경
-    //         if (moduleType === "iot" && data.contents.data) {
-    //             console.log(`IoT 모듈 활성화: ${data.contents.data}`);
-    //             // IoT 특정 데이터 처리 (필요한 경우)
-    //         }
+            // IoT 모듈 특별 처리 - 데이터에 따라 상태 변경
+            if (moduleType === "iot" && data.contents.data) {
+                console.log(`IoT 모듈 활성화: ${data.contents.data}`);
+                // IoT 특정 데이터 처리 (필요한 경우)
+            }
 
-    //         // youtube 타입인 경우 데이터에 따라 세로/가로형 결정
-    //         if (moduleType === "youtube" && data.contents.data) {
-    //             // 예: 데이터 형식에 따라 세로/가로형 결정 로직
-    //             // 여기서는 간단하게 구현
-    //         }
-    //     } else {
-    //         // 모듈 비활성화
-    //         setActiveModules((prev) => {
-    //             const newModules = { ...prev };
-    //             delete newModules[moduleName];
-    //             return newModules;
-    //         });
+            // youtube 타입인 경우 데이터에 따라 세로/가로형 결정
+            if (moduleType === "youtube" && data.contents.data) {
+                // 예: 데이터 형식에 따라 세로/가로형 결정 로직
+                // 여기서는 간단하게 구현
+            }
+        } else {
+            // 모듈 비활성화
+            setActiveModules((prev) => {
+                const newModules = { ...prev };
+                delete newModules[moduleName];
+                return newModules;
+            });
 
-    //         // IoT 모듈 특별 처리 - 비활성화 시
-    //         if (moduleType === "iot") {
-    //             console.log("IoT 모듈 비활성화");
-    //         }
-    //     }
-    // };
+            // IoT 모듈 특별 처리 - 비활성화 시
+            if (moduleType === "iot") {
+                console.log("IoT 모듈 비활성화");
+            }
+        }
+    };
 
     // 화면 높이 계산 (버튼 높이 포함)
     useEffect(() => {
@@ -221,31 +219,31 @@ export default function Page() {
         setPrevActiveModules(activeModules);
 
         // 모듈 토글 시 웹소켓 메시지 전송
-        // if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
-        //     // 모듈 이름을 type으로 변환
-        //     let messageType = name;
-        //     for (const [type, moduleName] of Object.entries(moduleTypeMapping)) {
-        //         if (moduleName === name) {
-        //             messageType = type;
-        //             break;
-        //         }
-        //     }
+        if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
+            // 모듈 이름을 type으로 변환
+            let messageType = name;
+            for (const [type, moduleName] of Object.entries(moduleTypeMapping)) {
+                if (moduleName === name) {
+                    messageType = type;
+                    break;
+                }
+            }
 
-        //     // 웹소켓 메시지 생성
-        //     const message = {
-        //         command: "process_data",
-        //         data: {
-        //             type: messageType,
-        //             contents: {
-        //                 default: activeModules[name] ? "OFF" : "ON",
-        //                 data: moduleData[name] || "",
-        //             },
-        //         },
-        //     };
+            // 웹소켓 메시지 생성
+            const message = {
+                command: "process_data",
+                data: {
+                    type: messageType,
+                    contents: {
+                        default: activeModules[name] ? "OFF" : "ON",
+                        data: moduleData[name] || "",
+                    },
+                },
+            };
 
-        //     // 메시지 전송
-        //     webSocketRef.current.send(JSON.stringify(message));
-        // }
+            // 메시지 전송
+            webSocketRef.current.send(JSON.stringify(message));
+        }
 
         // UI 상태 업데이트
         setActiveModules((prev) => ({ ...prev, [name]: !prev[name] }));
