@@ -16,7 +16,7 @@ logging.basicConfig(
 
 logger = logging.getLogger('websocket_server')
 class WebSocketServer:
-    def __init__(self, host='0.0.0.0', port=12345):
+    def __init__(self, host='0.0.0.0', port=12345, message_queue=None):
         self.host = host
         self.port = port
         self.clients = set()
@@ -114,12 +114,19 @@ class WebSocketServer:
             elif "type" in data and data["type"] == "message":
                 # 메시지 처리 (주행 클라이언트에 전송)
                 if websocket in self.navigation_clients:
-                    
-                    return json.dumps({
-                        "type": "message_response",
-                        "status": "success",
-                        "message": "주행 클라이언트에 메시지 전송됨"
-                    })            
+                    self.message_queue.put(data["data"])
+                    devices_response, new_tokens = data_processor.getDevices(self.access_token, self.refresh_token)
+                    supported_devices = []
+                    device_id_map = {}
+                    if devices_response and "data" in devices_response:
+                        for device_info in devices_response["data"]:
+                            device_name = device_info.get("device")
+                            if device_name:
+                                supported_devices.append(device_name)
+                                device_id_map[device_name] = device_info.get("id")
+                    status = str(data["data"].get("x", "")) + " " + str(data["data"].get("y", ""))
+                    logger.info(f"전달받은 좌표: {status}")
+                    data_processor.deviceUpdate(device_id_map["turtleBot"], status, self.access_token, self.refresh_token)
             return message
             
         except json.JSONDecodeError:
@@ -143,7 +150,7 @@ class WebSocketServer:
         if isinstance(message, dict) and message.get("type") == "homecam" and "contents" in message:
             transformed_message = {
                 "type": "message",
-                "client_type": "iot",
+                "client_type": "navigation",
                 "data": message["contents"].get("data", "")
             }
             message = transformed_message
@@ -241,7 +248,7 @@ class WebSocketServer:
         logger.info(f"전송할 메시지: {message}")        
         logger.info(f"{len(self.iot_clients)}개의 IoT 클라이언트에 전송: {message}")
         if len(self.iot_clients) > 0:
-            new_tokens = data_processor.deviceUpdate(device_id_map[device], turned, access_token, refresh_token)
+            data_processor.deviceUpdate(device_id_map[device], turned, self.access_token, self.refresh_token)
         
         # 비동기로 모든 IoT 클라이언트에 메시지 전송
         await asyncio.gather(

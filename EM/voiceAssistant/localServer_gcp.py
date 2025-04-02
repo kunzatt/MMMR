@@ -433,6 +433,47 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
             "result": "-1"
         })
     
+def clear_queue(message_queue):
+    try:
+        while True:
+            message_queue.get_nowait()
+            message_queue.task_done()
+    except queue.Empty:
+        pass
+
+async def wait_for_queue_data(message_queue, timeout=10):
+    logger.info("메시지 큐에서 데이터 대기 중...")
+    start_time = time.time()
+    end_time = start_time + timeout
+    while time.time() < end_time:
+        try:
+            # 큐에 데이터가 있는지 확인 (논블로킹)
+            if not message_queue.empty():
+                data = message_queue.get_nowait()
+                elapsed = time.time() - start_time
+                logger.info(f"데이터 수신 (경과 시간: {elapsed:.2f}초): {data}")
+                
+                # 작업 완료 표시
+                message_queue.task_done()
+                
+                return data
+            
+            # 남은 시간 계산
+            remaining = end_time - time.time()
+            if remaining <= 0:
+                logger.warning("타임아웃: 데이터가 수신되지 않았습니다.")
+                return None
+                
+            # 짧은 시간 대기 후 다시 시도 (비동기 대기)
+            await asyncio.sleep(0.1)
+            
+        except queue.Empty:
+            await asyncio.sleep(0.1)
+    
+    # 타임아웃
+    logger.warning(f"{timeout}초 동안 데이터가 수신되지 않았습니다.")
+    return None
+
 async def process_and_send_json_result(websocket: WebSocket, transcription: str = None, keyword: str = "미미", access_token: str = None, refresh_token: str = None):
     async with process_semaphore:
         new_tokens = None
@@ -480,7 +521,14 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                 elif type == "homecam":
                     if contents["data"]:
                         logger.info(f"홈 카메라 이동 요청: {contents['data']}")
+                        clear_queue(message_queue)
                         iot_ws.send_navigation_message(json_obj)
+                        result = await wait_for_queue_data(message_queue, 10)
+                        if result:
+                            json_obj["result"] = "2"
+                        else:
+                            json_obj["result"] = "4"
+                        
                 elif type == "schedule":
                     schedule_result, new_tokens = data_processor.getSchedules(
                         keyword,
@@ -520,6 +568,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                 "result": "0"
             })
             reason = "빈 STT 결과" if transcription is None else "오디오가 너무 짧음"
+            
             logger.info(f"{reason}에 대한 기본 JSON 전송")
         
         # 결과 전송

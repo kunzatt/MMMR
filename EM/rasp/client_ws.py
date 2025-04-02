@@ -256,7 +256,7 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
 
             # 서버의 STT 결과 대기
             try:
-                result = await asyncio.wait_for(websocket.recv(), timeout=5.0)
+                result = await asyncio.wait_for(websocket.recv(), timeout=20.0)
                 print(f"STT 결과: {result}")
 
                 # 결과 JSON 파싱
