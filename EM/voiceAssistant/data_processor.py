@@ -150,6 +150,32 @@ def getProfileId(callSign, access_token, refresh_token=None):
         logger.error(f"프로필 처리 중 오류: {e}")
         return None, None
 
+def getProfiles(access_token, refresh_token=None):
+    try:
+        result = make_authenticated_request(
+            server_url+"profiles", 
+            access_token=access_token, 
+            refresh_token=refresh_token
+        )
+        
+        if not result:
+            return None, None
+            
+        response = result["response"]
+        new_tokens = result["new_tokens"]
+        
+        data = response.json()
+        logger.info(f"프로필 데이터: {data}")
+        
+        if new_tokens:
+            return data, new_tokens
+        else:
+            return data, None
+        
+    except Exception as e:
+        logger.error(f"프로필 처리 중 오류: {e}")
+        return None, None
+
 def getWeather(access_token, refresh_token=None):
     try:
         result = make_authenticated_request(
@@ -179,8 +205,11 @@ def getWeather(access_token, refresh_token=None):
         logger.error(f"날씨 처리 중 오류: {e}")
         return None, None
 
-def getNews(access_token, refresh_token=None, id=0):
+def getNews(id, access_token, refresh_token=None):
     try:
+        if id > 5 or id <= 0:
+            logger.error(f"지원하지 않는 뉴스 ID: {id}")
+            return None, None
         result = make_authenticated_request(
             server_url+"news", 
             access_token=access_token, 
@@ -417,6 +446,62 @@ def deviceUpdate(deviceId, turned, access_token, refresh_token=None):
     except Exception as e:
         logger.error(f"장치 업데이트 중 오류: {e}")
         return None, None
+
+def getGreeting(callsign, access_token, refresh_token=None):
+    try:
+        profileId_data, new_tokens = getProfileId(callsign, access_token, refresh_token)
+        profileId = profileId_data["data"]
+        logger.info(f"프로필 ID: {profileId}")
+        if new_tokens:
+            access_token = new_tokens["access_token"]
+            refresh_token = new_tokens["refresh_token"]
+
+        profiles, new_tokens = getProfiles(access_token, refresh_token)
+        if new_tokens:
+            access_token = new_tokens["access_token"]
+            refresh_token = new_tokens["refresh_token"]
+
+        nickname = None
+        for profile in profiles["data"]:
+            if profile["id"] == profileId:
+                nickname = profile["nickname"]
+                break
+        logger.info(f"사용자 닉네임: {nickname}")
+        openai_api_key = os.getenv("OPENAI_API_KEY")
+        if not openai_api_key:
+            logger.error("OpenAI API 키가 설정되지 않음")
+            return f"안녕하세요, {nickname}님!", new_tokens 
+        openai_url = "https://api.openai.com/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {openai_api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        
+        payload = {
+            "model": "gpt-3.5-turbo",
+            "messages": [
+                {"role": "system", "content": "당신은 IoT 제어, 일정, 교통, 뉴스, 날씨 등의 정보를 제공하는 음성 비서입니다. 사용자에게 친절하게 짧은 인사말을 만들어주세요. 최대 3문장 이내로 작성해주세요."},
+                {"role": "user", "content": f"{nickname}에게 전할 인사말을 만들어주세요. (예 : '안녕하세요, {nickname}님! 오늘은 어떤 일정이 있나요?', '안녕하세요, {nickname}님! 좋은 하루입니다!', '안녕하세요, {nickname}님! 무엇이든 도와드리겠습니다.'),"}
+            ],
+            "temperature": 0.7,
+            "max_tokens": 100
+        }
+        
+        openai_response = requests.post(openai_url, headers=headers, json=payload)
+        if openai_response.status_code == 200:
+            summary = openai_response.json()["choices"][0]["message"]["content"].strip()
+            logger.info(f"생성된 인사말말: {summary}")
+            return summary, new_tokens
+        else:
+            logger.error(f"OpenAI API 요청 실패: {openai_response.status_code}, {openai_response.text}")
+            return f"안녕하세요, {nickname}님!", new_tokens  # 요약 실패 시 원본 일정만 반환
+    except Exception as e:
+        logger.error(f"인사말 생성 중 오류: {e}")
+        return None, None
+
+
+        
 
 
 if __name__ == "__main__":

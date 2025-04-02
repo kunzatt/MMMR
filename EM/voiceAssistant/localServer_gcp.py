@@ -14,7 +14,11 @@ import data_processor
 from google.cloud import speech
 from iot_ws import WebSocketServer
 import threading
+import queue
 
+process_semaphore = asyncio.Semaphore(5)
+
+message_queue = queue.Queue()
 
 # 로깅 설정
 logging.basicConfig(
@@ -56,12 +60,14 @@ app.add_middleware(
 speech_client = None
 
 important_phrases = [
+    "홈 카메라 거실로 이동해줘", "TV 볼륨 20으로 해줘", "거실 조명 밝기 50으로 해줘",
+
     # 공통 명령어 단어
     "켜줘", "꺼줘", "켜", "꺼", "알려줘", "보여줘",
     
     # iot 관련
     "전등", "조명", "불", "불빛", "TV", "티비", "에어컨", "공기청정기", "IoT 현황", "IoT", "아이오티", "기기 목록", "기기 상태",
-    "전원", "아이오티 기기", "목록", "온도", "거실", "주방", "입구", "현황", "상태", "상태 확인", "커튼", "거실 조명", "주방 조명", "입구 조명",
+    "전원", "아이오티 기기", "목록", "온도", "거실", "주방", "입구", "현황", "상태", "상태 확인", "커튼", "거실 조명", "주방 조명", "입구 조명", "밝기", "볼륨",
     
     # weather 관련
     "날씨", "기온", "온도", "비", "눈", "우산", "맑음", "흐림", "더움", "추움",
@@ -95,6 +101,9 @@ important_phrases = [
     # 이동형 홈 카메라 관련
     "홈 카메라", "홈 캠", "이동", "주방", "거실", "입구", "방1", "방2", "방3", "방4",
     "이동해줘", "이동해", "이동시켜줘", "이동시켜", "움직여줘", "움직여",
+
+    # 인사말
+    "안녕", "안녕하세요", "하이", "반가워", "헬로",
 
     # 잘못 부른 경우
     "아니야", "잘못", "잘못 불렀어"
@@ -293,7 +302,7 @@ async def transcribe_audio(audio_data: np.ndarray, metadata: Dict[str, Any]) -> 
             speech_contexts=[
                 speech.SpeechContext(
                     phrases=important_phrases,
-                    boost=20.0  # 가중치 추가
+                    boost=30.0  # 가중치 추가
                 )
             ],
             # 추가: 명령어 인식에 최적화된 설정
@@ -358,10 +367,10 @@ async def text_to_json(text: str) -> str:
     }
 }
 
-type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "exit", "none"
+type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "exit", "greet", "none"
 
 - iot: 집 안 기기 현황 확인 명령(예: "IoT 현황 알려줘", "IoT 목록 확인해줘", "IoT 장치 상태", "집 안 기기 상태", "기기 상태 알려줘", "기기 목록 알려줘)
-- control: 전등, 조명, 가전제품 등의 제어 명령 (예: "거실 전등 켜줘", "거실 불 꺼줘", "주방 불 켜줘", "커튼 쳐줘", "TV 켜줘")
+- control: 전등, 조명, 가전제품 등의 제어 명령 (예: "거실 전등 켜줘", "거실 불 꺼줘", "주방 불 켜줘", "커튼 쳐줘", "TV 켜줘", "TV 볼륨 50으로 맞춰", "거실 조명 밝기 50")
 - weather: 날씨 정보 요청 (예: "오늘 날씨 어때?", "비 올 예정이야?")
 - news: 뉴스 정보 요청 (예: "오늘 뉴스 보여줘", "최신 뉴스 알려줘", "3번째 뉴스 알려줘")
 - youtube: 유튜브 관련 요청 (예: "유튜브 틀어줘", "음악 동영상 보여줘")
@@ -371,13 +380,14 @@ type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", 
 - time: 시간 관련 요청 (예: "지금 몇 시야?", "시계 보여줘")
 - transportation: 교통 정보 요청 (예: "버스 언제 와?", "지하철 운행 정보")
 - homecam : 이동형 홈 카메라 제어 요청 (예: "홈 카메라 켜줘", "홈 카메라 꺼줘", "홈 캠 켜줘", "홈 캠 꺼줘", "홈 캠 주방으로 이동해줘", "홈 캠 거실로 이동해줘")
+- greet : 인사말(예: "안녕", "안녕하세요", "하이", "반가워", "헬로")
 - eixt : 잘못 부른 경우 (예: "아니야", "잘못 불렀어")
 - none: 위 분류에 해당하지 않는 경우
 
 contents.default는 기능을 켜는 명령의 경우 "ON", 끄는 명령인 경우 "OFF", 그 외에는 빈 문자열로 설정합니다. "보여줘", "알려줘", "켜줘" 등의 명령은 "ON"으로 설정합니다. "꺼줘" 등의 명령은 "OFF"로 설정합니다. 단, control 타입에 경우엔 빈 문자열로 설정합니다.
 
 contents.data는 type에 따라 다르게 설정합니다:
-- control: 기기 + "ON" 또는 기기 + "OFF" (예: "거실 전등 ON", "TV OFF"), 기기 목록 ["livingroomLight", "TV", "airConditioner", "airPurfier", "curtain", "kitchenLight", "entranceLight"], 단 airConditioner에 경우엔 온도 설정도 함께 넣을 수 있습니다.(예: "airConditioner 25도", "airConditioner ON 20도")
+- control: 기기 + "ON" 또는 기기 + "OFF" (예: "거실 전등 ON", "TV OFF"), 기기 목록 ["livingroomLight", "TV", "airConditioner", "airPurfier", "curtain", "kitchenLight", "entranceLight"], 단 airConditioner, TV, 조명들이 ON인 경우엔 밸류값을 함께 넣을 수 있습니다.(예: "airConditioner 25", "TV ON 20", "livinroomLight ON 50" 등)
 - news: "1"부터 "5" 사이의 숫자 (뉴스 번호) 혹은 빈 문자열
 - timer: "00H05M00S"와 같은 형태 (시간, 분, 초)
 - scehdule: "today", "tomorrow", "this_week", "next_week"
@@ -425,96 +435,148 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
             "result": "-1"
         })
     
-async def process_and_send_json_result(websocket: WebSocket, transcription: str = None, keyword: str = "미미"):
-    if transcription:
-        # STT 결과를 JSON으로 변환
-        json_result = await text_to_json(transcription)
-        json_obj = json.loads(json_result)
-        
-        # 추가 처리 (뉴스 등)
-        type = json_obj['type']
-        contents = json_obj["contents"]
-        
-        # 토큰이 있는 경우 추가 처리
-        if app.state.access_token:
-            if type == "news" and contents["data"]:
-                news_result, new_tokens = data_processor.getNews(
-                    app.state.access_token, 
-                    app.state.refresh_token, 
-                    int(contents["data"])
-                )
-                if news_result:
-                    json_obj["result"] = news_result
-                else:
-                    json_obj["result"] = "-1"
-                    
-                if new_tokens:
-                    app.state.access_token = new_tokens["access_token"]
-                    app.state.refresh_token = new_tokens["refresh_token"]
-            elif type == "weather":
-                weather_result, new_tokens = data_processor.getWeather(
-                    app.state.access_token, 
-                    app.state.refresh_token
-                )
-                if weather_result:
-                    json_obj["result"] = weather_result
-                else:
-                    json_obj["result"] = "-1"
-                    
-                if new_tokens:
-                    app.state.access_token = new_tokens["access_token"]
-                    app.state.refresh_token = new_tokens["refresh_token"]
-            elif type == "homecam":
-                if contents["data"]:
-                    logger.info(f"홈 카메라 이동 요청: {contents['data']}")
-                    iot_ws.send_navigation_message(json_obj)
-            elif type == "schedule":
-                schedule_result, new_tokens = data_processor.getSchedules(
-                    keyword,
-                    app.state.access_token, 
-                    app.state.refresh_token,
-                    contents["data"]
-                )
-                if schedule_result:
-                    json_obj["result"] = schedule_result
-                else:
-                    json_obj["result"] = "-1"
-                    
-                if new_tokens:
-                    app.state.access_token = new_tokens["access_token"]
-                    app.state.refresh_token = new_tokens["refresh_token"]
-            elif type == "control":
-                if contents["data"]:
-                    iot_ws.send_iot_message(json_obj, app.state.access_token, app.state.refresh_token)
-                    json_obj["result"] = "2"
-                else:
-                    logger.warning("제어 요청에 장치 정보가 없습니다.")
-                    json_obj["result"] = "0"
-            elif type == "exit":
-                json_obj["result"] = "-1"
-            elif type == "none":
-                json_obj["result"] = "0"
-            else:
-                json_obj["result"] = "1"
-        
-        json_result = json.dumps(json_obj)
-        logger.info(f"JSON 변환 결과: {json_result}")
-    else:
-        # 빈 결과이거나 오디오가 너무 짧은 경우 기본 JSON 전송
-        json_result = json.dumps({
-            "type": "none",
-            "contents": {
-                "default": "OFF",
-                "data": ""
-            },
-            "result": "0"
-        })
-        reason = "빈 STT 결과" if transcription is None else "오디오가 너무 짧음"
-        logger.info(f"{reason}에 대한 기본 JSON 전송")
+def clear_queue(message_queue):
+    try:
+        while True:
+            message_queue.get_nowait()
+            message_queue.task_done()
+    except queue.Empty:
+        pass
+
+async def wait_for_queue_data(message_queue, timeout=10):
+    logger.info("메시지 큐에서 데이터 대기 중...")
+    start_time = time.time()
+    end_time = start_time + timeout
+    while time.time() < end_time:
+        try:
+            # 큐에 데이터가 있는지 확인 (논블로킹)
+            if not message_queue.empty():
+                data = message_queue.get_nowait()
+                elapsed = time.time() - start_time
+                logger.info(f"데이터 수신 (경과 시간: {elapsed:.2f}초): {data}")
+                
+                # 작업 완료 표시
+                message_queue.task_done()
+                
+                return data
+            
+            # 남은 시간 계산
+            remaining = end_time - time.time()
+            if remaining <= 0:
+                logger.warning("타임아웃: 데이터가 수신되지 않았습니다.")
+                return None
+                
+            # 짧은 시간 대기 후 다시 시도 (비동기 대기)
+            await asyncio.sleep(0.1)
+            
+        except queue.Empty:
+            await asyncio.sleep(0.1)
     
-    # 결과 전송
-    await websocket.send_text(json_result)
-    logger.info("JSON 결과 전송 완료")
+    # 타임아웃
+    logger.warning(f"{timeout}초 동안 데이터가 수신되지 않았습니다.")
+    return None
+
+async def process_and_send_json_result(websocket: WebSocket, transcription: str = None, keyword: str = "미미", access_token: str = None, refresh_token: str = None):
+    async with process_semaphore:
+        new_tokens = None
+        if transcription:
+            # STT 결과를 JSON으로 변환
+            json_result = await text_to_json(transcription)
+            json_obj = json.loads(json_result)
+            
+            type = json_obj['type']
+            contents = json_obj["contents"]    
+
+            # 토큰이 있는 경우 추가 처리
+            if access_token:
+                if type == "greet":
+                    greet_result, new_tokens = data_processor.getGreeting(
+                        keyword,
+                        access_token, 
+                        refresh_token
+                    )
+                    if greet_result:
+                        json_obj["result"] = greet_result
+                    else:
+                        json_obj["result"] = "4"
+                elif type == "news" and contents["data"]:
+                    news_result, new_tokens = data_processor.getNews(
+                        int(contents["data"]),
+                        access_token, 
+                        refresh_token
+                    )
+                    if news_result:
+                        json_obj["result"] = news_result
+                    else:
+                        json_obj["result"] = "4"
+                        
+                elif type == "weather":
+                    weather_result, new_tokens = data_processor.getWeather(
+                        access_token, 
+                        refresh_token
+                    )
+                    if weather_result:
+                        json_obj["result"] = weather_result
+                    else:
+                        json_obj["result"] = "4"
+
+                elif type == "homecam":
+                    if contents["data"]:
+                        logger.info(f"홈 카메라 이동 요청: {contents['data']}")
+                        clear_queue(message_queue)
+                        iot_ws.send_navigation_message(json_obj)
+                        result = await wait_for_queue_data(message_queue, 10)
+                        if result:
+                            json_obj["result"] = "2"
+                        else:
+                            json_obj["result"] = "4"
+                        
+                elif type == "schedule":
+                    schedule_result, new_tokens = data_processor.getSchedules(
+                        keyword,
+                        access_token, 
+                        refresh_token,
+                        contents["data"]
+                    )
+                    if schedule_result:
+                        json_obj["result"] = schedule_result
+                    else:
+                        json_obj["result"] = "4"
+
+                elif type == "control":
+                    if contents["data"]:
+                        iot_ws.send_iot_message(json_obj)
+                        json_obj["result"] = "2"
+                    else:
+                        logger.warning("제어 요청에 장치 정보가 없습니다.")
+                        json_obj["result"] = "0"
+                elif type == "exit":
+                    json_obj["result"] = "-1"
+                elif type == "none":
+                    json_obj["result"] = "0"
+                else:
+                    json_obj["result"] = "1"
+            
+            json_result = json.dumps(json_obj)
+            logger.info(f"JSON 변환 결과: {json_result}")
+        else:
+            # 빈 결과이거나 오디오가 너무 짧은 경우 기본 JSON 전송
+            json_result = json.dumps({
+                "type": "none",
+                "contents": {
+                    "default": "OFF",
+                    "data": ""
+                },
+                "result": "0"
+            })
+            reason = "빈 STT 결과" if transcription is None else "오디오가 너무 짧음"
+            
+            logger.info(f"{reason}에 대한 기본 JSON 전송")
+        
+        # 결과 전송
+        await websocket.send_text(json_result)
+        logger.info("JSON 결과 전송 완료")
+        return new_tokens
 
 @app.websocket("/listen")
 async def websocket_endpoint(websocket: WebSocket):
@@ -588,7 +650,12 @@ async def websocket_endpoint(websocket: WebSocket):
         if duration >= MIN_AUDIO_LENGTH:
             # STT 처리
             transcription = await transcribe_audio(audio_data, processor.metadata)
-            await process_and_send_json_result(websocket, transcription, processor.metadata["keyword"])
+            new_tokens = await process_and_send_json_result(websocket, transcription, processor.metadata["keyword"], app.state.access_token, app.state.refresh_token)
+            if new_tokens:
+                app.state.access_token = new_tokens["access_token"]
+                app.state.refresh_token = new_tokens["refresh_token"]
+                iot_ws.update_tokens(new_tokens["access_token"], new_tokens["refresh_token"])
+            processor.reset()
            
         else:
             logger.warning("오디오가 너무 짧아 처리하지 않습니다.")
@@ -617,13 +684,15 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    tokens = data_processor.login()
-    iot_ws = WebSocketServer()
+    tokens = data_processor.login()    
+    iot_ws = WebSocketServer(message_queue=message_queue)
     iot_ws_thread = threading.Thread(target=iot_ws.start, daemon=True)
     iot_ws_thread.start()
+    
     if tokens:
         app.state.access_token = tokens["access_token"]
         app.state.refresh_token = tokens['refresh_token']
+        iot_ws.update_tokens(tokens["access_token"], tokens["refresh_token"])
     else:
         access_token = None
         refresh_token = None

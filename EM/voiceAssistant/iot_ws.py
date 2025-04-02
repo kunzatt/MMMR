@@ -5,6 +5,9 @@ from websockets.server import serve
 import logging
 import data_processor
 import re
+import queue
+
+message_queue = queue.Queue()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -13,7 +16,7 @@ logging.basicConfig(
 
 logger = logging.getLogger('websocket_server')
 class WebSocketServer:
-    def __init__(self, host='0.0.0.0', port=12345):
+    def __init__(self, host='0.0.0.0', port=12345, message_queue=None):
         self.host = host
         self.port = port
         self.clients = set()
@@ -24,6 +27,15 @@ class WebSocketServer:
         
         # 클라이언트 정보 매핑 (websocket -> info)
         self.client_info = {}  # 클라이언트 정보 저장
+        self.access_token = None
+        self.refresh_token = None
+
+        self.message_queue = message_queue
+    
+    def update_tokens(self, access_token, refresh_token):
+        self.access_token = access_token
+        self.refresh_token = refresh_token
+        logger.info(f"토큰 업데이트: access_token={access_token}, refresh_token={refresh_token}")
     
     async def handle_connection(self, websocket):
         # 클라이언트 추가
@@ -58,6 +70,7 @@ class WebSocketServer:
                 
             logger.info(f"연결 종료: {client_ip}")
     
+
     async def process_message(self, websocket, message):
         client_ip = websocket.remote_address[0]
         logger.info(f"{client_ip}로부터 수신: {message}")
@@ -98,8 +111,22 @@ class WebSocketServer:
                         "status": "error",
                         "message": "client_type 필드가 없습니다"
                     })
-            
-            # 그 외 모든 메시지는 원본 그대로 반환 (에코)
+            elif "type" in data and data["type"] == "message":
+                # 메시지 처리 (주행 클라이언트에 전송)
+                if websocket in self.navigation_clients:
+                    self.message_queue.put(data["data"])
+                    devices_response, new_tokens = data_processor.getDevices(self.access_token, self.refresh_token)
+                    supported_devices = []
+                    device_id_map = {}
+                    if devices_response and "data" in devices_response:
+                        for device_info in devices_response["data"]:
+                            device_name = device_info.get("device")
+                            if device_name:
+                                supported_devices.append(device_name)
+                                device_id_map[device_name] = device_info.get("id")
+                    status = str(data["data"].get("x", "")) + " " + str(data["data"].get("y", ""))
+                    logger.info(f"전달받은 좌표: {status}")
+                    data_processor.deviceUpdate(device_id_map["turtleBot"], status, self.access_token, self.refresh_token)
             return message
             
         except json.JSONDecodeError:
@@ -123,7 +150,7 @@ class WebSocketServer:
         if isinstance(message, dict) and message.get("type") == "homecam" and "contents" in message:
             transformed_message = {
                 "type": "message",
-                "client_type": "iot",
+                "client_type": "navigation",
                 "data": message["contents"].get("data", "")
             }
             message = transformed_message
@@ -145,25 +172,23 @@ class WebSocketServer:
             return_exceptions=True
         )
     
-    async def send_to_iot(self, message, access_token, refresh_token):
+    async def send_to_iot(self, message):
         if not self.iot_clients:
             logger.warning("연결된 IoT 클라이언트가 없습니다")
-            return
         
         if isinstance(message, dict) and message.get("type") == "control" and "contents" in message:
             logger.info(f"원본 메시지: {message}")
             
             # 디바이스 이름과 상태(ON/OFF) 파싱
             device = ""
-            turned = ""
-            temperature = ""
-            brightness = ""
+            turned = False
+            value = 0
             
             # contents.data 파싱
             data = message.get("contents", {}).get("data", "")
             if data:
                 # 지원하는 기기 목록
-                devices_response, new_tokens = data_processor.getDevices(access_token, refresh_token)
+                devices_response, new_tokens = data_processor.getDevices(self.access_token, self.refresh_token)
                 supported_devices = []
                 device_id_map = {}
                 if devices_response and "data" in devices_response:
@@ -173,8 +198,7 @@ class WebSocketServer:
                             supported_devices.append(device_name)
                             device_id_map[device_name] = device_info.get("id")
                 
-                # 온도 패턴 (예: "25도", "20도")
-                temp_pattern = re.compile(r'(\d+)도')
+                pattern = re.compile(r'(\d{1,3})')
                 
                 # 데이터에서 디바이스와 상태 추출
                 for dev in supported_devices:
@@ -188,17 +212,19 @@ class WebSocketServer:
                 elif "OFF" in data:
                     turned = "OFF"
                 
-                # 온도 추출 (에어컨인 경우)
-                if device == "airConditioner":
-                    temp_match = temp_pattern.search(data)
-                    if temp_match:
-                        temperature = temp_match.group(1)
+                temp_match = pattern.search(data)
+                if temp_match:
+                    turned = True
+                    value = int(temp_match.group(1))
             
             # 명령이 없는 경우 contents.default에서 값 가져오기
             if not turned:
                 default_value = message.get("contents", {}).get("default", "")
                 if default_value in ["ON", "OFF"]:
-                    turned = default_value
+                    if default_value == "ON":
+                        turned = True
+                    else:
+                        turned = False
             
             # 결과 메시지 구성
             transformed_message = {
@@ -206,8 +232,7 @@ class WebSocketServer:
                 "device": device,
                 "data": {
                     "turned": turned,
-                    "temperature": temperature,
-                    "brightness": brightness
+                    "value": value
                 }
             }
             
@@ -221,14 +246,13 @@ class WebSocketServer:
         logger.info(f"전송할 메시지: {message}")        
         logger.info(f"{len(self.iot_clients)}개의 IoT 클라이언트에 전송: {message}")
         if len(self.iot_clients) > 0:
-            new_tokens = data_processor.deviceUpdate(device_id_map[device], turned, access_token, refresh_token)
+            data_processor.deviceUpdate(device_id_map[device], turned, self.access_token, self.refresh_token)
         
         # 비동기로 모든 IoT 클라이언트에 메시지 전송
         await asyncio.gather(
             *[client.send(message) for client in self.iot_clients],
             return_exceptions=True
         )
-        return new_tokens
     
     def send_navigation_message(self, message):
 
@@ -245,11 +269,11 @@ class WebSocketServer:
         else:
             logger.info(f"주행 메시지 전송됨: {json.dumps(message)}")
     
-    def send_iot_message(self, message, access_token, refresh_token):
+    def send_iot_message(self, message):
         loop = asyncio.get_event_loop()
         if loop.is_running():
             # 이미 실행 중인 이벤트 루프가 있다면 새 태스크로 추가
-            asyncio.create_task(self.send_to_iot(message, access_token, refresh_token))
+            asyncio.create_task(self.send_to_iot(message))
         else:
             # 이벤트 루프가 실행 중이 아니라면 새로 실행
             loop.run_until_complete(self.send_to_iot(message))
@@ -258,6 +282,7 @@ class WebSocketServer:
             logger.info(f"IoT 메시지 전송됨: {message}")
         else:
             logger.info(f"IoT 메시지 전송됨: {json.dumps(message)}")
+        
     
     async def start_server(self):
         self.server = await serve(
