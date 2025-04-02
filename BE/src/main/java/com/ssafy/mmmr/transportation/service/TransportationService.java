@@ -226,7 +226,7 @@ public class TransportationService {
 			.map(metro -> TransportationProfileResponseDto.MetroInfo.builder()
 				.id(metro.getId())
 				.type("METRO")
-				.line(metro.getLine())
+				.line(String.valueOf(metro.getLine()))
 				.station(metro.getStation())
 				.build())
 			.collect(Collectors.toList());

@@ -247,7 +247,10 @@ public class MetroClient {
 			case "1075" -> "수인분당선";
 			case "1077" -> "신분당선";
 			case "1092" -> "우이신설선";
-			default -> subwayId + "호선";
+			case "1081" -> "경강선";
+			case "1093" -> "서해선";
+			case "1091" -> "신림선";
+			default -> subwayId + "신설";
 		};
 	}
 

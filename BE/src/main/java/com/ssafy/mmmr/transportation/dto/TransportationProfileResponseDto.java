@@ -34,7 +34,7 @@ public class TransportationProfileResponseDto {
 	public static class MetroInfo {
 		private Long id;
 		private String type;
-		private Integer line;
+		private String line;
 		private String station;
 	}
 
