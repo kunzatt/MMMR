@@ -32,6 +32,7 @@ ApplicationWindow {
         width: parent.width
         height: 30
         color: "#3f3f3f"  // 제목 표시줄 배경색
+        z: 2
 
         gradient: Gradient {
             GradientStop { position: 0.9; color: "#3f3f3f" }   // 위쪽 색상
@@ -168,6 +169,204 @@ ApplicationWindow {
         height: parent.height - titleBar.height
         color: "#1f2023"
     }
+
+    // 🔹 창 크기 조절 핫존 설정 🔹
+        // 상단
+        Rectangle {
+            width: parent.width - 20
+            height: 10
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+            opacity: 0
+            z: 3
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.SizeVerCursor
+                onPressed: main_window.startSystemResize(Qt.TopEdge)
+            }
+        }
+
+        // 하단
+        Rectangle {
+            width: parent.width - 20
+            height: 5
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            opacity: 0
+            z: 3
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.SizeVerCursor
+                onPressed: main_window.startSystemResize(Qt.BottomEdge)
+            }
+        }
+
+        // 좌측
+        Rectangle {
+            width: 5
+            height: parent.height - 20
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            opacity: 0
+            z: 3
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.SizeHorCursor
+                onPressed: main_window.startSystemResize(Qt.LeftEdge)
+            }
+        }
+
+        // 우측
+        Rectangle {
+            width: 5
+            height: parent.height - 20
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            opacity: 0
+            z: 3
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.SizeHorCursor
+                onPressed: main_window.startSystemResize(Qt.RightEdge)
+            }
+        }
+
+        // 🔹 모서리 크기 조절 (커스텀 처리)
+        Rectangle {
+            width: 5; height: 5; anchors.bottom: parent.bottom; anchors.right: parent.right; opacity: 0; z: 3;
+            MouseArea {
+                id: bottomRightCorner
+                anchors.fill: parent
+                cursorShape: Qt.SizeFDiagCursor
+
+                property bool resizing: false
+                property real startX
+                property real startY
+
+                onPressed: {
+                    resizing = true
+                    startX = mouseX
+                    startY = mouseY
+                }
+
+                onReleased: {
+                    resizing = false
+                }
+
+                onPositionChanged: {
+                    if (resizing) {
+                        let dx = mouseX - startX
+                        let dy = mouseY - startY
+                        main_window.width += dx
+                        main_window.height += dy
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            width: 5; height: 5; anchors.top: parent.top; anchors.right: parent.right; opacity: 0; z: 3;
+            MouseArea {
+                id: topRightCorner
+                anchors.fill: parent
+                cursorShape: Qt.SizeBDiagCursor
+
+                property bool resizing: false
+                property real startX
+                property real startY
+
+                onPressed: {
+                    resizing = true
+                    startX = mouseX
+                    startY = mouseY
+                }
+
+                onReleased: {
+                    resizing = false
+                }
+
+                onPositionChanged: {
+                    if (resizing) {
+                        let dx = mouseX - startX
+                        let dy = mouseY - startY
+                        main_window.width += dx
+                        main_window.y += dy
+                        main_window.height -= dy
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            width: 5; height: 5; anchors.bottom: parent.bottom; anchors.left: parent.left; opacity: 0; z: 3;
+            MouseArea {
+                id: bottomLeftCorner
+                anchors.fill: parent
+                cursorShape: Qt.SizeBDiagCursor
+
+                property bool resizing: false
+                property real startX
+                property real startY
+
+                onPressed: {
+                    resizing = true
+                    startX = mouseX
+                    startY = mouseY
+                }
+
+                onReleased: {
+                    resizing = false
+                }
+
+                onPositionChanged: {
+                    if (resizing) {
+                        let dx = mouseX - startX
+                        let dy = mouseY - startY
+                        main_window.x += dx
+                        main_window.width -= dx
+                        main_window.height += dy
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            width: 5; height: 5; anchors.top: parent.top; anchors.left: parent.left; opacity: 0; z: 3;
+            MouseArea {
+                id: topLeftCorner
+                anchors.fill: parent
+                cursorShape: Qt.SizeFDiagCursor
+
+                property bool resizing: false
+                property real startX
+                property real startY
+
+                onPressed: {
+                    resizing = true
+                    startX = mouseX
+                    startY = mouseY
+                }
+
+                onReleased: {
+                    resizing = false
+                }
+
+                onPositionChanged: {
+                    if (resizing) {
+                        let dx = mouseX - startX
+                        let dy = mouseY - startY
+                        main_window.x += dx
+                        main_window.width -= dx
+                        main_window.y += dy
+                        main_window.height -= dy
+                    }
+                }
+            }
+        }
 
     /* WebSocket connection */
     WebSocket {
