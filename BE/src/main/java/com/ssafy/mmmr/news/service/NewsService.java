@@ -40,19 +40,20 @@ public class NewsService {
 
     public void newsCrawler() {
         try{
-            String pageUrl = "https://www.yna.co.kr/";
+            String pageUrl = "https://media.naver.com/press/001";
 
             Document document = Jsoup.connect(pageUrl).timeout(5000).get();
             // 메인 기사 : 총 5개
-            Elements elements = document.select(".top-main-news001");
-            Elements mainArticles = elements.select(".news-con");
+            Elements elements = document.select(".press_main_news_inner");
+            Elements mainArticles = elements.select(".press_news_item");
 
-            for (Element article : mainArticles) {
+            for(int i=0; i<5; i++){
+                Element article = mainArticles.get(i);
                 //개별 기사 제목
-                String title = article.select(".title01").text().trim();
+                String title = article.select("strong").text().trim();
 
                 // 기사 url
-                String articleUrl = article.selectFirst("a.tit-news").attr("href");
+                String articleUrl = article.selectFirst(".press_news_link").attr("href");
 
                 // 기사 내용
                 Document contentDocument = Jsoup.connect(articleUrl).timeout(5000).get();
@@ -66,6 +67,25 @@ public class NewsService {
                 newsRepository.save(newsEntity);
                 log.info("뉴스 크롤링 완료");
             }
+//            for (Element article : mainArticles) {
+//                //개별 기사 제목
+//                String title = article.select("strong").text().trim();
+//
+//                // 기사 url
+//                String articleUrl = article.selectFirst(".press_news_link").attr("href");
+//
+//                // 기사 내용
+//                Document contentDocument = Jsoup.connect(articleUrl).timeout(5000).get();
+//                String content = contentDocument.select(".story-news.article").text();
+//                //DB에 저장하는 로직
+//                NewsEntity newsEntity = NewsEntity.builder()
+//                        .id((long)mainArticles.indexOf(article)+1)
+//                        .title(title)
+//                        .content(content)
+//                        .build();
+//                newsRepository.save(newsEntity);
+//                log.info("뉴스 크롤링 완료");
+//            }
         }catch (Exception e){
             log.error(e.getMessage());
             throw new NewsException(ErrorCode.NEWS_CRAWLING_FAILED);
