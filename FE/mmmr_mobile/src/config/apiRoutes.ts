@@ -65,6 +65,7 @@ export const API_ROUTES = {
         delete: (transportationId: number) => `${BASE_URL}/api/transportation/${transportationId}`,
         search: `${BASE_URL}/api/transportation/search`,
         add: `${BASE_URL}/api/transportation/add`,
+        listByProfile: (profileId: number) => `${BASE_URL}/api/transportation/profile/${profileId}`,
     },
 };
 
