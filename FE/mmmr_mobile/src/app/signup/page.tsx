@@ -70,7 +70,9 @@ export default function SignupPage() {
 
     const handleEmailVerification = async () => {
         try {
-            const response = await fetch(API_ROUTES.accounts.codeVerification(email), {
+            const encodeEmail = encodeURIComponent(email);
+            console.log(encodeEmail);
+            const response = await fetch(API_ROUTES.accounts.codeVerification(encodeEmail), {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
