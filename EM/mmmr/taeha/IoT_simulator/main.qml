@@ -371,7 +371,8 @@ ApplicationWindow {
     /* WebSocket connection */
     WebSocket {
         id: webSocket
-        url: "ws://70.12.246.31:12345"
+        // url: "ws://70.12.246.31:12345"
+        url: "ws://127.0.0.1:12345"
         active: false
 
         onStatusChanged: {
@@ -437,15 +438,7 @@ ApplicationWindow {
 
     /* GUI Layout */
 
-    Label {
-        id: status_message
-        width: 200
-        height: 20
-        x: 720
-        y: 500
-        text: "status"
-        color: main_text.color
-    }
+
 
     ColumnLayout {
         id: main_layout
@@ -646,9 +639,9 @@ ApplicationWindow {
 
             ColumnLayout {
                 spacing: 30
-                Layout.alignment: Qt.AlignHCenter
+                Layout.alignment: Qt.AlignCenter
                 Layout.maximumWidth: 450
-                Layout.maximumHeight: 300
+                Layout.maximumHeight: 320
                 Layout.leftMargin: 40
 
                 ColumnLayout {
@@ -781,7 +774,7 @@ ApplicationWindow {
                                 spacing: 3
 
                                 Label {
-                                    text: "● ON"
+                                    text: "🟢 ON"
                                     color: main_text.color
                                     font.pointSize: 12
                                     font.family: main_text.font.family
@@ -817,10 +810,10 @@ ApplicationWindow {
         }
 
         RowLayout {
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
             width: parent.width
             id: sw_wrapper
-            spacing: 7
+            spacing: 40
 
             GridLayout {
                 columns: 4
@@ -941,6 +934,7 @@ ApplicationWindow {
             }
 
             ColumnLayout {
+
                 TextArea {
                     id: jsonInput
                     placeholderText: qsTr("Enter json format")
@@ -984,5 +978,21 @@ ApplicationWindow {
         }
     }
 
+    Rectangle {
+        color: "#555"
+        width: status_message.implicitWidth + 10
+        height: status_message.implicitHeight + 10
+        x: 0
+        y: main_window.height - 30
+
+        Text {
+            id: status_message
+            text: "status"
+            color: main_text.color
+            font.family: main_text.font.family
+            font.pointSize: 12
+            anchors.centerIn: parent
+        }
+    }
 
 }
