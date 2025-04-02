@@ -185,7 +185,7 @@ public class TransportationController {
 		@RequestBody TransportationRequestDto requestDto,
 		@CurrentUser AuthUser authUser) {
 
-		Object result = transportationService.addTransportation(requestDto, authUser);
+		Object result = transportationService.addTransportation(requestDto, authUser.getEmail());
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(new ApiResponse("대중교통 정보 추가 성공", result));
 	}
@@ -261,7 +261,7 @@ public class TransportationController {
 		@Parameter(description = "교통 유형 (BUS, METRO)", required = true) @RequestParam String type,
 		@CurrentUser AuthUser authUser) {
 
-		transportationService.deleteTransportation(transportationId, type, authUser);
+		transportationService.deleteTransportation(transportationId, type, authUser.getEmail());
 		return ResponseEntity.ok(new ApiResponse("대중교통 정보가 성공적으로 삭제되었습니다.", null));
 	}
 
@@ -356,7 +356,7 @@ public class TransportationController {
 		@Parameter(description = "조회할 프로필 ID", required = true) @PathVariable Long profileId,
 		@CurrentUser AuthUser authUser) {
 
-		TransportationProfileResponseDto result = transportationService.getTransportationsByProfile(profileId, authUser);
+		TransportationProfileResponseDto result = transportationService.getTransportationsByProfile(profileId, authUser.getEmail());
 		return ResponseEntity.ok(new ApiResponse("프로필 교통 정보 조회 성공", result));
 	}
 

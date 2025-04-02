@@ -77,11 +77,11 @@ public class TransportationService {
 	}
 
 	@Transactional
-	public Object addTransportation(TransportationRequestDto requestDto, AuthUser authUser) {
+	public Object addTransportation(TransportationRequestDto requestDto, String email) {
 		ProfileEntity profile = profileRepository.findById(requestDto.getProfileId())
 			.orElseThrow(() -> new ProfileException(ErrorCode.PROFILE_NOT_FOUND));
 
-		if (!profile.getAccount().getEmail().equals(authUser.getEmail())) {
+		if (!profile.getAccount().getEmail().equals(email)) {
 			throw new ProfileException(ErrorCode.UNAUTHORIZED);
 		}
 
@@ -141,9 +141,7 @@ public class TransportationService {
 			.findByFlexibleLineNumberAndStationName(requestDto.getNumber(), requestDto.getStation())
 			.orElseThrow(() -> new TransportationException(ErrorCode.INVALID_STATION_NAME));
 
-		Integer lineNumber = Integer.parseInt(
-			metroInfo.getLineNumber().replaceAll("[^0-9]", "")
-		);
+		Integer lineNumber = mapLineNameToNumber(metroInfo.getLineNumber());
 
 		MetroEntity metroEntity = MetroEntity.builder()
 			.profile(profile)
@@ -154,22 +152,55 @@ public class TransportationService {
 		return metroRepository.save(metroEntity);
 	}
 
+	private Integer mapLineNameToNumber(String lineName) {
+		if (lineName == null || lineName.isEmpty()) {
+			return 0;
+		}
+
+		String numericPart = lineName.replaceAll("[^0-9]", "");
+		if (!numericPart.isEmpty()) {
+			try {
+				return Integer.parseInt(numericPart);
+			} catch (NumberFormatException e) {
+			}
+		}
+
+		switch (lineName) {
+			case "수인분당선": return 13;
+			case "경의중앙선": return 10;
+			case "공항철도": return 11;
+			case "경춘선": return 12;
+			case "신분당선": return 14;
+			case "우이신설선": return 15;
+			case "경강선": return 16;
+			case "서해선": return 17;
+			case "신림선": return 18;
+			default:
+				for (int i = 1; i <= 9; i++) {
+					if (lineName.contains(i + "호선")) {
+						return i;
+					}
+				}
+				return 0;
+		}
+	}
+
 	@Transactional
-	public void deleteTransportation(Long transportationId, String type, AuthUser authUser) {
+	public void deleteTransportation(Long transportationId, String type, String email) {
 		if ("BUS".equalsIgnoreCase(type)) {
-			deleteBus(transportationId, authUser);
+			deleteBus(transportationId, email);
 		} else if ("METRO".equalsIgnoreCase(type)) {
-			deleteMetro(transportationId, authUser);
+			deleteMetro(transportationId, email);
 		} else {
 			throw new TransportationException(ErrorCode.INVALID_TRANSPORTATION_TYPE);
 		}
 	}
 
-	private void deleteBus(Long busId, AuthUser authUser) {
+	private void deleteBus(Long busId, String email) {
 		BusEntity bus = busRepository.findByIdAndDeletedFalse(busId)
 			.orElseThrow(() -> new TransportationException(ErrorCode.INVALID_BUS_INFORMATION));
 
-		if (!bus.getProfile().getAccount().getEmail().equals(authUser.getEmail())) {
+		if (!bus.getProfile().getAccount().getEmail().equals(email)) {
 			throw new ProfileException(ErrorCode.UNAUTHORIZED);
 		}
 
@@ -181,11 +212,11 @@ public class TransportationService {
 		profileRepository.save(profile);
 	}
 
-	private void deleteMetro(Long metroId, AuthUser authUser) {
+	private void deleteMetro(Long metroId, String email) {
 		MetroEntity metro = metroRepository.findByIdAndDeletedFalse(metroId)
 			.orElseThrow(() -> new TransportationException(ErrorCode.METRO_NOT_FOUND));
 
-		if (!metro.getProfile().getAccount().getEmail().equals(authUser.getEmail())) {
+		if (!metro.getProfile().getAccount().getEmail().equals(email)) {
 			throw new ProfileException(ErrorCode.UNAUTHORIZED);
 		}
 
@@ -198,11 +229,11 @@ public class TransportationService {
 	}
 
 	@Transactional(readOnly = true)
-	public TransportationProfileResponseDto getTransportationsByProfile(Long profileId, AuthUser authUser) {
+	public TransportationProfileResponseDto getTransportationsByProfile(Long profileId, String email) {
 		ProfileEntity profile = profileRepository.findById(profileId)
 			.orElseThrow(() -> new ProfileException(ErrorCode.PROFILE_NOT_FOUND));
 
-		if (!profile.getAccount().getEmail().equals(authUser.getEmail())) {
+		if (!profile.getAccount().getEmail().equals(email)) {
 			throw new ProfileException(ErrorCode.UNAUTHORIZED);
 		}
 
@@ -226,7 +257,7 @@ public class TransportationService {
 			.map(metro -> TransportationProfileResponseDto.MetroInfo.builder()
 				.id(metro.getId())
 				.type("METRO")
-				.line(String.valueOf(metro.getLine()))
+				.line(mapLineNumber(metro.getLine()))  // 라인 숫자를 매핑된 문자열로 변환
 				.station(metro.getStation())
 				.build())
 			.collect(Collectors.toList());
@@ -334,7 +365,11 @@ public class TransportationService {
 			case 13: return "수인분당선";
 			case 14: return "신분당선";
 			case 15: return "우이신설선";
+			case 16: return "경강선";
+			case 17: return "서해선";
+			case 18: return "신림선";
 			default: return lineNumber + "호선";
 		}
 	}
+
 }
