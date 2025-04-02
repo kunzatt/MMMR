@@ -2,6 +2,7 @@ package com.ssafy.mmmr.transportation.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/transportation")
+@RequestMapping("/api/transportations")
 @RequiredArgsConstructor
 @Tag(name = "교통 API", description = "교통 정보 API")
 public class TransportationController {
@@ -83,7 +84,7 @@ public class TransportationController {
 		return ResponseEntity.ok(new ApiResponse("대중교통 검색 성공", results));
 	}
 
-	@PostMapping("/add")
+	@PostMapping
 	@Operation(summary = "대중교통 정보 추가", description = "프로필에 버스 또는 지하철 정보를 추가합니다")
 	@ApiResponses({
 		@io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -185,7 +186,8 @@ public class TransportationController {
 		@CurrentUser AuthUser authUser) {
 
 		Object result = transportationService.addTransportation(requestDto, authUser);
-		return ResponseEntity.ok(new ApiResponse("대중교통 정보 추가 성공", result));
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(new ApiResponse("대중교통 정보 추가 성공", result));
 	}
 
 	@DeleteMapping("/{transportationId}")
