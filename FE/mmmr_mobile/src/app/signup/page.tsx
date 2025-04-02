@@ -43,6 +43,9 @@ export default function SignupPage() {
                 try {
                     const response = await fetch(API_ROUTES.accounts.sendCodes, {
                         method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
                         body: JSON.stringify({ email: email }),
                     });
                     const data = await response.json();
@@ -223,7 +226,7 @@ export default function SignupPage() {
                 </div>
                 <div>
                     <label className="block text-sm mb-1 text-gray-500">address</label>
-                    <div className="relative">
+                    <div className="flex">
                         <input
                             className="w-full p-2 border rounded-md h-10"
                             type="text"
@@ -233,7 +236,7 @@ export default function SignupPage() {
                             readOnly
                         />
                         <button
-                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-300 text-white px-2 py-1 rounded"
+                            className="bg-blue-300 text-white text-sm break-keep rounded-md ml-2  h-10  w-24 px-2"
                             onClick={() => setShowAddressModal(true)}
                         >
                             주소 검색
