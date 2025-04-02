@@ -60,12 +60,14 @@ app.add_middleware(
 speech_client = None
 
 important_phrases = [
+    "홈 카메라 거실로 이동해줘", "TV 볼륨 20으로 해줘", "거실 조명 밝기 50으로 해줘",
+
     # 공통 명령어 단어
     "켜줘", "꺼줘", "켜", "꺼", "알려줘", "보여줘",
     
     # iot 관련
     "전등", "조명", "불", "불빛", "TV", "티비", "에어컨", "공기청정기", "IoT 현황", "IoT", "아이오티", "기기 목록", "기기 상태",
-    "전원", "아이오티 기기", "목록", "온도", "거실", "주방", "입구", "현황", "상태", "상태 확인", "커튼", "거실 조명", "주방 조명", "입구 조명",
+    "전원", "아이오티 기기", "목록", "온도", "거실", "주방", "입구", "현황", "상태", "상태 확인", "커튼", "거실 조명", "주방 조명", "입구 조명", "밝기", "볼륨",
     
     # weather 관련
     "날씨", "기온", "온도", "비", "눈", "우산", "맑음", "흐림", "더움", "추움",
@@ -300,7 +302,7 @@ async def transcribe_audio(audio_data: np.ndarray, metadata: Dict[str, Any]) -> 
             speech_contexts=[
                 speech.SpeechContext(
                     phrases=important_phrases,
-                    boost=20.0  # 가중치 추가
+                    boost=30.0  # 가중치 추가
                 )
             ],
             # 추가: 명령어 인식에 최적화된 설정
@@ -368,7 +370,7 @@ async def text_to_json(text: str) -> str:
 type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "exit", "greet", "none"
 
 - iot: 집 안 기기 현황 확인 명령(예: "IoT 현황 알려줘", "IoT 목록 확인해줘", "IoT 장치 상태", "집 안 기기 상태", "기기 상태 알려줘", "기기 목록 알려줘)
-- control: 전등, 조명, 가전제품 등의 제어 명령 (예: "거실 전등 켜줘", "거실 불 꺼줘", "주방 불 켜줘", "커튼 쳐줘", "TV 켜줘")
+- control: 전등, 조명, 가전제품 등의 제어 명령 (예: "거실 전등 켜줘", "거실 불 꺼줘", "주방 불 켜줘", "커튼 쳐줘", "TV 켜줘", "TV 볼륨 50으로 맞춰", "거실 조명 밝기 50")
 - weather: 날씨 정보 요청 (예: "오늘 날씨 어때?", "비 올 예정이야?")
 - news: 뉴스 정보 요청 (예: "오늘 뉴스 보여줘", "최신 뉴스 알려줘", "3번째 뉴스 알려줘")
 - youtube: 유튜브 관련 요청 (예: "유튜브 틀어줘", "음악 동영상 보여줘")
@@ -385,7 +387,7 @@ type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", 
 contents.default는 기능을 켜는 명령의 경우 "ON", 끄는 명령인 경우 "OFF", 그 외에는 빈 문자열로 설정합니다. "보여줘", "알려줘", "켜줘" 등의 명령은 "ON"으로 설정합니다. "꺼줘" 등의 명령은 "OFF"로 설정합니다. 단, control 타입에 경우엔 빈 문자열로 설정합니다.
 
 contents.data는 type에 따라 다르게 설정합니다:
-- control: 기기 + "ON" 또는 기기 + "OFF" (예: "거실 전등 ON", "TV OFF"), 기기 목록 ["livingroomLight", "TV", "airConditioner", "airPurfier", "curtain", "kitchenLight", "entranceLight"], 단 airConditioner에 경우엔 온도 설정도 함께 넣을 수 있습니다.(예: "airConditioner 25도", "airConditioner ON 20도")
+- control: 기기 + "ON" 또는 기기 + "OFF" (예: "거실 전등 ON", "TV OFF"), 기기 목록 ["livingroomLight", "TV", "airConditioner", "airPurfier", "curtain", "kitchenLight", "entranceLight"], 단 airConditioner, TV, 조명들이 ON인 경우엔 밸류값을 함께 넣을 수 있습니다.(예: "airConditioner 25", "TV ON 20", "livinroomLight ON 50" 등)
 - news: "1"부터 "5" 사이의 숫자 (뉴스 번호) 혹은 빈 문자열
 - timer: "00H05M00S"와 같은 형태 (시간, 분, 초)
 - scehdule: "today", "tomorrow", "this_week", "next_week"
@@ -543,7 +545,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
 
                 elif type == "control":
                     if contents["data"]:
-                        iot_ws.send_iot_message(json_obj, access_token, refresh_token)
+                        iot_ws.send_iot_message(json_obj)
                         json_obj["result"] = "2"
                     else:
                         logger.warning("제어 요청에 장치 정보가 없습니다.")

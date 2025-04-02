@@ -175,16 +175,14 @@ class WebSocketServer:
     async def send_to_iot(self, message):
         if not self.iot_clients:
             logger.warning("연결된 IoT 클라이언트가 없습니다")
-            return
         
         if isinstance(message, dict) and message.get("type") == "control" and "contents" in message:
             logger.info(f"원본 메시지: {message}")
             
             # 디바이스 이름과 상태(ON/OFF) 파싱
             device = ""
-            turned = ""
-            temperature = ""
-            brightness = ""
+            turned = False
+            value = 0
             
             # contents.data 파싱
             data = message.get("contents", {}).get("data", "")
@@ -200,8 +198,7 @@ class WebSocketServer:
                             supported_devices.append(device_name)
                             device_id_map[device_name] = device_info.get("id")
                 
-                # 온도 패턴 (예: "25도", "20도")
-                temp_pattern = re.compile(r'(\d+)도')
+                pattern = re.compile(r'(\d{1,3})')
                 
                 # 데이터에서 디바이스와 상태 추출
                 for dev in supported_devices:
@@ -215,17 +212,19 @@ class WebSocketServer:
                 elif "OFF" in data:
                     turned = "OFF"
                 
-                # 온도 추출 (에어컨인 경우)
-                if device == "airConditioner":
-                    temp_match = temp_pattern.search(data)
-                    if temp_match:
-                        temperature = temp_match.group(1)
+                temp_match = pattern.search(data)
+                if temp_match:
+                    turned = True
+                    value = int(temp_match.group(1))
             
             # 명령이 없는 경우 contents.default에서 값 가져오기
             if not turned:
                 default_value = message.get("contents", {}).get("default", "")
                 if default_value in ["ON", "OFF"]:
-                    turned = default_value
+                    if default_value == "ON":
+                        turned = True
+                    else:
+                        turned = False
             
             # 결과 메시지 구성
             transformed_message = {
@@ -233,8 +232,7 @@ class WebSocketServer:
                 "device": device,
                 "data": {
                     "turned": turned,
-                    "temperature": temperature,
-                    "brightness": brightness
+                    "value": value
                 }
             }
             
@@ -255,7 +253,6 @@ class WebSocketServer:
             *[client.send(message) for client in self.iot_clients],
             return_exceptions=True
         )
-        return new_tokens
     
     def send_navigation_message(self, message):
 
@@ -285,6 +282,7 @@ class WebSocketServer:
             logger.info(f"IoT 메시지 전송됨: {message}")
         else:
             logger.info(f"IoT 메시지 전송됨: {json.dumps(message)}")
+        
     
     async def start_server(self):
         self.server = await serve(
