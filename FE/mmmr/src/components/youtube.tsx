@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import API_ROUTES from "@/config/apiRoutes";
 import { getToken } from "@/config/getToken";
 
-export default function Youtube() {
-    const [videoId, setVideoId] = useState<string | null>(null);
+interface YoutubeProps {
+    keyword: string;
+}
 
-    const keyword = "엔믹스"; //
+export default function Youtube({ keyword }: YoutubeProps) {
+    const [videoId, setVideoId] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchYoutubeVideos = async () => {
@@ -18,8 +20,8 @@ export default function Youtube() {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${accessToken}`,
-                    },
+                        "Authorization": `Bearer ${accessToken}`
+                    }
                 });
 
                 if (response.ok) {

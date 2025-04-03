@@ -59,6 +59,8 @@ export default function Page() {
     const buttonContainerRef = useRef<HTMLDivElement>(null);
     const [availableHeight, setAvailableHeight] = useState<number>(0);
     const [prevActiveModules, setPrevActiveModules] = useState<Record<string, boolean>>({});
+    const [iotRefreshKey, setIotRefreshKey] = useState(0);
+    const [youtubeKeyword, setYoutubeKeyword] = useState("");
 
     // 웹소켓 참조 저장
     const webSocketRef = useRef<WebSocket | null>(null);
@@ -90,7 +92,6 @@ export default function Page() {
                     try {
                         const data: WebSocketMessage = JSON.parse(event.data);
                         handleWebSocketMessage(data);
-                        console.log(data);
                     } catch (error) {
                         console.error("웹소켓 메시지 처리 중 오류:", error);
                     }
@@ -131,6 +132,10 @@ export default function Page() {
         const moduleType = data.type;
         const moduleName = moduleTypeMapping[moduleType];
 
+        if (moduleType === "control" && data.contents.data) {
+            setIotRefreshKey((prev) => prev + 1); // IoT 새로고침
+        }
+
         if (!moduleName) {
             console.log(`지원되지 않는 모듈 타입: ${moduleType}`);
             return;
@@ -138,6 +143,9 @@ export default function Page() {
 
         // ON/OFF 상태에 따라 모듈 활성화/비활성화
         if (data.contents.default === "ON") {
+            if (moduleType === "youtube" && data.contents.data) {
+                setYoutubeKeyword(data.contents.data);
+            }
             // 모듈 데이터 업데이트
             setModuleData((prev) => ({
                 ...prev,
@@ -156,30 +164,14 @@ export default function Page() {
                 }
                 return { ...prev, [moduleName]: true };
             });
-
-            // IoT 모듈 특별 처리 - 데이터에 따라 상태 변경
-            if (moduleType === "iot" && data.contents.data) {
-                console.log(`IoT 모듈 활성화: ${data.contents.data}`);
-                // IoT 특정 데이터 처리 (필요한 경우)
-            }
-
-            // youtube 타입인 경우 데이터에 따라 세로/가로형 결정
-            if (moduleType === "youtube" && data.contents.data) {
-                // 예: 데이터 형식에 따라 세로/가로형 결정 로직
-                // 여기서는 간단하게 구현
-            }
         } else {
             // 모듈 비활성화
+            if (moduleName == "youtube") setYoutubeKeyword("");
             setActiveModules((prev) => {
                 const newModules = { ...prev };
                 delete newModules[moduleName];
                 return newModules;
             });
-
-            // IoT 모듈 특별 처리 - 비활성화 시
-            if (moduleType === "iot") {
-                console.log("IoT 모듈 비활성화");
-            }
         }
     };
 
@@ -323,7 +315,15 @@ export default function Page() {
                     {horizontalModules.map(({ name, component: Component }) =>
                         activeModules[name] ? (
                             <div key={name} className="w-auto">
-                                {name === "timer" ? <Timer onExpire={() => removeModule("timer")} /> : <Component />}
+                                {name === "timer" ? (
+                                    <Timer onExpire={() => removeModule("timer")} />
+                                ) : name === "youtube" ? (
+                                    <Youtube key={youtubeKeyword} keyword={youtubeKeyword || ""} />
+                                ) : name === "iot" ? (
+                                    <Iot key={iotRefreshKey} />
+                                ) : (
+                                    <Component />
+                                )}
                             </div>
                         ) : null
                     )}
