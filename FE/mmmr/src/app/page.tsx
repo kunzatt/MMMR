@@ -79,7 +79,7 @@ export default function Page() {
     // 웹소켓 연결 설정
     useEffect(() => {
         // 라즈베리파이 웹소켓 서버 주소 (실제 IP로 변경 필요)
-        const WEBSOCKET_SERVER = "ws://70.12.247.197:8765";
+        const WEBSOCKET_SERVER = "ws://localhost:8765";
         if (!isConnected) {
             // 웹소켓 연결 함수
             const connectWebSocket = () => {
