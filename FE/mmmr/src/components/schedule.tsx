@@ -27,8 +27,8 @@ export default function Schedule() {
                 const response = await fetch(`${API_ROUTES.schedule.listByProfile}?profileId=${profileId}`, {
                     method: "GET",
                     headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
+                        Authorization: `Bearer ${accessToken}`
+                    }
                 });
 
                 if (response.ok) {
@@ -71,21 +71,28 @@ export default function Schedule() {
 
     return (
         <div className="py-3 px-5 h-auto w-52">
-            {Object.entries(groupedSchedules).map(([date, items], index) => (
-                <div key={index} className={`${index === Object.entries(groupedSchedules).length - 1 ? "" : "mb-2"}`}>
-                    <h3 className="text-lg font-semibold border-b-2 border-white">{date}</h3>
-                    <div className="pt-2 flex flex-col gap-2">
-                        {items.map((schedule) => (
-                            <div
-                                key={schedule.id}
-                                className="px-3 py-1 border border-white rounded-md text-sm break-keep text-center"
-                            >
-                                {schedule.title}
-                            </div>
-                        ))}
+            {Object.entries(groupedSchedules).length > 0 ? (
+                Object.entries(groupedSchedules).map(([date, items], index) => (
+                    <div
+                        key={index}
+                        className={`${index === Object.entries(groupedSchedules).length - 1 ? "" : "mb-2"}`}
+                    >
+                        <h3 className="text-lg font-semibold border-b-2 border-white">{date}</h3>
+                        <div className="pt-2 flex flex-col gap-2">
+                            {items.map((schedule) => (
+                                <div
+                                    key={schedule.id}
+                                    className="px-3 py-1 border border-white rounded-md text-sm break-keep text-center"
+                                >
+                                    {schedule.title}
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))
+            ) : (
+                <p>일정이 없습니다</p>
+            )}
         </div>
     );
 }
