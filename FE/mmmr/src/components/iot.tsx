@@ -13,7 +13,7 @@ const devicesPos = [
     { device: "airPurifier", x: "30%", y: "40%" },
     { device: "curtain", x: "42%", y: "5%" },
     { device: "kitchenLight", x: "46%", y: "75%" },
-    { device: "entranceLight", x: "68%", y: "70%" },
+    { device: "entranceLight", x: "68%", y: "70%" }
 ];
 
 interface Device {
@@ -33,8 +33,8 @@ export default function Iot() {
                 const response = await fetch(API_ROUTES.devices.list, {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${accessToken}`,
-                    },
+                        Authorization: `Bearer ${accessToken}`
+                    }
                 });
 
                 if (response.ok) {

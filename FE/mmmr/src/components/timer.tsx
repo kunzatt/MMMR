@@ -1,17 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface TimerProps {
     onExpire?: () => void; // 타이머 종료 시 실행할 콜백 함수
+    time: number;
 }
 
-export default function Timer({ onExpire }: TimerProps) {
-    const [timeLeft, setTimeLeft] = useState(1 * 60); // 초기값 (10분)
+export default function Timer({ onExpire, time }: TimerProps) {
+    const [timeLeft, setTimeLeft] = useState(time); //
 
     useEffect(() => {
         if (timeLeft <= 0) {
-            alert('타이머가 종료되었습니다.'); // 알림창 표시
+            alert("타이머가 종료되었습니다."); // 알림창 표시
             if (onExpire) onExpire(); // 스택에서 제거
             return;
         }
@@ -27,8 +28,8 @@ export default function Timer({ onExpire }: TimerProps) {
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60)
             .toString()
-            .padStart(2, '0');
-        const secs = (seconds % 60).toString().padStart(2, '0');
+            .padStart(2, "0");
+        const secs = (seconds % 60).toString().padStart(2, "0");
         return `${minutes}:${secs}`;
     };
 

@@ -37,12 +37,7 @@ const verticalModules: Module[] = [
     { name: "todo", component: Todo }
 ];
 
-const horizontalModules: Module[] = [
-    { name: "news", component: News },
-    { name: "youtube", component: Youtube },
-    { name: "timer", component: Timer },
-    { name: "iot", component: Iot }
-];
+const horizontalModules: Module[] = [{ name: "news", component: News }];
 
 // 웹소켓 메시지 타입 정의
 interface WebSocketMessage {
@@ -59,6 +54,9 @@ export default function Page() {
     const buttonContainerRef = useRef<HTMLDivElement>(null);
     const [availableHeight, setAvailableHeight] = useState<number>(0);
     const [prevActiveModules, setPrevActiveModules] = useState<Record<string, boolean>>({});
+    const [iotRefreshKey, setIotRefreshKey] = useState(0);
+    const [youtubeKeyword, setYoutubeKeyword] = useState("");
+    const [timerTime, setTimerTime] = useState(0);
 
     // 웹소켓 참조 저장
     const webSocketRef = useRef<WebSocket | null>(null);
@@ -66,8 +64,17 @@ export default function Page() {
     // 웹소켓 연결 상태
     const [isConnected, setIsConnected] = useState(false);
 
-    // 모듈 데이터 저장
-    const [moduleData, setModuleData] = useState<Record<string, string>>({});
+    function parseTimeToSeconds(timeStr: string): number {
+        const hourMatch = timeStr.match(/(\d{2})H/);
+        const minuteMatch = timeStr.match(/(\d{2})M/);
+        const secondMatch = timeStr.match(/(\d{2})S/);
+
+        const hours = hourMatch ? parseInt(hourMatch[1]) : 0;
+        const minutes = minuteMatch ? parseInt(minuteMatch[1]) : 0;
+        const seconds = secondMatch ? parseInt(secondMatch[1]) : 0;
+
+        return hours * 3600 + minutes * 60 + seconds;
+    }
 
     // 웹소켓 연결 설정
     useEffect(() => {
@@ -90,7 +97,6 @@ export default function Page() {
                     try {
                         const data: WebSocketMessage = JSON.parse(event.data);
                         handleWebSocketMessage(data);
-                        console.log(data);
                     } catch (error) {
                         console.error("웹소켓 메시지 처리 중 오류:", error);
                     }
@@ -131,6 +137,15 @@ export default function Page() {
         const moduleType = data.type;
         const moduleName = moduleTypeMapping[moduleType];
 
+        if (moduleType === "control" && data.contents.data) {
+            setIotRefreshKey((prev) => prev + 1); // IoT 새로고침
+        }
+
+        if (moduleType === "timer" && data.contents.data) {
+            const stime = parseTimeToSeconds(data.contents.data);
+            setTimerTime(stime); // IoT 새로고침
+        }
+
         if (!moduleName) {
             console.log(`지원되지 않는 모듈 타입: ${moduleType}`);
             return;
@@ -138,12 +153,9 @@ export default function Page() {
 
         // ON/OFF 상태에 따라 모듈 활성화/비활성화
         if (data.contents.default === "ON") {
-            // 모듈 데이터 업데이트
-            setModuleData((prev) => ({
-                ...prev,
-                [moduleName]: data.contents.data
-            }));
-
+            if (moduleType === "youtube" && data.contents.data) {
+                setYoutubeKeyword(data.contents.data);
+            }
             // 이미 활성화되어 있지 않으면 활성화
             setActiveModules((prev) => {
                 if (!prev[moduleName]) {
@@ -156,30 +168,14 @@ export default function Page() {
                 }
                 return { ...prev, [moduleName]: true };
             });
-
-            // IoT 모듈 특별 처리 - 데이터에 따라 상태 변경
-            if (moduleType === "iot" && data.contents.data) {
-                console.log(`IoT 모듈 활성화: ${data.contents.data}`);
-                // IoT 특정 데이터 처리 (필요한 경우)
-            }
-
-            // youtube 타입인 경우 데이터에 따라 세로/가로형 결정
-            if (moduleType === "youtube" && data.contents.data) {
-                // 예: 데이터 형식에 따라 세로/가로형 결정 로직
-                // 여기서는 간단하게 구현
-            }
         } else {
             // 모듈 비활성화
+            if (moduleName == "youtube") setYoutubeKeyword("");
             setActiveModules((prev) => {
                 const newModules = { ...prev };
                 delete newModules[moduleName];
                 return newModules;
             });
-
-            // IoT 모듈 특별 처리 - 비활성화 시
-            if (moduleType === "iot") {
-                console.log("IoT 모듈 비활성화");
-            }
         }
     };
 
@@ -215,40 +211,6 @@ export default function Page() {
             setActiveModules(prevActiveModules);
         }
     }, [activeModules, availableHeight, prevActiveModules]);
-
-    const toggleModule = (name: string) => {
-        setPrevActiveModules(activeModules);
-
-        // 모듈 토글 시 웹소켓 메시지 전송
-        if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
-            // 모듈 이름을 type으로 변환
-            let messageType = name;
-            for (const [type, moduleName] of Object.entries(moduleTypeMapping)) {
-                if (moduleName === name) {
-                    messageType = type;
-                    break;
-                }
-            }
-
-            // 웹소켓 메시지 생성
-            const message = {
-                command: "process_data",
-                data: {
-                    type: messageType,
-                    contents: {
-                        default: activeModules[name] ? "OFF" : "ON",
-                        data: moduleData[name] || ""
-                    }
-                }
-            };
-
-            // 메시지 전송
-            webSocketRef.current.send(JSON.stringify(message));
-        }
-
-        // UI 상태 업데이트
-        setActiveModules((prev) => ({ ...prev, [name]: !prev[name] }));
-    };
 
     const removeModule = (name: string) => {
         // 모듈 제거 시 웹소켓 메시지 전송
@@ -288,20 +250,6 @@ export default function Page() {
 
     return (
         <div className="bg-black text-white font-sans flex flex-col items-center min-h-screen">
-            {/* 버튼 UI */}
-            <div ref={buttonContainerRef} className="flex flex-wrap gap-2 mb-6">
-                {[...verticalModules, ...horizontalModules].map(({ name }) => (
-                    <button
-                        key={name}
-                        onClick={() => toggleModule(name)}
-                        className={`px-2 py-2 rounded-md ${
-                            activeModules[name] ? "bg-blue-500 text-white" : "bg-blue-100 hover:bg-blue-200"
-                        }`}
-                    >
-                        {activeModules[name] ? `${name}` : `${name}`}
-                    </button>
-                ))}
-            </div>
             {/* 스택 UI */}
             <div className="flex w-full px-5 gap-4">
                 {/* 세로 스택 */}
@@ -323,9 +271,30 @@ export default function Page() {
                     {horizontalModules.map(({ name, component: Component }) =>
                         activeModules[name] ? (
                             <div key={name} className="w-auto">
-                                {name === "timer" ? <Timer onExpire={() => removeModule("timer")} /> : <Component />}
+                                {name === "youtube" ? (
+                                    <Youtube key={youtubeKeyword} keyword={youtubeKeyword || ""} />
+                                ) : name === "iot" ? (
+                                    <Iot key={iotRefreshKey} />
+                                ) : (
+                                    <Component />
+                                )}
                             </div>
                         ) : null
+                    )}
+                    {activeModules["youtube"] && (
+                        <div className="w-auto">
+                            <Youtube keyword={youtubeKeyword || ""} key={youtubeKeyword} />
+                        </div>
+                    )}
+                    {activeModules["timer"] && (
+                        <div className="w-auto">
+                            <Timer onExpire={() => removeModule("timer")} time={timerTime} />{" "}
+                        </div>
+                    )}
+                    {activeModules["iot"] && (
+                        <div className="w-auto">
+                            <Iot key={iotRefreshKey} />
+                        </div>
                     )}
                 </div>
             </div>
