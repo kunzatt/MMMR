@@ -245,17 +245,17 @@ class WebSocketServer:
         # dict를 JSON 문자열로 변환
         if isinstance(message, dict):
             message = json.dumps(message)
-        
+
         logger.info(f"전송할 메시지: {message}")        
         logger.info(f"{len(self.iot_clients)}개의 IoT 클라이언트에 전송: {message}")
-        if len(self.iot_clients) > 0:
-            data_processor.deviceUpdate(device_id_map[device], status, self.access_token, self.refresh_token)
         
         # 비동기로 모든 IoT 클라이언트에 메시지 전송
         await asyncio.gather(
             *[client.send(message) for client in self.iot_clients],
             return_exceptions=True
         )
+        
+        data_processor.deviceUpdate(device_id_map[device], status, self.access_token, self.refresh_token)
     
     def send_navigation_message(self, message):
 
