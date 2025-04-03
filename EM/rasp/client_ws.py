@@ -385,7 +385,8 @@ async def async_wake_word_detection():
 
                     should_restart = not result_success
                     repeat += 1
-
+                    if repeat > 1:
+                        should_restart = False
                     if should_restart:
                         print(f"인식 실패로 자동 재시작합니다. {repeat}회 시도 중...")
                         await asyncio.sleep(0.5)  # 잠시 대기 후 재시작
