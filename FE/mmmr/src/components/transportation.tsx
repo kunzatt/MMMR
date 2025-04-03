@@ -94,11 +94,12 @@ export default function Transportation() {
             {/* 🚍 버스 정보 */}
             {bus.map((item, index) => (
                 <div
+                    key={`bus-${index}`}
                     className={`py-2 ${index !== bus.length - 1 ? "border-b border-white" : ""} ${
                         index == bus.length - 1 && metros.length > 0 ? "border-b border-white" : ""
                     }`}
                 >
-                    <div key={`bus-${index}`} className="flex items-center">
+                    <div className="flex items-center">
                         <div className="text-2xl mr-3">
                             <FaBus />
                         </div>
@@ -121,8 +122,11 @@ export default function Transportation() {
 
             {/* 🚇 지하철 정보 */}
             {metros.map((item, index) => (
-                <div className={`py-2 ${index !== metros.length - 1 ? "border-b border-white" : ""} `}>
-                    <div key={`metros-${index}`} className="flex items-center py-2">
+                <div
+                    key={`metros-${index}`}
+                    className={`py-2 ${index !== metros.length - 1 ? "border-b border-white" : ""} `}
+                >
+                    <div className="flex items-center py-2">
                         <div className="text-2xl mr-3">
                             <FaSubway />
                         </div>

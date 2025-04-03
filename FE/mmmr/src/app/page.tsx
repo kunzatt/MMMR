@@ -26,7 +26,7 @@ const moduleTypeMapping: Record<string, string> = {
     "youtube": "youtube", // 기본적으로 세로형 유튜브 사용
     "timer": "timer",
     "news": "news",
-    "iot": "iot",
+    "iot": "iot"
 };
 
 const verticalModules: Module[] = [
@@ -34,14 +34,14 @@ const verticalModules: Module[] = [
     { name: "weather", component: Weather },
     { name: "transportation", component: Transportation },
     { name: "schedule", component: Schedule },
-    { name: "todo", component: Todo },
+    { name: "todo", component: Todo }
 ];
 
 const horizontalModules: Module[] = [
     { name: "news", component: News },
     { name: "youtube", component: Youtube },
     { name: "timer", component: Timer },
-    { name: "iot", component: Iot },
+    { name: "iot", component: Iot }
 ];
 
 // 웹소켓 메시지 타입 정의
@@ -72,7 +72,7 @@ export default function Page() {
     // 웹소켓 연결 설정
     useEffect(() => {
         // 라즈베리파이 웹소켓 서버 주소 (실제 IP로 변경 필요)
-        const WEBSOCKET_SERVER = "ws://localhost:8765";
+        const WEBSOCKET_SERVER = "ws://70.12.247.197:8765";
         if (!isConnected) {
             // 웹소켓 연결 함수
             const connectWebSocket = () => {
@@ -90,6 +90,7 @@ export default function Page() {
                     try {
                         const data: WebSocketMessage = JSON.parse(event.data);
                         handleWebSocketMessage(data);
+                        console.log(data);
                     } catch (error) {
                         console.error("웹소켓 메시지 처리 중 오류:", error);
                     }
@@ -140,7 +141,7 @@ export default function Page() {
             // 모듈 데이터 업데이트
             setModuleData((prev) => ({
                 ...prev,
-                [moduleName]: data.contents.data,
+                [moduleName]: data.contents.data
             }));
 
             // 이미 활성화되어 있지 않으면 활성화
@@ -236,9 +237,9 @@ export default function Page() {
                     type: messageType,
                     contents: {
                         default: activeModules[name] ? "OFF" : "ON",
-                        data: moduleData[name] || "",
-                    },
-                },
+                        data: moduleData[name] || ""
+                    }
+                }
             };
 
             // 메시지 전송
@@ -268,9 +269,9 @@ export default function Page() {
                     type: messageType,
                     contents: {
                         default: "OFF",
-                        data: "",
-                    },
-                },
+                        data: ""
+                    }
+                }
             };
 
             // 메시지 전송
