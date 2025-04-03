@@ -60,6 +60,14 @@ export const API_ROUTES = {
         delete: (deviceId: number) => `${BASE_URL}/api/devices/${deviceId}` // 기기 삭제 (DELETE)
     },
 
+    trans: {
+        delete: (transportationId: number) => `${BASE_URL}/api/transportations/${transportationId}`,
+        search: `${BASE_URL}/api/transportations/search`,
+        add: `${BASE_URL}/api/transportations`,
+        listByProfile: (profileId: number) => `${BASE_URL}/api/transportations/profile/${profileId}`,
+        timeByProfile: (profileId: number) => `${BASE_URL}/api/transportations/profile/${profileId}/arrivals`
+    },
+
     youtube: `${BASE_URL}/api/video`,
     news: `${BASE_URL}/api/news`,
     weather: `${BASE_URL}/api/weather`
