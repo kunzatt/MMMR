@@ -35,9 +35,9 @@ export default function Todo() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${accessToken}`,
+                    "Authorization": `Bearer ${accessToken}`
                 },
-                body: JSON.stringify({ token: accessToken }),
+                body: JSON.stringify({ token: accessToken })
             });
 
             if (!validateResponse.ok && refreshToken) {
@@ -45,9 +45,9 @@ export default function Todo() {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${accessToken}`,
+                        "Authorization": `Bearer ${accessToken}`
                     },
-                    body: JSON.stringify({ token: refreshToken }),
+                    body: JSON.stringify({ token: refreshToken })
                 });
 
                 const refreshData = await refreshResponse.json();
@@ -82,8 +82,8 @@ export default function Todo() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`,
-                },
+                    Authorization: `Bearer ${accessToken}`
+                }
             });
 
             if (response.ok) {
@@ -106,8 +106,8 @@ export default function Todo() {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`,
-                },
+                    Authorization: `Bearer ${accessToken}`
+                }
             });
 
             if (response.ok) {
@@ -160,11 +160,11 @@ export default function Todo() {
                         {todos.map((todo) => (
                             <div
                                 key={todo.id}
-                                className="flex items-center justify-between px-4 py-2 text-gray-600 bg-blue-100 rounded-full"
+                                className={`flex items-center justify-between px-4 py-2 text-gray-600  rounded-full ${
+                                    todo.isDone ? "line-through bg-gray-100" : "bg-blue-100"
+                                }`}
                             >
-                                <span className={`text-md ${todo.isDone ? "line-through text-gray-400" : ""}`}>
-                                    • {todo.content}
-                                </span>
+                                <span className="text-md">• {todo.content}</span>
                                 {todo.isDone ? (
                                     <button className="text-lg" onClick={() => handleDeleteTodo(todo.id)}>
                                         <HiOutlineTrash />
