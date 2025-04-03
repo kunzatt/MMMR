@@ -167,10 +167,13 @@ export default function Trans() {
                                         key={bus.id}
                                         className="flex items-center justify-between px-4 py-2 text-gray-600 bg-blue-100 rounded-3xl mt-2 mb-2"
                                     >
-                                        <div className="text-xl font-bold ">{bus.route}번</div>
+                                        <div className="text-xl">{bus.route}번</div>
                                         <div className="flex gap-4">
                                             <div className="flex flex-col items-end">
-                                                <div className="text-md font-semibold">{bus.station}</div>
+                                                <div className="text-md font-semibold">
+                                                    {bus.station.slice(0, 8)}
+                                                    {bus.station.length > 8 ? ".." : ""}
+                                                </div>
                                                 <div className="text-xs ">{bus.direction} 방향</div>
                                             </div>
                                             <button
@@ -192,7 +195,7 @@ export default function Trans() {
                                         key={metro.id}
                                         className="flex items-center justify-between px-4 py-3 text-gray-600 bg-blue-100 rounded-3xl mt-2 mb-2"
                                     >
-                                        <div className="text-xl font-bold ">{metro.station}</div>
+                                        <div className="text-xl ">{metro.station}</div>
                                         <div className="flex gap-4">
                                             <div className="text-md font-semibold">{metro.line}</div>
                                             <button
