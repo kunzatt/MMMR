@@ -36,12 +36,3 @@ services:
     depends_on:
       - backend
       - embedded
-
-  embedded:
-  container_name: mmmr-embedded
-  build:
-    context: ./EM/autonomous
-    dockerfile: Dockerfile
-  network_mode: host
-  expose:
-    - "5000"
