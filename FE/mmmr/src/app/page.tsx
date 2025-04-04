@@ -10,6 +10,7 @@ import Iot from "@/components/iot";
 import Todo from "@/components/todo";
 import Timer from "@/components/timer";
 import News from "@/components/news";
+import Homecam from "@/components/homecam";
 
 interface Module {
     name: string;
@@ -138,8 +139,8 @@ export default function Page() {
 
         // 👉 토큰 및 프로필 정보 로컬스토리지에 저장
         if (data.access_token && data.refresh_token && data.profileId) {
-            localStorage.setItem("access_token", data.access_token);
-            localStorage.setItem("refresh_token", data.refresh_token);
+            localStorage.setItem("accessToken", data.access_token);
+            localStorage.setItem("refreshToken", data.refresh_token);
             localStorage.setItem("currentProfile", JSON.stringify({ id: data.profileId }));
         }
 
@@ -306,6 +307,7 @@ export default function Page() {
                             <Iot key={iotRefreshKey} />
                         </div>
                     )}
+                    <Homecam />
                 </div>
             </div>
         </div>

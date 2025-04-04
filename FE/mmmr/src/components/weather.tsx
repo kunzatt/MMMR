@@ -9,7 +9,7 @@ import {
     TiWeatherSnow,
     TiWeatherStormy,
     TiWeatherSunny,
-    TiWeatherWindyCloudy,
+    TiWeatherWindyCloudy
 } from "react-icons/ti";
 import { getToken } from "@/config/getToken";
 import API_ROUTES from "@/config/apiRoutes";
@@ -21,7 +21,7 @@ const weatherIconMap: Record<string, JSX.Element> = {
     "눈": <TiWeatherSnow className="text-5xl" />,
     "태풍": <TiWeatherStormy className="text-5xl" />,
     "맑음": <TiWeatherSunny className="text-5xl" />,
-    "바람": <TiWeatherWindyCloudy className="text-5xl" />,
+    "바람": <TiWeatherWindyCloudy className="text-5xl" />
 };
 
 interface WeatherData {
@@ -46,13 +46,12 @@ export default function Weather() {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${accessToken}`,
-                    },
+                        "Authorization": `Bearer ${accessToken}`
+                    }
                 });
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log(data.data);
                     setWeather(data.data);
                 } else {
                     console.error("API 응답 오류:", response.status);

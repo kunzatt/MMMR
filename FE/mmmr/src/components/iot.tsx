@@ -13,7 +13,8 @@ const devicesPos = [
     { device: "airPurifier", x: "30%", y: "40%" },
     { device: "curtain", x: "42%", y: "5%" },
     { device: "kitchenLight", x: "46%", y: "75%" },
-    { device: "entranceLight", x: "68%", y: "70%" }
+    { device: "entranceLight", x: "68%", y: "70%" },
+    { device: "turtlebot", x: "20%", y: "50%" }
 ];
 
 interface Device {
@@ -22,6 +23,7 @@ interface Device {
     device: string;
     turned: string;
 }
+
 export default function Iot() {
     const [devices, setDevices] = useState<Device[]>([]);
 
