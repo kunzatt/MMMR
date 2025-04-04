@@ -46,6 +46,9 @@ interface WebSocketMessage {
         default: "ON" | "OFF";
         data: string;
     };
+    access_token: string;
+    refresh_token: string;
+    profileId: string;
 }
 
 export default function Page() {
@@ -79,7 +82,7 @@ export default function Page() {
     // 웹소켓 연결 설정
     useEffect(() => {
         // 라즈베리파이 웹소켓 서버 주소 (실제 IP로 변경 필요)
-        const WEBSOCKET_SERVER = "ws://localhost:8765";
+        const WEBSOCKET_SERVER = "ws://70.12.247.197:8765";
         if (!isConnected) {
             // 웹소켓 연결 함수
             const connectWebSocket = () => {
@@ -132,6 +135,13 @@ export default function Page() {
     //웹소켓 메시지 처리 함수
     const handleWebSocketMessage = (data: WebSocketMessage) => {
         console.log("수신된 메시지:", data);
+
+        // 👉 토큰 및 프로필 정보 로컬스토리지에 저장
+        if (data.access_token && data.refresh_token && data.profileId) {
+            localStorage.setItem("access_token", data.access_token);
+            localStorage.setItem("refresh_token", data.refresh_token);
+            localStorage.setItem("currentProfile", JSON.stringify({ id: data.profileId }));
+        }
 
         // type 확인 후 해당하는 모듈 매핑
         const moduleType = data.type;
