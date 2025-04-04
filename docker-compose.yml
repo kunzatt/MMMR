@@ -23,6 +23,7 @@ services:
       - "5173"
     depends_on:
       - backend
+      - embedded
 
   frontend_mobile:
     container_name: mmmr-frontend-mobile
@@ -34,3 +35,13 @@ services:
       - "3000"
     depends_on:
       - backend
+      - embedded
+
+  embedded:
+  container_name: mmmr-embedded
+  build:
+    context: ./EM/autonomous
+    dockerfile: Dockerfile
+  network_mode: host
+  expose:
+    - "5000"
