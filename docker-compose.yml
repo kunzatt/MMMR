@@ -23,7 +23,6 @@ services:
       - "5173"
     depends_on:
       - backend
-      - embedded
 
   frontend_mobile:
     container_name: mmmr-frontend-mobile
@@ -35,4 +34,3 @@ services:
       - "3000"
     depends_on:
       - backend
-      - embedded
