@@ -30,7 +30,8 @@ setup(
             'seg_binarizer = sub2.seg_binarizer:main',
             'goal_pub = sub2.goal_pub:main',
             'nav_command_ws = sub2.nav_command_ws:main',
-            'rotation = sub2.rotation:main'
+            'rotation = sub2.rotation:main',
+            'streaming = sub2.streaming:main'
         ],
     },
 )
