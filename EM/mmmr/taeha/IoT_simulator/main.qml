@@ -651,15 +651,15 @@ ApplicationWindow {
                     Shape {
                         width: 300
                         height: 300
-                        x: 250
-                        y: 250
+                        x: 280
+                        y: 270
 
                         ShapePath {
                             strokeWidth: 2
                             strokeColor: "transparent"
                             fillGradient: RadialGradient {
                                 centerX: 50; centerY: 100
-                                centerRadius: 100
+                                centerRadius: 120
                                 focalX: centerX; focalY: centerY
                                 GradientStop { position: 0; color: "#efe4b0" }
                                 GradientStop { position: 0.8; color: "transparent" }
@@ -693,8 +693,8 @@ ApplicationWindow {
                     Shape {
                         width: 300
                         height: 300
-                        x: 380
-                        y: 230
+                        x: 420
+                        y: 250
 
                         ShapePath {
                             strokeWidth: 2
@@ -759,7 +759,7 @@ ApplicationWindow {
                 spacing: 30
                 Layout.alignment: Qt.AlignCenter
                 Layout.maximumWidth: 450
-                Layout.maximumHeight: 320
+                Layout.maximumHeight: 380
                 Layout.leftMargin: 40
 
                 ColumnLayout {
@@ -769,6 +769,7 @@ ApplicationWindow {
                         font.bold: true
                         font.family: main_text.font.family
                         color: "#ddd"
+                        Layout.bottomMargin: 20
                     }
 
                     Text {
