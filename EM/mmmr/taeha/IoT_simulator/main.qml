@@ -751,8 +751,7 @@ ApplicationWindow {
                     border.color: "red"
                     border.width: 0.5
                     transformOrigin: Item.Center
-                    //transform: Scale { origin.x: 25; origin.y: 25; xScale: 3; yScale: 3}
-                    opacity: 1
+                    opacity: 0
                 }
             }
 
