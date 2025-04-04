@@ -411,7 +411,6 @@ ApplicationWindow {
             sw_livingLight.checked = devData["turned"]
         }
         else if (devName === "airConditioner") {
-            livingAirCon.imgId.visible = devData["turned"]
             sw_airConditioner.checked = devData["turned"]
 
             power_airCon.text = devData["turned"] ? "🟢 ON" : "🔴 OFF";
@@ -458,12 +457,77 @@ ApplicationWindow {
                 width: 600
                 height: 400
 
+                Image {
+                    id: map_home
+                    fillMode: Image.PreserveAspectFit
+                    width: parent.width
+                    source: "qrc:/images/map_white.png"
+                }
+
                 TV {
                     id: livingTV
+                    //imgId.width: 20
+                    imgId.height: 180
+                    imgId.x: 331
+                    imgId.y: 21
+                }
+
+                Image {
+                    id: livingTVLight
+                    fillMode: Image.PreserveAspectFit
+                    width: livingTV.imgId.width
+                    height: livingTV.imgId.height
+                    x: livingTV.imgId.x
+                    y: livingTV.imgId.y
+                    source: "qrc:/images/img_TVLight.png"
+                }
+
+                AirConditioner {
+                    id: livingAirCon
+                    imgId.width: 60
+                    imgId.height: 60
+                    imgId.x: 320
+                    imgId.y: -5
+                    imgId.visible: true
+                }
+
+                Image {
+                    id: livingAirConPower
+                    fillMode: Image.PreserveAspectFit
+                    width: livingAirCon.imgId.width
+                    height: livingAirCon.imgId.height
+                    x: livingAirCon.imgId.x
+                    y: livingAirCon.imgId.y
+                    source: "qrc:/images/img_airConditionerPower.png"
+                }
+
+                AirPurifier {
+                    id: livingAirPurifier
+                    imgId.width: 50
+                    imgId.height: 50
+                    imgId.x: 177
+                    imgId.y: 170
+                    imgId.visible: true
+                }
+
+                Image {
+                    id: livingAirPurifierPower
+                    fillMode: Image.PreserveAspectFit
+                    width: livingAirPurifier.imgId.width
+                    height: livingAirPurifier.imgId.height
+                    x: livingAirPurifier.imgId.x
+                    y: livingAirPurifier.imgId.y
+                    source: "qrc:/images/img_airPurifierPower.png"
+                }
+
+                Curtain {
+                    id: livingCurtain
                     width: parent.width
                     height: parent.height
-                    imgId.source: "qrc:/images/TV.png"
+                    imgId.source: "qrc:/images/curtain.png"
                 }
+
+
 
                 RoomLight {
                     id: livingLight
@@ -608,33 +672,9 @@ ApplicationWindow {
                     }
                 }
 
-                AirConditioner {
-                    id: livingAirCon
-                    width: parent.width
-                    height: parent.height
-                    imgId.source: "qrc:/images/airconditioner.png"
-                }
 
-                AirPurifier {
-                    id: livingAirPurifier
-                    width: parent.width
-                    height: parent.height
-                    imgId.source: "qrc:/images/airpurifier.png"
-                }
 
-                Curtain {
-                    id: livingCurtain
-                    width: parent.width
-                    height: parent.height
-                    imgId.source: "qrc:/images/curtain.png"
-                }
 
-                Image {
-                    id: map_home
-                    fillMode: Image.PreserveAspectFit
-                    width: parent.width
-                    source: "qrc:/images/map_white.png"
-                }
             }
 
             ColumnLayout {
@@ -818,6 +858,33 @@ ApplicationWindow {
                         }
                     }
 
+                    indicator: Rectangle {
+                        implicitWidth: 40
+                        implicitHeight: 20
+                        x: sw_livingLight.leftPadding
+                        y: parent.height / 2 - height / 2
+                        radius: 10
+                        color: sw_livingLight.checked ? "#17a81a" : "#ffffff"
+                        border.color: sw_livingLight.checked ? "#17a81a" : "#cccccc"
+
+                        Rectangle {
+                            id: thumb
+                            x: sw_livingLight.checked ? parent.width - width : 0
+                            width: 20
+                            height: 20
+                            radius: 10
+                            color: sw_livingLight.down ? "#cccccc" : "#ffffff"
+                            border.color: sw_livingLight.checked ? (sw_livingLight.down ? "#17a81a" : "#21be2b") : "#999999"
+
+                            Behavior on x {
+                                NumberAnimation {
+                                    duration: 200
+                                    easing.type: Easing.OutQuad
+                                }
+                            }
+                        }
+                    }
+
                     contentItem: Text {
                         text: sw_livingLight.text
                         color: "#ddd"
@@ -876,7 +943,6 @@ ApplicationWindow {
                     id: sw_airConditioner
                     text: qsTr("Air Conditioner")
                     checked: false
-                    onClicked: livingAirCon.imgId.visible = checked
 
                     contentItem: Text {
                         text: sw_airConditioner.text
