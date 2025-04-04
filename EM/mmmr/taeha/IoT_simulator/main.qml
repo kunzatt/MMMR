@@ -901,18 +901,15 @@ ApplicationWindow {
                         implicitHeight: 20
                         x: sw_livingLight.leftPadding
                         y: parent.height / 2 - height / 2
-                        radius: 10
-                        color: sw_livingLight.checked ? "#17a81a" : "#ffffff"
-                        border.color: sw_livingLight.checked ? "#17a81a" : "#cccccc"
+                        color: sw_livingLight.checked ? "#666" : "#ffffff"
+                        border.color: sw_livingLight.checked ? "#666" : "#cccccc"
 
                         Rectangle {
-                            id: thumb
                             x: sw_livingLight.checked ? parent.width - width : 0
-                            width: 20
+                            width: 15
                             height: 20
-                            radius: 10
                             color: sw_livingLight.down ? "#cccccc" : "#ffffff"
-                            border.color: sw_livingLight.checked ? (sw_livingLight.down ? "#17a81a" : "#21be2b") : "#999999"
+                            border.color: sw_livingLight.checked ? (sw_livingLight.down ? "#666" : "#888") : "#999999"
 
                             Behavior on x {
                                 NumberAnimation {
@@ -938,6 +935,30 @@ ApplicationWindow {
                     checked: false
                     onClicked: kitchenLight.visible = checked
 
+                    indicator: Rectangle {
+                        implicitWidth: 40
+                        implicitHeight: 20
+                        x: sw_kitchenLight.leftPadding
+                        y: parent.height / 2 - height / 2
+                        color: sw_kitchenLight.checked ? "#666" : "#ffffff"
+                        border.color: sw_kitchenLight.checked ? "#666" : "#cccccc"
+
+                        Rectangle {
+                            x: sw_kitchenLight.checked ? parent.width - width : 0
+                            width: 15
+                            height: 20
+                            color: sw_kitchenLight.down ? "#cccccc" : "#ffffff"
+                            border.color: sw_kitchenLight.checked ? (sw_kitchenLight.down ? "#666" : "#888") : "#999999"
+
+                            Behavior on x {
+                                NumberAnimation {
+                                    duration: 200
+                                    easing.type: Easing.OutQuad
+                                }
+                            }
+                        }
+                    }
+
                     contentItem: Text {
                         text: sw_kitchenLight.text
                         color: "#ddd"
@@ -952,6 +973,30 @@ ApplicationWindow {
                     text: qsTr("Entrance Light")
                     checked: false
                     onClicked: entranceLight.visible = checked
+
+                    indicator: Rectangle {
+                        implicitWidth: 40
+                        implicitHeight: 20
+                        x: sw_entranceLight.leftPadding
+                        y: parent.height / 2 - height / 2
+                        color: sw_entranceLight.checked ? "#666" : "#ffffff"
+                        border.color: sw_entranceLight.checked ? "#666" : "#cccccc"
+
+                        Rectangle {
+                            x: sw_entranceLight.checked ? parent.width - width : 0
+                            width: 15
+                            height: 20
+                            color: sw_entranceLight.down ? "#cccccc" : "#ffffff"
+                            border.color: sw_entranceLight.checked ? (sw_entranceLight.down ? "#666" : "#888") : "#999999"
+
+                            Behavior on x {
+                                NumberAnimation {
+                                    duration: 200
+                                    easing.type: Easing.OutQuad
+                                }
+                            }
+                        }
+                    }
 
                     contentItem: Text {
                         text: sw_entranceLight.text
@@ -982,6 +1027,30 @@ ApplicationWindow {
                         highlight_circle.scale = 1.0
                         scaleCircle.start()
                         fadeoutCircle.start()
+                    }
+
+                    indicator: Rectangle {
+                        implicitWidth: 40
+                        implicitHeight: 20
+                        x: sw_TV.leftPadding
+                        y: parent.height / 2 - height / 2
+                        color: sw_TV.checked ? "#666" : "#ffffff"
+                        border.color: sw_TV.checked ? "#666" : "#cccccc"
+
+                        Rectangle {
+                            x: sw_TV.checked ? parent.width - width : 0
+                            width: 15
+                            height: 20
+                            color: sw_TV.down ? "#cccccc" : "#ffffff"
+                            border.color: sw_TV.checked ? (sw_TV.down ? "#666" : "#888") : "#999999"
+
+                            Behavior on x {
+                                NumberAnimation {
+                                    duration: 200
+                                    easing.type: Easing.OutQuad
+                                }
+                            }
+                        }
                     }
 
                     contentItem: Text {
@@ -1015,6 +1084,30 @@ ApplicationWindow {
                         fadeoutCircle.start()
                     }
 
+                    indicator: Rectangle {
+                        implicitWidth: 40
+                        implicitHeight: 20
+                        x: sw_airConditioner.leftPadding
+                        y: parent.height / 2 - height / 2
+                        color: sw_airConditioner.checked ? "#666" : "#ffffff"
+                        border.color: sw_airConditioner.checked ? "#666" : "#cccccc"
+
+                        Rectangle {
+                            x: sw_airConditioner.checked ? parent.width - width : 0
+                            width: 15
+                            height: 20
+                            color: sw_airConditioner.down ? "#cccccc" : "#ffffff"
+                            border.color: sw_airConditioner.checked ? (sw_airConditioner.down ? "#666" : "#888") : "#999999"
+
+                            Behavior on x {
+                                NumberAnimation {
+                                    duration: 200
+                                    easing.type: Easing.OutQuad
+                                }
+                            }
+                        }
+                    }
+
                     contentItem: Text {
                         text: sw_airConditioner.text
                         color: "#ddd"
@@ -1046,6 +1139,30 @@ ApplicationWindow {
                         fadeoutCircle.start()
                     }
 
+                    indicator: Rectangle {
+                        implicitWidth: 40
+                        implicitHeight: 20
+                        x: sw_airPurifier.leftPadding
+                        y: parent.height / 2 - height / 2
+                        color: sw_airPurifier.checked ? "#666" : "#ffffff"
+                        border.color: sw_airPurifier.checked ? "#666" : "#cccccc"
+
+                        Rectangle {
+                            x: sw_airPurifier.checked ? parent.width - width : 0
+                            width: 15
+                            height: 20
+                            color: sw_airPurifier.down ? "#cccccc" : "#ffffff"
+                            border.color: sw_airPurifier.checked ? (sw_airPurifier.down ? "#666" : "#888") : "#999999"
+
+                            Behavior on x {
+                                NumberAnimation {
+                                    duration: 200
+                                    easing.type: Easing.OutQuad
+                                }
+                            }
+                        }
+                    }
+
                     contentItem: Text {
                         text: sw_airPurifier.text
                         color: "#ddd"
@@ -1060,6 +1177,30 @@ ApplicationWindow {
                     text: qsTr("LivingRoom Curtain")
                     checked: false
                     onClicked: livingCurtain.imgId.visible = checked
+
+                    indicator: Rectangle {
+                        implicitWidth: 40
+                        implicitHeight: 20
+                        x: sw_curtain.leftPadding
+                        y: parent.height / 2 - height / 2
+                        color: sw_curtain.checked ? "#666" : "#ffffff"
+                        border.color: sw_curtain.checked ? "#666" : "#cccccc"
+
+                        Rectangle {
+                            x: sw_curtain.checked ? parent.width - width : 0
+                            width: 15
+                            height: 20
+                            color: sw_curtain.down ? "#cccccc" : "#ffffff"
+                            border.color: sw_curtain.checked ? (sw_curtain.down ? "#666" : "#888") : "#999999"
+
+                            Behavior on x {
+                                NumberAnimation {
+                                    duration: 200
+                                    easing.type: Easing.OutQuad
+                                }
+                            }
+                        }
+                    }
 
                     contentItem: Text {
                         text: sw_curtain.text
