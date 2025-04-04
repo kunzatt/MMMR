@@ -19,13 +19,15 @@ export default function LoginPage() {
             const response = await fetch(API_ROUTES.auth.login, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email, password })
             });
 
             const data = await response.json();
 
             if (response.ok) {
                 console.log("로그인 성공!");
+                localStorage.setItem("email", email);
+                localStorage.setItem("password", password);
                 localStorage.setItem("accessToken", data.data.accessToken);
                 localStorage.setItem("refreshToken", data.data.refreshToken);
                 sessionStorage.setItem("hasReloaded", "true");

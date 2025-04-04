@@ -409,7 +409,7 @@ export default function AddTrans({ onClose }: AddTransProps) {
                                         type="text"
                                         value={searchKeyword}
                                         onChange={(e) => setSearchKeyword(e.target.value)}
-                                        className="flex-1 p-2 focus:outline-none"
+                                        className="flex-1 min-w-0 p-2 focus:outline-none"
                                         placeholder={searchType === "number" ? "버스 번호 입력" : "정류장 이름 입력"}
                                     />
 
