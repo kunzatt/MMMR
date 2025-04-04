@@ -773,124 +773,83 @@ ApplicationWindow {
                     }
 
                     Text {
-                        text: "Smarthome Info"
+                        text: "Lights"
                         color: main_text.color
                         font.pointSize: 18
                         font.family: main_text.font.family
                     }
 
+                    ColumnLayout {
+                        Layout.bottomMargin: 20
+
+                        Text {
+                            text: (livingLight.visible ? "🟢" : "🔴") + " Living Room"
+                            color: main_text.color
+                            font.pointSize: 13
+                            font.family: main_text.font.family
+                        }
+
+                        Text {
+                            text: (kitchenLight.visible ? "🟢" : "🔴") + " Kitchen"
+                            color: main_text.color
+                            font.pointSize: 13
+                            font.family: main_text.font.family
+                        }
+
+                        Text {
+                            text: (entranceLight.visible ? "🟢" : "🔴") + " Entrance"
+                            color: main_text.color
+                            font.pointSize: 13
+                            font.family: main_text.font.family
+                        }
+                    }
+
                     Text {
-                        text: "Livingroom Light: " + (livingLight.visible ? "ON" : "OFF")
+                        text: "Appliances"
                         color: main_text.color
-                        font.pointSize: 13
+                        font.pointSize: 18
                         font.family: main_text.font.family
                     }
 
-                    Text {
-                        text: "Kitchen Light: " + (kitchenLight.visible ? "ON" : "OFF")
-                        color: main_text.color
-                        font.pointSize: 13
-                        font.family: main_text.font.family
-                    }
-
-                    Text {
-                        text: "Entrance Light: " + (entranceLight.visible ? "ON" : "OFF")
-                        color: main_text.color
-                        font.pointSize: 13
-                        font.family: main_text.font.family
-                    }
-
-                    TabBar {
-                        id: bar
-                        width: parent.width
-                        Layout.maximumHeight: 40
-                        Layout.topMargin: 20
-                        font.family: main_text.font.family
-
-                        TabButton {
-                            width: 100
-                            height: parent.height
-                            text: qsTr("Air Conditioner")
-                            font.pointSize: 10
+                    ColumnLayout {
+                        Text {
+                            text: (sw_airConditioner.checked ? "🟢" : "🔴") + " Air Conditioner"
+                            color: main_text.color
+                            font.pointSize: 13
+                            font.family: main_text.font.family
                         }
 
-                        TabButton {
-                            width: 100
-                            height: parent.height
-                            text: qsTr("Air Purifier")
-                            font.pointSize: 10
+                        Text {
+                            text: "🌡️ 27℃ → ❄️ 24℃"
+                            color: main_text.color
+                            font.pointSize: 13
+                            font.family: main_text.font.family
+                            Layout.leftMargin: 20
                         }
 
-                        TabButton {
-                            width: 100
-                            height: parent.height
-                            text: qsTr("TV")
-                            font.pointSize: 10
+                        Text {
+                            text: (sw_airPurifier.checked ? "🟢" : "🔴") + " Air Purifier"
+                            color: main_text.color
+                            font.pointSize: 13
+                            font.family: main_text.font.family
+                            Layout.topMargin: 10
                         }
-                    }
 
-                    StackLayout {
-                        width: parent.width
-                        Layout.topMargin: 10
-                        Layout.maximumHeight: 150
-                        currentIndex: bar.currentIndex
-
-                        Item {
-                            ColumnLayout {
-                                spacing: 3
-
-                                Label {
-                                    id: power_airCon
-                                    text: "🔴 OFF"
-                                    color: main_text.color
-                                    font.pointSize: 12
-                                    font.family: main_text.font.family
-                                }
-
-                                Text {
-                                    id: temp_airCon
-                                    text: "🌡️ 27℃ → ❄️ 24℃"
-                                    color: main_text.color
-                                    font.pointSize: 12
-                                    font.family: main_text.font.family
-                                }
-                            }
-
-
+                        Text {
+                            text: (sw_TV.checked ? "🟢" : "🔴") + " TV"
+                            color: main_text.color
+                            font.pointSize: 13
+                            font.family: main_text.font.family
+                            Layout.topMargin: 10
                         }
-                        Item {
-                            ColumnLayout {
-                                spacing: 3
 
-                                Label {
-                                    id: power_airPurifier
-                                    text: "🔴 OFF"
-                                    color: main_text.color
-                                    font.pointSize: 12
-                                    font.family: main_text.font.family
-                                }
-                            }
-                        }
-                        Item {
-                            ColumnLayout {
-                                spacing: 3
-
-                                Label {
-                                    id: power_TV
-                                    text: "🔴 OFF"
-                                    color: main_text.color
-                                    font.pointSize: 12
-                                    font.family: main_text.font.family
-                                }
-
-                                Text {
-                                    id: volume_TV
-                                    text: "🔉 50"
-                                    color: main_text.color
-                                    font.pointSize: 12
-                                    font.family: main_text.font.family
-                                }
-                            }
+                        Text {
+                            id: volume_TV
+                            text: "🔉 50"
+                            color: main_text.color
+                            font.pointSize: 12
+                            font.family: main_text.font.family
+                            Layout.leftMargin: 20
                         }
                     }
                 }
