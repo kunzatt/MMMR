@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import ChangePassword from "@/components/changePassword";
 import DeleteAccount from "@/components/deleteAccount";
 import API_ROUTES from "@/config/apiRoutes";
+import ShowQr from "@/components/showQr";
 
 export default function Setting() {
     const router = useRouter();
     const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
     const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
+    const [showQrModal, setShowQrModal] = useState(false);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -38,9 +40,9 @@ export default function Setting() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${accessToken}`,
+                    "Authorization": `Bearer ${accessToken}`
                 },
-                body: JSON.stringify({ token: accessToken }),
+                body: JSON.stringify({ token: accessToken })
             });
 
             if (!validateResponse.ok && refreshToken) {
@@ -48,9 +50,9 @@ export default function Setting() {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${accessToken}`,
+                        "Authorization": `Bearer ${accessToken}`
                     },
-                    body: JSON.stringify({ token: refreshToken }),
+                    body: JSON.stringify({ token: refreshToken })
                 });
 
                 const refreshData = await refreshResponse.json();
@@ -87,9 +89,9 @@ export default function Setting() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`,
+                    Authorization: `Bearer ${accessToken}`
                 },
-                body: JSON.stringify({ token: accessToken }),
+                body: JSON.stringify({ token: accessToken })
             });
 
             const data = await response.json();
@@ -131,6 +133,12 @@ export default function Setting() {
                     </button>
                     <button
                         className="w-full bg-blue-100 text-gray-600 py-2 px-4 rounded-full"
+                        onClick={() => setShowQrModal(true)}
+                    >
+                        로그인 QR 코드
+                    </button>
+                    <button
+                        className="w-full bg-blue-100 text-gray-600 py-2 px-4 rounded-full"
                         onClick={() => setShowDeleteAccountModal(true)}
                     >
                         회원 탈퇴
@@ -142,6 +150,7 @@ export default function Setting() {
             </div>
             {showChangePasswordModal && <ChangePassword onClose={() => setShowChangePasswordModal(false)} />}
             {showDeleteAccountModal && <DeleteAccount onClose={() => setShowDeleteAccountModal(false)} />}
+            {showQrModal && <ShowQr onClose={() => setShowQrModal(false)} />}
         </div>
     );
 }
