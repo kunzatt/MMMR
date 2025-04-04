@@ -480,10 +480,27 @@ ApplicationWindow {
                     x: livingTV.imgId.x
                     y: livingTV.imgId.y
                     source: "qrc:/images/img_TVLight.png"
+                    opacity: 0
+                }
+
+                OpacityAnimator {
+                    id: tv_on
+                    target: livingTVLight
+                    from: 0
+                    to: 1
+                    duration: 200
+                }
+
+                OpacityAnimator {
+                    id: tv_off
+                    target: livingTVLight
+                    from: 1
+                    to: 0
+                    duration: 200
                 }
 
                 AirConditioner {
-                    id: livingAirCon
+                    id: livingAircon
                     imgId.width: 70
                     imgId.height: 70
                     imgId.x: 340
@@ -492,17 +509,35 @@ ApplicationWindow {
                 }
 
                 Image {
-                    id: livingAirConPower
+                    id: livingAirconPower
                     fillMode: Image.PreserveAspectFit
-                    width: livingAirCon.imgId.width
-                    height: livingAirCon.imgId.height
-                    x: livingAirCon.imgId.x
-                    y: livingAirCon.imgId.y
+                    width: livingAircon.imgId.width
+                    height: livingAircon.imgId.height
+                    x: livingAircon.imgId.x
+                    y: livingAircon.imgId.y
                     source: "qrc:/images/img_airConditionerPower.png"
+                    opacity: 0
                 }
 
+                OpacityAnimator {
+                    id: aircon_on
+                    target: livingAirconPower
+                    from: 0
+                    to: 1
+                    duration: 500
+                }
+
+                OpacityAnimator {
+                    id: aircon_off
+                    target: livingAirconPower
+                    from: 1
+                    to: 0
+                    duration: 500
+                }
+
+
                 AirPurifier {
-                    id: livingAirPurifier
+                    id: airPurifier
                     imgId.width: 50
                     imgId.height: 50
                     imgId.x: 193
@@ -511,13 +546,30 @@ ApplicationWindow {
                 }
 
                 Image {
-                    id: livingAirPurifierPower
+                    id: airPurifierPower
                     fillMode: Image.PreserveAspectFit
-                    width: livingAirPurifier.imgId.width
-                    height: livingAirPurifier.imgId.height
-                    x: livingAirPurifier.imgId.x
-                    y: livingAirPurifier.imgId.y
+                    width: airPurifier.imgId.width
+                    height: airPurifier.imgId.height
+                    x: airPurifier.imgId.x
+                    y: airPurifier.imgId.y
                     source: "qrc:/images/img_airPurifierPower.png"
+                    opacity: 0
+                }
+
+                OpacityAnimator {
+                    id: purifier_on
+                    target: airPurifierPower
+                    from: 0
+                    to: 1
+                    duration: 300
+                }
+
+                OpacityAnimator {
+                    id: purifier_off
+                    target: airPurifierPower
+                    from: 1
+                    to: 0
+                    duration: 300
                 }
 
                 Curtain {
@@ -929,7 +981,14 @@ ApplicationWindow {
                     id: sw_TV
                     text: qsTr("TV")
                     checked: false
-                    onClicked: livingTV.imgId.visible = checked
+                    onClicked: {
+                        if(checked) {
+                            tv_on.start()
+                        }
+                        else {
+                            tv_off.start()
+                        }
+                    }
 
                     contentItem: Text {
                         text: sw_TV.text
@@ -944,6 +1003,14 @@ ApplicationWindow {
                     id: sw_airConditioner
                     text: qsTr("Air Conditioner")
                     checked: false
+                    onClicked: {
+                        if(checked) {
+                            aircon_on.start()
+                        }
+                        else {
+                            aircon_off.start()
+                        }
+                    }
 
                     contentItem: Text {
                         text: sw_airConditioner.text
@@ -958,7 +1025,14 @@ ApplicationWindow {
                     id: sw_airPurifier
                     text: qsTr("Air Purifier")
                     checked: false
-                    onClicked: livingAirPurifier.imgId.visible = checked
+                    onClicked: {
+                        if(checked) {
+                            purifier_on.start()
+                        }
+                        else {
+                            purifier_off.start()
+                        }
+                    }
 
                     contentItem: Text {
                         text: sw_airPurifier.text
