@@ -454,7 +454,7 @@ ApplicationWindow {
 
             Item {
                 id: map_wrapper
-                width: 600
+                width: 650
                 height: 400
 
                 Image {
@@ -468,8 +468,8 @@ ApplicationWindow {
                     id: livingTV
                     //imgId.width: 20
                     imgId.height: 180
-                    imgId.x: 331
-                    imgId.y: 21
+                    imgId.x: 360
+                    imgId.y: 29
                 }
 
                 Image {
@@ -484,10 +484,10 @@ ApplicationWindow {
 
                 AirConditioner {
                     id: livingAirCon
-                    imgId.width: 60
-                    imgId.height: 60
-                    imgId.x: 320
-                    imgId.y: -5
+                    imgId.width: 70
+                    imgId.height: 70
+                    imgId.x: 340
+                    imgId.y: -17
                     imgId.visible: true
                 }
 
@@ -505,8 +505,8 @@ ApplicationWindow {
                     id: livingAirPurifier
                     imgId.width: 50
                     imgId.height: 50
-                    imgId.x: 177
-                    imgId.y: 170
+                    imgId.x: 193
+                    imgId.y: 185
                     imgId.visible: true
                 }
 
@@ -836,6 +836,7 @@ ApplicationWindow {
 
         RowLayout {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+            Layout.maximumHeight: 100
             width: parent.width
             id: sw_wrapper
             spacing: 40
@@ -985,25 +986,29 @@ ApplicationWindow {
             }
 
             ColumnLayout {
+                Layout.maximumWidth: 200
+                Layout.maximumHeight: 100
+                spacing: 5
 
                 TextArea {
                     id: jsonInput
                     placeholderText: qsTr("Enter json format")
-                    Layout.topMargin: 20
                     wrapMode: TextArea.WordWrap
-                    width: 200
+                    implicitWidth: 200
+                    implicitHeight: 70
 
                     background: Rectangle {
-                        implicitWidth: 200
-                        implicitHeight: 70
+                        width: 200
+                        height: 70
                         border.color: jsonInput.enabled ? "#21be2b" : "transparent"
                     }
                 }
 
                 Button {
-                    Layout.alignment: Qt.AlignRight
                     text: "Ok"
-                    implicitWidth: 100
+                    Layout.alignment: Qt.AlignRight
+                    Layout.preferredWidth: 80
+                    Layout.preferredHeight: 30
                     onClicked: {
                         var jsonText = jsonInput.text;
                         var result = jsonProcessor.processJson(jsonText);
@@ -1020,8 +1025,8 @@ ApplicationWindow {
 
             Label {
                 id: jsonOutput
-                width: parent.width * 0.8
-                height: 300
+                Layout.preferredWidth: 200
+                Layout.preferredHeight: 80
                 wrapMode: TextArea.Wrap
                 text: "Parsed JSON will appear here..."
                 color: "#ddd"
