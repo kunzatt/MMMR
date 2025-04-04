@@ -724,9 +724,36 @@ ApplicationWindow {
                     }
                 }
 
+                NumberAnimation {
+                    id: scaleCircle
+                    to: 15.0
+                    duration: 700
+                    target: highlight_circle
+                    properties: "scale"
+                    easing.type: Easing.OutCubic
+                }
 
+                NumberAnimation {
+                    id: fadeoutCircle
+                    to: 0.0
+                    duration: 700
+                    target: highlight_circle
+                    properties: "opacity"
+                    easing.type: Easing.OutCubic
+                }
 
-
+                Rectangle {
+                    id: highlight_circle
+                    width: 10
+                    height: 10
+                    radius: width / 2
+                    color: "transparent"
+                    border.color: "red"
+                    border.width: 0.5
+                    transformOrigin: Item.Center
+                    //transform: Scale { origin.x: 25; origin.y: 25; xScale: 3; yScale: 3}
+                    opacity: 1
+                }
             }
 
             ColumnLayout {
@@ -988,6 +1015,15 @@ ApplicationWindow {
                         else {
                             tv_off.start()
                         }
+
+                        highlight_circle.opacity = 1
+                        highlight_circle.width = 10
+                        highlight_circle.height = 10
+                        highlight_circle.x = 360 - highlight_circle.width / 2
+                        highlight_circle.y = 120 - highlight_circle.width / 2
+                        highlight_circle.scale = 1.0
+                        scaleCircle.start()
+                        fadeoutCircle.start()
                     }
 
                     contentItem: Text {
@@ -1010,6 +1046,15 @@ ApplicationWindow {
                         else {
                             aircon_off.start()
                         }
+
+                        highlight_circle.opacity = 1
+                        highlight_circle.width = 10
+                        highlight_circle.height = 10
+                        highlight_circle.x = 375 - highlight_circle.width / 2
+                        highlight_circle.y = 5 - highlight_circle.width / 2
+                        highlight_circle.scale = 1.0
+                        scaleCircle.start()
+                        fadeoutCircle.start()
                     }
 
                     contentItem: Text {
@@ -1032,6 +1077,15 @@ ApplicationWindow {
                         else {
                             purifier_off.start()
                         }
+
+                        highlight_circle.opacity = 1
+                        highlight_circle.width = 10
+                        highlight_circle.height = 10
+                        highlight_circle.x = 220 - highlight_circle.width / 2
+                        highlight_circle.y = 200 - highlight_circle.width / 2
+                        highlight_circle.scale = 1.0
+                        scaleCircle.start()
+                        fadeoutCircle.start()
                     }
 
                     contentItem: Text {
