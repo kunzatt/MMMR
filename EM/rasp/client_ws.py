@@ -72,8 +72,9 @@ async def broadcast_message(message, callsign="None"):
     """모든 연결된 웹 클라이언트에게 메시지 전달"""
     if connected_clients:
         # JSON 문자열로 변환
-        message["callsign"] = callsign
+        #message.pop("result", None)
         message_str = json.dumps(message)
+        
 
         # 연결된 모든 클라이언트에게 전송
         await asyncio.gather(
