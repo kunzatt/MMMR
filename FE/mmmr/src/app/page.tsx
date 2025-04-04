@@ -27,7 +27,8 @@ const moduleTypeMapping: Record<string, string> = {
     "youtube": "youtube", // 기본적으로 세로형 유튜브 사용
     "timer": "timer",
     "news": "news",
-    "iot": "iot"
+    "iot": "iot",
+    "homecam": "homecam"
 };
 
 const verticalModules: Module[] = [
@@ -38,7 +39,10 @@ const verticalModules: Module[] = [
     { name: "todo", component: Todo }
 ];
 
-const horizontalModules: Module[] = [{ name: "news", component: News }];
+const horizontalModules: Module[] = [
+    { name: "news", component: News },
+    { name: "homecam", component: Homecam }
+];
 
 // 웹소켓 메시지 타입 정의
 interface WebSocketMessage {
@@ -282,13 +286,7 @@ export default function Page() {
                     {horizontalModules.map(({ name, component: Component }) =>
                         activeModules[name] ? (
                             <div key={name} className="w-auto">
-                                {name === "youtube" ? (
-                                    <Youtube key={youtubeKeyword} keyword={youtubeKeyword || ""} />
-                                ) : name === "iot" ? (
-                                    <Iot key={iotRefreshKey} />
-                                ) : (
-                                    <Component />
-                                )}
+                                <Component />
                             </div>
                         ) : null
                     )}
@@ -307,8 +305,8 @@ export default function Page() {
                             <Iot key={iotRefreshKey} />
                         </div>
                     )}
+                    <Homecam />
                 </div>
-                <Homecam />
             </div>
         </div>
     );
