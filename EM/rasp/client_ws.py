@@ -68,10 +68,11 @@ async def unregister(websocket):
     logger.info(f"웹 클라이언트 연결 해제")
     connected_clients.remove(websocket)
 
-async def broadcast_message(message):
+async def broadcast_message(message, callsign="None"):
     """모든 연결된 웹 클라이언트에게 메시지 전달"""
     if connected_clients:
         # JSON 문자열로 변환
+        message["callsign"] = callsign
         message_str = json.dumps(message)
 
         # 연결된 모든 클라이언트에게 전송
@@ -272,7 +273,7 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
                     if contents_type:
                         # 웹 클라이언트에 메시지 전달
                         try:
-                            await broadcast_message(json_result)
+                            await broadcast_message(json_result, detected_keyword)
                         except Exception as e:
                             print(f"웹 클라이언트 메시지 전송 오류: {e}")
 
@@ -385,7 +386,8 @@ async def async_wake_word_detection():
 
                     should_restart = not result_success
                     repeat += 1
-
+                    if repeat > 1:
+                        should_restart = False
                     if should_restart:
                         print(f"인식 실패로 자동 재시작합니다. {repeat}회 시도 중...")
                         await asyncio.sleep(0.5)  # 잠시 대기 후 재시작

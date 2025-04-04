@@ -366,11 +366,11 @@ async def text_to_json(text: str) -> str:
         "data": "[관련 데이터]"
     }
 }
-
+기기 목록{"livingroomLight", "TV", "airConditioner", "airPurfier", "curtain", "kitchenLight", "entranceLight"}
 type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "exit", "greet", "none"
 
 - iot: 집 안 기기 현황 확인 명령(예: "IoT 현황 알려줘", "IoT 목록 확인해줘", "IoT 장치 상태", "집 안 기기 상태", "기기 상태 알려줘", "기기 목록 알려줘)
-- control: 전등, 조명, 가전제품 등의 제어 명령 (예: "거실 전등 켜줘", "거실 불 꺼줘", "주방 불 켜줘", "커튼 쳐줘", "TV 켜줘", "TV 볼륨 50으로 맞춰", "거실 조명 밝기 50")
+- control: 기기 목록에 포함된 기기들 제어 명령 (예: "거실 전등 켜줘", "거실 불 꺼줘", "주방 불 켜줘", "커튼 쳐줘", "TV 켜줘", "TV 볼륨 50으로 맞춰", "거실 조명 밝기 50") 기기가 없거나 기기 목록에 없는 기기는 control type이 아닙니다.
 - weather: 날씨 정보 요청 (예: "오늘 날씨 어때?", "비 올 예정이야?")
 - news: 뉴스 정보 요청 (예: "오늘 뉴스 보여줘", "최신 뉴스 알려줘", "3번째 뉴스 알려줘")
 - youtube: 유튜브 관련 요청 (예: "유튜브 틀어줘", "음악 동영상 보여줘")
@@ -384,14 +384,15 @@ type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", 
 - eixt : 잘못 부른 경우 (예: "아니야", "잘못 불렀어")
 - none: 위 분류에 해당하지 않는 경우
 
-contents.default는 기능을 켜는 명령의 경우 "ON", 끄는 명령인 경우 "OFF", 그 외에는 빈 문자열로 설정합니다. "보여줘", "알려줘", "켜줘" 등의 명령은 "ON"으로 설정합니다. "꺼줘" 등의 명령은 "OFF"로 설정합니다. 단, control 타입에 경우엔 빈 문자열로 설정합니다.
+contents.default는 기능을 켜는 명령의 경우 "ON", 끄는 명령인 경우 "OFF", 그 외에는 "ON"으로 설정합니다. "보여줘", "알려줘", "켜줘" 등의 명령은 "ON"으로 설정합니다. "꺼줘" 등의 명령은 "OFF"로 설정합니다. 단, control 타입에 경우엔 빈 문자열로 설정합니다.
 
 contents.data는 type에 따라 다르게 설정합니다:
-- control: 기기 + "ON" 또는 기기 + "OFF" (예: "거실 전등 ON", "TV OFF"), 기기 목록 ["livingroomLight", "TV", "airConditioner", "airPurfier", "curtain", "kitchenLight", "entranceLight"], 단 airConditioner, TV, 조명들이 ON인 경우엔 밸류값을 함께 넣을 수 있습니다.(예: "airConditioner 25", "TV ON 20", "livinroomLight ON 50" 등)
+- control: 기기 + "ON" 또는 기기 + "OFF" (예: "거실 전등 ON", "TV OFF"), 기기 목록 ["livingroomLight", "TV", "airConditioner", "airPurfier", "curtain", "kitchenLight", "entranceLight"], 단 airConditioner, TV, 조명들이 ON인 경우엔 밸류값을 함께 넣을 수 있습니다.(예: "airConditioner 25", "TV ON 20", "livinroomLight ON 50" 등). 반드시 목록에 포함된 기기만 들어가야 해야합니다. 목록에 들어가지 않은 기기일 경우 iot type이 아닙니다. 기기없이 밸류값만 들어갈 수 없습니다.
 - news: "1"부터 "5" 사이의 숫자 (뉴스 번호) 혹은 빈 문자열
-- timer: "00H05M00S"와 같은 형태 (시간, 분, 초)
+- timer: "00H05M00S"와 같은 형태 (시간, 분, 초). contents.data에 정보가 있는 경우 contents.default는 반드시 "ON"
 - scehdule: "today", "tomorrow", "this_week", "next_week"
 - youtube : "남자 요가 영상"와 같은 검색어
+- transportation : "BUS", "METRO"
 - homecam :  "living_room", "kitchen", "entrance", "room1", "room2", "room3", "room4"(이동 관련) 혹은은 빈 문자열(카메라 제어 관련)
 - 다른 유형: 빈 문자열
 contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문자열로 설정합니다. 또한, 정의된 내용으로만 설정해야 합니다.
@@ -510,7 +511,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                     else:
                         json_obj["result"] = "4"
                         
-                elif type == "weather":
+                elif type == "weather" and contents["default"] != "OFF":
                     weather_result, new_tokens = data_processor.getWeather(
                         access_token, 
                         refresh_token
@@ -531,7 +532,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                         else:
                             json_obj["result"] = "4"
                         
-                elif type == "schedule":
+                elif type == "schedule" and contents["default"] != "OFF":
                     schedule_result, new_tokens = data_processor.getSchedules(
                         keyword,
                         access_token, 
@@ -546,10 +547,22 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                 elif type == "control":
                     if contents["data"]:
                         iot_ws.send_iot_message(json_obj)
+                        await asyncio.sleep(1)
                         json_obj["result"] = "2"
                     else:
                         logger.warning("제어 요청에 장치 정보가 없습니다.")
                         json_obj["result"] = "0"
+                elif type == "transportation" and contents["default"] != "OFF":
+                    transportation_result, new_tokens = data_processor.getTransportation(
+                        keyword,
+                        access_token, 
+                        refresh_token,
+                        contents["data"]
+                    )
+                    if transportation_result:
+                        json_obj["result"] = transportation_result
+                    else:
+                        json_obj["result"] = "4"
                 elif type == "exit":
                     json_obj["result"] = "-1"
                 elif type == "none":
