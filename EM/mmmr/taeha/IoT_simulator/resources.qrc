@@ -14,7 +14,6 @@
         <file>devices/AirConditioner/qmldir</file>
         <file>devices/AirPurifier/AirPurifier.qml</file>
         <file>devices/AirPurifier/qmldir</file>
-        <file>devices/Curtain/Curtain.qml</file>
         <file>devices/Curtain/qmldir</file>
         <file>images/map_white.png</file>
         <file>images/img_airConditioner.png</file>
@@ -27,5 +26,6 @@
         <file>images/CurtainLight.png</file>
         <file>images/smarthome.png</file>
         <file>images/TVLight.png</file>
+        <file>devices/Curtain/Curtain.qml</file>
     </qresource>
 </RCC>

@@ -574,12 +574,39 @@ ApplicationWindow {
 
                 Curtain {
                     id: livingCurtain
-                    width: parent.width
-                    height: parent.height
+                    imgId.width: 100
+                    imgId.height: 100
+                    imgId.x: 228
+                    imgId.y: -43
                     visible: true
                 }
 
+                Image {
+                    id: curtainLight
+                    fillMode: Image.PreserveAspectFit
+                    width: livingCurtain.imgId.width
+                    height: livingCurtain.imgId.height
+                    x: livingCurtain.imgId.x - 10
+                    y: livingCurtain.imgId.y + 52
+                    source: "qrc:/images/CurtainLight.png"
+                    opacity: 0
+                }
 
+                OpacityAnimator {
+                    id: curtain_on
+                    target: curtainLight
+                    from: 0
+                    to: 1
+                    duration: 300
+                }
+
+                OpacityAnimator {
+                    id: curtain_off
+                    target: curtainLight
+                    from: 1
+                    to: 0
+                    duration: 300
+                }
 
                 RoomLight {
                     id: livingLight
@@ -1177,7 +1204,23 @@ ApplicationWindow {
                     id: sw_curtain
                     text: qsTr("LivingRoom Curtain")
                     checked: false
-                    onClicked: livingCurtain.imgId.visible = checked
+                    onClicked: {
+                        if(checked) {
+                            curtain_on.start()
+                        }
+                        else {
+                            curtain_off.start()
+                        }
+
+                        highlight_circle.opacity = 1
+                        highlight_circle.width = 10
+                        highlight_circle.height = 10
+                        highlight_circle.x = 280 - highlight_circle.width / 2
+                        highlight_circle.y = 5 - highlight_circle.width / 2
+                        highlight_circle.scale = 1.0
+                        scaleCircle.start()
+                        fadeoutCircle.start()
+                    }
 
                     indicator: Rectangle {
                         implicitWidth: 40
