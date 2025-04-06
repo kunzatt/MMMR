@@ -23,5 +23,9 @@
         <file>images/img_airPurifierPower.png</file>
         <file>images/img_TV.png</file>
         <file>images/img_TVLight.png</file>
+        <file>images/AirConWind.png</file>
+        <file>images/CurtainLight.png</file>
+        <file>images/smarthome.png</file>
+        <file>images/TVLight.png</file>
     </qresource>
 </RCC>

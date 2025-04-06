@@ -461,7 +461,7 @@ ApplicationWindow {
                     id: map_home
                     fillMode: Image.PreserveAspectFit
                     width: parent.width
-                    source: "qrc:/images/map_white.png"
+                    source: "qrc:/images/smarthome.png"
                 }
 
                 TV {
@@ -576,7 +576,7 @@ ApplicationWindow {
                     id: livingCurtain
                     width: parent.width
                     height: parent.height
-                    imgId.source: "qrc:/images/curtain.png"
+                    visible: true
                 }
 
 
