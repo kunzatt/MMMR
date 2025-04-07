@@ -12,13 +12,13 @@ export default function Footer() {
         { name: "Todo", path: "/todo", icon: <AiOutlineCheckSquare /> },
         { name: "Schedule", path: "/schedule", icon: <AiFillCalendar /> },
         { name: "Trans", path: "/trans", icon: <AiOutlineCompass /> },
-        { name: "Setting", path: "/setting", icon: <AiFillSetting /> },
+        { name: "Setting", path: "/setting", icon: <AiFillSetting /> }
     ];
 
     return (
         <div>
             {pathname !== "/profile" && (
-                <div className="flex justify-between items-center p-0 bg-white shadow-inner">
+                <div className="flex justify-between items-center p-0 bg-white shadow-inner h-16">
                     {menuItems.map((item) => {
                         const isActive = pathname === item.path; // 현재 경로와 메뉴 경로 비교
 
