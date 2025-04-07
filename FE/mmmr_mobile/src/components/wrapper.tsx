@@ -6,10 +6,12 @@ import Footer from "@/components/footer";
 
 export default function Wrapper({ children }: { children: React.ReactNode }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem("accessToken");
         setIsAuthenticated(!!token);
+        setIsMounted(true); // hydration 이후 mount 표시
     }, []);
 
     return (
@@ -23,7 +25,7 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
                 >
                     {children}
                 </div>
-                {isAuthenticated && (
+                {isMounted && isAuthenticated && (
                     <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[500px] z-50">
                         <Footer />
                     </div>
