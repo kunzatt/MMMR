@@ -98,7 +98,7 @@ class loadMap(Node):
    
    
         ## 로직2를 완성하고 주석을 해제 시켜주세요.
-        ## self.f.close()
+        self.f.close()
         print('read_complete')
         self.map_msg.data=list_map_data[0]
 

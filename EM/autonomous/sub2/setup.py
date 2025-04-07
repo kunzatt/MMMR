@@ -22,12 +22,9 @@ setup(
         'console_scripts': [
             'a_star = sub2.a_star:main',
             'a_star_local_path = sub2.a_star_local_path:main',
-            'ex_calib = sub2.ex_calib:main',
-            'human_detector = sub2.human_detector:main',
             'load_map = sub2.load_map:main',
             'odom = sub2.odom:main',
             'path_tracking = sub2.path_tracking:main',
-            'seg_binarizer = sub2.seg_binarizer:main',
             'goal_pub = sub2.goal_pub:main',
             'nav_command_ws = sub2.nav_command_ws:main',
             'rotation = sub2.rotation:main',

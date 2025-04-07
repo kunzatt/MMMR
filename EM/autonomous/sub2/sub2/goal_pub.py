@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
@@ -9,13 +10,13 @@ class goalPub(Node):
         
         # 위치 좌표 딕셔너리 (하드코딩)
         self.location_coordinates = {
-            'living_room': (-8.51980, -6.02957, 0.0, 0.71),
-            'kitchen': (-8.86362 , -8.05053, 0.0, 0.89),
-            'entrance': (-4.57842 , -7.14306, 0.0, 0.80),
-            'room1': (-12.47062, -5.92287, 0.0, 0.58),
-            'room2': (-5.20458, -6.06225, 0.0, 0.91),
-            'room3': (-2.56935, -6.07176, 0.0, 0.87),
-            'room4': (-12.51195, -7.22389, 0.0, 0.82)
+            'living_room': (-8.51980, -6.02957, 0.0, 0.71, 0.695),
+            'kitchen': (-8.86362 , -8.05053, 0.0, 0.88 , -0.474),
+            'entrance': (-4.57842 , -7.14306, 0.0, 0.85, -0.502),
+            'room1': (-12.47062, -5.92287, 0.0, 0.58, 0.817),
+            'room2': (-5.20458, -6.06225, 0.0, 0.83, 0.55),
+            'room3': (-2.55, -5.687176, 0.0, 0.90, 0.4234),
+            'room4': (-12.51195, -7.22389, 0.0, 0.82, -0.574)
         }
         
         # Publisher/Subscriber 설정
@@ -39,7 +40,7 @@ class goalPub(Node):
             self.get_logger().warn(f"Unknown location: {location}")
 
     def publish_goal(self, location):
-        x, y, z, w = self.location_coordinates[location]
+        x, y, z, w,ori_z = self.location_coordinates[location]
         
         goal_msg = PoseStamped()
         goal_msg.header.stamp = self.get_clock().now().to_msg()
@@ -48,6 +49,7 @@ class goalPub(Node):
         goal_msg.pose.position.y = y
         goal_msg.pose.position.z = z
         goal_msg.pose.orientation.w = w
+        goal_msg.pose.orientation.z = ori_z
         
         self.goal_publisher.publish(goal_msg)
         self.get_logger().info(f"Published goal for {location}: X={x}, Y={y}")

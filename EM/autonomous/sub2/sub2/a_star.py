@@ -7,6 +7,7 @@ from squaternion import Quaternion
 from nav_msgs.msg import Odometry,OccupancyGrid,MapMetaData,Path
 from math import pi,cos,sin
 from collections import deque
+import heapq
 
 # a_star 노드는  OccupancyGrid map을 받아 grid map 기반 최단경로 탐색 알고리즘을 통해 로봇이 목적지까지 가는 경로를 생성하는 노드입니다.
 # 로봇의 위치(/pose), 맵(/map), 목표 위치(/goal_pose)를 받아서 전역경로(/global_path)를 만들어 줍니다. 
@@ -59,14 +60,12 @@ class a_star(Node):
        
 
     def grid_update(self):
-        self.is_grid_update=True
         '''
         로직 3. 맵 데이터 행렬로 바꾸기
         '''
-        map_to_grid = np.array(self.map_msg.data).reshape(self.map_size_y, self.map_size_x)
-        # map 데이터 반시계 방향으로 90도 이동(시계방향 270도)해서 grid에 저장장
+        self.is_grid_update=True
+        map_to_grid = np.array(self.map_msg.data).reshape(self.map_size_x, self.map_size_y)
         self.grid = np.rot90(map_to_grid,3)
-        self.grid = map_to_grid
 
     def pose_to_grid_cell(self,x,y):
         '''
@@ -117,15 +116,19 @@ class a_star(Node):
             self.goal = [goal_cell[0],350-goal_cell[1]]
             #print(msg)
 
-            if self.is_map ==True and self.is_odom==True  :
+            if self.is_map ==True:
                 if self.is_grid_update==False :
                     self.grid_update()
 
         
                 self.final_path=[]
 
-                x=self.odom_msg.pose.pose.position.x
-                y=self.odom_msg.pose.pose.position.y
+                x = 0
+                y = 0
+                if self.is_odom == True:
+                    x=self.odom_msg.pose.pose.position.x
+                    y=self.odom_msg.pose.pose.position.y
+
                 start_grid_cell=self.pose_to_grid_cell(x,y)
                 #pose -> grid 후 y좌표를 350-y 로 바꿔줘야 grid의 좌표 값과 일치함
                 start_grid_cell=(start_grid_cell[0],350-start_grid_cell[1])
