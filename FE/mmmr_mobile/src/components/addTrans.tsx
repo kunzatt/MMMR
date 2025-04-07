@@ -362,6 +362,7 @@ export default function AddTrans({ onClose }: AddTransProps) {
                             onClick={() => {
                                 setType("BUS");
                                 setSearchResults([]);
+                                setSearchKeyword("");
                             }}
                             className={`px-4 py-1 rounded-full border ${
                                 type === "BUS" ? "bg-blue-200 font-semibold" : "bg-white"
@@ -374,6 +375,7 @@ export default function AddTrans({ onClose }: AddTransProps) {
                                 setType("METRO");
                                 setSearchResults([]);
                                 setBusNumbers([]);
+                                setSearchKeyword("");
                             }}
                             className={`px-4 py-1 rounded-full border ${
                                 type === "METRO" ? "bg-blue-200 font-semibold" : "bg-white"
