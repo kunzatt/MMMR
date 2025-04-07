@@ -119,12 +119,29 @@ class FollowTheCarrot(Node):
 
     def goal_callback(self, msg):
         """목표 지점 콜백"""
+        # 로봇을 잠시 정지시키고 새 목표로 즉시 전환
+        self.cmd_msg.linear.x = 0.0
+        self.cmd_msg.angular.z = 0.0
+        self.cmd_pub.publish(self.cmd_msg)
+        
+        # 새 목표 정보 업데이트
         self.goal_pose = msg.pose
         self.rotate_msg = msg
-        print(self.goal_pose)
         self.is_goal = True
         self.tracking_enabled = True
-        self.get_logger().info('New goal received')
+        self.goal_reached = False  # 새 목표 설정 시 목표 도달 상태 초기화
+        self.goal_message_sent = False  # 메시지 전송 상태 초기화
+        
+        # 새 경로 전환 관련 변수 설정
+        self.new_goal_received = True
+        self.goal_transition_time = time.time()
+        
+        # 복구 및 회피 모드 초기화
+        self.recovery_mode = False
+        self.turning_mode = False
+        
+        self.get_logger().info('New goal received - Switching to new path')
+
 
     def lidar_callback(self, msg):
         """라이다 데이터 콜백"""
@@ -215,8 +232,8 @@ class FollowTheCarrot(Node):
         map_point_y = int((y - self.map_offset_y) / self.map_resolution)
         return map_point_x,map_point_y
 
-    #목표 지점 도달 여부 확인
     def check_goal_reached(self):
+        """목표 지점 도달 여부 확인"""
         if not self.is_goal or self.goal_pose is None:
             return False
         
@@ -236,38 +253,109 @@ class FollowTheCarrot(Node):
             
             # 로봇이 목표 지점 근처이고, 마지막 경로 포인트도 목표 지점과 가까우면 정지
             if distance <= self.goal_tolerance and last_point_distance <= self.goal_tolerance:
-                self.get_logger().info('Goal reached!')
+                if not self.goal_reached:  # 첫 도달 시에만 로그 출력
+                    self.get_logger().info('Goal reached!')
+                    self.goal_reached = True
                 return True
         
         return False
 
     def timer_callback(self):
-        # 목표 지점 도달 확인
+        # 필요한 데이터 확인
+        if not (self.is_status and self.is_odom):
+            return
+
+        # 새 목표가 입력된 후 안정화 시간 동안 대기
+        if self.new_goal_received:
+            current_time = time.time()
+            if current_time - self.goal_transition_time <= self.goal_transition_cooldown:
+                # 안정화 시간 동안 정지 상태 유지
+                self.cmd_msg.linear.x = 0.0
+                self.cmd_msg.angular.z = 0.0
+                self.cmd_pub.publish(self.cmd_msg)
+                return
+            else:
+                # 안정화 시간이 지나면 목표 전환 완료
+                self.new_goal_received = False
+                self.get_logger().info('Path transition complete - Starting navigation to new goal')
+
+        # 회전 중인지 확인하고 turning_mode 업데이트
+        if hasattr(self, 'cmd_msg') and abs(self.cmd_msg.angular.z) > self.turning_threshold:
+            if not self.turning_mode:
+                self.turning_mode = True
+                self.turning_start_time = time.time()
+        else:
+            # 회전이 끝난 경우, cooldown 시간이 지나면 turning_mode를 False로 변경
+            if self.turning_mode and time.time() - self.turning_start_time > self.turning_cooldown:
+                self.turning_mode = False
+
+        # 목표 지점 도달 확인 - 가장 먼저 체크
         if self.check_goal_reached():
             # 로봇 정지
             self.cmd_msg.linear.x = 0.0
             self.cmd_msg.angular.z = 0.0
-            self.goal_pose = None
-            # 목표 지점 도달 후 회전 msg publish
-            self.rotate_pub.publish(self.rotate_msg)
-            self.get_logger().info(f"Published rotate_pub")
-            # 로봇 정지
-            self.cmd_msg.linear.x = 0.0
-            self.cmd_msg.angular.z = 0.0
             self.cmd_pub.publish(self.cmd_msg)
-
-            #도착한 현재 좌표 변환환
-            now_cell = self.pose_to_grid_cell(self.robot_pose_x, self.robot_pose_y)
-            self.point_msg.x = float(now_cell[0]) #point 메세지에는 float 형식의 값이 들어가야함
-            self.point_msg.y = float(350-now_cell[1])
-            print(self.point_msg)
-            self.coordinate_pub.publish(self.point_msg)
-            self.get_logger().info(f"Published goal coordinate")
+            
+            # 목표 도달 메시지는 한 번만 전송
+            if not self.goal_message_sent:
+                self.rotate_pub.publish(self.rotate_msg)
+                self.get_logger().info(f"Published rotate_pub")
+                
+                now_cell = self.pose_to_grid_cell(self.robot_pose_x, self.robot_pose_y)
+                self.point_msg.x = float(now_cell[0])
+                self.point_msg.y = float(350-now_cell[1])
+                self.coordinate_pub.publish(self.point_msg)
+                self.get_logger().info(f"Published goal coordinate")
+                
+                self.goal_message_sent = True  # 메시지 전송 완료 표시
+            return
+        
+        # 현재 명령된 선속도 확인 (충돌 감지용)
+        current_linear_speed = self.cmd_msg.linear.x if hasattr(self, 'cmd_msg') else 0.0
+        
+        # 복구 모드 처리 - 목표 도달 확인 후에 실행
+        if self.recovery_mode and not self.goal_reached:  # 목표 도달 상태면 복구 모드 비활성화
+            current_time = time.time()
+            
+            if current_time - self.recovery_start_time > self.recovery_time:
+                # 복구 모드 종료
+                self.recovery_mode = False
+                self.tracking_enabled = True
+                self.get_logger().info('Recovery mode completed')
+            else:
+                # 복구 모드 동작 수행 (후진 및 회전)
+                self.cmd_msg.linear.x = self.recovery_linear_speed
+                self.cmd_msg.angular.z = self.recovery_direction * self.recovery_angular_speed
+                self.cmd_pub.publish(self.cmd_msg)
+                return
+        elif self.recovery_mode and self.goal_reached:
+            # 목표 도달 상태면 복구 모드 즉시 종료
+            self.recovery_mode = False
+            self.tracking_enabled = True
+        
+        # 충돌/갇힘 감지 - 목표에 도달하지 않은 경우에만 실행
+        if not self.goal_reached and self.detect_collision(current_linear_speed):
+            self.get_logger().warning('Collision or stuck state detected!')
+            self.recovery_mode = True
+            self.recovery_start_time = time.time()
+            self.recovery_direction = self.find_escape_direction()
+            return
+                
+        # 장애물 감지 및 회피 - 목표에 도달하지 않은 경우에만 실행
+        if not self.goal_reached and self.has_obstacle_ahead():
+            self.get_logger().info('Obstacle detected ahead! Avoiding...')
+            
+            # 장애물 회피 방향 결정
+            avoidance_direction = self.find_escape_direction()
+            
+            # 장애물 회피 명령 (감속 및 회전)
+            self.cmd_msg.linear.x = self.avoidance_speed
+            self.cmd_msg.angular.z = avoidance_direction * self.avoidance_turn_speed
+            self.cmd_pub.publish(self.cmd_msg)
             return
 
-        # 기존의 데이터 수신 및 추적 로직 
-        if not (self.is_status and self.is_odom and self.is_path):
-            self.get_logger().warning('필요한 데이터가 모두 수신되지 않았습니다.')
+        # 기존의 경로 추종 로직
+        if not self.is_path:
             return
 
         if not self.tracking_enabled:
@@ -286,7 +374,8 @@ class FollowTheCarrot(Node):
                 pow(self.path_msg.poses[0].pose.position.y - robot_pose_y, 2)
             )
 
-            # 전방 주시 거리 설정
+            # 전방 주시 거리 설정 - 수정됨
+            # 속도와 오차에 덜 민감하게 반응하도록 계수 조정
             self.lfd = (self.status_msg.twist.linear.x + lateral_error) * 0.5
 
             if self.lfd < self.min_lfd:
@@ -295,6 +384,7 @@ class FollowTheCarrot(Node):
                 self.lfd = self.max_lfd
 
             min_dis = float('inf')
+            forward_point = None
 
             # 전방 주시 포인트 설정
             for waypoint in self.path_msg.poses:
@@ -310,9 +400,9 @@ class FollowTheCarrot(Node):
                     forward_point = current_point
                     self.is_look_forward_point = True
 
-            if self.is_look_forward_point:
+            if self.is_look_forward_point and forward_point is not None:
                 global_forward_point = [forward_point.x, forward_point.y, 1]
-
+                
                 # 전방 주시 포인트와 로봇 헤딩과의 각도 계산
                 trans_matrix = np.array([
                     [cos(self.robot_yaw), -sin(self.robot_yaw), robot_pose_x],
