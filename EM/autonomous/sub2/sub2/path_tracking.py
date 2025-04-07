@@ -131,6 +131,38 @@ class FollowTheCarrot(Node):
         self.is_lidar = True
         self.lidar_data = msg
 
+    def has_obstacle_ahead(self):
+        """전방에 장애물이 있는지 확인"""
+        # 목표 도달 상태면 장애물 감지 비활성화
+        if self.goal_reached:
+            return False
+            
+        # 회전 중일 때는 장애물 감지 비활성화
+        if self.turning_mode and time.time() - self.turning_start_time < self.turning_cooldown:
+            return False
+            
+        if not self.is_lidar or self.lidar_data is None:
+            return False
+            
+        ranges = np.array(self.lidar_data.ranges)
+        max_range = self.lidar_data.range_max
+        ranges = np.nan_to_num(ranges, nan=max_range, posinf=max_range)
+        
+        center_idx = len(ranges) // 2
+        angle_per_scan = 360 / len(ranges)
+        front_indices = [int(center_idx + i / angle_per_scan) % len(ranges) for i in self.front_angles]
+        
+        # 전방 영역 거리 확인 + 강화된 필터링
+        front_ranges = [ranges[i] for i in front_indices]
+        min_front_distance = min(front_ranges)
+        
+        # 거리뿐만 아니라 최소 거리 값이 일정 개수 이상 있는지 확인
+        obstacle_count = sum(1 for r in front_ranges if r < self.obstacle_distance_threshold)
+        obstacle_percentage = obstacle_count / len(front_ranges)
+        
+        # 최소 거리가 임계값보다 작고, 일정 비율(20%) 이상이 장애물로 감지될 때만 반환
+        return min_front_distance < self.obstacle_distance_threshold and obstacle_percentage > 0.2
+
     #odometry 값을 grid 좌표 값으로 변환 함수수
     def pose_to_grid_cell(self,x,y):
         map_point_x = int((x - self.map_offset_x) / self.map_resolution)
