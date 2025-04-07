@@ -20,7 +20,6 @@ body {
     height: 100%;
     max-width: 100vw;
     overflow: hidden;
-    touch-action: none;
     @apply font-sans;
 }
 
