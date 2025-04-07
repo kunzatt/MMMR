@@ -418,7 +418,9 @@ ApplicationWindow {
             else aircon_off.start()
 
             power_aircon.text = devData["turned"] ? "🟢" : "🔴";
+            temp_aircon.visible = devData["turned"]
             temp_aircon.text = "❄️ " + devData["value"] + "℃";
+
             baseX = 370;
             baseY = 5;
         }
@@ -437,7 +439,9 @@ ApplicationWindow {
             else tv_off.start()
 
             power_tv.text = devData["turned"] ? "🟢" : "🔴";
-            volume_tv.text = "🔉 " + devData["value"]
+            volume_tv.visible = devData["turned"];
+            volume_tv.text = "🔉 " + devData["value"];
+
             baseX = 360;
             baseY = 120;
         }
@@ -446,6 +450,7 @@ ApplicationWindow {
             if(devData["turned"]) curtain_on.start()
             else curtain_off.start()
 
+            power_curtain.text = devData["turned"] ? "🟢" : "🔴";
             baseX = 280;
             baseY = 5;
         }
@@ -778,7 +783,7 @@ ApplicationWindow {
 
                 NumberAnimation {
                     id: scaleCircle
-                    to: 15.0
+                    to: 25.0
                     duration: 700
                     target: highlight_circle
                     properties: "scale"
@@ -810,14 +815,14 @@ ApplicationWindow {
             ColumnLayout {
                 spacing: 30
                 Layout.alignment: Qt.AlignCenter
-                Layout.maximumWidth: 450
+                Layout.maximumWidth: 360
                 Layout.maximumHeight: 380
                 Layout.leftMargin: 40
 
                 ColumnLayout {
                     Text {
-                        text: Qt.formatDate(new Date(), "☀️ yyyy.MM.dd (ddd)");
-                        font.pointSize: 30
+                        text: Qt.formatDate(new Date(), "yyyy.MM.dd (ddd)");
+                        font.pointSize: 28
                         font.bold: true
                         font.family: main_text.font.family
                         color: "#ddd"
@@ -864,7 +869,6 @@ ApplicationWindow {
                     }
 
                     ColumnLayout {
-
                         RowLayout {
                             Text {
                                 id: power_aircon
@@ -887,23 +891,8 @@ ApplicationWindow {
                                 color: main_text.color
                                 font.pointSize: 13
                                 font.family: main_text.font.family
-                            }
-                        }
-
-                        RowLayout {
-                            Text {
-                                id: power_purifier
-                                text: sw_purifier.checked ? "🟢" : "🔴"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                            }
-
-                            Text {
-                                text: "Air Purifier"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
+                                Layout.leftMargin: 20
+                                visible: false
                             }
                         }
 
@@ -929,10 +918,44 @@ ApplicationWindow {
                                 color: main_text.color
                                 font.pointSize: 13
                                 font.family: main_text.font.family
+                                Layout.leftMargin: 112
+                                visible: false
                             }
                         }
 
+                        RowLayout {
+                            Text {
+                                id: power_purifier
+                                text: sw_purifier.checked ? "🟢" : "🔴"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
 
+                            Text {
+                                text: "Air Purifier"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+                        }
+
+                        RowLayout {
+                            Text {
+                                id: power_curtain
+                                text: sw_purifier.checked ? "🟢" : "🔴"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                text: "Curtain"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+                        }
                     }
                 }
             }
