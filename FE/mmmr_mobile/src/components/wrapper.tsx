@@ -14,7 +14,7 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
 
     return (
         <div className="flex justify-center">
-            <div className="font-sans w-full max-w-[500px] h-screen bg-gray-100 flex flex-col">
+            <div className="font-sans w-full max-w-[500px] h-[100dvh] bg-gray-100 flex flex-col">
                 <Header />
                 <div className="flex-1 overflow-auto">{children}</div>
                 {isAuthenticated && <Footer />}
