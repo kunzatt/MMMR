@@ -83,7 +83,7 @@ class FollowTheCarrot(Node):
         # 파라미터 설정
         self.lfd = 0.1  # 전방 주시 거리 (look forward distance)
         self.min_lfd = 0.1
-        self.max_lfd = 1.0
+        self.max_lfd = 0.7 # 최대 전방 주시 거리 감소 (1.0 → 0.7)
         
         # 목표 도달 허용 오차 (미터)
         self.goal_tolerance = 0.1
@@ -402,7 +402,7 @@ class FollowTheCarrot(Node):
 
             if self.is_look_forward_point and forward_point is not None:
                 global_forward_point = [forward_point.x, forward_point.y, 1]
-                
+
                 # 전방 주시 포인트와 로봇 헤딩과의 각도 계산
                 trans_matrix = np.array([
                     [cos(self.robot_yaw), -sin(self.robot_yaw), robot_pose_x],
@@ -415,7 +415,7 @@ class FollowTheCarrot(Node):
 
                 # 선속도와 각속도 정하기
                 out_vel = 1.0
-                out_rad_vel = theta * 2
+                out_rad_vel = theta * 1.2 # 2.0 -> 1.2 로 바꾸니까 사행하는 게 없어짐
 
                 # 메시지에 선속도 및 각속도 설정
                 self.cmd_msg.linear.x = out_vel
