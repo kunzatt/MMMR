@@ -162,6 +162,26 @@ class FollowTheCarrot(Node):
         
         # 최소 거리가 임계값보다 작고, 일정 비율(20%) 이상이 장애물로 감지될 때만 반환
         return min_front_distance < self.obstacle_distance_threshold and obstacle_percentage > 0.2
+    
+    def find_escape_direction(self):
+        """충돌 상황에서 빠져나올 방향 결정"""
+        if not self.is_lidar or self.lidar_data is None:
+            return 1
+        
+        ranges = np.array(self.lidar_data.ranges)
+        max_range = self.lidar_data.range_max
+        ranges = np.nan_to_num(ranges, nan=max_range, posinf=max_range)
+        
+        # 더 넓은 영역 검사
+        left_idx = len(ranges) // 4
+        right_idx = 3 * len(ranges) // 4
+        
+        # 더 넓은 영역의 평균 거리 계산
+        left_distance = np.mean(ranges[left_idx-20:left_idx+20])
+        right_distance = np.mean(ranges[right_idx-20:right_idx+20])
+        
+        # 왼쪽/오른쪽 중 더 넓은 공간이 있는 방향으로 이동
+        return 1 if left_distance > right_distance else -1
 
     #odometry 값을 grid 좌표 값으로 변환 함수수
     def pose_to_grid_cell(self,x,y):
