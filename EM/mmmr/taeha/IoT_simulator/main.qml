@@ -35,8 +35,11 @@ ApplicationWindow {
         z: 2
 
         gradient: Gradient {
-            GradientStop { position: 0.8; color: "#3f3f3f" }   // 위쪽 색상
-            GradientStop { position: 1.0; color: "#4a4a4a" }    // 아래쪽 색상
+            GradientStop { position: 0.0; color: "#505050" }
+            GradientStop { position: 0.2; color: "#3f3f3f" }
+
+            GradientStop { position: 0.8; color: "#3f3f3f" }
+            GradientStop { position: 1.0; color: "#4a4a4a" }
         }
 
         MouseArea {
@@ -168,6 +171,14 @@ ApplicationWindow {
         width: parent.width
         height: parent.height - titleBar.height
         color: "#1f2023"
+
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#101010" }
+            GradientStop { position: 0.1; color: "#343434" }
+
+            GradientStop { position: 0.9; color: "#343434" }
+            GradientStop { position: 1.0; color: "#101010" }
+        }
     }
 
     // 🔹 창 크기 조절 핫존 설정 🔹
