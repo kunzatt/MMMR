@@ -182,6 +182,32 @@ class FollowTheCarrot(Node):
         
         # 왼쪽/오른쪽 중 더 넓은 공간이 있는 방향으로 이동
         return 1 if left_distance > right_distance else -1
+    
+    def detect_collision(self, current_linear_speed):
+        """충돌 또는 갇힘 상태 감지"""
+        # 목표 도달 상태면 충돌 감지 비활성화
+        if self.goal_reached:
+            return False
+            
+        # 속도가 명령되었지만 실제로 움직이지 않는 경우 갇힘 상태로 판단
+        if abs(current_linear_speed) > 0.05:
+            distance_moved = sqrt(
+                pow(self.robot_pose_x - self.prev_pose_x, 2) +
+                pow(self.robot_pose_y - self.prev_pose_y, 2)
+            )
+            
+            if distance_moved < self.movement_threshold:
+                self.stuck_counter += 1
+                if self.stuck_counter > self.stuck_threshold:
+                    return True
+            else:
+                self.stuck_counter = 0
+                
+        # 위치 업데이트
+        self.prev_pose_x = self.robot_pose_x
+        self.prev_pose_y = self.robot_pose_y
+        
+        return False
 
     #odometry 값을 grid 좌표 값으로 변환 함수수
     def pose_to_grid_cell(self,x,y):
