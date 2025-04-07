@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { API_ROUTES } from "@/config/apiRoutes";
@@ -41,6 +41,14 @@ export default function LoginPage() {
             console.log("로그인 오류:", error);
         }
     };
+
+    useEffect(() => {
+        const hasReloaded = sessionStorage.getItem("hasReloaded");
+        if (hasReloaded) {
+            sessionStorage.removeItem("hasReloaded");
+            window.location.reload(); // 새로고침 실행
+        }
+    }, [router]);
 
     return (
         <div className="flex flex-col items-center justify-center h-full w-full">

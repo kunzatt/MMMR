@@ -80,6 +80,8 @@ export default function Setting() {
 
         if (!accessToken) {
             alert("이미 로그아웃된 상태입니다.");
+            sessionStorage.setItem("hasReloaded", "true");
+
             router.push("/login");
             return;
         }
@@ -102,6 +104,7 @@ export default function Setting() {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
                 localStorage.removeItem("currentProfile");
+                sessionStorage.setItem("hasReloaded", "true");
 
                 router.push("/login");
             } else {
