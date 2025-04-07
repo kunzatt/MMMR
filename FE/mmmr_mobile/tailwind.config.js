@@ -7,10 +7,10 @@ module.exports = {
                 sans: ["Noto Sans KR", "sans-serif"] // 기본 폰트를 Noto Sans Korean으로 변경
             },
             height: {
-                "screen-dvh": ["100dvh"] // 사용자 정의
+                "screen-dvh": "100dvh"
             },
             minHeight: {
-                "screen-dvh": ["100dvh"]
+                "screen-dvh": "100dvh"
             }
         }
     },
