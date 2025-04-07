@@ -14,8 +14,8 @@ import Curtain
 
 ApplicationWindow {
     id: main_window
-    width: 1280
-    height: 720
+    width: 1366
+    height: 768
     visible: true
     title: qsTr("IoT Control Simulator")
 
@@ -406,36 +406,61 @@ ApplicationWindow {
 
     function controlDevices(devName, devData) {
         console.log(devData)
+        let baseX = 0, baseY = 0;
+
         if (devName === "livingroomLight") {
             livingLight.imgId.visible = devData["turned"]
             sw_livingLight.checked = devData["turned"]
         }
-        else if (devName === "airConditioner") {
-            sw_airConditioner.checked = devData["turned"]
+        else if (devName === "aircon") {
+            sw_aircon.checked = devData["turned"]
+            if(devData["turned"]) aircon_on.start()
+            else aircon_off.start()
 
-            power_airCon.text = devData["turned"] ? "🟢 ON" : "🔴 OFF";
-            temp_airCon.text = "🌡️ " + qsTr(devData["value"]) + "℃ → ❄️ 24℃";
+            power_aircon.text = devData["turned"] ? "🟢" : "🔴";
+            temp_aircon.text = "❄️ " + devData["value"] + "℃";
+            baseX = 370;
+            baseY = 5;
         }
         else if (devName === "airPurifier") {
-            livingAirPurifier.imgId.visible = devData["turned"]
-            sw_airPurifier.checked = devData["turned"]
+            sw_purifier.checked = devData["turned"]
+            if(devData["turned"]) purifier_on.start()
+            else purifier_off.start()
 
-            power_airPurifier.text = devData["turned"] ? "🟢 ON" : "🔴 OFF";
+            power_purifier.text = devData["turned"] ? "🟢" : "🔴";
+            baseX = 220;
+            baseY = 200;
         }
         else if (devName === "TV") {
-            livingTV.imgId.visible = devData["turned"]
-            sw_TV.checked = devData["turned"]
+            sw_tv.checked = devData["turned"]
+            if(devData["turned"]) tv_on.start()
+            else tv_off.start()
 
-            power_TV.text = devData["turned"] ? "🟢 ON" : "🔴 OFF";
-            volume_TV.text = "🔉 " + qsTr(devData["value"])
+            power_tv.text = devData["turned"] ? "🟢" : "🔴";
+            volume_tv.text = "🔉 " + devData["value"]
+            baseX = 360;
+            baseY = 120;
         }
         else if (devName === "curtain") {
-            livingCurtain.imgId.visible = devData["turned"]
             sw_curtain.checked = devData["turned"]
+            if(devData["turned"]) curtain_on.start()
+            else curtain_off.start()
+
+            baseX = 280;
+            baseY = 5;
         }
         else {
             jsonOutput.text = "Error: Can't find " + devName
         }
+
+        highlight_circle.opacity = 1
+        highlight_circle.width = 10
+        highlight_circle.height = 10
+        highlight_circle.x = baseX - highlight_circle.width / 2
+        highlight_circle.y = baseY - highlight_circle.width / 2
+        highlight_circle.scale = 1.0
+        scaleCircle.start()
+        fadeoutCircle.start()
     }
 
     /* GUI Layout */
@@ -839,45 +864,75 @@ ApplicationWindow {
                     }
 
                     ColumnLayout {
-                        Text {
-                            text: (sw_airConditioner.checked ? "🟢" : "🔴") + " Air Conditioner"
-                            color: main_text.color
-                            font.pointSize: 13
-                            font.family: main_text.font.family
+
+                        RowLayout {
+                            Text {
+                                id: power_aircon
+                                text: sw_aircon.checked ? "🟢" : "🔴"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                text: "Air Conditioner"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                id: temp_aircon
+                                text: "❄️ 24℃"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
                         }
 
-                        Text {
-                            text: "🌡️ 27℃ → ❄️ 24℃"
-                            color: main_text.color
-                            font.pointSize: 13
-                            font.family: main_text.font.family
-                            Layout.leftMargin: 20
+                        RowLayout {
+                            Text {
+                                id: power_purifier
+                                text: sw_purifier.checked ? "🟢" : "🔴"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                text: "Air Purifier"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
                         }
 
-                        Text {
-                            text: (sw_airPurifier.checked ? "🟢" : "🔴") + " Air Purifier"
-                            color: main_text.color
-                            font.pointSize: 13
-                            font.family: main_text.font.family
-                            Layout.topMargin: 10
+                        RowLayout {
+                            Text {
+                                id: power_tv
+                                text: sw_tv.checked ? "🟢" : "🔴"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                text: "TV"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                id: volume_tv
+                                text: "🔉 50"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
                         }
 
-                        Text {
-                            text: (sw_TV.checked ? "🟢" : "🔴") + " TV"
-                            color: main_text.color
-                            font.pointSize: 13
-                            font.family: main_text.font.family
-                            Layout.topMargin: 10
-                        }
 
-                        Text {
-                            id: volume_TV
-                            text: "🔉 50"
-                            color: main_text.color
-                            font.pointSize: 12
-                            font.family: main_text.font.family
-                            Layout.leftMargin: 20
-                        }
                     }
                 }
             }
@@ -1036,41 +1091,28 @@ ApplicationWindow {
                 }
 
                 Switch {
-                    id: sw_TV
+                    id: sw_tv
                     text: qsTr("TV")
                     checked: false
                     onClicked: {
-                        if(checked) {
-                            tv_on.start()
-                        }
-                        else {
-                            tv_off.start()
-                        }
-
-                        highlight_circle.opacity = 1
-                        highlight_circle.width = 10
-                        highlight_circle.height = 10
-                        highlight_circle.x = 360 - highlight_circle.width / 2
-                        highlight_circle.y = 120 - highlight_circle.width / 2
-                        highlight_circle.scale = 1.0
-                        scaleCircle.start()
-                        fadeoutCircle.start()
+                        let msg = JSON.stringify({ type: "send", device: "TV", data: {"turned": sw_tv.checked, "value": 0} })
+                        webSocket.sendTextMessage(msg)
                     }
 
                     indicator: Rectangle {
                         implicitWidth: 40
                         implicitHeight: 20
-                        x: sw_TV.leftPadding
+                        x: sw_tv.leftPadding
                         y: parent.height / 2 - height / 2
-                        color: sw_TV.checked ? "#666" : "#ffffff"
-                        border.color: sw_TV.checked ? "#666" : "#cccccc"
+                        color: sw_tv.checked ? "#666" : "#ffffff"
+                        border.color: sw_tv.checked ? "#666" : "#cccccc"
 
                         Rectangle {
-                            x: sw_TV.checked ? parent.width - width : 0
+                            x: sw_tv.checked ? parent.width - width : 0
                             width: 15
                             height: 20
-                            color: sw_TV.down ? "#cccccc" : "#ffffff"
-                            border.color: sw_TV.checked ? (sw_TV.down ? "#666" : "#888") : "#999999"
+                            color: sw_tv.down ? "#cccccc" : "#ffffff"
+                            border.color: sw_tv.checked ? (sw_tv.down ? "#666" : "#888") : "#999999"
 
                             Behavior on x {
                                 NumberAnimation {
@@ -1082,50 +1124,37 @@ ApplicationWindow {
                     }
 
                     contentItem: Text {
-                        text: sw_TV.text
+                        text: sw_tv.text
                         color: "#ddd"
                         font.family: main_text.font.family
                         verticalAlignment: Text.AlignVCenter
-                        leftPadding: sw_TV.indicator.width + sw_TV.spacing
+                        leftPadding: sw_tv.indicator.width + sw_tv.spacing
                     }
                 }
 
                 Switch {
-                    id: sw_airConditioner
+                    id: sw_aircon
                     text: qsTr("Air Conditioner")
                     checked: false
                     onClicked: {
-                        if(checked) {
-                            aircon_on.start()
-                        }
-                        else {
-                            aircon_off.start()
-                        }
-
-                        highlight_circle.opacity = 1
-                        highlight_circle.width = 10
-                        highlight_circle.height = 10
-                        highlight_circle.x = 375 - highlight_circle.width / 2
-                        highlight_circle.y = 5 - highlight_circle.width / 2
-                        highlight_circle.scale = 1.0
-                        scaleCircle.start()
-                        fadeoutCircle.start()
+                        let msg = JSON.stringify({ type: "send", device: "aircon", data: {"turned": sw_aircon.checked, "value": 0} })
+                        webSocket.sendTextMessage(msg)
                     }
 
                     indicator: Rectangle {
                         implicitWidth: 40
                         implicitHeight: 20
-                        x: sw_airConditioner.leftPadding
+                        x: sw_aircon.leftPadding
                         y: parent.height / 2 - height / 2
-                        color: sw_airConditioner.checked ? "#666" : "#ffffff"
-                        border.color: sw_airConditioner.checked ? "#666" : "#cccccc"
+                        color: sw_aircon.checked ? "#666" : "#ffffff"
+                        border.color: sw_aircon.checked ? "#666" : "#cccccc"
 
                         Rectangle {
-                            x: sw_airConditioner.checked ? parent.width - width : 0
+                            x: sw_aircon.checked ? parent.width - width : 0
                             width: 15
                             height: 20
-                            color: sw_airConditioner.down ? "#cccccc" : "#ffffff"
-                            border.color: sw_airConditioner.checked ? (sw_airConditioner.down ? "#666" : "#888") : "#999999"
+                            color: sw_aircon.down ? "#cccccc" : "#ffffff"
+                            border.color: sw_aircon.checked ? (sw_aircon.down ? "#666" : "#888") : "#999999"
 
                             Behavior on x {
                                 NumberAnimation {
@@ -1137,50 +1166,37 @@ ApplicationWindow {
                     }
 
                     contentItem: Text {
-                        text: sw_airConditioner.text
+                        text: sw_aircon.text
                         color: "#ddd"
                         font.family: main_text.font.family
                         verticalAlignment: Text.AlignVCenter
-                        leftPadding: sw_airConditioner.indicator.width + sw_airConditioner.spacing
+                        leftPadding: sw_aircon.indicator.width + sw_aircon.spacing
                     }
                 }
 
                 Switch {
-                    id: sw_airPurifier
+                    id: sw_purifier
                     text: qsTr("Air Purifier")
                     checked: false
                     onClicked: {
-                        if(checked) {
-                            purifier_on.start()
-                        }
-                        else {
-                            purifier_off.start()
-                        }
-
-                        highlight_circle.opacity = 1
-                        highlight_circle.width = 10
-                        highlight_circle.height = 10
-                        highlight_circle.x = 220 - highlight_circle.width / 2
-                        highlight_circle.y = 200 - highlight_circle.width / 2
-                        highlight_circle.scale = 1.0
-                        scaleCircle.start()
-                        fadeoutCircle.start()
+                        let msg = JSON.stringify({ type: "send", device: "airPurifier", data: {"turned": sw_purifier.checked, "value": 0} })
+                        webSocket.sendTextMessage(msg)
                     }
 
                     indicator: Rectangle {
                         implicitWidth: 40
                         implicitHeight: 20
-                        x: sw_airPurifier.leftPadding
+                        x: sw_purifier.leftPadding
                         y: parent.height / 2 - height / 2
-                        color: sw_airPurifier.checked ? "#666" : "#ffffff"
-                        border.color: sw_airPurifier.checked ? "#666" : "#cccccc"
+                        color: sw_purifier.checked ? "#666" : "#ffffff"
+                        border.color: sw_purifier.checked ? "#666" : "#cccccc"
 
                         Rectangle {
-                            x: sw_airPurifier.checked ? parent.width - width : 0
+                            x: sw_purifier.checked ? parent.width - width : 0
                             width: 15
                             height: 20
-                            color: sw_airPurifier.down ? "#cccccc" : "#ffffff"
-                            border.color: sw_airPurifier.checked ? (sw_airPurifier.down ? "#666" : "#888") : "#999999"
+                            color: sw_purifier.down ? "#cccccc" : "#ffffff"
+                            border.color: sw_purifier.checked ? (sw_purifier.down ? "#666" : "#888") : "#999999"
 
                             Behavior on x {
                                 NumberAnimation {
@@ -1192,11 +1208,11 @@ ApplicationWindow {
                     }
 
                     contentItem: Text {
-                        text: sw_airPurifier.text
+                        text: sw_purifier.text
                         color: "#ddd"
                         font.family: main_text.font.family
                         verticalAlignment: Text.AlignVCenter
-                        leftPadding: sw_airPurifier.indicator.width + sw_airPurifier.spacing
+                        leftPadding: sw_purifier.indicator.width + sw_purifier.spacing
                     }
                 }
 
@@ -1205,21 +1221,8 @@ ApplicationWindow {
                     text: qsTr("LivingRoom Curtain")
                     checked: false
                     onClicked: {
-                        if(checked) {
-                            curtain_on.start()
-                        }
-                        else {
-                            curtain_off.start()
-                        }
-
-                        highlight_circle.opacity = 1
-                        highlight_circle.width = 10
-                        highlight_circle.height = 10
-                        highlight_circle.x = 280 - highlight_circle.width / 2
-                        highlight_circle.y = 5 - highlight_circle.width / 2
-                        highlight_circle.scale = 1.0
-                        scaleCircle.start()
-                        fadeoutCircle.start()
+                        let msg = JSON.stringify({ type: "send", device: "curtain", data: {"turned": sw_curtain.checked, "value": 0} })
+                        webSocket.sendTextMessage(msg)
                     }
 
                     indicator: Rectangle {
