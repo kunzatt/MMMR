@@ -411,15 +411,34 @@ ApplicationWindow {
         let baseX = 0, baseY = 0;
 
         if (devName === "livingroomLight") {
-            livingLight.imgId.visible = devData["turned"]
             sw_livingLight.checked = devData["turned"]
+            bright_livingLight.text = "💡 " + devData["value"];
+
+            if(!devData["turned"]) livingLight_change.to = 0
+            else livingLight_change.to = devData["value"] / 100;
+            livingLight_change.start()
+        }
+        else if(devName === "kitchenLight") {
+            sw_kitchenLight.checked = devData["turned"]
+            bright_kitchenLight.text = "💡 " + devData["value"];
+
+            if(!devData["turned"]) kitchenLight_change.to = 0
+            else kitchenLight_change.to = devData["value"] / 100;
+            kitchenLight_change.start()
+        }
+        else if(devName === "entranceLight") {
+            sw_entranceLight.checked = devData["turned"]
+            bright_entranceLight.text = "💡 " + devData["value"];
+
+            if(!devData["turned"]) entranceLight_change.to = 0
+            else entranceLight_change.to = devData["value"] / 100;
+            entranceLight_change.start()
         }
         else if (devName === "aircon") {
             sw_aircon.checked = devData["turned"]
             if(devData["turned"]) aircon_on.start()
             else aircon_off.start()
 
-            power_aircon.text = devData["turned"] ? "🟢" : "🔴";
             temp_aircon.visible = devData["turned"]
             temp_aircon.text = "❄️ " + devData["value"] + "℃";
 
@@ -431,7 +450,6 @@ ApplicationWindow {
             if(devData["turned"]) purifier_on.start()
             else purifier_off.start()
 
-            power_purifier.text = devData["turned"] ? "🟢" : "🔴";
             baseX = 220;
             baseY = 200;
         }
@@ -440,7 +458,6 @@ ApplicationWindow {
             if(devData["turned"]) tv_on.start()
             else tv_off.start()
 
-            power_tv.text = devData["turned"] ? "🟢" : "🔴";
             volume_tv.visible = devData["turned"];
             volume_tv.text = "🔉 " + devData["value"];
 
@@ -452,7 +469,6 @@ ApplicationWindow {
             if(devData["turned"]) curtain_on.start()
             else curtain_off.start()
 
-            power_curtain.text = devData["turned"] ? "🟢" : "🔴";
             baseX = 280;
             baseY = 5;
         }
@@ -460,14 +476,16 @@ ApplicationWindow {
             jsonOutput.text = "Error: Can't find " + devName
         }
 
-        highlight_circle.opacity = 1
-        highlight_circle.width = 10
-        highlight_circle.height = 10
-        highlight_circle.x = baseX - highlight_circle.width / 2
-        highlight_circle.y = baseY - highlight_circle.width / 2
-        highlight_circle.scale = 1.0
-        scaleCircle.start()
-        fadeoutCircle.start()
+        if(baseX != 0 && baseY != 0) {
+            highlight_circle.opacity = 1
+            highlight_circle.width = 10
+            highlight_circle.height = 10
+            highlight_circle.x = baseX - highlight_circle.width / 2
+            highlight_circle.y = baseY - highlight_circle.width / 2
+            highlight_circle.scale = 1.0
+            scaleCircle.start()
+            fadeoutCircle.start()
+        }
     }
 
     /* GUI Layout */
@@ -638,149 +656,132 @@ ApplicationWindow {
                     from: 1
                     to: 0
                     duration: 300
-                }
+                } 
 
-                RoomLight {
+                Shape {
                     id: livingLight
-                    width: parent.width
-                    height: parent.height
-                    opacity: 0
-                    imgId.source: "qrc:/images/livingroomLight.png"
-                    imgId.visible: false
-                    visible: false
+                    width: 300
+                    height: 300
+                    x: 230
+                    y: -30
+                    opacity: 0.0
 
-                    Shape {
-                        width: 300
-                        height: 300
-                        x: 230
-                        y: -30
+                    ShapePath {
+                        strokeWidth: 2
+                        strokeColor: "transparent"
+                        fillGradient: RadialGradient {
+                            centerX: 50; centerY: 150
+                            centerRadius: 150
+                            focalX: centerX; focalY: centerY
+                            GradientStop { position: 0; color: "white" }
+                            GradientStop { position: 0.8; color: "transparent" }
+                        }
 
-                        ShapePath {
-                            strokeWidth: 2
-                            strokeColor: "transparent"
-                            fillGradient: RadialGradient {
-                                centerX: 50; centerY: 150
-                                centerRadius: 150
-                                focalX: centerX; focalY: centerY
-                                GradientStop { position: 0; color: "#efe4b0" }
-                                GradientStop { position: 0.8; color: "transparent" }
-                            }
-
-                            startX: 50; startY: 0
-                            PathArc {
-                                x: 50
-                                y: 300
-                                radiusX: 150
-                                radiusY: 150
-                            }
-                            PathArc {
-                                x: 50
-                                y: 0
-                                radiusX: 150
-                                radiusY: 150
-                            }
+                        startX: 50; startY: 0
+                        PathArc {
+                            x: 50
+                            y: 300
+                            radiusX: 150
+                            radiusY: 150
+                        }
+                        PathArc {
+                            x: 50
+                            y: 0
+                            radiusX: 150
+                            radiusY: 150
                         }
                     }
                 }
 
-                OpacityAnimator {
-                    id: fadeIn
+                NumberAnimation {
+                    id: livingLight_change
                     target: livingLight
-                    from: 0
-                    to: 1
+                    property: "opacity"
                     duration: 500
                 }
 
-                OpacityAnimator {
-                    id: fadeOut
-                    target: livingLight
-                    from: 1
-                    to: 0
-                    duration: 500
-                }
-
-                RoomLight {
+                Shape {
                     id: kitchenLight
-                    width: parent.width
-                    height: parent.height
-                    imgId.source: "qrc:/images/livingroomLight.png"
-                    imgId.visible: false
-                    visible: false
+                    width: 300
+                    height: 300
+                    x: 280
+                    y: 270
+                    opacity: 0.0
 
-                    Shape {
-                        width: 300
-                        height: 300
-                        x: 280
-                        y: 270
+                    ShapePath {
+                        strokeWidth: 2
+                        strokeColor: "transparent"
+                        fillGradient: RadialGradient {
+                            centerX: 50; centerY: 100
+                            centerRadius: 120
+                            focalX: centerX; focalY: centerY
+                            GradientStop { position: 0; color: "white" }
+                            GradientStop { position: 0.8; color: "transparent" }
+                        }
 
-                        ShapePath {
-                            strokeWidth: 2
-                            strokeColor: "transparent"
-                            fillGradient: RadialGradient {
-                                centerX: 50; centerY: 100
-                                centerRadius: 120
-                                focalX: centerX; focalY: centerY
-                                GradientStop { position: 0; color: "#efe4b0" }
-                                GradientStop { position: 0.8; color: "transparent" }
-                            }
-
-                            startX: 50; startY: 0
-                            PathArc {
-                                x: 50
-                                y: 200
-                                radiusX: 100
-                                radiusY: 100
-                            }
-                            PathArc {
-                                x: 50
-                                y: 0
-                                radiusX: 100
-                                radiusY: 100
-                            }
+                        startX: 50; startY: 0
+                        PathArc {
+                            x: 50
+                            y: 200
+                            radiusX: 100
+                            radiusY: 100
+                        }
+                        PathArc {
+                            x: 50
+                            y: 0
+                            radiusX: 100
+                            radiusY: 100
                         }
                     }
                 }
 
-                RoomLight {
+                NumberAnimation {
+                    id: kitchenLight_change
+                    target: kitchenLight
+                    property: "opacity"
+                    duration: 500
+                }
+
+                Shape {
                     id: entranceLight
-                    width: parent.width
-                    height: parent.height
-                    imgId.source: "qrc:/images/livingroomLight.png"
-                    imgId.visible: false
-                    visible: false
+                    width: 300
+                    height: 300
+                    x: 420
+                    y: 250
+                    opacity: 0.0
 
-                    Shape {
-                        width: 300
-                        height: 300
-                        x: 420
-                        y: 250
+                    ShapePath {
+                        strokeWidth: 2
+                        strokeColor: "transparent"
+                        fillGradient: RadialGradient {
+                            centerX: 50; centerY: 100
+                            centerRadius: 70
+                            focalX: centerX; focalY: centerY
+                            GradientStop { position: 0; color: "white" }
+                            GradientStop { position: 0.8; color: "transparent" }
+                        }
 
-                        ShapePath {
-                            strokeWidth: 2
-                            strokeColor: "transparent"
-                            fillGradient: RadialGradient {
-                                centerX: 50; centerY: 100
-                                centerRadius: 70
-                                focalX: centerX; focalY: centerY
-                                GradientStop { position: 0; color: "#efe4b0" }
-                                GradientStop { position: 0.8; color: "transparent" }
-                            }
-
-                            startX: 50; startY: 0
-                            PathArc {
-                                x: 50
-                                y: 200
-                                radiusX: 100
-                                radiusY: 100
-                            }
-                            PathArc {
-                                x: 50
-                                y: 0
-                                radiusX: 100
-                                radiusY: 100
-                            }
+                        startX: 50; startY: 0
+                        PathArc {
+                            x: 50
+                            y: 200
+                            radiusX: 100
+                            radiusY: 100
+                        }
+                        PathArc {
+                            x: 50
+                            y: 0
+                            radiusX: 100
+                            radiusY: 100
                         }
                     }
+                }
+
+                NumberAnimation {
+                    id: entranceLight_change
+                    target: entranceLight
+                    property: "opacity"
+                    duration: 500
                 }
 
                 NumberAnimation {
@@ -841,25 +842,85 @@ ApplicationWindow {
                     ColumnLayout {
                         Layout.bottomMargin: 20
 
-                        Text {
-                            text: (livingLight.visible ? "🟢" : "🔴") + " Living Room"
-                            color: main_text.color
-                            font.pointSize: 13
-                            font.family: main_text.font.family
+                        RowLayout {
+                            Text {
+                                id: power_livingLight
+                                text: sw_livingLight.checked ? "🟢" : "🔴"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                text: "Living Room"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                id: bright_livingLight
+                                text: "💡 50"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                                Layout.leftMargin: 20
+                                visible: false
+                            }
                         }
 
-                        Text {
-                            text: (kitchenLight.visible ? "🟢" : "🔴") + " Kitchen"
-                            color: main_text.color
-                            font.pointSize: 13
-                            font.family: main_text.font.family
+                        RowLayout {
+                            Text {
+                                id: power_kitchenLight
+                                text: sw_kitchenLight.checked ? "🟢" : "🔴"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                text: "Kitchen"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                id: bright_kitchenLight
+                                text: "💡 50"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                                Layout.leftMargin: 20
+                                visible: false
+                            }
                         }
 
-                        Text {
-                            text: (entranceLight.visible ? "🟢" : "🔴") + " Entrance"
-                            color: main_text.color
-                            font.pointSize: 13
-                            font.family: main_text.font.family
+                        RowLayout {
+                            Text {
+                                id: power_entranceLight
+                                text: sw_entranceLight.checked ? "🟢" : "🔴"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                text: "Entrance"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                            }
+
+                            Text {
+                                id: bright_entranceLight
+                                text: "💡 50"
+                                color: main_text.color
+                                font.pointSize: 13
+                                font.family: main_text.font.family
+                                Layout.leftMargin: 20
+                                visible: false
+                            }
                         }
                     }
 
@@ -994,14 +1055,8 @@ ApplicationWindow {
                     text: qsTr("LivingRoom Light")
                     checked: false
                     onClicked: {
-                        if(checked) {
-                            livingLight.visible = checked
-                            fadeIn.start()
-                        }
-                        else {
-                            fadeOut.start()
-                            livingLight.visible = checked
-                        }
+                        let msg = JSON.stringify({ type: "send", device: "livingroomLight", data: {"turned": sw_livingLight.checked, "value": 100} })
+                        webSocket.sendTextMessage(msg)
                     }
 
                     indicator: Rectangle {
@@ -1041,7 +1096,10 @@ ApplicationWindow {
                     id: sw_kitchenLight
                     text: qsTr("Kitchen Light")
                     checked: false
-                    onClicked: kitchenLight.visible = checked
+                    onClicked: {
+                        let msg = JSON.stringify({ type: "send", device: "kitchenLight", data: {"turned": sw_kitchenLight.checked, "value": 100} })
+                        webSocket.sendTextMessage(msg)
+                    }
 
                     indicator: Rectangle {
                         implicitWidth: 40
@@ -1080,7 +1138,10 @@ ApplicationWindow {
                     id: sw_entranceLight
                     text: qsTr("Entrance Light")
                     checked: false
-                    onClicked: entranceLight.visible = checked
+                    onClicked: {
+                        let msg = JSON.stringify({ type: "send", device: "entranceLight", data: {"turned": sw_entranceLight.checked, "value": 100} })
+                        webSocket.sendTextMessage(msg)
+                    }
 
                     indicator: Rectangle {
                         implicitWidth: 40
