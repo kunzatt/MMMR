@@ -411,7 +411,8 @@ ApplicationWindow {
         let baseX = 0, baseY = 0;
 
         if (devName === "livingroomLight") {
-            sw_livingLight.checked = devData["turned"]
+            sw_livingLight.checked = devData["turned"];
+            bright_livingLight.visible = devData["turned"];
             bright_livingLight.text = "💡 " + devData["value"];
 
             if(!devData["turned"]) livingLight_change.to = 0
@@ -420,6 +421,7 @@ ApplicationWindow {
         }
         else if(devName === "kitchenLight") {
             sw_kitchenLight.checked = devData["turned"]
+            bright_kitchenLight.visible = devData["turned"];
             bright_kitchenLight.text = "💡 " + devData["value"];
 
             if(!devData["turned"]) kitchenLight_change.to = 0
@@ -428,6 +430,7 @@ ApplicationWindow {
         }
         else if(devName === "entranceLight") {
             sw_entranceLight.checked = devData["turned"]
+            bright_entranceLight.visible = devData["turned"];
             bright_entranceLight.text = "💡 " + devData["value"];
 
             if(!devData["turned"]) entranceLight_change.to = 0
@@ -891,7 +894,7 @@ ApplicationWindow {
                                 color: main_text.color
                                 font.pointSize: 13
                                 font.family: main_text.font.family
-                                Layout.leftMargin: 20
+                                Layout.leftMargin: 56
                                 visible: false
                             }
                         }
@@ -918,7 +921,7 @@ ApplicationWindow {
                                 color: main_text.color
                                 font.pointSize: 13
                                 font.family: main_text.font.family
-                                Layout.leftMargin: 20
+                                Layout.leftMargin: 46
                                 visible: false
                             }
                         }
