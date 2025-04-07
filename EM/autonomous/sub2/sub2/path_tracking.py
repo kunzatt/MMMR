@@ -6,8 +6,10 @@ from geometry_msgs.msg import Twist, Point, PoseStamped
 from ssafy_msgs.msg import TurtlebotStatus
 from squaternion import Quaternion
 from nav_msgs.msg import Odometry, Path
+from sensor_msgs.msg import LaserScan
 from math import pi, cos, sin, sqrt, atan2
 import numpy as np
+import time
 
 class FollowTheCarrot(Node):
 
@@ -27,26 +29,48 @@ class FollowTheCarrot(Node):
         # 새로운 목표 지점 구독자 추가
         self.goal_sub = self.create_subscription(PoseStamped, '/goal', self.goal_callback, 10)
 
+        # 라이더 데이터 값 받아오기
+        self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, 10)
+
         # 제어 주기 및 타이머 설정
         time_period = 0.05
         self.timer = self.create_timer(time_period, self.timer_callback)
 
-        # 상태 플래그 초기화
+         # 상태 플래그 초기화
         self.is_odom = False
         self.is_path = False
         self.is_status = False
         self.is_goal = False
         self.is_rotated = False
+        self.is_lidar = False
         self.tracking_enabled = True
+        self.goal_reached = False  # 목표 도달 상태 추가
+        self.goal_message_sent = False  # 목표 도달 메시지 전송 여부 추적
+        self.new_goal_received = False  # 새 목표 수신 여부
+        self.goal_transition_time = None  # 목표 전환 시간 추적
+        self.goal_transition_cooldown = 0.5  # 목표 전환 후 안정화 시간 (초)
 
+        # 충돌 상태 관리 변수
+        self.collision_state = False
+        self.recovery_mode = False
+        self.recovery_start_time = None
+        self.recovery_direction = 1
+        self.stuck_counter = 0
+        self.prev_pose_x = 0.0
+        self.prev_pose_y = 0.0
+        self.movement_threshold = 0.01
+        self.stuck_threshold = 20
+        
         # 메시지 초기화
         self.odom_msg = Odometry()
         self.robot_yaw = 0.0
         self.path_msg = Path()
         self.cmd_msg = Twist()
         self.goal_pose = None
-        self.rotate_msg = PoseStamped()
         self.point_msg = Point()
+        self.rotate_msg = PoseStamped()
+        self.lidar_data = None
+        self.status_msg = None
 
         #좌표 변환을 위한 맵 정보
         self.map_size_x=350
@@ -68,6 +92,31 @@ class FollowTheCarrot(Node):
         self.robot_pose_x = 0.0
         self.robot_pose_y = 0.0
 
+        # 장애물 감지 파라미터
+        self.obstacle_distance_threshold = 0.3
+        self.front_angle_range = 20
+        self.front_angles = list(range(-self.front_angle_range, self.front_angle_range+1))
+
+        # 장애물 회피 파라미터
+        self.safe_distance = 0.4
+        self.avoidance_speed = 0.1
+        self.avoidance_turn_speed = 0.5
+        
+        # 복구 행동 파라미터
+        self.recovery_time = 2.0
+        self.recovery_linear_speed = -0.1
+        self.recovery_angular_speed = 0.3
+
+        # 로봇 위치 변수 초기화
+        self.robot_pose_x = 0.0
+        self.robot_pose_y = 0.0
+        
+        # 방향 전환 중 장애물 감지 억제
+        self.turning_mode = False
+        self.turning_start_time = 0
+        self.turning_threshold = 0.5
+        self.turning_cooldown = 1.0
+
     def goal_callback(self, msg):
         """목표 지점 콜백"""
         self.goal_pose = msg.pose
@@ -76,6 +125,11 @@ class FollowTheCarrot(Node):
         self.is_goal = True
         self.tracking_enabled = True
         self.get_logger().info('New goal received')
+
+    def lidar_callback(self, msg):
+        """라이다 데이터 콜백"""
+        self.is_lidar = True
+        self.lidar_data = msg
 
     #odometry 값을 grid 좌표 값으로 변환 함수수
     def pose_to_grid_cell(self,x,y):
