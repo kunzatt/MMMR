@@ -405,6 +405,8 @@ ApplicationWindow {
     }
 
     function controlDevices(devName, devData) {
+        socket_msg_txt.text = devName + ", " + devData["turned"] + ", " + devData["value"]
+        fadeInOutAnim.start();
         console.log(devData)
         let baseX = 0, baseY = 0;
 
@@ -943,7 +945,7 @@ ApplicationWindow {
                         RowLayout {
                             Text {
                                 id: power_curtain
-                                text: sw_purifier.checked ? "🟢" : "🔴"
+                                text: sw_curtain.checked ? "🟢" : "🔴"
                                 color: main_text.color
                                 font.pointSize: 13
                                 font.family: main_text.font.family
@@ -1345,6 +1347,85 @@ ApplicationWindow {
             font.family: main_text.font.family
             font.pointSize: 12
             anchors.centerIn: parent
+        }
+    }
+
+    SequentialAnimation {
+        id: fadeInOutAnim
+        running: false
+        onStopped: {
+            // 완전히 사라졌으면 visible도 false로
+            if (socket_msg.opacity === 0.0) {
+                socket_msg.visible = false;
+                socket_msg.x = 860
+            }
+        }
+
+        ScriptAction { script: socket_msg.visible = true }
+
+        ParallelAnimation {
+            running: false
+
+            NumberAnimation {
+                target: socket_msg
+                property: "opacity"
+                to: 1.0
+                duration: 300
+            }
+
+            NumberAnimation {
+                target: socket_msg
+                property: "x"
+                to: 830
+                duration: 300
+            }
+        }
+
+        PauseAnimation { duration: 700 }
+
+        ParallelAnimation {
+            running: false
+
+            NumberAnimation {
+                target: socket_msg
+                property: "opacity"
+                to: 0.0
+                duration: 300
+            }
+
+            NumberAnimation {
+                target: socket_msg
+                property: "x"
+                to: 860
+                duration: 300
+            }
+        }
+    }
+
+    Rectangle {
+        id: socket_msg
+        width: 350
+        height: 50
+        x: 860
+        y: 500
+        opacity: 0.0
+
+        Text {
+            id: socket_msg_txt
+            text: "test"
+            color: main_text.color
+            font.family: main_text.font.family
+            font.pointSize: 16
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.leftMargin: 20
+        }
+
+        gradient: Gradient {
+            orientation: Gradient.Horizontal
+
+            GradientStop { position: 0.8; color: "#444" }
+            GradientStop { position: 1.0; color: "transparent" }
         }
     }
 }
