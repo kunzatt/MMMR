@@ -10,7 +10,7 @@ export default function Homecam() {
             <div className="w-64 h-36 bg-black rounded-md overflow-hidden flex items-center justify-center">
                 {!isLoaded && <p className="w-full text-white text-sm">로딩 중...</p>}
                 <img
-                    src="https://marginally-up-longhorn.ngrok-free.app/video_feed"
+                    src="https://mimi-homecam.shop/video_feed"
                     alt="홈캠 로딩 실패"
                     className="w-full h-full object-cover"
                     onLoad={() => setIsLoaded(true)}
