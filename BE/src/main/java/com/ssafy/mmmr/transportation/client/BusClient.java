@@ -5,6 +5,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,6 +24,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ssafy.mmmr.transportation.dto.TransportationResponseDto;
+import com.ssafy.mmmr.businformations.entity.BusInformationEntity;
+import com.ssafy.mmmr.businformations.repository.BusInformationRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,11 +39,13 @@ import org.w3c.dom.Node;
 @Slf4j
 public class BusClient {
 	private final RestTemplate restTemplate;
+	private final BusInformationRepository busInformationRepository;
 
 	@Value("${seoul.bus.api.key}")
 	private String apiKey;
 
-	private static final String BASE_URL = "http://ws.bus.go.kr/api/rest/arrive/getArrInfoByRouteList";
+	// 엔드포인트 수정
+	private static final String BASE_URL = "http://ws.bus.go.kr/api/rest/arrive/getArrInfoByRoute";
 	private static final String SUCCESS_CODE = "0";
 	private static final String BUS_TYPE = "BUS";
 	private static final String NO_ARRIVAL_INFO = "현재 도착 정보가 없습니다.";
@@ -50,8 +55,10 @@ public class BusClient {
 	private static final String SERVICE_ENDED = "운행 종료";
 	private static final String STOPS_AWAY_FORMAT = "%s정거장 전";
 
-	public BusClient(RestTemplate restTemplate) {
+	// 생성자에 BusInformationRepository 추가
+	public BusClient(RestTemplate restTemplate, BusInformationRepository busInformationRepository) {
 		this.restTemplate = restTemplate;
+		this.busInformationRepository = busInformationRepository;
 		this.restTemplate.getMessageConverters()
 			.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
 	}
@@ -60,7 +67,15 @@ public class BusClient {
 		List<TransportationResponseDto> arrivals = new ArrayList<>();
 		List<String> infoList = new ArrayList<>();
 
-		String responseBody = fetchBusData(routeId);
+		// sequence 값 조회
+		String sequence = getSequenceForBusStop(routeId, stationId);
+		if (sequence == null) {
+			log.error("버스 정류장 순서 정보를 찾을 수 없습니다. routeId: {}, stationId: {}", routeId, stationId);
+			return createDefaultResponse(busId, busNumber, stationName, busDirection);
+		}
+
+		// 파라미터 수정: routeId, stationId, sequence를 모두 전달
+		String responseBody = fetchBusData(routeId, stationId, sequence);
 		if (responseBody == null) {
 			return createDefaultResponse(busId, busNumber, stationName, busDirection);
 		}
@@ -72,12 +87,12 @@ public class BusClient {
 
 		NodeList itemList = doc.getElementsByTagName("itemList");
 		if (itemList.getLength() == 0) {
-			log.warn("버스 노선 ID: {} 조회 결과 없음", routeId);
+			log.warn("버스 노선 ID: {}, 정류장 ID: {}, 순서: {} 조회 결과 없음", routeId, stationId, sequence);
 			return createDefaultResponse(busId, busNumber, stationName, busDirection);
 		}
 
-		log.info("버스 노선 ID: {}, 조회된 항목 수: {}", routeId, itemList.getLength());
-		collectArrivalInfoForStation(itemList, stationId, infoList);
+		log.info("버스 노선 ID: {}, 정류장 ID: {}, 순서: {}, 조회된 항목 수: {}", routeId, stationId, sequence, itemList.getLength());
+		collectArrivalInfo(itemList, infoList);
 
 		if (!infoList.isEmpty()) {
 			String formattedDirection = busDirection + DIRECTION_SUFFIX;
@@ -100,9 +115,31 @@ public class BusClient {
 		return arrivals;
 	}
 
-	private String fetchBusData(String routeId) {
+	// BusInformationRepository에서 sequence 값을 가져오는 메서드 추가
+	private String getSequenceForBusStop(String routeId, String stationId) {
 		try {
-			URI uri = buildRequestUri(routeId);
+			Integer routeIdInt = Integer.parseInt(routeId);
+			Integer stationIdInt = Integer.parseInt(stationId);
+
+			Optional<BusInformationEntity> busInfoOpt = busInformationRepository.findByRouteIdAndStationId(routeIdInt, stationIdInt);
+
+			if (busInfoOpt.isPresent()) {
+				BusInformationEntity busInfo = busInfoOpt.get();
+				return String.valueOf(busInfo.getSequence());
+			} else {
+				log.warn("버스 정보를 찾을 수 없습니다. routeId: {}, stationId: {}", routeId, stationId);
+				return null;
+			}
+		} catch (NumberFormatException e) {
+			log.error("routeId 또는 stationId 파싱 오류. routeId: {}, stationId: {}", routeId, stationId, e);
+			return null;
+		}
+	}
+
+	// API 호출 메서드 수정 - sequence 추가
+	private String fetchBusData(String routeId, String stationId, String sequence) {
+		try {
+			URI uri = buildRequestUri(routeId, stationId, sequence);
 			log.info("버스 API 호출 URI: {}", uri);
 
 			HttpEntity<?> entity = createHttpEntity();
@@ -115,18 +152,21 @@ public class BusClient {
 
 			return response.getBody();
 		} catch (Exception e) {
-			log.error("버스 노선 ID: {} 처리 중 오류 발생", routeId, e);
+			log.error("버스 노선 ID: {}, 정류장 ID: {}, 순서: {} 처리 중 오류 발생", routeId, stationId, sequence, e);
 			return null;
 		}
 	}
 
-	private URI buildRequestUri(String routeId) {
-		return UriComponentsBuilder.fromHttpUrl(BASE_URL)
-			.queryParam("serviceKey", apiKey)
-			.queryParam("busRouteId", routeId)
-			.build()
-			.encode()
-			.toUri();
+	// URI 빌더 메서드 수정 - 파라미터 순서 변경 및 인코딩 제거
+	private URI buildRequestUri(String routeId, String stationId, String sequence) {
+		// 직접 URL 문자열을 구성하여 순서와 형식을 정확히 제어
+		String url = BASE_URL +
+			"?serviceKey=" + apiKey +
+			"&stId=" + stationId +
+			"&busRouteId=" + routeId +
+			"&ord=" + sequence;
+
+		return URI.create(url);
 	}
 
 	private HttpEntity<?> createHttpEntity() {
@@ -169,19 +209,12 @@ public class BusClient {
 		return false;
 	}
 
-	private void collectArrivalInfoForStation(NodeList itemList, String stationId, List<String> infoList) {
+	private void collectArrivalInfo(NodeList itemList, List<String> infoList) {
 		for (int i = 0; i < itemList.getLength(); i++) {
 			Node itemNode = itemList.item(i);
 			if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
 				Element item = (Element) itemNode;
-
-				String arsId = getElementTextContent(item, "arsId");
-				String stId = getElementTextContent(item, "stId");
-
-				// stationId와 일치하는 정류소만 처리
-				if (stationId.equals(stId) || stationId.equals(arsId)) {
-					processArrivalInfo(item, infoList);
-				}
+				processArrivalInfo(item, infoList);
 			}
 		}
 	}
