@@ -429,6 +429,7 @@ ApplicationWindow {
             if(!devData["turned"]) livingLight_change.to = 0
             else livingLight_change.to = devData["value"] / 100;
             livingLight_change.start()
+            living_bg_on.start()
         }
         else if(devName === "kitchenLight") {
             sw_kitchenLight.checked = devData["turned"]
@@ -438,6 +439,7 @@ ApplicationWindow {
             if(!devData["turned"]) kitchenLight_change.to = 0
             else kitchenLight_change.to = devData["value"] / 100;
             kitchenLight_change.start()
+            kitchen_bg_on.start()
         }
         else if(devName === "entranceLight") {
             sw_entranceLight.checked = devData["turned"]
@@ -447,11 +449,13 @@ ApplicationWindow {
             if(!devData["turned"]) entranceLight_change.to = 0
             else entranceLight_change.to = devData["value"] / 100;
             entranceLight_change.start()
+            entrance_bg_on.start()
         }
         else if (devName === "aircon") {
             sw_aircon.checked = devData["turned"]
             if(devData["turned"]) aircon_on.start()
             else aircon_off.start()
+            aircon_bg_on.start()
 
             temp_aircon.visible = devData["turned"]
             temp_aircon.text = "❄️ " + devData["value"] + "℃";
@@ -463,6 +467,7 @@ ApplicationWindow {
             sw_purifier.checked = devData["turned"]
             if(devData["turned"]) purifier_on.start()
             else purifier_off.start()
+            purifier_bg_on.start()
 
             baseX = 220;
             baseY = 200;
@@ -471,6 +476,7 @@ ApplicationWindow {
             sw_tv.checked = devData["turned"]
             if(devData["turned"]) tv_on.start()
             else tv_off.start()
+            tv_bg_on.start()
 
             volume_tv.visible = devData["turned"];
             volume_tv.text = "🔉 " + devData["value"];
@@ -482,6 +488,7 @@ ApplicationWindow {
             sw_curtain.checked = devData["turned"]
             if(devData["turned"]) curtain_on.start()
             else curtain_off.start()
+            curtain_bg_on.start()
 
             baseX = 280;
             baseY = 5;
@@ -830,6 +837,7 @@ ApplicationWindow {
             }
 
             ColumnLayout {
+                id: info_wrapper
                 spacing: 30
                 Layout.alignment: Qt.AlignCenter
                 Layout.maximumWidth: 360
@@ -856,84 +864,212 @@ ApplicationWindow {
                     ColumnLayout {
                         Layout.bottomMargin: 20
 
-                        RowLayout {
-                            Text {
-                                id: power_livingLight
-                                text: sw_livingLight.checked ? "🟢" : "🔴"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
+                        OpacityAnimator {
+                            id: living_bg_on
+                            target: living_bg
+                            from: 1
+                            to: 0
+                            duration: 700
+                        }
+
+                        OpacityAnimator {
+                            id: kitchen_bg_on
+                            target: kitchen_bg
+                            from: 1
+                            to: 0
+                            duration: 700
+                        }
+
+                        OpacityAnimator {
+                            id: entrance_bg_on
+                            target: entrance_bg
+                            from: 1
+                            to: 0
+                            duration: 700
+                        }
+
+                        OpacityAnimator {
+                            id: aircon_bg_on
+                            target: aircon_bg
+                            from: 1
+                            to: 0
+                            duration: 700
+                        }
+
+                        OpacityAnimator {
+                            id: purifier_bg_on
+                            target: purifier_bg
+                            from: 1
+                            to: 0
+                            duration: 700
+                        }
+
+                        OpacityAnimator {
+                            id: tv_bg_on
+                            target: tv_bg
+                            from: 1
+                            to: 0
+                            duration: 700
+                        }
+
+                        OpacityAnimator {
+                            id: curtain_bg_on
+                            target: curtain_bg
+                            from: 1
+                            to: 0
+                            duration: 700
+                        }
+
+                        Item {
+                            width: parent.width
+                            height: 30
+
+                            Rectangle {
+                                id: living_bg
+                                width: 280
+                                height: parent.height
+                                color: "white"
+                                z: 0
+                                opacity: 0.0
+
+                                gradient: Gradient {
+                                    orientation: Gradient.Horizontal
+
+                                    GradientStop { position: 0.7; color: "#aaa" }
+                                    GradientStop { position: 1.0; color: "transparent" }
+                                }
                             }
 
-                            Text {
-                                text: "Living Room"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                            }
+                            RowLayout {
+                                z: 2
+                                anchors.verticalCenter: living_bg.verticalCenter
 
-                            Text {
-                                id: bright_livingLight
-                                text: "💡 50"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                                Layout.leftMargin: 20
-                                visible: false
+                                Text {
+                                    id: power_livingLight
+                                    text: sw_livingLight.checked ? "🟢" : "🔴"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    text: "Living Room"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    id: bright_livingLight
+                                    text: "💡 50"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                    Layout.leftMargin: 20
+                                    visible: false
+                                }
                             }
                         }
 
-                        RowLayout {
-                            Text {
-                                id: power_kitchenLight
-                                text: sw_kitchenLight.checked ? "🟢" : "🔴"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
+                        Item {
+                            width: parent.width
+                            height: 30
+
+                            Rectangle {
+                                id: kitchen_bg
+                                width: 280
+                                height: parent.height
+                                color: "white"
+                                z: 0
+                                opacity: 0.0
+
+                                gradient: Gradient {
+                                    orientation: Gradient.Horizontal
+
+                                    GradientStop { position: 0.7; color: "#aaa" }
+                                    GradientStop { position: 1.0; color: "transparent" }
+                                }
                             }
 
-                            Text {
-                                text: "Kitchen"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                            }
+                            RowLayout {
+                                z: 2
+                                anchors.verticalCenter: kitchen_bg.verticalCenter
 
-                            Text {
-                                id: bright_kitchenLight
-                                text: "💡 50"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                                Layout.leftMargin: 56
-                                visible: false
+                                Text {
+                                    id: power_kitchenLight
+                                    text: sw_kitchenLight.checked ? "🟢" : "🔴"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    text: "Kitchen"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    id: bright_kitchenLight
+                                    text: "💡 50"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                    Layout.leftMargin: 56
+                                    visible: false
+                                }
                             }
                         }
 
-                        RowLayout {
-                            Text {
-                                id: power_entranceLight
-                                text: sw_entranceLight.checked ? "🟢" : "🔴"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
+                        Item {
+                            width: parent.width
+                            height: 30
+
+                            Rectangle {
+                                id: entrance_bg
+                                width: 280
+                                height: parent.height
+                                color: "white"
+                                z: 0
+                                opacity: 0.0
+
+                                gradient: Gradient {
+                                    orientation: Gradient.Horizontal
+
+                                    GradientStop { position: 0.7; color: "#aaa" }
+                                    GradientStop { position: 1.0; color: "transparent" }
+                                }
                             }
 
-                            Text {
-                                text: "Entrance"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                            }
+                            RowLayout {
+                                z: 2
+                                anchors.verticalCenter: entrance_bg.verticalCenter
 
-                            Text {
-                                id: bright_entranceLight
-                                text: "💡 50"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                                Layout.leftMargin: 46
-                                visible: false
+                                Text {
+                                    id: power_entranceLight
+                                    text: sw_entranceLight.checked ? "🟢" : "🔴"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    text: "Entrance"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    id: bright_entranceLight
+                                    text: "💡 50"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                    Layout.leftMargin: 46
+                                    visible: false
+                                }
                             }
                         }
                     }
@@ -946,91 +1082,187 @@ ApplicationWindow {
                     }
 
                     ColumnLayout {
-                        RowLayout {
-                            Text {
-                                id: power_aircon
-                                text: sw_aircon.checked ? "🟢" : "🔴"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
+                        Item {
+                            width: parent.width
+                            height: 30
+
+                            Rectangle {
+                                id: aircon_bg
+                                width: 280
+                                height: parent.height
+                                color: "white"
+                                z: 0
+                                opacity: 0.0
+
+                                gradient: Gradient {
+                                    orientation: Gradient.Horizontal
+
+                                    GradientStop { position: 0.7; color: "#aaa" }
+                                    GradientStop { position: 1.0; color: "transparent" }
+                                }
                             }
 
-                            Text {
-                                text: "Air Conditioner"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                            }
+                            RowLayout {
+                                z: 2
+                                anchors.verticalCenter: aircon_bg.verticalCenter
 
-                            Text {
-                                id: temp_aircon
-                                text: "❄️ 24℃"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                                Layout.leftMargin: 20
-                                visible: false
-                            }
-                        }
+                                Text {
+                                    id: power_aircon
+                                    text: sw_aircon.checked ? "🟢" : "🔴"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
 
-                        RowLayout {
-                            Text {
-                                id: power_tv
-                                text: sw_tv.checked ? "🟢" : "🔴"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                            }
+                                Text {
+                                    text: "Air Conditioner"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
 
-                            Text {
-                                text: "TV"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                            }
-
-                            Text {
-                                id: volume_tv
-                                text: "🔉 50"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
-                                Layout.leftMargin: 112
-                                visible: false
+                                Text {
+                                    id: temp_aircon
+                                    text: "❄️ 24℃"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                    Layout.leftMargin: 20
+                                    visible: false
+                                }
                             }
                         }
 
-                        RowLayout {
-                            Text {
-                                id: power_purifier
-                                text: sw_purifier.checked ? "🟢" : "🔴"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
+                        Item {
+                            width: parent.width
+                            height: 30
+
+                            Rectangle {
+                                id: tv_bg
+                                width: 280
+                                height: parent.height
+                                color: "white"
+                                z: 0
+                                opacity: 0.0
+
+                                gradient: Gradient {
+                                    orientation: Gradient.Horizontal
+
+                                    GradientStop { position: 0.7; color: "#aaa" }
+                                    GradientStop { position: 1.0; color: "transparent" }
+                                }
                             }
 
-                            Text {
-                                text: "Air Purifier"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
+                            RowLayout {
+                                z: 2
+                                anchors.verticalCenter: tv_bg.verticalCenter
+
+                                Text {
+                                    id: power_tv
+                                    text: sw_tv.checked ? "🟢" : "🔴"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    text: "TV"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    id: volume_tv
+                                    text: "🔉 50"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                    Layout.leftMargin: 112
+                                    visible: false
+                                }
                             }
                         }
 
-                        RowLayout {
-                            Text {
-                                id: power_curtain
-                                text: sw_curtain.checked ? "🟢" : "🔴"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
+                        Item {
+                            width: parent.width
+                            height: 30
+
+                            Rectangle {
+                                id: purifier_bg
+                                width: 280
+                                height: parent.height
+                                color: "white"
+                                z: 0
+                                opacity: 0.0
+
+                                gradient: Gradient {
+                                    orientation: Gradient.Horizontal
+
+                                    GradientStop { position: 0.7; color: "#aaa" }
+                                    GradientStop { position: 1.0; color: "transparent" }
+                                }
                             }
 
-                            Text {
-                                text: "Curtain"
-                                color: main_text.color
-                                font.pointSize: 13
-                                font.family: main_text.font.family
+                            RowLayout {
+                                z: 2
+                                anchors.verticalCenter: purifier_bg.verticalCenter
+
+                                Text {
+                                    id: power_purifier
+                                    text: sw_purifier.checked ? "🟢" : "🔴"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    text: "Air Purifier"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
+                            }
+                        }
+
+                        Item {
+                            width: parent.width
+                            height: 30
+
+                            Rectangle {
+                                id: curtain_bg
+                                width: 280
+                                height: parent.height
+                                color: "white"
+                                z: 0
+                                opacity: 0.0
+
+                                gradient: Gradient {
+                                    orientation: Gradient.Horizontal
+
+                                    GradientStop { position: 0.7; color: "#aaa" }
+                                    GradientStop { position: 1.0; color: "transparent" }
+                                }
+                            }
+
+                            RowLayout {
+                                z: 2
+                                anchors.verticalCenter: curtain_bg.verticalCenter
+
+                                Text {
+                                    id: power_curtain
+                                    text: sw_curtain.checked ? "🟢" : "🔴"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
+
+                                Text {
+                                    text: "Curtain"
+                                    color: main_text.color
+                                    font.pointSize: 13
+                                    font.family: main_text.font.family
+                                }
                             }
                         }
                     }
@@ -1396,15 +1628,6 @@ ApplicationWindow {
                     }
                 }
             }
-
-            Label {
-                id: jsonOutput
-                Layout.preferredWidth: 200
-                Layout.preferredHeight: 80
-                wrapMode: TextArea.Wrap
-                text: "Parsed JSON will appear here..."
-                color: "#ddd"
-            }
         }
     }
 
@@ -1432,7 +1655,7 @@ ApplicationWindow {
             // 완전히 사라졌으면 visible도 false로
             if (socket_msg.opacity === 0.0) {
                 socket_msg.visible = false;
-                socket_msg.x = 860
+                socket_msg.x = 880
             }
         }
 
@@ -1451,7 +1674,7 @@ ApplicationWindow {
             NumberAnimation {
                 target: socket_msg
                 property: "x"
-                to: 830
+                to: 850
                 duration: 300
             }
         }
@@ -1471,7 +1694,7 @@ ApplicationWindow {
             NumberAnimation {
                 target: socket_msg
                 property: "x"
-                to: 860
+                to: 880
                 duration: 300
             }
         }
@@ -1481,8 +1704,8 @@ ApplicationWindow {
         id: socket_msg
         width: 350
         height: 50
-        x: 860
-        y: 500
+        x: 880
+        y: 530
         opacity: 0.0
 
         Text {
