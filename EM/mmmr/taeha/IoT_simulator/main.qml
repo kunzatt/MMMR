@@ -451,7 +451,7 @@ ApplicationWindow {
             entranceLight_change.start()
             entrance_bg_on.start()
         }
-        else if (devName === "aircon") {
+        else if (devName === "airConditioner") {
             sw_aircon.checked = devData["turned"]
             if(devData["turned"]) aircon_on.start()
             else aircon_off.start()
@@ -494,7 +494,7 @@ ApplicationWindow {
             baseY = 5;
         }
         else {
-            jsonOutput.text = "Error: Can't find " + devName
+            socket_msg_txt.text = "Error: Can't find " + devName
         }
 
         if(baseX != 0 && baseY != 0) {
@@ -1469,7 +1469,7 @@ ApplicationWindow {
                     text: qsTr("Air Conditioner")
                     checked: false
                     onClicked: {
-                        let msg = JSON.stringify({ type: "send", device: "aircon", data: {"turned": sw_aircon.checked, "value": 0} })
+                        let msg = JSON.stringify({ type: "send", device: "airConditioner", data: {"turned": sw_aircon.checked, "value": 0} })
                         webSocket.sendTextMessage(msg)
                     }
 
@@ -1596,36 +1596,35 @@ ApplicationWindow {
                 Layout.maximumHeight: 100
                 spacing: 5
 
-                TextArea {
-                    id: jsonInput
-                    placeholderText: qsTr("Enter json format")
-                    wrapMode: TextArea.WordWrap
-                    implicitWidth: 200
-                    implicitHeight: 70
+                ScrollView {
+                    Layout.alignment: Qt.AlignTop
+                    Layout.preferredWidth: 200
+                    Layout.preferredHeight: 70
+                    clip: true
 
-                    background: Rectangle {
-                        width: 200
-                        height: 70
-                        border.color: jsonInput.enabled ? "#21be2b" : "transparent"
+                    TextArea {
+                        id: jsonInput
+                        placeholderText: qsTr("Enter json format")
+                        wrapMode: TextEdit.Wrap
+                        width: parent.width
+                        height: parent.height
+                        padding: 6  // 텍스트가 너무 붙지 않도록
+
+                        background: Rectangle {
+                            color: "#ffffff"
+                            border.color: jsonInput.enabled ? "#21be2b" : "transparent"
+                            radius: 4
+                        }
                     }
                 }
+
 
                 Button {
                     text: "Ok"
                     Layout.alignment: Qt.AlignRight
                     Layout.preferredWidth: 80
                     Layout.preferredHeight: 30
-                    onClicked: {
-                        var jsonText = jsonInput.text;
-                        var result = jsonProcessor.processJson(jsonText);
-                        if (result.error) {
-                            jsonOutput.text = "Error: " + result.error;
-                        } else {
-                            jsonOutput.text = result.device + ", " + result.data
-
-                            controlDevices(result.device, result.data)
-                        }
-                    }
+                    onClicked: webSocket.sendTextMessage(jsonInput.text)
                 }
             }
         }
