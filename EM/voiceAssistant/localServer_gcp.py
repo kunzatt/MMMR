@@ -367,9 +367,10 @@ async def text_to_json(text: str) -> str:
     }
 }
 기기 목록{"livingroomLight", "TV", "airConditioner", "airPurfier", "curtain", "kitchenLight", "entranceLight"}
-type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "exit", "greet", "none"
+type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", "youtube", "timer", "todo", "schedule", "time", "transportation", "lamp", "exit", "greet", "none"
 
 - iot: 집 안 기기 현황 확인 명령(예: "IoT 현황 알려줘", "IoT 목록 확인해줘", "IoT 장치 상태", "집 안 기기 상태", "기기 상태 알려줘", "기기 목록 알려줘)
+- lamp: 무드등을 제어하는 명령(예: "무드등 켜줘", "무드등 꺼줘", "무드등 밝기 50으로 해줘", "무드등 색상 빨간색으로 해줘", "무드등 색상 파란색으로 해줘", "무드등 색상 초록색으로 해줘", "무드등 색상 노란색으로 해줘", "무드등 색상 보라색으로 해줘", "무드등 색상 흰색으로 해줘")
 - control: 기기 목록에 포함된 기기들 제어 명령 (예: "거실 전등 켜줘", "거실 불 꺼줘", "주방 불 켜줘", "커튼 쳐줘", "TV 켜줘", "TV 볼륨 50으로 맞춰", "거실 조명 밝기 50") 기기가 없거나 기기 목록에 없는 기기는 control type이 아닙니다.
 - weather: 날씨 정보 요청 (예: "오늘 날씨 어때?", "비 올 예정이야?")
 - news: 뉴스 정보 요청 (예: "오늘 뉴스 보여줘", "최신 뉴스 알려줘", "3번째 뉴스 알려줘")
@@ -387,6 +388,7 @@ type은 다음 중 하나여야 합니다: "iot", "control", "weather", "news", 
 contents.default는 기능을 켜는 명령의 경우 "ON", 끄는 명령인 경우 "OFF", 그 외에는 "ON"으로 설정합니다. "보여줘", "알려줘", "켜줘" 등의 명령은 "ON"으로 설정합니다. "꺼줘" 등의 명령은 "OFF"로 설정합니다. 단, control 타입에 경우엔 빈 문자열로 설정합니다.
 
 contents.data는 type에 따라 다르게 설정합니다:
+- lamp: 색깔과 밝기 값이 들어갈 수 있습니다.(예: "50", "Blue 70", "", "Yellow 30", "Yellow" 등). 반드시 "ON" 상태일때만 색깔과 밝기 값이 들어가야 합니다. "OFF"일 경우엔 색깔과 밸류값은 들어갈 수 없습니다. 색깔은 다음 종류만 들어갈 수 있습니다.{"Red", "Green", "Blue", "Yellow", "Purple", "White"}
 - control: 기기 + "ON" 또는 기기 + "OFF" (예: "거실 전등 ON", "TV OFF"), 기기 목록 ["livingroomLight", "TV", "airConditioner", "airPurfier", "curtain", "kitchenLight", "entranceLight"], 단 airConditioner, TV, 조명들이 ON인 경우엔 밸류값을 함께 넣을 수 있습니다.(예: "airConditioner 25", "TV ON 20", "livinroomLight ON 50" 등). 반드시 목록에 포함된 기기만 들어가야 해야합니다. 목록에 들어가지 않은 기기일 경우 iot type이 아닙니다. 기기없이 밸류값만 들어갈 수 없습니다.
 - news: "1"부터 "5" 사이의 숫자 (뉴스 번호) 혹은 빈 문자열
 - timer: "00H05M00S"와 같은 형태 (시간, 분, 초). contents.data에 정보가 있는 경우 contents.default는 반드시 "ON"
@@ -411,8 +413,6 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
         
         result = response.choices[0].message.content.strip()
         json_result = json.loads(result)
-        json_result["access_token"] = app.state.access_token
-        json_result["refresh_token"] = app.state.refresh_token 
         result = json.dumps(json_result)
         process_time = time.time() - start_time
         
@@ -435,9 +435,7 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
                 "default": "OFF",
                 "data": ""
             },
-            "result": "-1",
-            "access_token": app.state.access_token,
-            "refresh_token": app.state.refresh_token
+            "result": "-1"
         })
     
 def clear_queue(message_queue):
@@ -484,11 +482,7 @@ async def wait_for_queue_data(message_queue, timeout=10):
 async def process_and_send_json_result(websocket: WebSocket, transcription: str = None, keyword: str = "미미", access_token: str = None, refresh_token: str = None):
     async with process_semaphore:
         new_tokens = None
-        profileId, new_tokens = data_processor.getProfileId(keyword, access_token, refresh_token)
-        if new_tokens:
-            access_token = new_tokens[0]
-            refresh_token = new_tokens[1]
-        if transcription:            
+        if transcription:
             # STT 결과를 JSON으로 변환
             json_result = await text_to_json(transcription)
             json_obj = json.loads(json_result)
@@ -500,7 +494,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
             if access_token:
                 if type == "greet":
                     greet_result, new_tokens = data_processor.getGreeting(
-                        profileId,
+                        keyword,
                         access_token, 
                         refresh_token
                     )
@@ -542,7 +536,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                         
                 elif type == "schedule" and contents["default"] != "OFF":
                     schedule_result, new_tokens = data_processor.getSchedules(
-                        profileId,
+                        keyword,
                         access_token, 
                         refresh_token,
                         contents["data"]
@@ -560,9 +554,13 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                     else:
                         logger.warning("제어 요청에 장치 정보가 없습니다.")
                         json_obj["result"] = "0"
+                elif type == "lamp":
+                    iot_ws.send_lamp_message(json_obj)
+                    json_obj["result"] = "2"
+
                 elif type == "transportation" and contents["default"] != "OFF":
                     transportation_result, new_tokens = data_processor.getTransportation(
-                        profileId,
+                        keyword,
                         access_token, 
                         refresh_token,
                         contents["data"]
@@ -577,9 +575,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                     json_obj["result"] = "0"
                 else:
                     json_obj["result"] = "1"
-            json_obj["profileId"] = profileId
-            json_obj["access_token"] = access_token
-            json_obj["refresh_token"] = refresh_token
+            
             json_result = json.dumps(json_obj)
             logger.info(f"JSON 변환 결과: {json_result}")
         else:
@@ -590,14 +586,12 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                     "default": "OFF",
                     "data": ""
                 },
-                "result": "0",
-                "profileId": profileId,
-                "access_token": access_token,
-                "refresh_token": refresh_token
+                "result": "0"
             })
             reason = "빈 STT 결과" if transcription is None else "오디오가 너무 짧음"
             
             logger.info(f"{reason}에 대한 기본 JSON 전송")
+        
         # 결과 전송
         await websocket.send_text(json_result)
         logger.info("JSON 결과 전송 완료")
@@ -690,9 +684,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     "default": "OFF",
                     "data": ""
                 },
-                "result" : "0",
-                "access_token": app.state.access_token,
-                "refresh_token": app.state.refresh_token
+                "result" : "-1"
             })
             await websocket.send_text(default_json)
         

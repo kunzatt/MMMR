@@ -317,12 +317,13 @@ def getSchedules(profileId, access_token, refresh_token=None, day="today"):
             access_token = new_tokens["access_token"]
             refresh_token = new_tokens["refresh_token"]
 
-        nickname = getNickname(profileId, access_token, refresh_token)
+        nickname = getNickname(profileId, access_token, refresh_token)[0]
         data = response.json()
         logger.info(f"일정 데이터: {data}")        
         
         today = datetime.now()
-        
+        if day == "" :
+            day = "today"
         if day == "today":
             target_date_start = today.strftime("%Y-%m-%d")
             target_date_end = target_date_start

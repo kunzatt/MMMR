@@ -11,8 +11,11 @@ import logging
 from dotenv import load_dotenv
 import subprocess
 from google.cloud import texttospeech
+import pygame
 
 load_dotenv()
+
+pygame.mixer.init()
 
 # 로깅 설정
 logging.basicConfig(
@@ -37,7 +40,7 @@ WS_HOST = os.getenv("WS_HOST", "0.0.0.0")
 WS_PORT = int(os.getenv("WS_PORT", "8765"))
 
 # TTS 파일 경로
-TTS_DIR = "../tts_files"
+TTS_DIR = "C:\\Users\\SSAFY\\Desktop\\doyun\\project2\\S12P21A703\\EM\\rasp\\tts_files"
 MIMI_TTS_FILES = ["do_not_understand_female.wav", "success_female.wav", "iot_female.wav", "fault_female.wav", "process_fault_female.wav"]
 HAETAE_TTS_FILES = ["do_not_understand_male.wav", "success_male.wav", "iot_male.wav", "fault_male.wav", "process_fault_male.wav"]
 
@@ -117,28 +120,35 @@ async def handle_web_client(websocket):
         await unregister(websocket)
 
 def play_alert_sound():
+    """알림음 재생 함수 - pygame 사용"""
     if os.path.exists(ALERT_SOUND_PATH):
         try:
-            # MP3 파일 확장자 확인
-            if ALERT_SOUND_PATH.endswith('.mp3'):
-                subprocess.call(["mpg123", "-q", ALERT_SOUND_PATH])
-                print("알림음 출력 성공")
-            else:
-                subprocess.call(["aplay", ALERT_SOUND_PATH])
+            print(f"알림음 재생 시작: {ALERT_SOUND_PATH}")
+            pygame.mixer.music.load(ALERT_SOUND_PATH)
+            pygame.mixer.music.play()
+            # 재생이 끝날 때까지 기다림
+            while pygame.mixer.music.get_busy():
+                pygame.time.Clock().tick(10)
+            print("알림음 출력 성공")
         except Exception as e:
             print(f"알림음 재생 중 오류 발생: {e}")
     else:
         print(f"알림음 파일을 찾을 수 없습니다: {ALERT_SOUND_PATH}")
 
+
 def play_tts_file(keyword, tts_type):
-    """호출어에 따른 TTS 파일 재생"""
+    """호출어에 따른 TTS 파일 재생 - pygame 사용"""
     try:
         tts_files = MIMI_TTS_FILES if keyword == "미미" else HAETAE_TTS_FILES
         tts_path = os.path.join(TTS_DIR, tts_files[tts_type])
 
         if os.path.exists(tts_path):
             print(f"TTS 파일 재생 중: {tts_path}")
-            subprocess.call(["aplay", tts_path])
+            pygame.mixer.music.load(tts_path)
+            pygame.mixer.music.play()
+            # 재생이 끝날 때까지 기다림
+            while pygame.mixer.music.get_busy():
+                pygame.time.Clock().tick(10)
             print("TTS 파일 재생 완료")
         else:
             print(f"TTS 파일을 찾을 수 없습니다: {tts_path}")
@@ -146,7 +156,8 @@ def play_tts_file(keyword, tts_type):
         print(f"TTS 파일 재생 중 오류 발생: {e}")
 
 def speak_text(text, gender="female"):
-    """Google TTS로 텍스트를 음성으로 변환하여 출력"""
+    """Google TTS로 텍스트를 음성으로 변환하여 출력 - pygame 사용"""
+    temp_file = None
     try:
         client = texttospeech.TextToSpeechClient()
 
@@ -181,18 +192,36 @@ def speak_text(text, gender="female"):
 
         # 임시 파일로 저장
         temp_file = os.path.join(TTS_DIR, "temp_tts.wav")
+        
+        # TTS_DIR 디렉토리가 존재하는지 확인하고, 없으면 생성
+        os.makedirs(os.path.dirname(temp_file), exist_ok=True)
+        
         with open(temp_file, "wb") as out:
             out.write(response.audio_content)
 
-        # 음성 재생
-        subprocess.call(["aplay", temp_file])
-
-        # 임시 파일 삭제
-        os.remove(temp_file)
+        # pygame으로 음성 재생
+        print(f"pygame으로 TTS 파일 재생 중: {temp_file}")
+        pygame.mixer.music.load(temp_file)
+        pygame.mixer.music.play()
+        # 재생이 끝날 때까지 기다림
+        while pygame.mixer.music.get_busy():
+            pygame.time.Clock().tick(10)
 
         print("TTS 재생 완료")
+        return True
     except Exception as e:
         print(f"TTS 변환 또는 재생 중 오류 발생: {e}")
+        import traceback
+        print(traceback.format_exc())
+        return False
+    finally:
+        # 임시 파일 삭제 (파일이 존재하는 경우에만)
+        if temp_file and os.path.exists(temp_file):
+            try:
+                os.remove(temp_file)
+                print(f"임시 파일 삭제됨: {temp_file}")
+            except Exception as e:
+                print(f"임시 파일 삭제 중 오류 발생: {e}")
 
 # sounddevice의 콜백 함수
 def audio_callback(indata, frames, time, status):
@@ -200,7 +229,7 @@ def audio_callback(indata, frames, time, status):
     if status:
         print(f"상태: {status}")
     # 오디오 데이터를 큐에 추가
-    audio_queue.put_nowait(bytes(indata))
+    audio_queue.put_nowait(indata.tobytes())
 
 async def stream_audio_to_server(sample_rate, frame_length, detected_keyword, repeat):
     """웹소켓을 통해 서버로 오디오 스트리밍"""
@@ -312,9 +341,9 @@ async def stream_audio_to_server(sample_rate, frame_length, detected_keyword, re
 
                     # 뉴스 타입 및 유효한 결과인지 확인
                     if "result" in json_result:
-                        print("결과를 TTS로 읽어줍니다.")
+                        print("결과를 TTS로 읽어줍니다.", repeat)
                         if json_result["result"] == "0":
-                            if repeat < 2:
+                            if repeat < 1:
                                 play_tts_file(detected_keyword, 0)
                                 return False
                             else:
@@ -362,6 +391,7 @@ async def async_wake_word_detection():
 
         # 오디오 설정
         sample_rate = porcupine.sample_rate
+        print(f"샘플레이트: {sample_rate}Hz")
         frame_length = porcupine.frame_length
 
         # 오디오 스트림 설정

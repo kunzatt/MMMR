@@ -282,7 +282,7 @@ async def stream_audio_to_server(audio_stream, sample_rate, frame_length, detect
                     if "result" in json_result:
                         print("결과를 TTS로 읽어줍니다.")
                         if json_result["result"] == "0":
-                            if repeat < 2:
+                            if repeat < 1:
                                 play_tts_file(detected_keyword, 0)
                                 return False
                             else:

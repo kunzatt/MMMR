@@ -24,6 +24,7 @@ class WebSocketServer:
         # 클라이언트 정보 저장 (유형별로 관리)
         self.navigation_clients = set()  # 주행 클라이언트 목록
         self.iot_clients = set()         # IoT 클라이언트 목록
+        self.lamp_clients = set()         # LAMP 클라이언트 목록
         
         # 클라이언트 정보 매핑 (websocket -> info)
         self.client_info = {}  # 클라이언트 정보 저장
@@ -95,6 +96,9 @@ class WebSocketServer:
                     elif client_type == "iot":
                         self.iot_clients.add(websocket)
                         logger.info(f"IoT 클라이언트 등록됨: {client_ip}")
+                    elif client_type == "lamp":
+                        self.lamp_clients.add(websocket)
+                        logger.info(f"LAMP 클라이언트 등록됨: {client_ip}")
                     else:
                         logger.warning(f"알 수 없는 클라이언트 유형: {client_type} (IP: {client_ip})")
                     
@@ -257,6 +261,71 @@ class WebSocketServer:
         
         data_processor.deviceUpdate(device_id_map[device], status, self.access_token, self.refresh_token)
     
+    async def send_to_lamp(self, message):
+        if not self.lamp_clients:
+            logger.warning("연결된 LAMP 클라이언트가 없습니다")
+            return
+        
+        # 메시지 형식 변환
+        transformed_message = None
+        
+        if isinstance(message, dict):
+            # 원본 메시지가 lamp 타입인 경우에만 변환
+            if message.get("type") == "lamp" and "contents" in message:
+                contents = message.get("contents", {})
+                data_str = contents.get("data", "")
+                default_value = contents.get("default", "")
+                
+                # 기본값: 밝기 50, 색상 White
+                brightness = 50
+                color = "White"
+                status = "ON"
+                
+                # data_str에서 색상과 밝기 파싱
+                if data_str:
+                    parts = data_str.split()
+                    if len(parts) >= 1:
+                        # 첫 번째 부분은 색상
+                        color = parts[0]
+                        
+                        # 두 번째 부분이 있으면 밝기
+                        if len(parts) >= 2:
+                            try:
+                                brightness = int(parts[1])
+                                # 밝기 범위 제한 (0-100)
+                                brightness = max(0, min(100, brightness))
+                            except ValueError:
+                                brightness = 50
+                
+                # default에서 ON/OFF 상태 파싱
+                if "ON" in default_value:
+                    status = "ON"
+                elif "OFF" in default_value:
+                    status = "OFF"
+                
+                # 새 형식의 메시지 생성
+                transformed_message = {
+                    "type": "lamp",
+                    "status": status,
+                    "brightness": brightness,
+                    "color": color
+                }
+                
+                logger.info(f"메시지 변환: {message} -> {transformed_message}")
+                message = transformed_message
+        
+        # dict를 JSON 문자열로 변환
+        if isinstance(message, dict):
+            message = json.dumps(message)
+        
+        logger.info(f"{len(self.lamp_clients)}개의 LAMP 클라이언트에 전송: {message}")
+
+        # 비동기로 모든 LAMP 클라이언트에 메시지 전송
+        await asyncio.gather(
+            *[client.send(message) for client in self.lamp_clients],
+            return_exceptions=True
+        )
+        
     def send_navigation_message(self, message):
 
         loop = asyncio.get_event_loop()
@@ -285,6 +354,20 @@ class WebSocketServer:
             logger.info(f"IoT 메시지 전송됨: {message}")
         else:
             logger.info(f"IoT 메시지 전송됨: {json.dumps(message)}")
+    
+    def send_lamp_message(self, message):
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            # 이미 실행 중인 이벤트 루프가 있다면 새 태스크로 추가
+            asyncio.create_task(self.send_to_lamp(message))
+        else:
+            # 이벤트 루프가 실행 중이 아니라면 새로 실행
+            loop.run_until_complete(self.send_to_lamp(message))
+        
+        if isinstance(message, str):
+            logger.info(f"LAMP 메시지 전송됨: {message}")
+        else:
+            logger.info(f"LAMP 메시지 전송됨: {json.dumps(message)}")
         
     
     async def start_server(self):
