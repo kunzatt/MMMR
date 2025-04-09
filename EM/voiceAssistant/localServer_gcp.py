@@ -62,7 +62,7 @@ speech_client = None
 important_phrases = [
     "홈 카메라 거실로 이동해줘", "TV 볼륨 20으로 해줘", "거실 조명 밝기 50으로 해줘",
 
-    "무드등", "무드등 빨강색으로 켜줘", "무드등 보라색으로 켜줘", "무드등 빨강색 밝기 100으로 켜줘",
+    "무드등", "무드등 빨강색으로 켜줘", "무드등 보라색으로 켜줘", "무드등 파랑색으로 켜줘",
 
     # 공통 명령어 단어
     "켜줘", "꺼줘", "켜", "꺼", "알려줘", "보여줘",
@@ -535,14 +535,20 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
 
                 elif type == "homecam":
                     if contents["data"]:
-                        logger.info(f"홈 카메라 이동 요청: {contents['data']}")
-                        clear_queue(message_queue)
-                        iot_ws.send_navigation_message(json_obj)
-                        result = await wait_for_queue_data(message_queue, 10)
-                        if result:
-                            json_obj["result"] = "2"
+                        json_obj["type"] = "Turtlebot"
+                        if iot_ws.navigation_clients:
+                            logger.info(f"홈 카메라 이동 요청: {contents['data']}")
+                            clear_queue(message_queue)
+                            iot_ws.send_navigation_message(json_obj)
+                            result = await wait_for_queue_data(message_queue, 60)
+                            if result:
+                                json_obj["result"] = "2"
+                            else:
+                                json_obj["result"] = "4"
                         else:
                             json_obj["result"] = "4"
+                    else:
+                        json_obj["result"] = "1"
                         
                 elif type == "schedule" and contents["default"] != "OFF":
                     schedule_result, new_tokens = data_processor.getSchedules(

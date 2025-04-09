@@ -119,18 +119,7 @@ class WebSocketServer:
                 # 메시지 처리 (주행 클라이언트에 전송)
                 if websocket in self.navigation_clients:
                     self.message_queue.put(data["data"])
-                    devices_response, new_tokens = data_processor.getDevices(self.access_token, self.refresh_token)
-                    supported_devices = []
-                    device_id_map = {}
-                    if devices_response and "data" in devices_response:
-                        for device_info in devices_response["data"]:
-                            device_name = device_info.get("device")
-                            if device_name:
-                                supported_devices.append(device_name)
-                                device_id_map[device_name] = device_info.get("id")
-                    status = str(data["data"].get("x", "")) + " " + str(data["data"].get("y", ""))
-                    logger.info(f"전달받은 좌표: {status}")
-                    data_processor.deviceUpdate(device_id_map["turtleBot"], status, self.access_token, self.refresh_token)
+                    logger.info(f"주행 클라이언트로부터 메시지 수신: {data['data']}")
             return message
             
         except json.JSONDecodeError:
@@ -151,7 +140,7 @@ class WebSocketServer:
             logger.warning("연결된 주행 클라이언트가 없습니다")
             return
         
-        if isinstance(message, dict) and message.get("type") == "homecam" and "contents" in message:
+        if isinstance(message, dict) and message.get("type") == "Turtlebot" and "contents" in message:
             transformed_message = {
                 "type": "message",
                 "client_type": "navigation",
