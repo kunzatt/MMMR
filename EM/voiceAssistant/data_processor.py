@@ -466,6 +466,7 @@ def deviceUpdate(deviceId, turned, access_token, refresh_token=None):
 
 def getGreeting(profileId, access_token, refresh_token=None):
     try:
+        logger.info(f"프로필 ID: {profileId}")
         nickname, new_tokens = getNickname(profileId, access_token, refresh_token)
         if new_tokens:
             access_token = new_tokens["access_token"]

@@ -277,7 +277,7 @@ class WebSocketServer:
                 default_value = contents.get("default", "")
                 
                 # 기본값: 밝기 50, 색상 White
-                brightness = 50
+                brightness = 100
                 color = "White"
                 status = "ON"
                 
@@ -307,7 +307,7 @@ class WebSocketServer:
                 transformed_message = {
                     "type": "lamp",
                     "status": status,
-                    "brightness": brightness,
+                    "brightness": 100,
                     "color": color
                 }
                 

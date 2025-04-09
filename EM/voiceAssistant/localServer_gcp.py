@@ -62,6 +62,8 @@ speech_client = None
 important_phrases = [
     "홈 카메라 거실로 이동해줘", "TV 볼륨 20으로 해줘", "거실 조명 밝기 50으로 해줘",
 
+    "무드등", "무드등 빨강색으로 켜줘", "무드등 보라색으로 켜줘", "무드등 빨강색 밝기 100으로 켜줘",
+
     # 공통 명령어 단어
     "켜줘", "꺼줘", "켜", "꺼", "알려줘", "보여줘",
     
@@ -413,6 +415,8 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
         
         result = response.choices[0].message.content.strip()
         json_result = json.loads(result)
+        json_result["access_token"] = app.state.access_token
+        json_result["refresh_token"] = app.state.refresh_token
         result = json.dumps(json_result)
         process_time = time.time() - start_time
         
@@ -435,6 +439,8 @@ contents.data는 필수 항목이 아니며, 필요하지 않은 경우 빈 문�
                 "default": "OFF",
                 "data": ""
             },
+            "access_token": app.state.access_token,
+            "refresh_token": app.state.refresh_token,
             "result": "-1"
         })
     
@@ -482,6 +488,10 @@ async def wait_for_queue_data(message_queue, timeout=10):
 async def process_and_send_json_result(websocket: WebSocket, transcription: str = None, keyword: str = "미미", access_token: str = None, refresh_token: str = None):
     async with process_semaphore:
         new_tokens = None
+        profileId, new_tokens = data_processor.getProfileId(keyword, access_token, refresh_token)
+        if new_tokens:
+            app.state.access_token = new_tokens["access_token"]
+            app.state.refresh_token = new_tokens["refresh_token"]
         if transcription:
             # STT 결과를 JSON으로 변환
             json_result = await text_to_json(transcription)
@@ -494,7 +504,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
             if access_token:
                 if type == "greet":
                     greet_result, new_tokens = data_processor.getGreeting(
-                        keyword,
+                        profileId,
                         access_token, 
                         refresh_token
                     )
@@ -536,7 +546,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                         
                 elif type == "schedule" and contents["default"] != "OFF":
                     schedule_result, new_tokens = data_processor.getSchedules(
-                        keyword,
+                        profileId,
                         access_token, 
                         refresh_token,
                         contents["data"]
@@ -560,7 +570,7 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
 
                 elif type == "transportation" and contents["default"] != "OFF":
                     transportation_result, new_tokens = data_processor.getTransportation(
-                        keyword,
+                        profileId,
                         access_token, 
                         refresh_token,
                         contents["data"]
@@ -575,7 +585,9 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                     json_obj["result"] = "0"
                 else:
                     json_obj["result"] = "1"
-            
+            json_obj["profileId"] = profileId
+            json_obj["access_token"] = app.state.access_token
+            json_obj["refresh_token"] = app.state.refresh_token
             json_result = json.dumps(json_obj)
             logger.info(f"JSON 변환 결과: {json_result}")
         else:
@@ -586,7 +598,10 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                     "default": "OFF",
                     "data": ""
                 },
-                "result": "0"
+                "result": "0",
+                "profileId": profileId,
+                "access_token": app.state.access_token,
+                "refresh_token": app.state.refresh_token
             })
             reason = "빈 STT 결과" if transcription is None else "오디오가 너무 짧음"
             
@@ -684,7 +699,9 @@ async def websocket_endpoint(websocket: WebSocket):
                     "default": "OFF",
                     "data": ""
                 },
-                "result" : "-1"
+                "result" : "-1",
+                "access_token": app.state.access_token,
+                "refresh_token": app.state.refresh_token,
             })
             await websocket.send_text(default_json)
         
