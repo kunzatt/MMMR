@@ -14,7 +14,7 @@
 
 ### 개요
 
-MMMR는 일상생활에 유용한 정보를 제공하는 스마트미러입니다. 
+MMMR는 일상생활에 유용한 정보를 제공하는 스마트미러입니다.
 <br>
 시간, 날씨, 일정 뿐만 아니라 인공지능 비서, 스마트홈 제어, 자율주행 홈캠 모니터링 등 다양한 기능을 갖춘 올인원 스마트 디바이스입니다.
 
@@ -110,12 +110,12 @@ MMMR는 일상생활에 유용한 정보를 제공하는 스마트미러입니�
 ### 자율 주행 홈캠
 - **위치 추정 시스템**: odometry 로봇 속도와 imu 센서 데이터를 활용한 정확한 위치 추정
 - **목적지 경로 계획**:
-    - 웹소켓을 통해 스마트 미러로부터 목적지 정보 수신
-    - A * 알고리즘을 활용한 최단 경로(global_path) 연산
-    - 맨해튼 거리 함수 기반 휴리스틱 알고리즘 적용
+  - 웹소켓을 통해 스마트 미러로부터 목적지 정보 수신
+  - A * 알고리즘을 활용한 최단 경로(global_path) 연산
+  - 맨해튼 거리 함수 기반 휴리스틱 알고리즘 적용
 - **이동 및 관찰**:
-    - global_path를 local_path로 전환 후 경로 추종
-    - 목적지 도착 후 최적 관찰 방향으로 자동 정렬
+  - global_path를 local_path로 전환 후 경로 추종
+  - 목적지 도착 후 최적 관찰 방향으로 자동 정렬
 
 ### 홈캠 스트리밍
 - ROS 기반 시뮬레이터 영상 수신 시스템
@@ -168,6 +168,91 @@ Backend 폴더 내에 env 파일을 통해 다음 항목을 구성할 수 있습
 
 ### 데이터베이스 설치
 MySQL에서 /assets에 있는 SQL 스크립트를 실행합니다.
+
+### ROS 파일 빌드 및 설정
+x86 Native Tools Command Prompt for VS 2022(또는 2019)에서 빌드를 진행합니다.
+
+```bash
+# 1. ROS2 설치 위치에서 setup 파일 실행
+call C:\dev\ros2_eloquent\setup.bat
+
+# 2. autonomous 폴더 위치로 이동
+cd C:\Users\SSAFY\Desktop\S12P21A703\EM\autonomous
+
+# 3. 빌드 실행
+colcon build
+```
+
+### Cloudflare 설정 가이드
+1. 클라우드플레어 설치
+2. 도메인 구매
+3. 대시보드에서 도메인 등록 및 cloudflare 네임서버로 변경
+4. 클라우드플레어 터널 로그인
+   ```bash
+   ./cloudflared tunnel login
+   ```
+   나타나는 브라우저에서 원하는 도메인 선택 후 인증
+5. 터널 생성
+   ```bash
+   cloudflared tunnel create <TUNNEL-NAME>
+   ```
+   터널 아이디의 json 파일이 생성됨
+6. 구성 파일 생성 (~/.cloudflared/config.yml)
+   ```yaml
+   tunnel: <TUNNEL-ID>
+   credentials-file: 위치/터널아이디.json
+   ingress:
+     - hostname: <your-domain.com>
+       service: http://localhost:5000
+     - service: http_status:404
+   ```
+7. DNS 자동 연결
+   ```bash
+   ./cloudflared tunnel route dns <TUNNEL-NAME> <your-domain.com>
+   ```
+8. Flask 서버 실행
+   ```bash
+   ros2 run sub2 streaming
+   ```
+9. 터널 실행
+   ```bash
+   ./cloudflared.exe tunnel run <TUNNEL-NAME>
+   ```
+
+### 자율 주행 및 홈캠 기능 실행 가이드
+빌드 완료 후 다음 단계로 실행합니다:
+
+1. SSAFY 브릿지 런치파일 실행
+   ```bash
+   cd C:\Users\SSAFY\Desktop\S12P21A703\EM\autonomous
+   .\bridgelaunch.bat
+   ```
+
+2. 자율 주행 런치파일 실행
+   ```bash
+   cd C:\Users\SSAFY\Desktop\S12P21A703\EM\autonomous
+   .\auto_drive.bat
+   ```
+
+3. 스마트 미러 연결 클라이언트 파일 실행
+   ```bash
+   cd C:\Users\SSAFY\Desktop\S12P21A703\EM\autonomous
+   .\ros2_local_set.bat
+   ros2 run sub2 nav_command_ws
+   ```
+
+4. 홈캠 영상 스트리밍 파일 실행
+   ```bash
+   cd C:\Users\SSAFY\Desktop\S12P21A703\EM\autonomous
+   .\ros2_local_set.bat
+   ros2 run sub2 streaming
+   ```
+
+5. Cloudflare 터널 실행
+   ```bash
+   # cloudflare 설치 위치에서 실행
+   .\cloudflared tunnel run <TUNNEL-NAME>
+   ```
 
 ## 🤝 기여하기
 
