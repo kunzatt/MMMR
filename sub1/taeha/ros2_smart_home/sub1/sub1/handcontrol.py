@@ -56,28 +56,23 @@ class Handcontrol(Node):
         '''
         로직 3. Hand Control Status 출력
         '''
-        print("can use hand: {0}, can put: {1}, can lift: {2}".format(self.turtlebot_status_msg.can_use_hand, self.turtlebot_status_msg.can_put, self.turtlebot_status_msg.can_lift))
 
     def hand_control_preview(self):
         '''
         로직 4. Hand Control - Preview
         '''
-        self.hand_control_msg.control_mode = 1
-        self.hand_control.publish(self.hand_control_msg)
 
     def hand_control_pick_up(self):
         '''
         로직 5. Hand Control - Pick up        
         '''
-        self.hand_control_msg.control_mode = 2
-        self.hand_control.publish(self.hand_control_msg)
+        
         
     def hand_control_put_down(self):        
         '''
         로직 6. Hand Control - Put down
         '''
-        self.hand_control_msg.control_mode = 3
-        self.hand_control.publish(self.hand_control_msg)
+
 
     def turtlebot_status_cb(self,msg):
         self.is_turtlebot_status=True
