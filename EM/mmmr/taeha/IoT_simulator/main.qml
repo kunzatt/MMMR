@@ -417,8 +417,8 @@ ApplicationWindow {
     }
 
     function controlDevices(devName, devData) {
-        socket_msg_txt.text = devName + ", " + devData["turned"] + ", " + devData["value"]
-        fadeInOutAnim.start();
+        socket_msg_txt.text = devName + " " + (devData["turned"] ? "ON" : "OFF")
+
         console.log(devData)
         let baseX = 0, baseY = 0;
 
@@ -428,7 +428,11 @@ ApplicationWindow {
             bright_livingLight.text = "💡 " + devData["value"];
 
             if(!devData["turned"]) livingLight_change.to = 1
-            else livingLight_change.to = (100 - devData["value"]) / 100;
+            else {
+                livingLight_change.to = (100 - devData["value"]) / 100;
+                socket_msg_txt.text += (", Brightness " + devData["value"])
+            }
+
             livingLight_change.start()
             living_bg_on.start()
         }
@@ -438,7 +442,11 @@ ApplicationWindow {
             bright_kitchenLight.text = "💡 " + devData["value"];
 
             if(!devData["turned"]) kitchenLight_change.to = 1
-            else kitchenLight_change.to = (100 - devData["value"]) / 100;
+            else {
+                kitchenLight_change.to = (100 - devData["value"]) / 100;
+                socket_msg_txt.text += (", Brightness " + devData["value"])
+            }
+
             kitchenLight_change.start()
             kitchen_bg_on.start()
         }
@@ -448,13 +456,20 @@ ApplicationWindow {
             bright_entranceLight.text = "💡 " + devData["value"];
 
             if(!devData["turned"]) entranceLight_change.to = 1
-            else entranceLight_change.to = (100 - devData["value"]) / 100;
+            else {
+                entranceLight_change.to = (100 - devData["value"]) / 100;
+                socket_msg_txt.text += (", Brightness " + devData["value"])
+            }
+
             entranceLight_change.start()
             entrance_bg_on.start()
         }
         else if (devName === "airConditioner") {
             sw_aircon.checked = devData["turned"]
-            if(devData["turned"]) aircon_on.start()
+            if(devData["turned"]) {
+                aircon_on.start()
+                socket_msg_txt.text += (", Temp " + devData["value"] + "℃")
+            }
             else aircon_off.start()
             aircon_bg_on.start()
 
@@ -475,7 +490,10 @@ ApplicationWindow {
         }
         else if (devName === "TV") {
             sw_tv.checked = devData["turned"]
-            if(devData["turned"]) tv_on.start()
+            if(devData["turned"]) {
+                tv_on.start()
+                socket_msg_txt.text += (", Volume " + devData["value"])
+            }
             else tv_off.start()
             tv_bg_on.start()
 
@@ -497,6 +515,8 @@ ApplicationWindow {
         else {
             socket_msg_txt.text = "Error: Can't find " + devName
         }
+
+        fadeInOutAnim.start();
 
         if(baseX != 0 && baseY != 0) {
             highlight_circle.opacity = 1
@@ -1351,7 +1371,7 @@ ApplicationWindow {
                     text: qsTr("TV")
                     checked: false
                     onClicked: {
-                        let msg = JSON.stringify({ type: "send", device: "TV", data: {"turned": sw_tv.checked, "value": 0} })
+                        let msg = JSON.stringify({ type: "send", device: "TV", data: {"turned": sw_tv.checked, "value": 50} })
                         webSocket.sendTextMessage(msg)
                     }
 
@@ -1393,7 +1413,7 @@ ApplicationWindow {
                     text: qsTr("Air Conditioner")
                     checked: false
                     onClicked: {
-                        let msg = JSON.stringify({ type: "send", device: "airConditioner", data: {"turned": sw_aircon.checked, "value": 0} })
+                        let msg = JSON.stringify({ type: "send", device: "airConditioner", data: {"turned": sw_aircon.checked, "value": 24} })
                         webSocket.sendTextMessage(msg)
                     }
 
