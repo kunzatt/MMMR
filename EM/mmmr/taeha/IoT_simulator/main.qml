@@ -382,8 +382,6 @@ ApplicationWindow {
     /* WebSocket connection */
     WebSocket {
         id: webSocket
-        //url: "ws://70.12.246.31:12345"
-        //url: "ws://172.20.10.2:12345"
         url: "ws://127.0.0.1:12345"
         active: false
 
@@ -402,17 +400,14 @@ ApplicationWindow {
             var json = JSON.parse(message)
             if (json.type === "ack") {
                 console.log("Received: " + json.message);
-                status_message.text = "WebSocket successfully connected";
             }
             else if(json.type === "control") {
-                status_message.text = "Received: " + message;
                 controlDevices(json.device, json.data)
             }
         }
     }
 
     Component.onCompleted: {
-        status_message.text = "Attempting to connect WebSocket...";
         webSocket.active = true;  // 프로그램 실행 시 자동 연결
     }
 
@@ -1574,23 +1569,23 @@ ApplicationWindow {
         }
     }
 
-    Rectangle {
-        color: "#555"
-        width: status_message.implicitWidth + 10
-        height: status_message.implicitHeight + 10
-        x: 0
-        y: main_window.height - 30
+    // Rectangle {
+    //     color: "#555"
+    //     width: status_message.implicitWidth + 10
+    //     height: status_message.implicitHeight + 10
+    //     x: 0
+    //     y: main_window.height - 30
 
-        TextEdit {
-            id: status_message
-            text: "status"
-            color: main_text.color
-            font.family: main_text.font.family
-            font.pointSize: 12
-            anchors.centerIn: parent
-            readOnly: true
-        }
-    }
+    //     TextEdit {
+    //         id: status_message
+    //         text: "status"
+    //         color: main_text.color
+    //         font.family: main_text.font.family
+    //         font.pointSize: 12
+    //         anchors.centerIn: parent
+    //         readOnly: true
+    //     }
+    // }
 
     SequentialAnimation {
         id: fadeInOutAnim
