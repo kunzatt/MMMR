@@ -277,6 +277,10 @@ export default function AddTrans({ onClose }: AddTransProps) {
                 routeId: parsed.routeId,
                 stationId: parsed.stationId
             };
+
+            if (searchType == "station") {
+                payload.number = selectedNumber?.number?.toString() || "";
+            }
             try {
                 const response = await fetch(API_ROUTES.trans.add, {
                     method: "POST",
