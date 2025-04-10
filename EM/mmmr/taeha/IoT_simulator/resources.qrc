@@ -27,5 +27,9 @@
         <file>images/smarthome.png</file>
         <file>images/TVLight.png</file>
         <file>devices/Curtain/Curtain.qml</file>
+        <file>images/entranceLight.png</file>
+        <file>images/kitchenLight.png</file>
+        <file>images/livingLight.png</file>
+        <file>images/smarthomeLight.png</file>
     </qresource>
 </RCC>

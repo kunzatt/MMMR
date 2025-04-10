@@ -383,6 +383,7 @@ ApplicationWindow {
     WebSocket {
         id: webSocket
         //url: "ws://70.12.246.31:12345"
+        //url: "ws://172.20.10.2:12345"
         url: "ws://127.0.0.1:12345"
         active: false
 
@@ -426,8 +427,8 @@ ApplicationWindow {
             bright_livingLight.visible = devData["turned"];
             bright_livingLight.text = "💡 " + devData["value"];
 
-            if(!devData["turned"]) livingLight_change.to = 0
-            else livingLight_change.to = devData["value"] / 100;
+            if(!devData["turned"]) livingLight_change.to = 1
+            else livingLight_change.to = (100 - devData["value"]) / 100;
             livingLight_change.start()
             living_bg_on.start()
         }
@@ -436,8 +437,8 @@ ApplicationWindow {
             bright_kitchenLight.visible = devData["turned"];
             bright_kitchenLight.text = "💡 " + devData["value"];
 
-            if(!devData["turned"]) kitchenLight_change.to = 0
-            else kitchenLight_change.to = devData["value"] / 100;
+            if(!devData["turned"]) kitchenLight_change.to = 1
+            else kitchenLight_change.to = (100 - devData["value"]) / 100;
             kitchenLight_change.start()
             kitchen_bg_on.start()
         }
@@ -446,8 +447,8 @@ ApplicationWindow {
             bright_entranceLight.visible = devData["turned"];
             bright_entranceLight.text = "💡 " + devData["value"];
 
-            if(!devData["turned"]) entranceLight_change.to = 0
-            else entranceLight_change.to = devData["value"] / 100;
+            if(!devData["turned"]) entranceLight_change.to = 1
+            else entranceLight_change.to = (100 - devData["value"]) / 100;
             entranceLight_change.start()
             entrance_bg_on.start()
         }
@@ -677,41 +678,34 @@ ApplicationWindow {
                     from: 1
                     to: 0
                     duration: 300
-                } 
+                }
 
-                Shape {
+                Image {
+                    id: homeLight
+                    fillMode: Image.PreserveAspectFit
+                    width: parent.width
+                    source: "qrc:/images/smarthomeLight.png"
+                }
+
+                Image {
                     id: livingLight
-                    width: 300
-                    height: 300
-                    x: 230
-                    y: -30
-                    opacity: 0.0
+                    fillMode: Image.PreserveAspectFit
+                    width: parent.width
+                    source: "qrc:/images/livingLight.png"
+                }
 
-                    ShapePath {
-                        strokeWidth: 2
-                        strokeColor: "transparent"
-                        fillGradient: RadialGradient {
-                            centerX: 50; centerY: 150
-                            centerRadius: 150
-                            focalX: centerX; focalY: centerY
-                            GradientStop { position: 0; color: "white" }
-                            GradientStop { position: 0.8; color: "transparent" }
-                        }
+                Image {
+                    id: kitchenLight
+                    fillMode: Image.PreserveAspectFit
+                    width: parent.width
+                    source: "qrc:/images/kitchenLight.png"
+                }
 
-                        startX: 50; startY: 0
-                        PathArc {
-                            x: 50
-                            y: 300
-                            radiusX: 150
-                            radiusY: 150
-                        }
-                        PathArc {
-                            x: 50
-                            y: 0
-                            radiusX: 150
-                            radiusY: 150
-                        }
-                    }
+                Image {
+                    id: entranceLight
+                    fillMode: Image.PreserveAspectFit
+                    width: parent.width
+                    source: "qrc:/images/entranceLight.png"
                 }
 
                 NumberAnimation {
@@ -721,81 +715,11 @@ ApplicationWindow {
                     duration: 500
                 }
 
-                Shape {
-                    id: kitchenLight
-                    width: 300
-                    height: 300
-                    x: 280
-                    y: 270
-                    opacity: 0.0
-
-                    ShapePath {
-                        strokeWidth: 2
-                        strokeColor: "transparent"
-                        fillGradient: RadialGradient {
-                            centerX: 50; centerY: 100
-                            centerRadius: 120
-                            focalX: centerX; focalY: centerY
-                            GradientStop { position: 0; color: "white" }
-                            GradientStop { position: 0.8; color: "transparent" }
-                        }
-
-                        startX: 50; startY: 0
-                        PathArc {
-                            x: 50
-                            y: 200
-                            radiusX: 100
-                            radiusY: 100
-                        }
-                        PathArc {
-                            x: 50
-                            y: 0
-                            radiusX: 100
-                            radiusY: 100
-                        }
-                    }
-                }
-
                 NumberAnimation {
                     id: kitchenLight_change
                     target: kitchenLight
                     property: "opacity"
                     duration: 500
-                }
-
-                Shape {
-                    id: entranceLight
-                    width: 300
-                    height: 300
-                    x: 420
-                    y: 250
-                    opacity: 0.0
-
-                    ShapePath {
-                        strokeWidth: 2
-                        strokeColor: "transparent"
-                        fillGradient: RadialGradient {
-                            centerX: 50; centerY: 100
-                            centerRadius: 70
-                            focalX: centerX; focalY: centerY
-                            GradientStop { position: 0; color: "white" }
-                            GradientStop { position: 0.8; color: "transparent" }
-                        }
-
-                        startX: 50; startY: 0
-                        PathArc {
-                            x: 50
-                            y: 200
-                            radiusX: 100
-                            radiusY: 100
-                        }
-                        PathArc {
-                            x: 50
-                            y: 0
-                            radiusX: 100
-                            radiusY: 100
-                        }
-                    }
                 }
 
                 NumberAnimation {
@@ -1637,13 +1561,14 @@ ApplicationWindow {
         x: 0
         y: main_window.height - 30
 
-        Text {
+        TextEdit {
             id: status_message
             text: "status"
             color: main_text.color
             font.family: main_text.font.family
             font.pointSize: 12
             anchors.centerIn: parent
+            readOnly: true
         }
     }
 
