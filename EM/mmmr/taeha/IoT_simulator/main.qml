@@ -1564,7 +1564,7 @@ ApplicationWindow {
 
 
                 Button {
-                    text: "Ok"
+                    text: "send"
                     Layout.alignment: Qt.AlignRight
                     Layout.preferredWidth: 80
                     Layout.preferredHeight: 30
