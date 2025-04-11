@@ -1,0 +1,35 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/airconditioner.png</file>
+        <file>images/airpurifier.png</file>
+        <file>images/curtain.png</file>
+        <file>images/livingroomLight.png</file>
+        <file>images/map.png</file>
+        <file>images/TV.png</file>
+        <file>devices/RoomLight/RoomLight.qml</file>
+        <file>devices/RoomLight/qmldir</file>
+        <file>devices/TV/TV.qml</file>
+        <file>devices/TV/qmldir</file>
+        <file>devices/AirConditioner/AirConditioner.qml</file>
+        <file>devices/AirConditioner/qmldir</file>
+        <file>devices/AirPurifier/AirPurifier.qml</file>
+        <file>devices/AirPurifier/qmldir</file>
+        <file>devices/Curtain/qmldir</file>
+        <file>images/map_white.png</file>
+        <file>images/img_airConditioner.png</file>
+        <file>images/img_airConditionerPower.png</file>
+        <file>images/img_airPurifier.png</file>
+        <file>images/img_airPurifierPower.png</file>
+        <file>images/img_TV.png</file>
+        <file>images/img_TVLight.png</file>
+        <file>images/AirConWind.png</file>
+        <file>images/CurtainLight.png</file>
+        <file>images/smarthome.png</file>
+        <file>images/TVLight.png</file>
+        <file>devices/Curtain/Curtain.qml</file>
+        <file>images/entranceLight.png</file>
+        <file>images/kitchenLight.png</file>
+        <file>images/livingLight.png</file>
+        <file>images/smarthomeLight.png</file>
+    </qresource>
+</RCC>
