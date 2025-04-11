@@ -382,7 +382,10 @@ ApplicationWindow {
     /* WebSocket connection */
     WebSocket {
         id: webSocket
+        //url: "ws://70.12.246.31:12345"
+        //url: "ws://172.20.10.2:12345"
         url: "ws://127.0.0.1:12345"
+        //url: "ws://172.20.10.6:12345"
         active: false
 
         onStatusChanged: {
@@ -559,17 +562,6 @@ ApplicationWindow {
                     imgId.y: 29
                 }
 
-                Image {
-                    id: livingTVLight
-                    fillMode: Image.PreserveAspectFit
-                    width: livingTV.imgId.width
-                    height: livingTV.imgId.height
-                    x: livingTV.imgId.x
-                    y: livingTV.imgId.y
-                    source: "qrc:/images/img_TVLight.png"
-                    opacity: 0
-                }
-
                 OpacityAnimator {
                     id: tv_on
                     target: livingTVLight
@@ -668,17 +660,6 @@ ApplicationWindow {
                     visible: true
                 }
 
-                Image {
-                    id: curtainLight
-                    fillMode: Image.PreserveAspectFit
-                    width: livingCurtain.imgId.width
-                    height: livingCurtain.imgId.height
-                    x: livingCurtain.imgId.x - 10
-                    y: livingCurtain.imgId.y + 52
-                    source: "qrc:/images/CurtainLight.png"
-                    opacity: 0
-                }
-
                 OpacityAnimator {
                     id: curtain_on
                     target: curtainLight
@@ -742,6 +723,28 @@ ApplicationWindow {
                     target: entranceLight
                     property: "opacity"
                     duration: 500
+                }
+
+                Image {
+                    id: livingTVLight
+                    fillMode: Image.PreserveAspectFit
+                    width: livingTV.imgId.width
+                    height: livingTV.imgId.height
+                    x: livingTV.imgId.x
+                    y: livingTV.imgId.y
+                    source: "qrc:/images/img_TVLight.png"
+                    opacity: 0
+                }
+
+                Image {
+                    id: curtainLight
+                    fillMode: Image.PreserveAspectFit
+                    width: livingCurtain.imgId.width
+                    height: livingCurtain.imgId.height
+                    x: livingCurtain.imgId.x - 10
+                    y: livingCurtain.imgId.y + 52
+                    source: "qrc:/images/CurtainLight.png"
+                    opacity: 0
                 }
 
                 NumberAnimation {
