@@ -176,7 +176,7 @@ class WebSocketServer:
             device = ""
             status = ""
             turned = False
-            value = 0
+            value = 100
             
             # contents.data 파싱
             data = message.get("contents", {}).get("data", "")
@@ -203,12 +203,13 @@ class WebSocketServer:
                 # ON/OFF 상태 추출
                 if "ON" in data:
                     status = "ON"
+                    turned = True
                 elif "OFF" in data:
                     status = "OFF"
+                    turned = False
                 
                 temp_match = pattern.search(data)
                 if temp_match:
-                    turned = True
                     value = int(temp_match.group(1))
             
             # 명령이 없는 경우 contents.default에서 값 가져오기
