@@ -87,7 +87,8 @@ MMMR는 일상생활에 유용한 정보를 제공하는 스마트미러입니�
 [![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=Redis&logoColor=white)](/)
 [![JWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=JSON%20Web%20Tokens&logoColor=white)](/)
 [![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?style=flat-square&logo=Spring%20Security&logoColor=white)](/)
-
+[![Spring Batch](https://img.shields.io/badge/Spring%20Batch-6DB33F?style=flat-square&logo=Spring&logoColor=white)](/)
+[![QueryDSL](https://img.shields.io/badge/QueryDSL-007396?style=flat-square&logo=Java&logoColor=white)](/)
 ### ⚙️ DevOps
 [![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=Git&logoColor=white)](/)
 [![GitLab](https://img.shields.io/badge/GitLab-FC6D26?style=flat-square&logo=GitLab&logoColor=white)](/)
