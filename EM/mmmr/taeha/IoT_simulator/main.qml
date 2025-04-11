@@ -382,10 +382,7 @@ ApplicationWindow {
     /* WebSocket connection */
     WebSocket {
         id: webSocket
-        //url: "ws://70.12.246.31:12345"
-        //url: "ws://172.20.10.2:12345"
         url: "ws://127.0.0.1:12345"
-        //url: "ws://172.20.10.6:12345"
         active: false
 
         onStatusChanged: {
