@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\SSAFY\S12P21A703\EM\mmmr\taeha\simulator\.qtcreator\Python_3_7_64_bit_venv
+set VIRTUAL_ENV=C:\Users\SSAFY\S12P21A703\EM\mmmr\taeha\IoT_simulator2\.qtcreator\Python_3_7_64_bit_venv
 
 if not defined PROMPT set PROMPT=$P$G
 

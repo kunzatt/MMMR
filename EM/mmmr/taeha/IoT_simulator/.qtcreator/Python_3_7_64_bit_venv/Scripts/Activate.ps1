@@ -27,7 +27,7 @@ function global:deactivate ([switch]$NonDestructive) {
 
 deactivate -nondestructive
 
-$env:VIRTUAL_ENV="C:\Users\SSAFY\S12P21A703\EM\mmmr\taeha\simulator\.qtcreator\Python_3_7_64_bit_venv"
+$env:VIRTUAL_ENV="C:\Users\SSAFY\S12P21A703\EM\mmmr\taeha\IoT_simulator2\.qtcreator\Python_3_7_64_bit_venv"
 
 if (! $env:VIRTUAL_ENV_DISABLE_PROMPT) {
     # Set the prompt to include the env name
