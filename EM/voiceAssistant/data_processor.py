@@ -14,6 +14,9 @@ password = os.getenv("PASSWORD")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 openai.api_key = OPENAI_API_KEY
 
+profile_id_map = {}
+nickname_map = {}
+
 
 def login():
     login_data = {
@@ -125,6 +128,10 @@ def make_authenticated_request(url, method="GET", headers=None, data=None, param
         return None
     
 def getProfileId(callSign, access_token, refresh_token=None):
+    global profile_id_map
+    if callSign in profile_id_map:
+        logger.info(f"캐시된 프로필 ID 사용: {profile_id_map[callSign]}")
+        return profile_id_map[callSign], None
     try:
         result = make_authenticated_request(
             server_url+"profiles/callsigns/" + callSign, 
@@ -141,16 +148,22 @@ def getProfileId(callSign, access_token, refresh_token=None):
         data = response.json()
         logger.info(f"프로필 데이터: {data}")
         
+        profile_id_map[callSign] = data["data"]
+        logger.info(f"프로필 ID 캐시: {profile_id_map[callSign]}")
         if new_tokens:
-            return data, new_tokens
+            return data["data"], new_tokens
         else:
-            return data, None
+            return data["data"], None
             
     except Exception as e:
         logger.error(f"프로필 처리 중 오류: {e}")
         return None, None
 
-def getProfiles(access_token, refresh_token=None):
+def getNickname(profileId, access_token, refresh_token=None):
+    global nickname_map
+    if profileId in nickname_map:
+        logger.info(f"캐시된 닉네임 사용: {nickname_map[profileId]}")
+        return nickname_map[profileId], None
     try:
         result = make_authenticated_request(
             server_url+"profiles", 
@@ -160,17 +173,26 @@ def getProfiles(access_token, refresh_token=None):
         
         if not result:
             return None, None
-            
+
         response = result["response"]
         new_tokens = result["new_tokens"]
-        
-        data = response.json()
-        logger.info(f"프로필 데이터: {data}")
-        
+
+        profiles = response.json()
+        logger.info(f"프로필 데이터: {profiles}")
+
+        nickname = None
+        for profile in profiles["data"]:
+            if profile["id"] == profileId:
+                nickname = profile["nickname"]
+                break
+        logger.info(f"사용자 닉네임: {nickname}")
+        nickname_map[profileId] = nickname
+        logger.info(f"닉네임 캐시: {nickname_map}")
+
         if new_tokens:
-            return data, new_tokens
+            return nickname, new_tokens
         else:
-            return data, None
+            return nickname, None
         
     except Exception as e:
         logger.error(f"프로필 처리 중 오류: {e}")
@@ -273,16 +295,8 @@ def getNews(id, access_token, refresh_token=None):
         logger.error(f"뉴스 처리 중 오류: {e}")
         return None, None
     
-def getSchedules(callsign, access_token, refresh_token=None, day="today"):
+def getSchedules(profileId, access_token, refresh_token=None, day="today"):
     try:
-        logger.info(f"일정 요청: {callsign}, {day}")
-        profileId_data, new_tokens = getProfileId(callsign, access_token, refresh_token)
-        profileId = profileId_data["data"]
-        logger.info(f"프로필 ID: {profileId}")
-        if new_tokens:
-            access_token = new_tokens["access_token"]
-            refresh_token = new_tokens["refresh_token"]
-
         params = {
             "profileId": profileId
         }
@@ -293,20 +307,23 @@ def getSchedules(callsign, access_token, refresh_token=None, day="today"):
             refresh_token=refresh_token
         )
         
+        
         if not result:
             return None, None
             
         response = result["response"]
-        if not new_tokens:
-            new_tokens = result["new_tokens"]
-        
+        new_tokens = result["new_tokens"]
+        if new_tokens:
+            access_token = new_tokens["access_token"]
+            refresh_token = new_tokens["refresh_token"]
+
+        nickname = getNickname(profileId, access_token, refresh_token)[0]
         data = response.json()
-        logger.info(f"일정 데이터: {data}")
-        
-        
+        logger.info(f"일정 데이터: {data}")        
         
         today = datetime.now()
-        
+        if day == "" :
+            day = "today"
         if day == "today":
             target_date_start = today.strftime("%Y-%m-%d")
             target_date_end = target_date_start
@@ -347,7 +364,7 @@ def getSchedules(callsign, access_token, refresh_token=None, day="today"):
         
         if not filtered_schedules:
             logger.info(f"{day}에 해당하는 일정이 없습니다.")
-            return "일정이 없습니다.", new_tokens
+            return f"{nickname}님 일정이 없습니다.", new_tokens
         
         # 필터링된 일정을 요약
         openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -367,7 +384,7 @@ def getSchedules(callsign, access_token, refresh_token=None, day="today"):
         payload = {
             "model": "gpt-3.5-turbo",
             "messages": [
-                {"role": "system", "content": f"{day}의 일정을 2-3줄로 간결하게 요약해주세요."},
+                {"role": "system", "content": f"{nickname}님의 {day}의 일정을 2-3줄로 간결하게 요약해주세요."},
                 {"role": "user", "content": schedules_text}
             ],
             "temperature": 0.7,
@@ -430,7 +447,7 @@ def deviceUpdate(deviceId, turned, access_token, refresh_token=None):
         )
         
         if not result:
-            return None
+            return False
             
         response = result["response"]
         new_tokens = result["new_tokens"]
@@ -439,34 +456,23 @@ def deviceUpdate(deviceId, turned, access_token, refresh_token=None):
         logger.info(f"장치 업데이트 데이터: {data}")
         
         if new_tokens:
-            return new_tokens
+            return True, new_tokens
         else:
-            return None
+            return True, None
         
     except Exception as e:
         logger.error(f"장치 업데이트 중 오류: {e}")
-        return None, None
+        return False, None
 
-def getGreeting(callsign, access_token, refresh_token=None):
+def getGreeting(profileId, access_token, refresh_token=None):
     try:
-        profileId_data, new_tokens = getProfileId(callsign, access_token, refresh_token)
-        profileId = profileId_data["data"]
         logger.info(f"프로필 ID: {profileId}")
+        nickname, new_tokens = getNickname(profileId, access_token, refresh_token)
         if new_tokens:
             access_token = new_tokens["access_token"]
             refresh_token = new_tokens["refresh_token"]
 
-        profiles, new_tokens = getProfiles(access_token, refresh_token)
-        if new_tokens:
-            access_token = new_tokens["access_token"]
-            refresh_token = new_tokens["refresh_token"]
-
-        nickname = None
-        for profile in profiles["data"]:
-            if profile["id"] == profileId:
-                nickname = profile["nickname"]
-                break
-        logger.info(f"사용자 닉네임: {nickname}")
+        
         openai_api_key = os.getenv("OPENAI_API_KEY")
         if not openai_api_key:
             logger.error("OpenAI API 키가 설정되지 않음")
@@ -499,6 +505,82 @@ def getGreeting(callsign, access_token, refresh_token=None):
     except Exception as e:
         logger.error(f"인사말 생성 중 오류: {e}")
         return None, None
+    
+def getTime():
+    now = datetime.now()
+    hour = now.hour
+    minute = now.minute
+    result = f"현재 시각은 {hour}시 {minute}분입니다."
+    return result
+
+def getTransportation(profileId, access_token, refresh_token=None, type="BUS"):
+    try:
+        result = make_authenticated_request(
+            server_url+F"transportations/profile/{str(profileId)}/arrivals", 
+            
+            access_token=access_token, 
+            refresh_token=refresh_token
+        )
+        response = result["response"].json()
+        new_tokens = result["new_tokens"]
+
+        logger.info(f"result : {response}")
+        summary_data = ""
+        if type == "BUS":
+            bus_data = [item for item in response if item["type"] == "BUS"]            
+            if bus_data:
+                for i, bus in enumerate(bus_data):
+                    if i > 0:
+                        summary_data += ", "
+                    summary_data += f"{bus['station']}에 {bus['direction']} {bus['number']}번 버스는 {bus['information']}"                
+            else:
+                summary_data="현재 버스 정보가 없습니다."
+        else:
+            metro_data = [item for item in response if item["type"] == "METRO"]
+            if metro_data:
+                for i, metro in enumerate(metro_data):
+                    if i > 0:
+                        summary_data += ", "
+                    summary_data += f"{metro['station']} {metro['number']} {metro['direction']} 열차는 {metro['information']}"
+            else:
+                summary_data="현재 지하철 정보가 없습니다."
+        openai_api_key = os.getenv("OPENAI_API_KEY")
+        if not openai_api_key:
+            logger.error("OpenAI API 키가 설정되지 않음")
+            if type == "bus":
+                return "버스 정보를 불러오지 못하였습니다.", None
+            else:
+                return "지하철 정보를 불러오지 못하였습니다.", None
+            
+        openai_url = "https://api.openai.com/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {openai_api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        
+        payload = {
+            "model": "gpt-3.5-turbo",
+            "messages": [
+                 {"role": "system", "content": "당신은 교통 정보를 간결하게 요약해주는 비서입니다. 버스 또는 지하철 정보를 2-3줄 내로 간결하게 요약해주세요."},
+                 {"role": "user", "content": f"다음 정보를 2-3줄 이내로 간결하게 요약해주세요: {summary_data}"}
+            ],
+            "temperature": 0.7,
+            "max_tokens": 100
+        }
+        
+        openai_response = requests.post(openai_url, headers=headers, json=payload)
+        if openai_response.status_code == 200:
+            summary = openai_response.json()["choices"][0]["message"]["content"].strip()
+            logger.info(f"생성된 교통 정보: {summary}")
+            return summary, new_tokens
+        else:
+            logger.error(f"OpenAI API 요청 실패: {openai_response.status_code}, {openai_response.text}")
+            return "교통 정보를 불러오지 못하였습니다.", new_tokens 
+        
+    except Exception as e:
+        logger.error(f"교통 정보 생성 중 오류 : {e}")
+        return "교통 정보를 불러오지 못하였습니다.", None
 
 
         
@@ -515,30 +597,33 @@ if __name__ == "__main__":
     refresh_token = tokens["refresh_token"]
     
     # 프로필 가져오기 (토큰 갱신 포함)
-    profiles, new_tokens = getProfileId(access_token, refresh_token)
+    #profiles, new_tokens = getProfileId(access_token, refresh_token)
     
     # 토큰이 갱신되었으면 업데이트
-    if new_tokens:
-        access_token = new_tokens["access_token"]
-        refresh_token = new_tokens["refresh_token"]
-        logger.info("토큰이 갱신되었습니다.")
+    # if new_tokens:
+    #     access_token = new_tokens["access_token"]
+    #     refresh_token = new_tokens["refresh_token"]
+    #     logger.info("토큰이 갱신되었습니다.")
+
+    result, new_tokens = getTransportation("미미", access_token, refresh_token, "bus")
     
-    if profiles:
-        print("프로필 데이터:")
-        print(profiles)
-        for profile in profiles:
-            print(f"이름: {profile['name']}, 이메일: {profile['email']}")
+    print(result)
+    # if profiles:
+    #     print("프로필 데이터:")
+    #     print(profiles)
+    #     for profile in profiles:
+    #         print(f"이름: {profile['name']}, 이메일: {profile['email']}")
         
-        # 뉴스 가져오기 (토큰 갱신 포함)
-        news, new_tokens = getNews(access_token, refresh_token, 1)
+    #     # 뉴스 가져오기 (토큰 갱신 포함)
+    #     news, new_tokens = getNews(access_token, refresh_token, 1)
         
-        # 토큰이 갱신되었으면 업데이트
-        if new_tokens:
-            access_token = new_tokens["access_token"]
-            refresh_token = new_tokens["refresh_token"]
-            logger.info("토큰이 갱신되었습니다.")
+    #     # 토큰이 갱신되었으면 업데이트
+    #     if new_tokens:
+    #         access_token = new_tokens["access_token"]
+    #         refresh_token = new_tokens["refresh_token"]
+    #         logger.info("토큰이 갱신되었습니다.")
             
-        if news:
-            print(f"뉴스 요약: {news}")
-    else:
-        print("프로필 정보를 가져오는 데 실패했습니다.")
+    #     if news:
+    #         print(f"뉴스 요약: {news}")
+    # else:
+    #     print("프로필 정보를 가져오는 데 실패했습니다.")
