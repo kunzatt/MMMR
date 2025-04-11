@@ -1,0 +1,24 @@
+## 포팅 메뉴얼
+
+의존성 및 라이브러리 설치
+```python
+python3 setup.py
+```
+
+
+.env 파일을 추가하고 내용을 채워주세요
+```
+GOOGLE_APPLICATION_CREDENTIALS=CREDENTIALS_ADDRESS
+MODEL_SIZE=small
+LANGUAGE=ko
+HOST=0.0.0.0
+PORT=8000
+ENERGY_THRESHOLD=0.05
+SILENCE_THRESHOLD=25
+MIN_AUDIO_LENGTH=0.5
+OPENAI_API_KEY=YOUR_API_KEY
+SERVER_URL=https://j12a703.p.ssafy.io/api/
+EMAIL=
+PASSWORD=
+SAVE_DEBUG_AUDIO=
+```

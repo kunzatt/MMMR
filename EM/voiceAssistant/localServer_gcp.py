@@ -512,6 +512,9 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                         json_obj["result"] = greet_result
                     else:
                         json_obj["result"] = "4"
+                elif type == "time":
+                    result = data_processor.getTime()
+                    json_obj["result"] = result
                 elif type == "news" and contents["data"]:
                     news_result, new_tokens = data_processor.getNews(
                         int(contents["data"]),
@@ -534,14 +537,16 @@ async def process_and_send_json_result(websocket: WebSocket, transcription: str 
                         json_obj["result"] = "4"
 
                 elif type == "homecam":
-                    if contents["data"]:
-                        json_obj["type"] = "Turtlebot"
+                    if contents["data"]:                        
                         if iot_ws.navigation_clients:
+                            json_obj["type"] = "Turtlebot"
                             logger.info(f"홈 카메라 이동 요청: {contents['data']}")
                             clear_queue(message_queue)
                             iot_ws.send_navigation_message(json_obj)
                             result = await wait_for_queue_data(message_queue, 60)
                             if result:
+                                json_obj["type"] = "homecam"
+                                json_obj["contents"]["default"] = "ON"
                                 json_obj["result"] = "2"
                             else:
                                 json_obj["result"] = "4"

@@ -505,6 +505,13 @@ def getGreeting(profileId, access_token, refresh_token=None):
     except Exception as e:
         logger.error(f"인사말 생성 중 오류: {e}")
         return None, None
+    
+def getTime():
+    now = datetime.now()
+    hour = now.hour
+    minute = now.minute
+    result = f"현재 시각은 {hour}시 {minute}분입니다."
+    return result
 
 def getTransportation(profileId, access_token, refresh_token=None, type="BUS"):
     try:
